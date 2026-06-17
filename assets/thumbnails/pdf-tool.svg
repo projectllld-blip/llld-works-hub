@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-label="PDF編集ツール">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop stop-color="#eff4ff"/>
+      <stop offset="1" stop-color="#ffffff"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" rx="34" fill="url(#g)"/>
+  <circle cx="536" cy="42" r="112" fill="#dbe7ff"/>
+  <rect x="70" y="58" width="190" height="244" rx="20" fill="#fff" stroke="#cbd8f0" stroke-width="4"/>
+  <rect x="110" y="112" width="110" height="16" rx="8" fill="#1f5eff"/>
+  <rect x="110" y="150" width="104" height="14" rx="7" fill="#d0daef"/>
+  <rect x="110" y="182" width="86" height="14" rx="7" fill="#d0daef"/>
+  <rect x="322" y="92" width="212" height="176" rx="26" fill="#101828"/>
+  <text x="428" y="172" text-anchor="middle" font-size="46" font-family="Arial, sans-serif" font-weight="800" fill="#fff">PDF</text>
+  <text x="428" y="216" text-anchor="middle" font-size="22" font-family="Arial, sans-serif" font-weight="700" fill="#a9c0ff">EDIT</text>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-label="入試問題印刷">
+  <rect width="640" height="360" rx="34" fill="#f5fbf7"/>
+  <rect x="128" y="62" width="230" height="244" rx="22" fill="#fff" stroke="#cfe6d8" stroke-width="4"/>
+  <rect x="162" y="112" width="136" height="14" rx="7" fill="#16a34a"/>
+  <rect x="162" y="150" width="146" height="12" rx="6" fill="#bad8c6"/>
+  <rect x="162" y="182" width="118" height="12" rx="6" fill="#bad8c6"/>
+  <rect x="382" y="120" width="130" height="116" rx="18" fill="#101828"/>
+  <rect x="406" y="92" width="82" height="58" rx="12" fill="#16a34a"/>
+  <rect x="410" y="196" width="74" height="16" rx="8" fill="#fff"/>
+  <text x="243" y="270" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="800" fill="#14213d">EXAM</text>
+</svg>

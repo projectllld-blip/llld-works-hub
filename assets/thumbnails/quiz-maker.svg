@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-label="小テスト作成">
+  <rect width="640" height="360" rx="34" fill="#fff9ed"/>
+  <rect x="88" y="58" width="464" height="244" rx="28" fill="#fff" stroke="#f0dec2" stroke-width="4"/>
+  <text x="130" y="128" font-size="34" font-family="Arial, sans-serif" font-weight="800" fill="#14213d">QUIZ</text>
+  <rect x="130" y="158" width="300" height="14" rx="7" fill="#e4cda8"/>
+  <rect x="130" y="194" width="240" height="14" rx="7" fill="#e4cda8"/>
+  <circle cx="470" cy="176" r="52" fill="#f59e0b"/>
+  <path d="M445 177l18 18 36-46" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
