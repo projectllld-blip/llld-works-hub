@@ -71,6 +71,17 @@
     .nav-left{display:flex;align-items:center;gap:10px;min-width:0}
     .nav-icon{width:24px;height:24px;border-radius:9px;background:#f2f4f7;display:grid;place-items:center;font-size:11px;font-weight:900;flex:none}
     .nav-count{font-size:11px;color:#667085;background:#f2f4f7;border-radius:999px;padding:3px 7px;min-width:26px;text-align:center}
+    .side-favorites{margin-top:20px}
+    .side-favorite-list{display:grid;gap:6px}
+    .side-favorite-link{
+      display:flex;align-items:center;gap:8px;width:100%;
+      padding:9px 10px;border-radius:13px;color:#344054;background:#fff;border:1px solid var(--line);
+      font-size:12px;font-weight:800;line-height:1.35;box-shadow:0 4px 12px rgba(20,33,61,.04);
+      transition:.16s var(--ease);
+    }
+    .side-favorite-link:hover{background:#f8fbff;transform:translateX(2px)}
+    .side-favorite-icon{width:22px;height:22px;border-radius:8px;background:#fff7d6;color:#9a6500;display:grid;place-items:center;flex:none;font-size:12px}
+    .side-empty{padding:9px 10px;border:1px dashed #cfd7e6;border-radius:13px;color:#98a2b3;font-size:12px;line-height:1.6;background:rgba(255,255,255,.64)}
     main{min-width:0;padding:26px 32px 48px}
     .mobile-top{display:none}
     .hero{
@@ -231,6 +242,10 @@
       </div>
       <div class="nav-title">カテゴリ</div>
       <nav id="categoryNav"></nav>
+      <div class="side-favorites">
+        <div class="nav-title">お気に入り</div>
+        <div class="side-favorite-list" id="sideFavoriteList"></div>
+      </div>
     </aside>
 
     <main>
@@ -435,6 +450,18 @@
       const items = ids.map(id => state.contents.find(item => item.id === id)).filter(Boolean);
       $('favoriteSection').classList.toggle('hidden', items.length === 0);
       $('favoriteGrid').innerHTML = items.map(item => quickCard(item, 'お気に入り', false)).join('');
+      renderSidebarFavorites(items);
+    }
+
+    function renderSidebarFavorites(items){
+      $('sideFavoriteList').innerHTML = items.length
+        ? items.map(item => {
+          return `<a class="side-favorite-link" href="${escapeAttr(item.url)}" data-open-id="${escapeAttr(item.id)}" target="_blank" rel="noopener" aria-label="${escapeAttr(item.title)}を新しいタブで開く">
+            <span class="side-favorite-icon">★</span>
+            <span>${escapeHtml(item.title)}</span>
+          </a>`;
+        }).join('')
+        : '<div class="side-empty">未登録</div>';
     }
 
     function renderRecent(){
@@ -484,7 +511,6 @@
     function contentCard(item){
       const favorites = getFavorites();
       const active = favorites.includes(item.id);
-      const target = item.external ? ' target="_blank" rel="noopener"' : '';
       return `<article class="content-card" data-card-id="${escapeAttr(item.id)}">
         ${thumbnail(item)}
         <div class="card-inner">
@@ -502,7 +528,7 @@
             <div class="meta-item"><div class="meta-label">更新日</div><div class="meta-value">${escapeHtml(item.updatedAt)}</div></div>
           </div>
           <div class="card-actions">
-            <a class="btn primary small open" href="${escapeAttr(item.url)}" data-open-id="${escapeAttr(item.id)}"${target}>開く</a>
+            <a class="btn primary small open" href="${escapeAttr(item.url)}" data-open-id="${escapeAttr(item.id)}" target="_blank" rel="noopener">開く</a>
             <button class="btn small" type="button" data-copy="${escapeAttr(item.url)}">URL</button>
           </div>
         </div>
@@ -510,10 +536,9 @@
     }
 
     function quickCard(item, label, removable){
-      const target = item.external ? ' target="_blank" rel="noopener"' : '';
       return `<article class="quick-card">
         ${removable ? `<button class="quick-remove" type="button" data-remove-history="${escapeAttr(item.id)}" aria-label="${escapeAttr(item.title)}を履歴から削除">×</button>` : ''}
-        <a href="${escapeAttr(item.url)}" data-open-id="${escapeAttr(item.id)}"${target} aria-label="${escapeAttr(item.title)}を開く">
+        <a href="${escapeAttr(item.url)}" data-open-id="${escapeAttr(item.id)}" target="_blank" rel="noopener" aria-label="${escapeAttr(item.title)}を新しいタブで開く">
           ${thumbnail(item)}
           <div class="quick-body">
             <span class="tag">${escapeHtml(label)}</span>
