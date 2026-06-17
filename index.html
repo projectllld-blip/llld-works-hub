@@ -75,28 +75,28 @@
     .mobile-top{display:none}
     .hero{
       position:relative;overflow:hidden;border:1px solid rgba(227,232,243,.9);
-      border-radius:30px;padding:30px;background:
+      border-radius:24px;padding:18px 22px;background:
         linear-gradient(135deg,rgba(255,255,255,.96),rgba(246,249,255,.94)),
         radial-gradient(circle at 90% 20%,rgba(31,94,255,.20),transparent 38%);
       box-shadow:var(--shadow);
     }
     .hero:after{
-      content:"";position:absolute;right:-90px;top:-100px;width:260px;height:260px;border-radius:50%;
+      content:"";position:absolute;right:-70px;top:-120px;width:220px;height:220px;border-radius:50%;
       background:linear-gradient(135deg,rgba(31,94,255,.13),rgba(122,76,255,.11));
     }
-    .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.5fr .8fr;gap:24px;align-items:end}
-    .eyebrow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+    .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(260px,1fr) minmax(420px,.95fr);gap:20px;align-items:center}
+    .eyebrow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
     .pill{
       display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border-radius:999px;
       background:#fff;border:1px solid var(--line);color:#475467;font-size:12px;font-weight:800;
     }
     .pill.blue{background:var(--primary-soft);border-color:#cddaff;color:#1646bf}
-    .hero h2{font-size:38px;line-height:1.16;margin:0;letter-spacing:-.05em}
+    .hero h2{font-size:34px;line-height:1.12;margin:0;letter-spacing:-.045em}
     .hero p{font-size:15px;line-height:1.85;color:#475467;margin:0;max-width:720px}
-    .metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-    .metric{background:#fff;border:1px solid var(--line);border-radius:20px;padding:17px;box-shadow:var(--shadow-soft)}
-    .metric .num{font-size:28px;font-weight:900;letter-spacing:-.04em}
-    .metric .label{font-size:12px;color:var(--muted);margin-top:3px}
+    .metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+    .metric{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 13px;box-shadow:var(--shadow-soft)}
+    .metric .num{font-size:24px;font-weight:900;letter-spacing:-.035em;line-height:1}
+    .metric .label{font-size:12px;color:var(--muted);margin-top:6px;white-space:nowrap}
     .toolbar{
       position:sticky;top:16px;z-index:10;margin:20px 0 18px;padding:14px;
       display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;
@@ -178,9 +178,11 @@
       width:34px;height:34px;border:1px solid rgba(227,232,243,.92);border-radius:999px;
       background:rgba(255,255,255,.92);color:#475467;font-size:18px;font-weight:900;line-height:1;
       display:grid;place-items:center;box-shadow:0 8px 18px rgba(20,33,61,.10);
-      transition:.16s var(--ease);
+      opacity:0;transform:translateY(-4px) scale(.96);pointer-events:none;
+      transition:opacity .16s var(--ease), transform .16s var(--ease), background .16s var(--ease), color .16s var(--ease), border-color .16s var(--ease);
     }
-    .quick-remove:hover{background:#fff5f5;color:#b42318;border-color:#ffd6d2;transform:translateY(-1px)}
+    .quick-card:hover .quick-remove,.quick-card:focus-within .quick-remove{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+    .quick-remove:hover{background:#fff5f5;color:#b42318;border-color:#ffd6d2;transform:translateY(-1px) scale(1)}
     .empty{
       grid-column:1/-1;border:1px dashed #cfd7e6;border-radius:22px;background:rgba(255,255,255,.74);
       padding:22px;color:#667085;font-size:13px;line-height:1.8;text-align:center;
@@ -196,6 +198,7 @@
       .quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
       .content-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
       .hero-grid{grid-template-columns:1fr}
+      .metrics{grid-template-columns:repeat(4,minmax(0,1fr))}
     }
     @media(max-width:860px){
       .shell{display:block}
@@ -206,7 +209,7 @@
       .toolbar{position:relative;top:auto;grid-template-columns:1fr}
       .toolbar-actions{justify-content:stretch}.toolbar-actions>*{flex:1}
       .content-grid,.quick-grid{grid-template-columns:1fr}
-      .hero{padding:22px}.hero h2{font-size:30px}.metrics{grid-template-columns:1fr 1fr}
+      .hero{padding:18px}.hero h2{font-size:30px}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
       .section-head{align-items:flex-start;flex-direction:column}
     }
     @media(max-width:520px){
