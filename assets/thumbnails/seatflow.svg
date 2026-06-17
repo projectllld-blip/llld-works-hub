@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-label="SeatFlow 座席管理">
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-label="座席管理">
   <rect width="640" height="360" rx="34" fill="#f4f8ff"/>
   <circle cx="95" cy="64" r="110" fill="#dce8ff"/>
   <rect x="84" y="76" width="472" height="214" rx="30" fill="#fff" stroke="#d9e2f2" stroke-width="4"/>

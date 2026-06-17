@@ -88,7 +88,7 @@
   - url: ./apps/pdf-tool/index.html
   - description: PDFの結合、ページ入れ替え、分割、JPEG変換、容量調整を行うツール
 
-- SeatFlow 座席管理
+- 座席管理
   - category: 教室運用
   - type: HTMLアプリ
   - url: ./apps/seatflow/index.html
