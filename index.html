@@ -291,13 +291,6 @@
         </div>
       </section>
 
-      <section id="favoriteSection" class="hidden">
-        <div class="section-head">
-          <div><h3>お気に入り</h3></div>
-        </div>
-        <div class="quick-grid" id="favoriteGrid"></div>
-      </section>
-
       <section>
         <div class="section-head">
           <div><h3>最終利用履歴</h3></div>
@@ -448,8 +441,6 @@
     function renderFavorites(){
       const ids = getFavorites();
       const items = ids.map(id => state.contents.find(item => item.id === id)).filter(Boolean);
-      $('favoriteSection').classList.toggle('hidden', items.length === 0);
-      $('favoriteGrid').innerHTML = items.map(item => quickCard(item, 'お気に入り', false)).join('');
       renderSidebarFavorites(items);
     }
 
@@ -594,7 +585,9 @@
         }
         const opener = event.target.closest('[data-open-id]');
         if(opener){
+          event.preventDefault();
           saveHistory(opener.dataset.openId);
+          openContentInNewTab(opener.getAttribute('href'));
           return;
         }
         const copy = event.target.closest('[data-copy]');
@@ -644,6 +637,13 @@
       localStorage.setItem(storage.history, JSON.stringify(next));
       renderAll();
       toast('履歴から削除しました');
+    }
+
+    function openContentInNewTab(url){
+      if(!url) return;
+      const absoluteUrl = new URL(url, location.href).href;
+      const opened = window.open(absoluteUrl, '_blank', 'noopener');
+      if(opened) opened.opener = null;
     }
 
     function closeSidebarOnMobile(){
