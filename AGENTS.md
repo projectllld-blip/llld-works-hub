@@ -187,6 +187,31 @@ Update Works Hub content list
 Fix Works Hub card layout
 ```
 
+### 「教材を追加して、処理して」
+
+小テスト作成アプリ、または入試問題印刷アプリについて、ユーザーが「教材を追加して、処理して」「この教材を使えるようにして」「追加教材を登録して」などの短い依頼をした場合は、単なるローカル処理で止めず、GitHub Pagesで使える状態まで一気通貫で対応する。
+
+対象アプリ：
+
+- 小テスト作成: `/apps/quiz-maker/`
+- 入試問題印刷: `/apps/exam-print/`
+
+やること：
+
+1. 追加教材の種類を判定する。
+2. 元データ側の正規フォルダへ教材を配置・整理する。
+3. 必要なPDF分割、ファイル名整理、単元名整理、ページ順確認を行う。
+4. 小テストPDF系は `PDF小テストデータ` を正として `pdf_quiz_manifest.js` を再生成する。
+5. 小テスト単語系は `quiz_data.js` または `quiz_data.json` に反映する。
+6. 入試問題印刷は `data` フォルダを正として `exam_data.js`、`exam_manifest.json`、`exam_manifest.csv` を再生成する。
+7. ローカルでHTMLアプリを開ける状態にし、データ件数、リンク切れ、PDF参照切れを確認する。
+8. Works Hubの `/apps/quiz-maker/` または `/apps/exam-print/` に反映する。
+9. トップページから対象アプリを開けることを確認する。
+10. GitHub Pages上でも使えるように、必要なファイルを `git add`、commit、pushする。
+11. push後、公開URLでHTTP 200、データ反映、主要リンクを確認する。
+
+完了報告では、追加した教材、生成件数、確認したURL、commit IDを短く伝える。
+
 ---
 
 ## 初期登録するコンテンツ
