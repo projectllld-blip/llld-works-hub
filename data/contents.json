@@ -1,5 +1,17 @@
 [
   {
+    "id": "dakokun",
+    "title": "だこくん",
+    "category": "社内運営",
+    "type": "HTMLアプリ",
+    "description": "現場で迷わず出退勤、休憩、直行直帰、修正申請を記録できるタイムカードアプリ",
+    "url": "./apps/dakokun/index.html",
+    "thumbnail": "./assets/thumbnails/dakokun.svg",
+    "tags": ["タイムカード", "打刻", "出勤簿", "勤怠", "社内運営"],
+    "updatedAt": "2026-06-22",
+    "external": false
+  },
+  {
     "id": "pdf-tool",
     "title": "PDF編集ツール",
     "category": "PDF",

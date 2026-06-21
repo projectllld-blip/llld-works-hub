@@ -316,6 +316,12 @@
 
     const fallbackContents = [
       {
+        id:'dakokun', title:'だこくん', category:'社内運営', type:'HTMLアプリ',
+        description:'現場で迷わず出退勤、休憩、直行直帰、修正申請を記録できるタイムカードアプリ',
+        url:'./apps/dakokun/index.html', thumbnail:'./assets/thumbnails/dakokun.svg',
+        tags:['タイムカード','打刻','出勤簿','勤怠','社内運営'], updatedAt:'2026-06-22', external:false
+      },
+      {
         id:'pdf-tool', title:'PDF編集ツール', category:'PDF', type:'HTMLアプリ',
         description:'PDFの結合、ページ入れ替え、分割、JPEG変換、容量調整を行うツール',
         url:'./apps/pdf-tool/index.html', thumbnail:'./assets/thumbnails/pdf-tool.svg',
@@ -686,7 +692,7 @@
     }
 
     function categoryInitial(category){
-      const map = {'すべて':'ALL','PDF':'PDF','教室運用':'教','教材作成':'材','コンサル':'Co','補助金':'補','管理':'管','その他':'他'};
+      const map = {'すべて':'ALL','PDF':'PDF','教室運用':'教','教材作成':'材','コンサル':'Co','社内運営':'社','補助金':'補','管理':'管','その他':'他'};
       return map[category] || String(category || '他').slice(0,2);
     }
 

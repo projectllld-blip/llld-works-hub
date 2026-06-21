@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-label="だこくん">
+  <rect width="640" height="360" rx="34" fill="#f7fbff"/>
+  <circle cx="548" cy="70" r="116" fill="#dce8ff"/>
+  <circle cx="104" cy="314" r="132" fill="#e9f7ee"/>
+  <rect x="82" y="72" width="476" height="216" rx="30" fill="#fff" stroke="#d9e2f2" stroke-width="4"/>
+  <rect x="118" y="114" width="188" height="44" rx="16" fill="#14213d"/>
+  <rect x="334" y="114" width="102" height="44" rx="16" fill="#1f5eff"/>
+  <rect x="452" y="114" width="70" height="44" rx="16" fill="#19a974"/>
+  <g fill="#f2f6ff" stroke="#d9e2f2" stroke-width="3">
+    <rect x="118" y="186" width="96" height="60" rx="18"/>
+    <rect x="232" y="186" width="96" height="60" rx="18"/>
+    <rect x="346" y="186" width="96" height="60" rx="18"/>
+    <rect x="460" y="186" width="62" height="60" rx="18"/>
+  </g>
+  <g fill="#1f5eff">
+    <circle cx="166" cy="216" r="12"/>
+    <circle cx="280" cy="216" r="12" opacity=".72"/>
+    <circle cx="394" cy="216" r="12" opacity=".46"/>
+    <circle cx="491" cy="216" r="12" opacity=".86"/>
+  </g>
+  <text x="320" y="52" text-anchor="middle" font-size="34" font-family="Arial, sans-serif" font-weight="800" fill="#14213d">Dakokun</text>
+  <text x="214" y="144" text-anchor="middle" font-size="22" font-family="Arial, sans-serif" font-weight="800" fill="#fff">タイムカード</text>
+  <text x="385" y="143" text-anchor="middle" font-size="18" font-family="Arial, sans-serif" font-weight="800" fill="#fff">出勤</text>
+  <text x="487" y="143" text-anchor="middle" font-size="18" font-family="Arial, sans-serif" font-weight="800" fill="#fff">退勤</text>
+</svg>
