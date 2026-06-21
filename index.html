@@ -5,705 +5,131 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>LLLD Works Hub</title>
   <meta name="description" content="株式会社LLLDの社内コンテンツポータル">
-  <style>
-    :root{
-      --bg:#f5f7fb;
-      --panel:#fff;
-      --panel-soft:#f9fbff;
-      --text:#14213d;
-      --muted:#667085;
-      --line:#e3e8f3;
-      --primary:#1f5eff;
-      --primary-dark:#1646bf;
-      --primary-soft:#eaf0ff;
-      --dark:#101828;
-      --shadow:0 16px 45px rgba(20,33,61,.09);
-      --shadow-soft:0 10px 28px rgba(20,33,61,.07);
-      --radius:22px;
-      --ease:cubic-bezier(.2,.8,.2,1);
-    }
-    *{box-sizing:border-box}
-    html{-webkit-text-size-adjust:100%}
-    body{
-      margin:0;
-      min-height:100vh;
-      color:var(--text);
-      background:
-        radial-gradient(circle at 8% 0%, rgba(31,94,255,.13), transparent 32%),
-        radial-gradient(circle at 94% 12%, rgba(122,76,255,.12), transparent 30%),
-        linear-gradient(180deg,#f8fbff 0%,var(--bg) 100%);
-      font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP","Hiragino Sans","Yu Gothic UI","Yu Gothic","Segoe UI",Meiryo,sans-serif;
-      font-size:15px;
-      line-height:1.65;
-      letter-spacing:.01em;
-      -webkit-font-smoothing:antialiased;
-      text-rendering:optimizeLegibility;
-    }
-    a{color:inherit;text-decoration:none}
-    button,input,select{font:inherit}
-    button{cursor:pointer}
-    .shell{display:grid;grid-template-columns:284px 1fr;min-height:100vh}
-    .sidebar{
-      position:sticky;top:0;height:100vh;z-index:20;overflow:auto;
-      padding:22px 18px;
-      background:rgba(255,255,255,.86);
-      backdrop-filter:blur(18px);
-      border-right:1px solid rgba(227,232,243,.84);
-    }
-    .brand{display:flex;align-items:center;gap:12px;padding:10px 10px 18px}
-    .mark{
-      width:45px;height:45px;border-radius:15px;display:grid;place-items:center;
-      color:#fff;background:linear-gradient(135deg,#1f5eff,#7a4cff);
-      box-shadow:0 14px 30px rgba(31,94,255,.28);
-      font-weight:900;letter-spacing:-.04em;
-    }
-    .brand h1{font-size:18px;line-height:1.1;margin:0;letter-spacing:-.03em}
-    .brand p{font-size:12px;margin:4px 0 0;color:var(--muted)}
-    .nav-title{margin:18px 10px 8px;color:#98a2b3;font-size:11px;font-weight:900;letter-spacing:.08em}
-    .nav-button{
-      width:100%;border:0;background:transparent;color:#344054;
-      display:flex;align-items:center;justify-content:space-between;gap:8px;
-      padding:11px 12px;border-radius:14px;margin:3px 0;text-align:left;
-      transition:.18s var(--ease);
-    }
-    .nav-button:hover{background:#f1f5ff;transform:translateX(2px)}
-    .nav-button.active{background:var(--primary-soft);color:var(--primary);font-weight:900}
-    .nav-left{display:flex;align-items:center;gap:10px;min-width:0}
-    .nav-icon{width:24px;height:24px;border-radius:9px;background:#f2f4f7;display:grid;place-items:center;font-size:11px;font-weight:900;flex:none}
-    .nav-count{font-size:11px;color:#667085;background:#f2f4f7;border-radius:999px;padding:3px 7px;min-width:26px;text-align:center}
-    .side-favorites{margin-top:20px}
-    .side-favorite-list{display:grid;gap:6px}
-    .side-favorite-link{
-      display:flex;align-items:center;gap:8px;width:100%;
-      padding:9px 10px;border-radius:13px;color:#344054;background:#fff;border:1px solid var(--line);
-      font-size:12px;font-weight:800;line-height:1.35;box-shadow:0 4px 12px rgba(20,33,61,.04);
-      transition:.16s var(--ease);
-    }
-    .side-favorite-link:hover{background:#f8fbff;transform:translateX(2px)}
-    .side-favorite-icon{width:22px;height:22px;border-radius:8px;background:#fff7d6;color:#9a6500;display:grid;place-items:center;flex:none;font-size:12px}
-    .side-empty{padding:9px 10px;border:1px dashed #cfd7e6;border-radius:13px;color:#98a2b3;font-size:12px;line-height:1.6;background:rgba(255,255,255,.64)}
-    main{min-width:0;padding:26px 32px 48px}
-    .mobile-top{display:none}
-    .hero{
-      position:relative;overflow:hidden;border:1px solid rgba(227,232,243,.9);
-      border-radius:24px;padding:18px 22px;background:
-        linear-gradient(135deg,rgba(255,255,255,.96),rgba(246,249,255,.94)),
-        radial-gradient(circle at 90% 20%,rgba(31,94,255,.20),transparent 38%);
-      box-shadow:var(--shadow);
-    }
-    .hero:after{
-      content:"";position:absolute;right:-70px;top:-120px;width:220px;height:220px;border-radius:50%;
-      background:linear-gradient(135deg,rgba(31,94,255,.13),rgba(122,76,255,.11));
-    }
-    .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(260px,1fr) minmax(420px,.95fr);gap:20px;align-items:center}
-    .eyebrow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
-    .pill{
-      display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border-radius:999px;
-      background:#fff;border:1px solid var(--line);color:#475467;font-size:12px;font-weight:800;
-    }
-    .pill.blue{background:var(--primary-soft);border-color:#cddaff;color:#1646bf}
-    .hero h2{font-size:34px;line-height:1.12;margin:0;letter-spacing:-.045em}
-    .hero p{font-size:15px;line-height:1.85;color:#475467;margin:0;max-width:720px}
-    .metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-    .metric{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 13px;box-shadow:var(--shadow-soft)}
-    .metric .num{font-size:24px;font-weight:900;letter-spacing:-.035em;line-height:1}
-    .metric .label{font-size:12px;color:var(--muted);margin-top:6px;white-space:nowrap}
-    .toolbar{
-      position:sticky;top:16px;z-index:10;margin:20px 0 18px;padding:14px;
-      display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;
-      background:rgba(255,255,255,.86);backdrop-filter:blur(16px);
-      border:1px solid rgba(227,232,243,.95);border-radius:24px;box-shadow:var(--shadow-soft);
-    }
-    .search{position:relative}
-    .search input{
-      width:100%;border:1px solid var(--line);border-radius:16px;background:#fff;
-      padding:14px 46px 14px 44px;color:var(--text);outline:none;transition:.18s var(--ease);
-    }
-    .search input:focus{border-color:#9bb5ff;box-shadow:0 0 0 4px rgba(31,94,255,.11)}
-    .search .label{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:#98a2b3;font-weight:900}
-    .clear-search{position:absolute;right:10px;top:50%;transform:translateY(-50%);border:0;background:#f2f4f7;border-radius:10px;width:28px;height:28px;color:#667085;display:none}
-    .clear-search.show{display:block}
-    .toolbar-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
-    .select,.btn{
-      border:1px solid var(--line);background:#fff;color:#344054;
-      padding:11px 12px;border-radius:14px;font-weight:800;font-size:13px;outline:none;
-    }
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 5px 14px rgba(20,33,61,.04);transition:.18s var(--ease)}
-    .btn:hover{transform:translateY(-1px);box-shadow:0 12px 22px rgba(20,33,61,.09)}
-    .btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
-    .btn.dark{background:var(--dark);border-color:var(--dark);color:#fff}
-    .btn.small{padding:9px 11px;border-radius:12px;font-size:12px}
-    .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin:28px 0 14px}
-    .section-head h3{font-size:22px;margin:0;letter-spacing:-.03em}
-    .section-head p{margin:6px 0 0;color:var(--muted);font-size:13px;line-height:1.7}
-    .result-meta{font-size:13px;color:var(--muted)}
-    .chips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 18px}
-    .chip{border:1px solid var(--line);background:#fff;color:#475467;border-radius:999px;padding:9px 12px;font-size:12px;font-weight:800;transition:.18s var(--ease)}
-    .chip:hover{background:#f8fbff;transform:translateY(-1px)}
-    .chip.active{background:#101828;color:#fff;border-color:#101828}
-    .quick-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
-    .content-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-    .content-card,.quick-card{
-      background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:24px;
-      box-shadow:var(--shadow-soft);transition:.2s var(--ease);overflow:hidden;
-    }
-    .content-card:hover,.quick-card:hover{transform:translateY(-3px);box-shadow:0 18px 36px rgba(20,33,61,.12)}
-    .content-card{display:flex;flex-direction:column;min-height:372px}
-    .thumb{
-      height:138px;background:linear-gradient(135deg,#eef4ff 0%,#fff 72%);
-      border-bottom:1px solid var(--line);position:relative;overflow:hidden;
-    }
-    .thumb img{width:100%;height:100%;object-fit:cover;display:block}
-    .thumb-fallback{
-      width:100%;height:100%;display:flex;align-items:flex-end;justify-content:space-between;
-      padding:16px;background:linear-gradient(135deg,#eef4ff,#fff);
-    }
-    .thumb-fallback:after{content:"";position:absolute;right:-34px;top:-42px;width:142px;height:142px;border-radius:50%;background:rgba(31,94,255,.11)}
-    .thumb-icon{width:62px;height:62px;border-radius:22px;background:rgba(255,255,255,.88);display:grid;place-items:center;font-size:20px;font-weight:900;box-shadow:0 14px 30px rgba(20,33,61,.10);position:relative;z-index:1}
-    .thumb-label{position:absolute;right:14px;bottom:14px;z-index:1;font-size:12px;font-weight:900;color:#475467;background:rgba(255,255,255,.86);border:1px solid rgba(227,232,243,.95);border-radius:999px;padding:7px 10px;max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .card-inner{padding:16px 18px 18px;display:flex;flex-direction:column;flex:1}
-    .card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:11px}
-    .card-title h4{font-size:18px;margin:0 0 7px;letter-spacing:-.02em;line-height:1.42}
-    .category{font-size:12px;color:#667085;font-weight:800}
-    .favorite{
-      border:1px solid var(--line);background:#fff;color:#98a2b3;border-radius:999px;
-      width:38px;height:38px;display:grid;place-items:center;font-weight:900;flex:none;
-    }
-    .favorite.active{background:#fff7d6;border-color:#ffe08a;color:#9a6500}
-    .desc{margin:0 0 14px;color:#667085;font-size:13px;line-height:1.7;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-    .tag-row{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
-    .tag{display:inline-flex;align-items:center;border-radius:999px;background:#f2f4f7;color:#475467;padding:5px 8px;font-size:12px;font-weight:800}
-    .meta{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:auto}
-    .meta-item{background:#f8fafc;border:1px solid #edf1f7;border-radius:14px;padding:9px}
-    .meta-label{font-size:12px;color:#667085;font-weight:900;margin-bottom:3px}
-    .meta-value{font-size:12px;color:#344054;font-weight:800}
-    .card-actions{display:flex;gap:8px;align-items:center;margin-top:14px}
-    .card-actions .open{flex:1}
-    .quick-card{display:block;min-height:168px;position:relative}
-    .quick-card .thumb{height:92px}
-    .quick-body{padding:14px 16px 16px}
-    .quick-body h4{margin:0 0 7px;font-size:16px;line-height:1.45;letter-spacing:-.015em}
-    .quick-body p{margin:0;color:#667085;font-size:12.5px;line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-    .quick-remove{
-      position:absolute;top:10px;right:10px;z-index:3;
-      width:34px;height:34px;border:1px solid rgba(227,232,243,.92);border-radius:999px;
-      background:rgba(255,255,255,.92);color:#475467;font-size:18px;font-weight:900;line-height:1;
-      display:grid;place-items:center;box-shadow:0 8px 18px rgba(20,33,61,.10);
-      opacity:0;transform:translateY(-4px) scale(.96);pointer-events:none;
-      transition:opacity .16s var(--ease), transform .16s var(--ease), background .16s var(--ease), color .16s var(--ease), border-color .16s var(--ease);
-    }
-    .quick-card:hover .quick-remove,.quick-card:focus-within .quick-remove{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
-    .quick-remove:hover{background:#fff5f5;color:#b42318;border-color:#ffd6d2;transform:translateY(-1px) scale(1)}
-    .empty{
-      grid-column:1/-1;border:1px dashed #cfd7e6;border-radius:22px;background:rgba(255,255,255,.74);
-      padding:22px;color:#667085;font-size:13px;line-height:1.8;text-align:center;
-    }
-    .hidden{display:none!important}
-    .toast{
-      position:fixed;right:20px;bottom:20px;z-index:50;background:#101828;color:#fff;
-      border-radius:14px;padding:12px 14px;font-size:13px;box-shadow:var(--shadow);
-      opacity:0;transform:translateY(10px);pointer-events:none;transition:.18s var(--ease);
-    }
-    .toast.show{opacity:1;transform:translateY(0)}
-    @media(max-width:1180px){
-      .quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-      .content-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-      .hero-grid{grid-template-columns:1fr}
-      .metrics{grid-template-columns:repeat(4,minmax(0,1fr))}
-    }
-    @media(max-width:860px){
-      .shell{display:block}
-      .sidebar{position:fixed;left:0;top:0;bottom:0;width:min(310px,86vw);height:100vh;transform:translateX(-105%);transition:.2s var(--ease);box-shadow:var(--shadow)}
-      .sidebar.open{transform:translateX(0)}
-      main{padding:16px 14px 34px}
-      .mobile-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
-      .toolbar{position:relative;top:auto;grid-template-columns:1fr}
-      .toolbar-actions{justify-content:stretch}.toolbar-actions>*{flex:1}
-      .content-grid,.quick-grid{grid-template-columns:1fr}
-      .hero{padding:18px}.hero h2{font-size:30px}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
-      .section-head{align-items:flex-start;flex-direction:column}
-    }
-    @media(max-width:520px){
-      .metrics{grid-template-columns:1fr}
-      .meta{grid-template-columns:1fr}
-      .card-actions{flex-wrap:wrap}.card-actions .open{flex:1 0 100%}
-    }
-  </style>
+  <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 <body>
-  <div class="shell">
+  <div class="app-shell">
     <aside class="sidebar" id="sidebar">
       <div class="brand">
-        <div class="mark">LW</div>
+        <div class="brand-mark" aria-hidden="true">
+          <span></span>
+        </div>
         <div>
           <h1>LLLD Works Hub</h1>
           <p>社内ツールポータル</p>
         </div>
       </div>
-      <div class="nav-title">カテゴリ</div>
-      <nav id="categoryNav"></nav>
-      <div class="side-favorites">
+
+      <nav class="nav-group" aria-label="カテゴリ">
+        <div class="nav-title">カテゴリ</div>
+        <div id="categoryNav" class="category-nav"></div>
+      </nav>
+
+      <section class="side-favorites" aria-label="お気に入り">
         <div class="nav-title">お気に入り</div>
         <div class="side-favorite-list" id="sideFavoriteList"></div>
+      </section>
+
+      <div class="sidebar-help">
+        <strong>誰でもプログラマー</strong>
+        <span>現場発の便利ツールを共有する入口。</span>
       </div>
     </aside>
 
-    <main>
-      <div class="mobile-top">
-        <button class="btn dark" id="openSidebar" type="button">カテゴリ</button>
-        <strong>LLLD Works Hub</strong>
-      </div>
-
-      <section class="hero">
-        <div class="hero-grid">
-          <div>
-            <div class="eyebrow">
-              <span class="pill blue">GitHub Pages Ready</span>
-              <span class="pill">塾事業</span>
-              <span class="pill">コンサル事業</span>
-              <span class="pill">社内運営</span>
-            </div>
-            <h2>LLLD Works Hub</h2>
-          </div>
-          <div class="metrics">
-            <div class="metric"><div class="num" id="metricTotal">0</div><div class="label">登録コンテンツ</div></div>
-            <div class="metric"><div class="num" id="metricFavorites">0</div><div class="label">お気に入り</div></div>
-            <div class="metric"><div class="num" id="metricApps">0</div><div class="label">HTMLアプリ</div></div>
-            <div class="metric"><div class="num" id="metricRecent">0</div><div class="label">利用履歴</div></div>
-          </div>
+    <main class="main">
+      <header class="topbar">
+        <button class="icon-button menu-button" id="openSidebar" type="button" aria-label="カテゴリを開く">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="topbar-title">
+          <strong>LLLD Works Hub</strong>
+          <span>GitHub Pages</span>
         </div>
-      </section>
-
-      <section class="toolbar" aria-label="検索と絞り込み">
         <div class="search">
-          <span class="label">Q</span>
-          <input id="searchInput" type="search" placeholder="タイトル、タグ、カテゴリで検索" autocomplete="off">
-          <button id="clearSearch" class="clear-search" type="button" aria-label="検索をクリア">x</button>
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="searchInput" type="search" placeholder="コンテンツ名・カテゴリ・タグで検索" autocomplete="off">
+          <button id="clearSearch" class="clear-search" type="button" aria-label="検索をクリア">×</button>
         </div>
-        <div class="toolbar-actions">
-          <select id="sortSelect" class="select" aria-label="並び替え">
-            <option value="recent">最終利用順</option>
-            <option value="updated">更新日順</option>
-            <option value="title">名前順</option>
-            <option value="category">カテゴリ順</option>
-          </select>
-          <button id="resetFilters" class="btn" type="button">リセット</button>
+      </header>
+
+      <section class="hero-panel">
+        <div class="hero-copy">
+          <span class="product-badge">誰でもプログラマー</span>
+          <h2>現場で作った便利ツールを、すぐ使える場所へ。</h2>
+          <p>塾、コンサル、社内運営のHTMLアプリとテンプレートをまとめる静的ポータル。</p>
+        </div>
+        <div class="summary-grid" aria-label="サマリー">
+          <article class="summary-card">
+            <span class="summary-icon doc"></span>
+            <div>
+              <strong id="metricTotal">0</strong>
+              <span>登録コンテンツ</span>
+            </div>
+          </article>
+          <article class="summary-card">
+            <span class="summary-icon star"></span>
+            <div>
+              <strong id="metricFavorites">0</strong>
+              <span>お気に入り</span>
+            </div>
+          </article>
+          <article class="summary-card">
+            <span class="summary-icon code"></span>
+            <div>
+              <strong id="metricApps">0</strong>
+              <span>HTMLアプリ</span>
+            </div>
+          </article>
+          <article class="summary-card">
+            <span class="summary-icon clock"></span>
+            <div>
+              <strong id="metricRecent">0</strong>
+              <span>利用履歴</span>
+            </div>
+          </article>
         </div>
       </section>
 
-      <section>
+      <section class="recent-section">
         <div class="section-head">
-          <div><h3>最終利用履歴</h3></div>
+          <div>
+            <h3>最終利用履歴</h3>
+            <p>毎日使うツールにすぐ戻れます。</p>
+          </div>
+          <button class="text-button" id="showAllRecent" type="button">すべて見る</button>
         </div>
-        <div class="quick-grid" id="recentGrid"></div>
+        <div class="recent-row" id="recentGrid"></div>
       </section>
 
-      <section>
-        <div class="section-head">
-          <div><h3>コンテンツ一覧</h3></div>
-          <div class="result-meta" id="resultMeta"></div>
+      <section class="content-section">
+        <div class="section-head content-head">
+          <div>
+            <h3>コンテンツ一覧</h3>
+            <p id="resultMeta">0件表示中</p>
+          </div>
+          <div class="sort-tabs" id="sortTabs" aria-label="並び替え">
+            <button class="sort-tab active" type="button" data-sort="recent">最終利用順</button>
+            <button class="sort-tab" type="button" data-sort="updated">更新日順</button>
+            <button class="sort-tab" type="button" data-sort="title">名前順</button>
+            <button class="sort-tab" type="button" data-sort="category">カテゴリ順</button>
+            <button class="sort-tab reset" id="resetFilters" type="button">リセット</button>
+          </div>
         </div>
-        <div class="chips" id="typeChips"></div>
+        <div class="type-chips" id="typeChips"></div>
         <div class="content-grid" id="contentGrid"></div>
       </section>
     </main>
   </div>
 
+  <div class="modal-backdrop" id="detailModal" aria-hidden="true">
+    <section class="detail-modal" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+      <button class="modal-close" id="closeDetail" type="button" aria-label="詳細を閉じる">×</button>
+      <div id="detailContent"></div>
+    </section>
+  </div>
+
   <div id="toast" class="toast"></div>
 
-  <script>
-    'use strict';
-
-    const fallbackContents = [
-      {
-        id:'dakokun', title:'だこくん', category:'社内運営', type:'HTMLアプリ',
-        description:'現場で迷わず出退勤、休憩、直行直帰、修正申請を記録できるタイムカードアプリ',
-        url:'./apps/dakokun/index.html', thumbnail:'./assets/thumbnails/dakokun.svg',
-        tags:['タイムカード','打刻','出勤簿','勤怠','社内運営'], updatedAt:'2026-06-22', external:false
-      },
-      {
-        id:'pdf-tool', title:'PDF編集ツール', category:'PDF', type:'HTMLアプリ',
-        description:'PDFの結合、ページ入れ替え、分割、JPEG変換、容量調整を行うツール',
-        url:'./apps/pdf-tool/index.html', thumbnail:'./assets/thumbnails/pdf-tool.svg',
-        tags:['PDF','結合','分割','ページ入れ替え','JPEG'], updatedAt:'2026-06-17', external:false
-      },
-      {
-        id:'seatflow', title:'座席管理', category:'教室運用', type:'HTMLアプリ',
-        description:'自習室、授業、面談室などの座席状況を管理するツール',
-        url:'./apps/seatflow/index.html', thumbnail:'./assets/thumbnails/seatflow.svg',
-        tags:['座席','自習室','教室','予約','利用者'], updatedAt:'2026-06-17', external:false
-      },
-      {
-        id:'quiz-maker', title:'小テスト作成', category:'教材作成', type:'HTMLアプリ',
-        description:'漢字、英単語、計算などの小テストを作成するツール',
-        url:'./apps/quiz-maker/index.html', thumbnail:'./assets/thumbnails/quiz-maker.svg',
-        tags:['小テスト','漢字','英単語','計算','教材'], updatedAt:'2026-06-22', external:false
-      },
-      {
-        id:'exam-print', title:'入試問題印刷', category:'教材作成', type:'HTMLアプリ',
-        description:'入試問題PDFを確認しながら印刷用に整理するツール',
-        url:'./apps/exam-print/index.html', thumbnail:'./assets/thumbnails/exam-print.svg',
-        tags:['入試','印刷','PDF','教材','確認'], updatedAt:'2026-06-22', external:false
-      },
-      {
-        id:'consulting-kit', title:'コンサル支援キット', category:'コンサル', type:'資料・テンプレート',
-        description:'採用、集客、育成、1on1、補助金支援で使う資料をまとめる場所',
-        url:'./apps/consulting-kit/index.html', thumbnail:'./assets/thumbnails/consulting-kit.svg',
-        tags:['採用','集客','育成','1on1','補助金'], updatedAt:'2026-06-17', external:false
-      }
-    ];
-
-    const state = {
-      contents: [],
-      query: '',
-      category: 'すべて',
-      type: 'すべて',
-      sort: 'recent'
-    };
-
-    const $ = id => document.getElementById(id);
-    const storage = {
-      history: 'llldWorksHub.history',
-      favorites: 'llldWorksHub.favorites'
-    };
-
-    init();
-
-    async function init(){
-      state.contents = await loadContents();
-      bindEvents();
-      renderAll();
-    }
-
-    async function loadContents(){
-      try{
-        const res = await fetch('./data/contents.json', {cache:'no-store'});
-        if(!res.ok) throw new Error('contents.json not found');
-        const data = await res.json();
-        return Array.isArray(data) && data.length ? data : fallbackContents;
-      }catch(error){
-        return fallbackContents;
-      }
-    }
-
-    function renderAll(){
-      renderMetrics();
-      renderCategoryNav();
-      renderTypeChips();
-      renderFavorites();
-      renderRecent();
-      renderContents();
-    }
-
-    function getHistory(){
-      try{return JSON.parse(localStorage.getItem(storage.history) || '[]');}
-      catch{return [];}
-    }
-
-    function getFavorites(){
-      try{return JSON.parse(localStorage.getItem(storage.favorites) || '[]');}
-      catch{return [];}
-    }
-
-    function setFavorites(ids){
-      localStorage.setItem(storage.favorites, JSON.stringify(ids));
-      renderAll();
-    }
-
-    function saveHistory(id){
-      const exists = state.contents.some(item => item.id === id);
-      if(!exists) return;
-      const next = getHistory().filter(item => item.id !== id);
-      next.unshift({id, usedAt:new Date().toISOString()});
-      localStorage.setItem(storage.history, JSON.stringify(next.slice(0,8)));
-      renderAll();
-    }
-
-    function renderMetrics(){
-      const favorites = getFavorites();
-      const history = getHistory().filter(h => state.contents.some(c => c.id === h.id));
-      $('metricTotal').textContent = state.contents.length;
-      $('metricFavorites').textContent = favorites.length;
-      $('metricApps').textContent = state.contents.filter(c => c.type === 'HTMLアプリ').length;
-      $('metricRecent').textContent = history.length;
-    }
-
-    function renderCategoryNav(){
-      const categories = ['すべて', ...unique(state.contents.map(item => item.category))];
-      $('categoryNav').innerHTML = categories.map(category => {
-        const count = category === 'すべて' ? state.contents.length : state.contents.filter(item => item.category === category).length;
-        return `<button class="nav-button ${category === state.category ? 'active' : ''}" type="button" data-category="${escapeAttr(category)}">
-          <span class="nav-left"><span class="nav-icon">${categoryInitial(category)}</span><span>${escapeHtml(category)}</span></span>
-          <span class="nav-count">${count}</span>
-        </button>`;
-      }).join('');
-    }
-
-    function renderTypeChips(){
-      const types = ['すべて', ...unique(state.contents.map(item => item.type))];
-      $('typeChips').innerHTML = types.map(type => `<button class="chip ${type === state.type ? 'active' : ''}" type="button" data-type="${escapeAttr(type)}">${escapeHtml(type)}</button>`).join('');
-    }
-
-    function renderFavorites(){
-      const ids = getFavorites();
-      const items = ids.map(id => state.contents.find(item => item.id === id)).filter(Boolean);
-      renderSidebarFavorites(items);
-    }
-
-    function renderSidebarFavorites(items){
-      $('sideFavoriteList').innerHTML = items.length
-        ? items.map(item => {
-          return `<a class="side-favorite-link" href="${escapeAttr(item.url)}" data-open-id="${escapeAttr(item.id)}" target="_blank" rel="noopener" aria-label="${escapeAttr(item.title)}を新しいタブで開く">
-            <span class="side-favorite-icon">★</span>
-            <span>${escapeHtml(item.title)}</span>
-          </a>`;
-        }).join('')
-        : '<div class="side-empty">未登録</div>';
-    }
-
-    function renderRecent(){
-      const items = getHistory()
-        .map(record => state.contents.find(item => item.id === record.id))
-        .filter(Boolean)
-        .slice(0,8);
-      $('recentGrid').innerHTML = items.length
-        ? items.map((item, index) => quickCard(item, `履歴 ${index + 1}`, true)).join('')
-        : '<div class="empty">まだ利用履歴がありません。コンテンツを開くとここに表示されます。</div>';
-    }
-
-    function renderContents(){
-      const items = filteredContents();
-      $('resultMeta').textContent = `${items.length}件表示中 / 全${state.contents.length}件`;
-      $('contentGrid').innerHTML = items.length
-        ? items.map(contentCard).join('')
-        : '<div class="empty">条件に合うコンテンツがありません。</div>';
-    }
-
-    function filteredContents(){
-      const historyOrder = new Map(getHistory().map((item, index) => [item.id, index]));
-      const q = normalize(state.query);
-      const items = state.contents.filter(item => {
-        const searchText = normalize([item.title, item.category, item.type, item.description, ...(item.tags || [])].join(' '));
-        const matchQuery = !q || searchText.includes(q);
-        const matchCategory = state.category === 'すべて' || item.category === state.category;
-        const matchType = state.type === 'すべて' || item.type === state.type;
-        return matchQuery && matchCategory && matchType;
-      });
-
-      items.sort((a,b) => {
-        if(state.sort === 'recent'){
-          const ai = historyOrder.has(a.id) ? historyOrder.get(a.id) : 9999;
-          const bi = historyOrder.has(b.id) ? historyOrder.get(b.id) : 9999;
-          if(ai !== bi) return ai - bi;
-          return b.updatedAt.localeCompare(a.updatedAt);
-        }
-        if(state.sort === 'updated') return b.updatedAt.localeCompare(a.updatedAt);
-        if(state.sort === 'title') return a.title.localeCompare(b.title, 'ja');
-        if(state.sort === 'category') return a.category.localeCompare(b.category, 'ja') || a.title.localeCompare(b.title, 'ja');
-        return 0;
-      });
-      return items;
-    }
-
-    function contentCard(item){
-      const favorites = getFavorites();
-      const active = favorites.includes(item.id);
-      return `<article class="content-card" data-card-id="${escapeAttr(item.id)}">
-        ${thumbnail(item)}
-        <div class="card-inner">
-          <div class="card-top">
-            <div class="card-title">
-              <h4>${escapeHtml(item.title)}</h4>
-              <div class="category">${escapeHtml(item.category)}</div>
-            </div>
-            <button class="favorite ${active ? 'active' : ''}" type="button" data-favorite="${escapeAttr(item.id)}" aria-label="お気に入り切替">${active ? '★' : '☆'}</button>
-          </div>
-          <p class="desc">${escapeHtml(item.description)}</p>
-          <div class="tag-row">${(item.tags || []).slice(0,5).map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>
-          <div class="meta">
-            <div class="meta-item"><div class="meta-label">種別</div><div class="meta-value">${escapeHtml(item.type)}</div></div>
-            <div class="meta-item"><div class="meta-label">更新日</div><div class="meta-value">${escapeHtml(item.updatedAt)}</div></div>
-          </div>
-          <div class="card-actions">
-            <a class="btn primary small open" href="${escapeAttr(item.url)}" data-open-id="${escapeAttr(item.id)}" target="_blank" rel="noopener">開く</a>
-            <button class="btn small" type="button" data-copy="${escapeAttr(item.url)}">URL</button>
-          </div>
-        </div>
-      </article>`;
-    }
-
-    function quickCard(item, label, removable){
-      return `<article class="quick-card">
-        ${removable ? `<button class="quick-remove" type="button" data-remove-history="${escapeAttr(item.id)}" aria-label="${escapeAttr(item.title)}を履歴から削除">×</button>` : ''}
-        <a href="${escapeAttr(item.url)}" data-open-id="${escapeAttr(item.id)}" target="_blank" rel="noopener" aria-label="${escapeAttr(item.title)}を新しいタブで開く">
-          ${thumbnail(item)}
-          <div class="quick-body">
-            <span class="tag">${escapeHtml(label)}</span>
-            <h4>${escapeHtml(item.title)}</h4>
-            <p>${escapeHtml(item.description)}</p>
-          </div>
-        </a>
-      </article>`;
-    }
-
-    function thumbnail(item){
-      const src = item.thumbnail || '';
-      if(src){
-        return `<div class="thumb"><img src="${escapeAttr(src)}" alt="${escapeAttr(item.title)}" loading="lazy" onerror="this.closest('.thumb').innerHTML=fallbackThumb('${escapeAttr(item.category)}')"><span class="thumb-label">${escapeHtml(item.category)}</span></div>`;
-      }
-      return `<div class="thumb">${fallbackThumb(item.category)}<span class="thumb-label">${escapeHtml(item.category)}</span></div>`;
-    }
-
-    window.fallbackThumb = function(category){
-      return `<div class="thumb-fallback"><span class="thumb-icon">${categoryInitial(category)}</span></div>`;
-    };
-
-    function bindEvents(){
-      document.addEventListener('click', event => {
-        const removeHistory = event.target.closest('[data-remove-history]');
-        if(removeHistory){
-          event.preventDefault();
-          event.stopPropagation();
-          removeHistoryItem(removeHistory.dataset.removeHistory);
-          return;
-        }
-        const nav = event.target.closest('[data-category]');
-        if(nav){
-          state.category = nav.dataset.category;
-          renderAll();
-          closeSidebarOnMobile();
-          return;
-        }
-        const chip = event.target.closest('[data-type]');
-        if(chip){
-          state.type = chip.dataset.type;
-          renderAll();
-          return;
-        }
-        const fav = event.target.closest('[data-favorite]');
-        if(fav){
-          const id = fav.dataset.favorite;
-          const current = getFavorites();
-          const next = current.includes(id) ? current.filter(item => item !== id) : [id, ...current];
-          setFavorites(next);
-          toast(current.includes(id) ? 'お気に入りを解除しました' : 'お気に入りに追加しました');
-          return;
-        }
-        const opener = event.target.closest('[data-open-id]');
-        if(opener){
-          event.preventDefault();
-          saveHistory(opener.dataset.openId);
-          openContentInNewTab(opener.getAttribute('href'));
-          return;
-        }
-        const copy = event.target.closest('[data-copy]');
-        if(copy){
-          copyUrl(copy.dataset.copy);
-          return;
-        }
-      });
-
-      $('searchInput').addEventListener('input', event => {
-        state.query = event.target.value.trim();
-        $('clearSearch').classList.toggle('show', !!state.query);
-        renderContents();
-      });
-      $('clearSearch').addEventListener('click', () => {
-        state.query = '';
-        $('searchInput').value = '';
-        $('clearSearch').classList.remove('show');
-        renderContents();
-      });
-      $('sortSelect').addEventListener('change', event => {
-        state.sort = event.target.value;
-        renderContents();
-      });
-      $('resetFilters').addEventListener('click', () => {
-        state.query = '';
-        state.category = 'すべて';
-        state.type = 'すべて';
-        state.sort = 'recent';
-        $('searchInput').value = '';
-        $('sortSelect').value = 'recent';
-        $('clearSearch').classList.remove('show');
-        renderAll();
-      });
-      $('openSidebar').addEventListener('click', () => $('sidebar').classList.add('open'));
-      document.addEventListener('keydown', event => {
-        if(event.key === 'Escape') closeSidebarOnMobile();
-        if(event.key === '/' && !['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)){
-          event.preventDefault();
-          $('searchInput').focus();
-        }
-      });
-    }
-
-    function removeHistoryItem(id){
-      const next = getHistory().filter(item => item.id !== id);
-      localStorage.setItem(storage.history, JSON.stringify(next));
-      renderAll();
-      toast('履歴から削除しました');
-    }
-
-    function openContentInNewTab(url){
-      if(!url) return;
-      const absoluteUrl = new URL(url, location.href).href;
-      const opened = window.open(absoluteUrl, '_blank', 'noopener');
-      if(opened) opened.opener = null;
-      else location.href = absoluteUrl;
-    }
-
-    function closeSidebarOnMobile(){
-      if(window.innerWidth <= 860) $('sidebar').classList.remove('open');
-    }
-
-    function copyUrl(url){
-      const absolute = new URL(url, location.href).href;
-      if(navigator.clipboard && window.isSecureContext){
-        navigator.clipboard.writeText(absolute).then(() => toast('URLをコピーしました')).catch(() => fallbackCopy(absolute));
-      }else{
-        fallbackCopy(absolute);
-      }
-    }
-
-    function fallbackCopy(text){
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      ta.remove();
-      toast('URLをコピーしました');
-    }
-
-    function toast(message){
-      const el = $('toast');
-      el.textContent = message;
-      el.classList.add('show');
-      clearTimeout(window.__worksHubToast);
-      window.__worksHubToast = setTimeout(() => el.classList.remove('show'), 1600);
-    }
-
-    function unique(values){
-      return Array.from(new Set(values.filter(Boolean)));
-    }
-
-    function normalize(value){
-      return String(value || '').toLowerCase().normalize('NFKC');
-    }
-
-    function categoryInitial(category){
-      const map = {'すべて':'ALL','PDF':'PDF','教室運用':'教','教材作成':'材','コンサル':'Co','社内運営':'社','補助金':'補','管理':'管','その他':'他'};
-      return map[category] || String(category || '他').slice(0,2);
-    }
-
-    function escapeHtml(value){
-      return String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-    }
-
-    function escapeAttr(value){
-      return escapeHtml(value).replace(/`/g, '&#96;');
-    }
-  </script>
+  <script src="./assets/js/app.js"></script>
 </body>
 </html>
