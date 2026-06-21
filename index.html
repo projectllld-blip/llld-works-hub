@@ -650,6 +650,7 @@
       const absoluteUrl = new URL(url, location.href).href;
       const opened = window.open(absoluteUrl, '_blank', 'noopener');
       if(opened) opened.opener = null;
+      else location.href = absoluteUrl;
     }
 
     function closeSidebarOnMobile(){

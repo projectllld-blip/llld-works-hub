@@ -76,6 +76,7 @@ def parse_school_root(root_name: str) -> tuple[str, str, str]:
     parts = root_name.split("_")
     prefecture = parts[0] if parts else ""
     exam = parts[-1] if len(parts) >= 2 else ""
+    exam = re.sub(r"問題$", "", exam)
     school = "_".join(parts[1:-1]) if len(parts) >= 3 else prefecture
     if school in {"高校入試問題", "中学入試問題", ""}:
         school = f"{prefecture}公立高校" if "高校" in exam else prefecture

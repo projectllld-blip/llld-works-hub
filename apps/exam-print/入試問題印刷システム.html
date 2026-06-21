@@ -368,6 +368,10 @@ const EXAMS = RAW_EXAMS.map(row => ({
 const SUBJECT_ORDER = ['国語','算数','数学','英語','理科','社会','社会・理科','適性検査I','適性検査II','配点表','その他'];
 const SUBJECT_UI_ORDER = ['国語','社会','算数','理科','社会・理科','適性検査I','適性検査II','数学','英語','すべて'];
 const EXAM_ORDER = ['中学入試','高校入試','大学入試'];
+const examOrderIndex = value => {
+  const index = EXAM_ORDER.indexOf(value);
+  return index < 0 ? 99 : index;
+};
 const DOC_ORDER = ['問題','問題・解答用紙','解答用紙','解答','解説','問題・解答','配点表','その他'];
 const state = {
   exams: new Set(),
@@ -490,7 +494,8 @@ function pruneSelectedSet(selectedSet, values){
   });
 }
 function renderFilters(){
-  renderCheckGroup('examChecks', EXAM_ORDER, state.exams, x => x, SETS);
+  const exams = uniq(SETS.map(x => x.exam)).sort((a,b) => examOrderIndex(a) - examOrderIndex(b) || a.localeCompare(b,'ja'));
+  renderCheckGroup('examChecks', exams, state.exams, x => x, SETS);
   const examScoped = SETS.filter(item => !state.exams.size || state.exams.has(item.exam));
   renderCheckGroup('schoolChecks', uniq(examScoped.map(x => x.school)).sort((a,b)=>a.localeCompare(b,'ja')), state.schools, x => x, examScoped);
   const schoolScoped = examScoped.filter(item => !state.schools.size || state.schools.has(item.school));

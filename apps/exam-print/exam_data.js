@@ -2,7 +2,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2015-general-01-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2015",
     "era": "H27",
     "examType": "一般入試",
@@ -19,7 +19,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2015-general-02-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2015",
     "era": "H27",
     "examType": "一般入試",
@@ -36,7 +36,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2015-general-03-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2015",
     "era": "H27",
     "examType": "一般入試",
@@ -53,7 +53,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2015-general-04-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2015",
     "era": "H27",
     "examType": "一般入試",
@@ -70,7 +70,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2015-general-05-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2015",
     "era": "H27",
     "examType": "一般入試",
@@ -87,7 +87,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2015-general-99-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2015",
     "era": "H27",
     "examType": "一般入試",
@@ -104,7 +104,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2015-special-01-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2015",
     "era": "H27",
     "examType": "特別入試",
@@ -121,7 +121,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2015-special-02-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2015",
     "era": "H27",
     "examType": "特別入試",
@@ -138,7 +138,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2015-special-03-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2015",
     "era": "H27",
     "examType": "特別入試",
@@ -155,7 +155,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2015-special-90-90",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2015",
     "era": "H27",
     "examType": "特別入試",
@@ -172,7 +172,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2016-general-01-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2016",
     "era": "H28",
     "examType": "一般入試",
@@ -189,7 +189,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2016-general-02-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2016",
     "era": "H28",
     "examType": "一般入試",
@@ -206,7 +206,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2016-general-02-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2016",
     "era": "H28",
     "examType": "一般入試",
@@ -223,7 +223,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2016-general-03-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2016",
     "era": "H28",
     "examType": "一般入試",
@@ -240,7 +240,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2016-general-03-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2016",
     "era": "H28",
     "examType": "一般入試",
@@ -257,7 +257,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2016-general-04-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2016",
     "era": "H28",
     "examType": "一般入試",
@@ -274,7 +274,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2016-general-04-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2016",
     "era": "H28",
     "examType": "一般入試",
@@ -291,7 +291,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2016-general-05-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2016",
     "era": "H28",
     "examType": "一般入試",
@@ -308,7 +308,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2016-general-05-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2016",
     "era": "H28",
     "examType": "一般入試",
@@ -325,7 +325,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2016-general-90-90",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2016",
     "era": "H28",
     "examType": "一般入試",
@@ -342,7 +342,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2016-special-01-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2016",
     "era": "H28",
     "examType": "特別入試",
@@ -359,7 +359,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2016-special-01-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2016",
     "era": "H28",
     "examType": "特別入試",
@@ -376,7 +376,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2016-special-02-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2016",
     "era": "H28",
     "examType": "特別入試",
@@ -393,7 +393,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2016-special-02-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2016",
     "era": "H28",
     "examType": "特別入試",
@@ -410,7 +410,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2016-special-03-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2016",
     "era": "H28",
     "examType": "特別入試",
@@ -427,7 +427,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2016-special-03-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2016",
     "era": "H28",
     "examType": "特別入試",
@@ -444,7 +444,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2016-special-90-90",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2016",
     "era": "H28",
     "examType": "特別入試",
@@ -461,7 +461,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2017-general-01-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2017",
     "era": "H29",
     "examType": "一般入試",
@@ -478,7 +478,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2017-general-02-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2017",
     "era": "H29",
     "examType": "一般入試",
@@ -495,7 +495,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2017-general-02-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2017",
     "era": "H29",
     "examType": "一般入試",
@@ -512,7 +512,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2017-general-03-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2017",
     "era": "H29",
     "examType": "一般入試",
@@ -529,7 +529,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2017-general-03-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2017",
     "era": "H29",
     "examType": "一般入試",
@@ -546,7 +546,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2017-general-04-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2017",
     "era": "H29",
     "examType": "一般入試",
@@ -563,7 +563,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2017-general-04-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2017",
     "era": "H29",
     "examType": "一般入試",
@@ -580,7 +580,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2017-general-05-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2017",
     "era": "H29",
     "examType": "一般入試",
@@ -597,7 +597,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2017-general-05-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2017",
     "era": "H29",
     "examType": "一般入試",
@@ -614,7 +614,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2017-general-90-90",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2017",
     "era": "H29",
     "examType": "一般入試",
@@ -631,7 +631,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2017-special-01-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2017",
     "era": "H29",
     "examType": "特別入試",
@@ -648,7 +648,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2017-special-01-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2017",
     "era": "H29",
     "examType": "特別入試",
@@ -665,7 +665,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2017-special-02-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2017",
     "era": "H29",
     "examType": "特別入試",
@@ -682,7 +682,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2017-special-02-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2017",
     "era": "H29",
     "examType": "特別入試",
@@ -699,7 +699,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2017-special-03-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2017",
     "era": "H29",
     "examType": "特別入試",
@@ -716,7 +716,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2017-special-03-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2017",
     "era": "H29",
     "examType": "特別入試",
@@ -733,7 +733,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2017-special-90-90",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2017",
     "era": "H29",
     "examType": "特別入試",
@@ -750,7 +750,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-general-01-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2018",
     "era": "H30",
     "examType": "一般入試",
@@ -767,7 +767,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-general-01-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2018",
     "era": "H30",
     "examType": "一般入試",
@@ -784,7 +784,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-general-02-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2018",
     "era": "H30",
     "examType": "一般入試",
@@ -801,7 +801,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-general-02-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2018",
     "era": "H30",
     "examType": "一般入試",
@@ -818,7 +818,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-general-03-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2018",
     "era": "H30",
     "examType": "一般入試",
@@ -835,7 +835,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-general-03-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2018",
     "era": "H30",
     "examType": "一般入試",
@@ -852,7 +852,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-general-04-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2018",
     "era": "H30",
     "examType": "一般入試",
@@ -869,7 +869,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-general-04-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2018",
     "era": "H30",
     "examType": "一般入試",
@@ -886,7 +886,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-general-05-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2018",
     "era": "H30",
     "examType": "一般入試",
@@ -903,7 +903,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-general-05-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2018",
     "era": "H30",
     "examType": "一般入試",
@@ -920,7 +920,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-general-90-90",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2018",
     "era": "H30",
     "examType": "一般入試",
@@ -937,7 +937,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-special-01-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2018",
     "era": "H30",
     "examType": "特別入試",
@@ -954,7 +954,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-special-01-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2018",
     "era": "H30",
     "examType": "特別入試",
@@ -971,7 +971,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-special-02-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2018",
     "era": "H30",
     "examType": "特別入試",
@@ -988,7 +988,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-special-02-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2018",
     "era": "H30",
     "examType": "特別入試",
@@ -1005,7 +1005,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-special-03-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2018",
     "era": "H30",
     "examType": "特別入試",
@@ -1022,7 +1022,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-special-03-99",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2018",
     "era": "H30",
     "examType": "特別入試",
@@ -1039,7 +1039,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-special-90-90",
     "prefecture": "岡山県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2018",
     "era": "H30",
     "examType": "特別入試",
@@ -1056,7 +1056,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試",
@@ -1073,7 +1073,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試",
@@ -1090,7 +1090,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-04-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試",
@@ -1107,7 +1107,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-05-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試",
@@ -1124,7 +1124,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-99-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試",
@@ -1141,7 +1141,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "一般入試",
@@ -1158,7 +1158,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "一般入試",
@@ -1175,7 +1175,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-04-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "一般入試",
@@ -1192,7 +1192,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-05-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "一般入試",
@@ -1209,7 +1209,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-99-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "一般入試",
@@ -1226,7 +1226,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2024-general-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2024",
     "era": "R6",
     "examType": "一般入試",
@@ -1243,7 +1243,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2024-general-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2024",
     "era": "R6",
     "examType": "一般入試",
@@ -1260,7 +1260,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2024-general-04-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2024",
     "era": "R6",
     "examType": "一般入試",
@@ -1277,7 +1277,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2024-general-05-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2024",
     "era": "R6",
     "examType": "一般入試",
@@ -1294,7 +1294,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2024-general-99-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2024",
     "era": "R6",
     "examType": "一般入試",
@@ -1311,7 +1311,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2025-general-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2025",
     "era": "R7",
     "examType": "一般入試",
@@ -1328,7 +1328,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2025-general-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2025",
     "era": "R7",
     "examType": "一般入試",
@@ -1345,7 +1345,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2025-general-04-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2025",
     "era": "R7",
     "examType": "一般入試",
@@ -1362,7 +1362,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2025-general-05-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2025",
     "era": "R7",
     "examType": "一般入試",
@@ -1379,7 +1379,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2025-general-99-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2025",
     "era": "R7",
     "examType": "一般入試",
@@ -1396,7 +1396,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-a-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "A日程",
@@ -1413,7 +1413,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-a-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "A日程",
@@ -1430,7 +1430,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-a-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "A日程",
@@ -1447,7 +1447,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-a-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "A日程",
@@ -1464,7 +1464,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-a-06-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "A日程",
@@ -1481,7 +1481,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-a-06-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "A日程",
@@ -1498,7 +1498,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-a-07-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "A日程",
@@ -1515,7 +1515,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-a-07-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "A日程",
@@ -1532,7 +1532,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-a-99-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "A日程",
@@ -1549,7 +1549,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-general-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2018",
     "era": "H30",
     "examType": "一般入試",
@@ -1566,7 +1566,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-general-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2018",
     "era": "H30",
     "examType": "一般入試",
@@ -1583,7 +1583,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-general-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2018",
     "era": "H30",
     "examType": "一般入試",
@@ -1600,7 +1600,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-general-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2018",
     "era": "H30",
     "examType": "一般入試",
@@ -1617,7 +1617,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-general-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2018",
     "era": "H30",
     "examType": "一般入試",
@@ -1634,7 +1634,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-general-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2018",
     "era": "H30",
     "examType": "一般入試",
@@ -1651,7 +1651,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-general-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2018",
     "era": "H30",
     "examType": "一般入試",
@@ -1668,7 +1668,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-general-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2018",
     "era": "H30",
     "examType": "一般入試",
@@ -1685,7 +1685,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2019-general-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2019",
     "era": "R1",
     "examType": "一般入試",
@@ -1702,7 +1702,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2019-general-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2019",
     "era": "R1",
     "examType": "一般入試",
@@ -1719,7 +1719,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2019-general-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2019",
     "era": "R1",
     "examType": "一般入試",
@@ -1736,7 +1736,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2019-general-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2019",
     "era": "R1",
     "examType": "一般入試",
@@ -1753,7 +1753,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2019-general-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2019",
     "era": "R1",
     "examType": "一般入試",
@@ -1770,7 +1770,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2019-general-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2019",
     "era": "R1",
     "examType": "一般入試",
@@ -1787,7 +1787,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2019-general-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2019",
     "era": "R1",
     "examType": "一般入試",
@@ -1804,7 +1804,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2019-general-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2019",
     "era": "R1",
     "examType": "一般入試",
@@ -1821,7 +1821,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -1838,7 +1838,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -1855,7 +1855,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -1872,7 +1872,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -1889,7 +1889,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -1906,7 +1906,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -1923,7 +1923,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -1940,7 +1940,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2020",
     "era": "R2",
     "examType": "入学者選抜試験",
@@ -1957,7 +1957,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2020",
     "era": "R2",
     "examType": "入学者選抜試験",
@@ -1974,7 +1974,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-04-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2020",
     "era": "R2",
     "examType": "入学者選抜試験",
@@ -1991,7 +1991,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-05-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2020",
     "era": "R2",
     "examType": "入学者選抜試験",
@@ -2008,7 +2008,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-general-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2021",
     "era": "R3",
     "examType": "入学者選抜試験",
@@ -2025,7 +2025,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-general-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2021",
     "era": "R3",
     "examType": "入学者選抜試験",
@@ -2042,7 +2042,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-general-04-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2021",
     "era": "R3",
     "examType": "入学者選抜試験",
@@ -2059,7 +2059,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-general-05-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2021",
     "era": "R3",
     "examType": "入学者選抜試験",
@@ -2076,7 +2076,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2022",
     "era": "R4",
     "examType": "入学者選抜試験",
@@ -2093,7 +2093,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2022",
     "era": "R4",
     "examType": "入学者選抜試験",
@@ -2110,7 +2110,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-04-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2022",
     "era": "R4",
     "examType": "入学者選抜試験",
@@ -2127,7 +2127,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-05-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2022",
     "era": "R4",
     "examType": "入学者選抜試験",
@@ -2144,7 +2144,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "入学者選抜試験",
@@ -2161,7 +2161,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-05-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "入学者選抜試験",
@@ -2178,7 +2178,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2025-general-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2025",
     "era": "R7",
     "examType": "一般入試",
@@ -2195,7 +2195,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2025-general-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2025",
     "era": "R7",
     "examType": "一般入試",
@@ -2212,7 +2212,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2025-general-04-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2025",
     "era": "R7",
     "examType": "一般入試",
@@ -2229,7 +2229,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2025-general-05-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2025",
     "era": "R7",
     "examType": "一般入試",
@@ -2246,7 +2246,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2024-general-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2024",
     "era": "R6",
     "examType": "一般入試",
@@ -2263,7 +2263,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2024-general-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2024",
     "era": "R6",
     "examType": "一般入試",
@@ -2280,7 +2280,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2024-general-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2024",
     "era": "R6",
     "examType": "一般入試",
@@ -2297,7 +2297,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2024-general-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2024",
     "era": "R6",
     "examType": "一般入試",
@@ -2314,7 +2314,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2024-general-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2024",
     "era": "R6",
     "examType": "一般入試",
@@ -2331,7 +2331,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2025-general-99-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2025",
     "era": "R7",
     "examType": "一般入試",
@@ -2348,7 +2348,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2025-general-a-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2025",
     "era": "R7",
     "examType": "一般入試A",
@@ -2365,7 +2365,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2025-general-a-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2025",
     "era": "R7",
     "examType": "一般入試A",
@@ -2382,7 +2382,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2025-general-b-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2025",
     "era": "R7",
     "examType": "一般入試B",
@@ -2399,7 +2399,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2025-general-b-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2025",
     "era": "R7",
     "examType": "一般入試B",
@@ -2416,7 +2416,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2016-general-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2016",
     "era": "H28",
     "examType": "一般入試",
@@ -2433,7 +2433,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2016-general-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2016",
     "era": "H28",
     "examType": "一般入試",
@@ -2450,7 +2450,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2016-general-99-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2016",
     "era": "H28",
     "examType": "一般入試",
@@ -2467,7 +2467,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2017-general-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2017",
     "era": "H29",
     "examType": "一般入試",
@@ -2484,7 +2484,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2017-general-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2017",
     "era": "H29",
     "examType": "一般入試",
@@ -2501,7 +2501,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2017-general-99-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2017",
     "era": "H29",
     "examType": "一般入試",
@@ -2518,7 +2518,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-general-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2018",
     "era": "H30",
     "examType": "一般入試",
@@ -2535,7 +2535,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-general-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2018",
     "era": "H30",
     "examType": "一般入試",
@@ -2552,7 +2552,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2018-general-99-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2018",
     "era": "H30",
     "examType": "一般入試",
@@ -2569,7 +2569,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2019-general-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2019",
     "era": "R1",
     "examType": "一般入試",
@@ -2586,7 +2586,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2019-general-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2019",
     "era": "R1",
     "examType": "一般入試",
@@ -2603,7 +2603,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2019-general-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2019",
     "era": "R1",
     "examType": "一般入試",
@@ -2620,7 +2620,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2019-general-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2019",
     "era": "R1",
     "examType": "一般入試",
@@ -2637,7 +2637,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2019-general-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2019",
     "era": "R1",
     "examType": "一般入試",
@@ -2654,7 +2654,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2019-general-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2019",
     "era": "R1",
     "examType": "一般入試",
@@ -2671,7 +2671,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2019-general-04-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2019",
     "era": "R1",
     "examType": "一般入試",
@@ -2688,7 +2688,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2019-general-04-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2019",
     "era": "R1",
     "examType": "一般入試",
@@ -2705,7 +2705,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2019-general-04-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2019",
     "era": "R1",
     "examType": "一般入試",
@@ -2722,7 +2722,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2019-general-05-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2019",
     "era": "R1",
     "examType": "一般入試",
@@ -2739,7 +2739,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2019-general-05-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2019",
     "era": "R1",
     "examType": "一般入試",
@@ -2756,7 +2756,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2019-general-05-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2019",
     "era": "R1",
     "examType": "一般入試",
@@ -2773,7 +2773,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -2790,7 +2790,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -2807,7 +2807,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -2824,7 +2824,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -2841,7 +2841,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -2858,7 +2858,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -2875,7 +2875,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-04-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -2892,7 +2892,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-04-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -2909,7 +2909,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-04-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -2926,7 +2926,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-05-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -2943,7 +2943,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-05-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -2960,7 +2960,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-05-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -2977,7 +2977,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-general-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試",
@@ -2994,7 +2994,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-general-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試",
@@ -3011,7 +3011,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-general-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試",
@@ -3028,7 +3028,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-general-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試",
@@ -3045,7 +3045,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-general-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試",
@@ -3062,7 +3062,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-general-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試",
@@ -3079,7 +3079,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-general-04-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試",
@@ -3096,7 +3096,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-general-04-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試",
@@ -3113,7 +3113,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-general-04-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試",
@@ -3130,7 +3130,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-general-05-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試",
@@ -3147,7 +3147,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-general-05-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試",
@@ -3164,7 +3164,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-general-05-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試",
@@ -3181,7 +3181,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試",
@@ -3198,7 +3198,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試",
@@ -3215,7 +3215,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試",
@@ -3232,7 +3232,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試",
@@ -3249,7 +3249,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試",
@@ -3266,7 +3266,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試",
@@ -3283,7 +3283,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-04-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試",
@@ -3300,7 +3300,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-04-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試",
@@ -3317,7 +3317,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-04-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試",
@@ -3334,7 +3334,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-05-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試",
@@ -3351,7 +3351,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-05-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試",
@@ -3368,7 +3368,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-05-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試",
@@ -3385,7 +3385,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "一般入試",
@@ -3402,7 +3402,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "一般入試",
@@ -3419,7 +3419,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-01-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "一般入試",
@@ -3436,7 +3436,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "一般入試",
@@ -3453,7 +3453,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "一般入試",
@@ -3470,7 +3470,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-02-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "一般入試",
@@ -3487,7 +3487,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-04-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "一般入試",
@@ -3504,7 +3504,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-04-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "一般入試",
@@ -3521,7 +3521,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-04-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "一般入試",
@@ -3538,7 +3538,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-05-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "一般入試",
@@ -3555,7 +3555,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-05-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "一般入試",
@@ -3572,7 +3572,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-05-99",
     "prefecture": "広島県",
-    "exam": "中学入試問題",
+    "exam": "中学入試",
     "year": "2023",
     "era": "R5",
     "examType": "一般入試",
@@ -3589,7 +3589,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-special-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試_特別進学コース",
@@ -3606,7 +3606,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-special-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試_特別進学コース",
@@ -3623,7 +3623,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-special-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試_特別進学コース",
@@ -3640,7 +3640,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-special-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試_特別進学コース",
@@ -3657,7 +3657,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-special-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試_特別進学コース",
@@ -3674,7 +3674,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-special-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試_特別進学コース",
@@ -3691,7 +3691,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-special-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試_特別進学コース",
@@ -3708,7 +3708,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-special-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試_特別進学コース",
@@ -3725,7 +3725,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-special-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試_特別進学コース",
@@ -3742,7 +3742,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-special-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試_特別進学コース",
@@ -3759,7 +3759,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-special-04-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試_特別進学コース",
@@ -3776,7 +3776,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-special-04-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試_特別進学コース",
@@ -3793,7 +3793,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-special-04-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試_特別進学コース",
@@ -3810,7 +3810,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-special-05-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試_特別進学コース",
@@ -3827,7 +3827,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-special-05-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試_特別進学コース",
@@ -3844,7 +3844,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-special-05-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試_特別進学コース",
@@ -3861,7 +3861,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-special-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試_特別進学コース",
@@ -3878,7 +3878,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-special-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試_特別進学コース",
@@ -3895,7 +3895,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-special-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試_特別進学コース",
@@ -3912,7 +3912,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-special-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試_特別進学コース",
@@ -3929,7 +3929,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-special-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試_特別進学コース",
@@ -3946,7 +3946,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-special-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試_特別進学コース",
@@ -3963,7 +3963,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-special-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試_特別進学コース",
@@ -3980,7 +3980,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-special-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試_特別進学コース",
@@ -3997,7 +3997,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-special-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試_特別進学コース",
@@ -4014,7 +4014,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-special-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試_特別進学コース",
@@ -4031,7 +4031,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-special-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試_特別進学コース",
@@ -4048,7 +4048,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-special-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試_特別進学コース",
@@ -4065,7 +4065,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-special-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試_特別進学コース",
@@ -4082,7 +4082,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-special-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試_特別進学コース",
@@ -4099,7 +4099,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-special-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試_特別進学コース",
@@ -4116,7 +4116,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-special-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試_特別進学コース",
@@ -4133,7 +4133,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-special-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試_特別進学コース",
@@ -4150,7 +4150,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-special-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試_特別進学コース",
@@ -4167,7 +4167,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-special-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試_特別進学コース",
@@ -4184,7 +4184,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-special-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試_特別進学コース",
@@ -4201,7 +4201,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -4218,7 +4218,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -4235,7 +4235,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -4252,7 +4252,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -4269,7 +4269,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -4286,7 +4286,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -4303,7 +4303,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-04-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -4320,7 +4320,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-04-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -4337,7 +4337,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-05-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -4354,7 +4354,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2020-general-05-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2020",
     "era": "R2",
     "examType": "一般入試",
@@ -4371,7 +4371,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-general-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試",
@@ -4388,7 +4388,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-general-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試",
@@ -4405,7 +4405,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-general-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試",
@@ -4422,7 +4422,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-general-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試",
@@ -4439,7 +4439,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-general-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試",
@@ -4456,7 +4456,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-general-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試",
@@ -4473,7 +4473,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-general-04-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試",
@@ -4490,7 +4490,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-general-04-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試",
@@ -4507,7 +4507,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-general-05-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試",
@@ -4524,7 +4524,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2021-general-05-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2021",
     "era": "R3",
     "examType": "一般入試",
@@ -4541,7 +4541,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試",
@@ -4558,7 +4558,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試",
@@ -4575,7 +4575,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試",
@@ -4592,7 +4592,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試",
@@ -4609,7 +4609,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試",
@@ -4626,7 +4626,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試",
@@ -4643,7 +4643,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-04-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試",
@@ -4660,7 +4660,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-04-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試",
@@ -4677,7 +4677,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-05-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試",
@@ -4694,7 +4694,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2022-general-05-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2022",
     "era": "R4",
     "examType": "一般入試",
@@ -4711,7 +4711,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2023",
     "era": "R5",
     "examType": "一般入試",
@@ -4728,7 +4728,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2023",
     "era": "R5",
     "examType": "一般入試",
@@ -4745,7 +4745,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2023",
     "era": "R5",
     "examType": "一般入試",
@@ -4762,7 +4762,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2023",
     "era": "R5",
     "examType": "一般入試",
@@ -4779,7 +4779,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2023",
     "era": "R5",
     "examType": "一般入試",
@@ -4796,7 +4796,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2023",
     "era": "R5",
     "examType": "一般入試",
@@ -4813,7 +4813,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-04-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2023",
     "era": "R5",
     "examType": "一般入試",
@@ -4830,7 +4830,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-04-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2023",
     "era": "R5",
     "examType": "一般入試",
@@ -4847,7 +4847,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-05-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2023",
     "era": "R5",
     "examType": "一般入試",
@@ -4864,7 +4864,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2023-general-05-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2023",
     "era": "R5",
     "examType": "一般入試",
@@ -4881,7 +4881,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2024-general-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2024",
     "era": "R6",
     "examType": "一般入試",
@@ -4898,7 +4898,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2024-general-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2024",
     "era": "R6",
     "examType": "一般入試",
@@ -4915,7 +4915,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2024-general-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2024",
     "era": "R6",
     "examType": "一般入試",
@@ -4932,7 +4932,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2024-general-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2024",
     "era": "R6",
     "examType": "一般入試",
@@ -4949,7 +4949,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2024-general-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2024",
     "era": "R6",
     "examType": "一般入試",
@@ -4966,7 +4966,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2024-general-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2024",
     "era": "R6",
     "examType": "一般入試",
@@ -4983,7 +4983,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2024-general-04-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2024",
     "era": "R6",
     "examType": "一般入試",
@@ -5000,7 +5000,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2024-general-04-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2024",
     "era": "R6",
     "examType": "一般入試",
@@ -5017,7 +5017,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2024-general-05-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2024",
     "era": "R6",
     "examType": "一般入試",
@@ -5034,7 +5034,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2024-general-05-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2024",
     "era": "R6",
     "examType": "一般入試",
@@ -5051,7 +5051,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2025-general-01-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2025",
     "era": "R7",
     "examType": "一般入試",
@@ -5068,7 +5068,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2025-general-02-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2025",
     "era": "R7",
     "examType": "一般入試",
@@ -5085,7 +5085,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2025-general-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2025",
     "era": "R7",
     "examType": "一般入試",
@@ -5102,7 +5102,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2025-general-03-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2025",
     "era": "R7",
     "examType": "一般入試",
@@ -5119,7 +5119,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2025-general-04-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2025",
     "era": "R7",
     "examType": "一般入試",
@@ -5136,7 +5136,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2025-general-04-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2025",
     "era": "R7",
     "examType": "一般入試",
@@ -5153,7 +5153,7 @@ window.EXAM_PDF_DATA = [
   {
     "id": "2025-general-05-99",
     "prefecture": "広島県",
-    "exam": "高校入試問題",
+    "exam": "高校入試",
     "year": "2025",
     "era": "R7",
     "examType": "一般入試",
