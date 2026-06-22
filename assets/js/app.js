@@ -418,6 +418,7 @@ function bindEvents(){
     const opener = event.target.closest('[data-open-id]');
     if(opener){
       event.preventDefault();
+      event.stopPropagation();
       saveHistory(opener.dataset.openId);
       openContentInNewTab(opener.getAttribute('href'));
       return;
@@ -546,7 +547,7 @@ function openContentInNewTab(url){
   const absoluteUrl = new URL(url, location.href).href;
   const opened = window.open(absoluteUrl, '_blank', 'noopener');
   if(opened) opened.opener = null;
-  else location.href = absoluteUrl;
+  else toast('新しいタブで開けませんでした。ブラウザのポップアップ設定を確認してください。');
 }
 
 function copyUrl(url){

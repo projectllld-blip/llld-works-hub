@@ -121,21 +121,22 @@ button{cursor:pointer}
 .account-icon.help:before{content:"?";font-weight:950;font-size:16px}
 .account-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#eaf3ff,#fff);border:2px solid rgba(255,255,255,.75);box-shadow:0 6px 16px rgba(0,0,0,.18)}
 
-.summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:auto 0 0;padding-top:18px}
+.summary-grid{display:grid;grid-template-columns:1fr;gap:6px;margin:auto 0 0;padding-top:18px}
 .summary-card{
-  position:relative;display:grid;grid-template-columns:28px minmax(0,1fr);gap:8px;align-items:center;
-  min-height:54px;padding:8px;border:1px solid rgba(255,255,255,.15);border-radius:10px;background:rgba(255,255,255,.07);box-shadow:none;color:#fff;
+  position:relative;display:grid;grid-template-columns:24px minmax(0,1fr);gap:8px;align-items:center;
+  min-height:40px;padding:6px 8px;border:1px solid rgba(255,255,255,.15);border-radius:10px;background:rgba(255,255,255,.07);box-shadow:none;color:#fff;overflow:hidden;
 }
 .summary-card:after{display:none}
-.summary-card strong{display:inline-block;font-size:18px;line-height:1;letter-spacing:-.02em;vertical-align:baseline;color:#fff}
+.summary-card div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px;align-items:center;min-width:0}
+.summary-card strong{display:inline-block;font-size:16px;line-height:1;letter-spacing:-.02em;vertical-align:baseline;color:#fff}
 .summary-card strong:after{content:"";display:none}
-.summary-card span:last-child,.summary-card div > span{display:block;margin-bottom:4px;color:#b8c7d8;font-size:10px;font-weight:900;line-height:1.2;white-space:nowrap}
-.summary-icon{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;position:relative}
+.summary-card span:last-child,.summary-card div > span{display:block;margin:0;color:#b8c7d8;font-size:10px;font-weight:900;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.summary-icon{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;position:relative}
 .summary-icon.doc{background:linear-gradient(135deg,var(--teal),#16c7b8)}
 .summary-icon.star{background:linear-gradient(135deg,#ffb703,#f59e0b)}
 .summary-icon.code{background:linear-gradient(135deg,#8b5cf6,#6d28d9)}
 .summary-icon.clock{background:linear-gradient(135deg,#38bdf8,#2563eb)}
-.summary-icon:before{content:"";width:13px;height:13px;border:2px solid #fff;border-radius:4px}
+.summary-icon:before{content:"";width:11px;height:11px;border:2px solid #fff;border-radius:4px}
 .summary-icon.star:before{clip-path:polygon(50% 0,62% 35%,100% 35%,68% 57%,80% 96%,50% 72%,20% 96%,32% 57%,0 35%,38% 35%);border:0;background:#fff}
 .summary-icon.code:before{border:0;border-left:3px solid #fff;border-bottom:3px solid #fff;transform:rotate(45deg);border-radius:0;width:11px;height:11px}
 .summary-icon.clock:before{border-radius:50%}
@@ -154,6 +155,7 @@ button{cursor:pointer}
 .recent-card h4{font-size:14px;line-height:1.35;margin:0 0 4px}
 .recent-card p{margin:0;color:var(--muted);font-size:12px;font-weight:750}
 .recent-thumb{height:62px;border-radius:8px;overflow:hidden;background:#eef5fb}
+.recent-thumb img{display:block;width:100%;height:100%;object-fit:cover;object-position:top center}
 .quick-remove{
   position:absolute;top:8px;right:8px;z-index:3;width:28px;height:28px;border:1px solid var(--line);border-radius:999px;background:#fff;color:#64748b;
   opacity:0;pointer-events:none;transition:.16s var(--ease);
@@ -257,13 +259,13 @@ button{cursor:pointer}
   .sort-tab{white-space:nowrap}
 }
 @media(max-width:720px){
-  .summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .summary-card{grid-template-columns:40px minmax(0,1fr);min-height:82px;padding:13px}
+  .summary-grid{grid-template-columns:1fr}
+  .summary-card{grid-template-columns:24px minmax(0,1fr);min-height:40px;padding:6px 8px}
   .summary-card:after{display:none}
-  .summary-icon{width:40px;height:40px}
-  .summary-icon:before{width:18px;height:18px}
-  .summary-card strong{font-size:24px}
-  .summary-card div > span{font-size:12px;margin-bottom:5px}
+  .summary-icon{width:24px;height:24px}
+  .summary-icon:before{width:11px;height:11px}
+  .summary-card strong{font-size:16px}
+  .summary-card div > span{font-size:10px;margin-bottom:0}
   .content-grid{grid-template-columns:1fr}
   .recent-row{grid-auto-columns:82%}
   .section-head,.content-head{align-items:flex-start;flex-direction:column}
