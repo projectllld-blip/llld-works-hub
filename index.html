@@ -30,6 +30,37 @@
         <div class="side-favorite-list" id="sideFavoriteList"></div>
       </section>
 
+      <section class="summary-grid" aria-label="サマリー">
+        <article class="summary-card">
+          <span class="summary-icon doc"></span>
+          <div>
+            <span>登録コンテンツ</span>
+            <strong id="metricTotal">0</strong>
+          </div>
+        </article>
+        <article class="summary-card">
+          <span class="summary-icon star"></span>
+          <div>
+            <span>お気に入り</span>
+            <strong id="metricFavorites">0</strong>
+          </div>
+        </article>
+        <article class="summary-card">
+          <span class="summary-icon code"></span>
+          <div>
+            <span>HTMLアプリ</span>
+            <strong id="metricApps">0</strong>
+          </div>
+        </article>
+        <article class="summary-card">
+          <span class="summary-icon clock"></span>
+          <div>
+            <span>利用履歴</span>
+            <strong id="metricRecent">0</strong>
+          </div>
+        </article>
+      </section>
+
     </aside>
 
     <main class="main">
@@ -39,42 +70,18 @@
         </button>
         <div class="topbar-title">
           <strong>LLLD Works Hub</strong>
-          <span>GitHub Pages</span>
+          <span>社内ツールポータル</span>
         </div>
+        <span class="topbar-badge">ツール共有基盤</span>
         <div class="search">
           <span class="search-icon" aria-hidden="true"></span>
           <input id="searchInput" type="search" placeholder="コンテンツ名・カテゴリ・タグで検索" autocomplete="off">
           <button id="clearSearch" class="clear-search" type="button" aria-label="検索をクリア">×</button>
         </div>
-        <div class="summary-grid" aria-label="サマリー">
-          <article class="summary-card">
-            <span class="summary-icon doc"></span>
-            <div>
-              <strong id="metricTotal">0</strong>
-              <span>登録コンテンツ</span>
-            </div>
-          </article>
-          <article class="summary-card">
-            <span class="summary-icon star"></span>
-            <div>
-              <strong id="metricFavorites">0</strong>
-              <span>お気に入り</span>
-            </div>
-          </article>
-          <article class="summary-card">
-            <span class="summary-icon code"></span>
-            <div>
-              <strong id="metricApps">0</strong>
-              <span>HTMLアプリ</span>
-            </div>
-          </article>
-          <article class="summary-card">
-            <span class="summary-icon clock"></span>
-            <div>
-              <strong id="metricRecent">0</strong>
-              <span>利用履歴</span>
-            </div>
-          </article>
+        <div class="account-slot" aria-label="アカウント領域">
+          <span class="account-icon bell"></span>
+          <span class="account-icon help"></span>
+          <span class="account-avatar"></span>
         </div>
       </header>
 

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" font-family="system-ui, -apple-system, BlinkMacSystemFont, Noto Sans JP, sans-serif" viewBox="0 0 640 360" role="img" aria-label="入試問題印刷">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="145%"><feDropShadow dx="0" dy="18" stdDeviation="15" flood-color="#102033" flood-opacity=".18"/></filter>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f8fbff"/><stop offset=".55" stop-color="#eef6ff"/><stop offset="1" stop-color="#f7fbff"/></linearGradient>
+  </defs>
+  <rect width="640" height="360" rx="24" fill="url(#bg)"/>
+  <rect x="16" y="20" width="608" height="296" rx="20" fill="#fff" filter="url(#shadow)"/>
+  <rect x="16" y="20" width="608" height="296" rx="20" fill="#fff" stroke="#d8e1ee"/>
+  <rect x="16" y="20" width="608" height="44" rx="20" fill="#10233f"/><rect x="16" y="46" width="608" height="18" fill="#10233f"/>
+  <text x="42" y="47" font-size="14" font-weight="900" fill="#fff">入試問題印刷</text>
+  <rect x="468" y="32" width="92" height="20" rx="10" fill="#1f78ff"/><text x="514" y="46" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">面付け作成</text>
+  <rect x="32" y="82" width="118" height="176" rx="14" fill="#f4f7fb" stroke="#dde6f0"/>
+  <text x="52" y="108" font-size="11" font-weight="900" fill="#10233f">出力条件</text>
+  <rect x="50" y="126" width="82" height="18" rx="7" fill="#fff" stroke="#d8e1ee"/><rect x="50" y="154" width="82" height="18" rx="7" fill="#fff" stroke="#d8e1ee"/><rect x="50" y="182" width="82" height="18" rx="7" fill="#fff" stroke="#d8e1ee"/>
+  <rect x="50" y="222" width="82" height="20" rx="8" fill="#153865"/><text x="91" y="236" text-anchor="middle" font-size="10" font-weight="900" fill="#fff">印刷予約</text>
+  <rect x="172" y="82" width="252" height="176" rx="14" fill="#fff" stroke="#d8e1ee"/>
+  <rect x="198" y="102" width="174" height="128" rx="6" fill="#fff" stroke="#cfd9e6"/>
+  <rect x="214" y="120" width="92" height="10" rx="5" fill="#10233f"/><rect x="214" y="144" width="130" height="5" rx="2.5" fill="#9aa9bb"/><rect x="214" y="158" width="118" height="5" rx="2.5" fill="#cbd5e1"/><rect x="214" y="172" width="128" height="5" rx="2.5" fill="#cbd5e1"/>
+  <circle cx="218" cy="204" r="5" fill="#1f78ff"/><rect x="232" y="199" width="46" height="8" rx="4" fill="#9aa9bb"/><circle cx="310" cy="204" r="5" fill="#1f78ff"/><rect x="324" y="199" width="30" height="8" rx="4" fill="#9aa9bb"/>
+  <rect x="386" y="104" width="18" height="126" rx="4" fill="#eaf2ff"/><path d="M395 126v82" stroke="#1f78ff" stroke-width="4" stroke-linecap="round"/>
+  <rect x="444" y="82" width="156" height="176" rx="14" fill="#fff" stroke="#d8e1ee"/>
+  <text x="466" y="108" font-size="11" font-weight="900" fill="#10233f">印刷キュー</text>
+  <rect x="466" y="126" width="90" height="16" rx="8" fill="#eaf2ff"/><rect x="466" y="154" width="90" height="16" rx="8" fill="#ecfdf5"/><rect x="466" y="182" width="90" height="16" rx="8" fill="#fff7ed"/>
+  <rect x="466" y="216" width="58" height="24" rx="8" fill="#f4f7fb" stroke="#d8e1ee"/><path d="M478 228h34M478 235h22" stroke="#8aa0b8" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="568" cy="134" r="4" fill="#1f78ff"/><circle cx="568" cy="162" r="4" fill="#22c55e"/><circle cx="568" cy="190" r="4" fill="#f59e0b"/>
+  <g transform="translate(28 280)"><rect width="116" height="36" rx="18" fill="#153865"/><text x="58" y="24" text-anchor="middle" font-size="15" font-weight="900" fill="#fff">EXAM</text></g>
+  <text x="164" y="304" font-size="22" font-weight="900" fill="#122033">入試問題印刷</text>
+</svg>
