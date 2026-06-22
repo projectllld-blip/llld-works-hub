@@ -5,28 +5,28 @@ const fallbackContents = [
     id:'dakokun', title:'だこくん', category:'社内運営', type:'HTMLアプリ',
     description:'出退勤の記録・集計を効率化',
     url:'./apps/dakokun/index.html',
-    icon:'time', thumbnailType:'attendance', thumbnailImage:'./assets/thumbnails/dakokun-card.svg',
+    icon:'time', thumbnailType:'attendance', thumbnailImage:'./assets/reference/mock-generation-pack/llld_product_mock_generation_pack/references/04_attendance_card_reference.png',
     tags:['人気','タイムカード','勤怠'], updatedAt:'2026-06-22', status:'公開中', featured:true, external:false
   },
   {
     id:'pdf-tool', title:'PDF編集ツール', category:'社内運営', type:'HTMLアプリ',
     description:'PDFの結合・編集・変換を簡単に',
     url:'./apps/pdf-tool/index.html',
-    icon:'file', thumbnailType:'pdf', thumbnailImage:'./assets/thumbnails/pdf-tool-card.svg',
+    icon:'file', thumbnailType:'pdf', thumbnailImage:'./assets/reference/mock-generation-pack/llld_product_mock_generation_pack/references/01_pdf_card_reference.png',
     tags:['人気','PDF','HTMLアプリ'], updatedAt:'2026-06-17', status:'公開中', featured:true, external:false
   },
   {
     id:'seatflow', title:'座席管理アプリ', category:'塾事業', type:'HTMLアプリ',
     description:'教室の座席配置と出欠を一元管理',
     url:'./apps/seatflow/index.html',
-    icon:'seats', thumbnailType:'seats', thumbnailImage:'./assets/thumbnails/seatflow-card.svg',
+    icon:'seats', thumbnailType:'seats', thumbnailImage:'./assets/reference/mock-generation-pack/llld_product_mock_generation_pack/references/08_seats_card_reference.png',
     tags:['おすすめ','座席','教室運営'], updatedAt:'2026-06-17', status:'公開中', featured:true, external:false
   },
   {
     id:'quiz-maker', title:'小テスト作成', category:'塾事業', type:'HTMLアプリ',
     description:'小テストを作成・出力',
     url:'./apps/quiz-maker/index.html',
-    icon:'quiz', thumbnailType:'quiz', thumbnailImage:'./assets/thumbnails/quiz-maker-card.svg',
+    icon:'quiz', thumbnailType:'quiz', thumbnailImage:'./assets/reference/mock-generation-pack/llld_product_mock_generation_pack/references/03_quiz_card_reference.png',
     tags:['NEW','小テスト','教材'], updatedAt:'2026-06-22', status:'公開中', featured:true, external:false
   },
   {
@@ -40,7 +40,7 @@ const fallbackContents = [
     id:'consulting-kit', title:'コンサル支援資料', category:'コンサル事業', type:'資料・テンプレート',
     description:'業務に役立つ資料を整理',
     url:'./apps/consulting-kit/index.html',
-    icon:'dashboard', thumbnailType:'dashboard', thumbnailImage:'./assets/thumbnails/consulting-kit-card.svg',
+    icon:'dashboard', thumbnailType:'dashboard', thumbnailImage:'./assets/reference/mock-generation-pack/llld_product_mock_generation_pack/references/07_dashboard_card_reference.png',
     tags:['おすすめ','資料','テンプレート'], updatedAt:'2026-06-17', status:'公開中', featured:false, external:false
   }
 ];

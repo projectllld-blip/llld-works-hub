@@ -1,0 +1,68 @@
+{
+  "analysis": {
+    "appNameCandidate": "勤怠管理",
+    "finalTitle": "勤怠管理",
+    "mainFunction": "出退勤の記録、勤怠ログ確認、ステータス管理",
+    "userGoal": "スタッフの出退勤状況を確認し、月末処理や修正対応を効率化する",
+    "keyActions": [
+      "打刻",
+      "ログ確認",
+      "修正申請",
+      "出勤簿出力",
+      "月末締め"
+    ],
+    "detectedKeywords": [
+      "勤怠",
+      "出勤",
+      "退勤",
+      "修正申請",
+      "ログ",
+      "出勤簿"
+    ],
+    "categoryCandidate": "社内運営",
+    "typeCandidate": "HTMLアプリ",
+    "thumbnailType": "attendance",
+    "thumbnailTypeReason": "主機能が出退勤の記録と勤怠一覧の確認であり、表とステータスチップで用途が伝わるため",
+    "thumbnailFocus": "勤怠一覧表、出勤時間、退勤時間、ステータスチップ",
+    "visibleElements": [
+      "氏名",
+      "日付",
+      "出勤時間",
+      "退勤時間",
+      "労働時間",
+      "ステータス"
+    ],
+    "simplifiedMockElements": [
+      "7行程度の勤怠表",
+      "上部のエクスポート・フィルター",
+      "緑/黄/赤のステータスチップ"
+    ]
+  },
+  "card": {
+    "id": "attendance-app",
+    "title": "勤怠管理",
+    "category": "社内運営",
+    "type": "HTMLアプリ",
+    "description": "出退勤の記録・集計を効率化",
+    "url": "./apps/attendance/index.html",
+    "thumbnailType": "attendance",
+    "thumbnailImage": "",
+    "iconType": "attendance",
+    "badge": "",
+    "tags": [
+      "HTMLアプリ",
+      "社内運営",
+      "勤怠"
+    ],
+    "status": "公開中",
+    "featured": false,
+    "favoriteEnabled": true,
+    "detailEnabled": true,
+    "primaryActionLabel": "開く",
+    "audience": "小規模事業者、店長、事務担当",
+    "summary": "出退勤、修正申請、打刻漏れ、月末締めを支援する勤怠管理アプリ。",
+    "thumbnailFocus": "勤怠一覧表、出勤時間、退勤時間、ステータスチップ",
+    "sourceHtml": "dakokun.html",
+    "mockImage": ""
+  }
+}

@@ -178,7 +178,7 @@ button{cursor:pointer}
 .status-ribbon{position:absolute;top:10px;left:10px;z-index:2;border-radius:999px;padding:5px 9px;color:#fff;font-size:11px;font-weight:950;background:var(--teal);box-shadow:0 8px 18px rgba(0,159,145,.24)}
 .status-ribbon.popular{background:#e5484d}.status-ribbon.recommend{background:#f59e0b}.status-ribbon.new{background:#009f91}.status-ribbon.beta{background:#7c3aed}
 .thumb{height:142px;background:#eef5fb;border-bottom:1px solid var(--line);overflow:hidden}
-.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
 .thumb-mini{height:100%;padding:14px;background:linear-gradient(135deg,#f8fbff,#eaf2fa)}
 .thumb-window{height:100%;border:1px solid #cbd5e1;border-radius:8px;background:#fff;overflow:hidden;box-shadow:0 8px 16px rgba(15,35,58,.08)}
 .thumb-bar{height:18px;background:#0f2742;display:flex;align-items:center;gap:4px;padding:0 7px}
