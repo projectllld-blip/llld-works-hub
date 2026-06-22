@@ -282,14 +282,14 @@ function recentCard(item, usedAt){
 
 function thumbnail(item){
   if(item.thumbnailImage){
-    return `<div class="thumb"><img src="${escapeAttr(item.thumbnailImage)}" alt="${escapeAttr(item.title)}" loading="lazy" onerror="this.closest('.thumb').innerHTML = window.renderPseudoThumb('${escapeAttr(item.thumbnailType)}')"></div>`;
+    return `<div class="thumb"><img src="${escapeAttr(item.thumbnailImage)}" alt="${escapeAttr(item.title)}" onerror="this.closest('.thumb').innerHTML = window.renderPseudoThumb('${escapeAttr(item.thumbnailType)}')"></div>`;
   }
   return `<div class="thumb">${pseudoThumb(item.thumbnailType)}</div>`;
 }
 
 function thumbnailMini(item){
   if(item.thumbnailImage){
-    return `<img src="${escapeAttr(item.thumbnailImage)}" alt="" loading="lazy" onerror="this.parentElement.innerHTML = window.renderPseudoThumb('${escapeAttr(item.thumbnailType)}')">`;
+    return `<img src="${escapeAttr(item.thumbnailImage)}" alt="" onerror="this.parentElement.innerHTML = window.renderPseudoThumb('${escapeAttr(item.thumbnailType)}')">`;
   }
   return pseudoThumb(item.thumbnailType);
 }
