@@ -1968,7 +1968,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2016/前期入試/01_国語/H28_前期入試_国語_解答・解説集.pdf",
     "file": "data/広島県_崇徳中学校_中学入試問題/2016/前期入試/01_国語/H28_前期入試_国語_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "5392304",
+    "bytes": "165093",
     "school": "崇徳中学校"
   },
   {
@@ -2002,7 +2002,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2016/前期入試/02_算数/H28_前期入試_算数_解答・解説集.pdf",
     "file": "data/広島県_崇徳中学校_中学入試問題/2016/前期入試/02_算数/H28_前期入試_算数_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "5392304",
+    "bytes": "558791",
     "school": "崇徳中学校"
   },
   {
@@ -2019,7 +2019,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2016/前期入試/04_理科/H28_前期入試_理科_解答・解説集.pdf",
     "file": "data/広島県_崇徳中学校_中学入試問題/2016/前期入試/04_理科/H28_前期入試_理科_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "5392304",
+    "bytes": "178253",
     "school": "崇徳中学校"
   },
   {
@@ -2053,7 +2053,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2016/前期入試/05_社会/H28_前期入試_社会_解答・解説集.pdf",
     "file": "data/広島県_崇徳中学校_中学入試問題/2016/前期入試/05_社会/H28_前期入試_社会_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "5392304",
+    "bytes": "340544",
     "school": "崇徳中学校"
   },
   {
@@ -2070,7 +2070,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2017/前期入試/01_国語/H29_前期入試_国語_解答・解説集.pdf",
     "file": "data/広島県_崇徳中学校_中学入試問題/2017/前期入試/01_国語/H29_前期入試_国語_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "5392304",
+    "bytes": "159634",
     "school": "崇徳中学校"
   },
   {
@@ -2087,7 +2087,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2017/前期入試/02_算数/H29_前期入試_算数_解答・解説集.pdf",
     "file": "data/広島県_崇徳中学校_中学入試問題/2017/前期入試/02_算数/H29_前期入試_算数_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "5392304",
+    "bytes": "783900",
     "school": "崇徳中学校"
   },
   {
@@ -2104,7 +2104,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2017/前期入試/04_理科/H29_前期入試_理科_解答・解説集.pdf",
     "file": "data/広島県_崇徳中学校_中学入試問題/2017/前期入試/04_理科/H29_前期入試_理科_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "5392304",
+    "bytes": "170089",
     "school": "崇徳中学校"
   },
   {
@@ -2121,7 +2121,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2017/前期入試/05_社会/H29_前期入試_社会_解答・解説集.pdf",
     "file": "data/広島県_崇徳中学校_中学入試問題/2017/前期入試/05_社会/H29_前期入試_社会_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "5392304",
+    "bytes": "170089",
     "school": "崇徳中学校"
   },
   {
@@ -2155,7 +2155,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2018/前期入試/01_国語/H30_前期入試_国語_解答・解説集.pdf",
     "file": "data/広島県_崇徳中学校_中学入試問題/2018/前期入試/01_国語/H30_前期入試_国語_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "5392304",
+    "bytes": "162384",
     "school": "崇徳中学校"
   },
   {
@@ -2189,7 +2189,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2018/前期入試/02_算数/H30_前期入試_算数_解答・解説集.pdf",
     "file": "data/広島県_崇徳中学校_中学入試問題/2018/前期入試/02_算数/H30_前期入試_算数_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "5392304",
+    "bytes": "881639",
     "school": "崇徳中学校"
   },
   {
@@ -2206,7 +2206,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2018/前期入試/04_理科/H30_前期入試_理科_解答・解説集.pdf",
     "file": "data/広島県_崇徳中学校_中学入試問題/2018/前期入試/04_理科/H30_前期入試_理科_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "5392304",
+    "bytes": "164921",
     "school": "崇徳中学校"
   },
   {
@@ -2257,7 +2257,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2018/前期入試/05_社会/H30_前期入試_社会_解答・解説集.pdf",
     "file": "data/広島県_崇徳中学校_中学入試問題/2018/前期入試/05_社会/H30_前期入試_社会_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "5392304",
+    "bytes": "164921",
     "school": "崇徳中学校"
   },
   {
@@ -2274,7 +2274,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2019/前期入試/01_国語/H31_前期入試_国語_解答・解説集.pdf",
     "file": "data/広島県_崇徳中学校_中学入試問題/2019/前期入試/01_国語/H31_前期入試_国語_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "5392304",
+    "bytes": "178404",
     "school": "崇徳中学校"
   },
   {
@@ -2308,7 +2308,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2019/前期入試/02_算数/H31_前期入試_算数_解答・解説集.pdf",
     "file": "data/広島県_崇徳中学校_中学入試問題/2019/前期入試/02_算数/H31_前期入試_算数_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "5392304",
+    "bytes": "837266",
     "school": "崇徳中学校"
   },
   {
@@ -2342,7 +2342,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2019/前期入試/04_理科/H31_前期入試_理科_解答・解説集.pdf",
     "file": "data/広島県_崇徳中学校_中学入試問題/2019/前期入試/04_理科/H31_前期入試_理科_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "5392304",
+    "bytes": "122653",
     "school": "崇徳中学校"
   },
   {
@@ -2360,23 +2360,6 @@ window.EXAM_PDF_DATA = [
     "file": "data/広島県_崇徳中学校_中学入試問題/2019/前期入試/04_理科/H31_前期入試_理科_解答用紙.pdf",
     "archivePath": "",
     "bytes": "331020",
-    "school": "崇徳中学校"
-  },
-  {
-    "id": "2019-general-05-99",
-    "prefecture": "広島県",
-    "exam": "中学入試",
-    "year": "2019",
-    "era": "H31",
-    "examType": "前期入試",
-    "subject": "社会",
-    "docType": "解答・解説",
-    "title": "H31 前期入試 社会 解答・解説",
-    "sourceName": "H31_前期入試_社会_解答・解説集.pdf",
-    "originalRelativePath": "2019/前期入試/05_社会/H31_前期入試_社会_解答・解説集.pdf",
-    "file": "data/広島県_崇徳中学校_中学入試問題/2019/前期入試/05_社会/H31_前期入試_社会_解答・解説集.pdf",
-    "archivePath": "",
-    "bytes": "5392304",
     "school": "崇徳中学校"
   },
   {
@@ -2427,7 +2410,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2017/一般入試/01_国語/H29_一般入試_国語_解答・解説集.pdf",
     "file": "data/広島県_広島国際学院高等学校_高校入試問題/2017/一般入試/01_国語/H29_一般入試_国語_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "1053889",
+    "bytes": "514396",
     "school": "広島国際学院高等学校"
   },
   {
@@ -2461,7 +2444,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2017/一般入試/02_数学/H29_一般入試_数学_解答・解説集.pdf",
     "file": "data/広島県_広島国際学院高等学校_高校入試問題/2017/一般入試/02_数学/H29_一般入試_数学_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "1053889",
+    "bytes": "495939",
     "school": "広島国際学院高等学校"
   },
   {
@@ -2495,7 +2478,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2017/一般入試/03_英語/H29_一般入試_英語_解答・解説集.pdf",
     "file": "data/広島県_広島国際学院高等学校_高校入試問題/2017/一般入試/03_英語/H29_一般入試_英語_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "1053889",
+    "bytes": "356674",
     "school": "広島国際学院高等学校"
   },
   {
@@ -2529,7 +2512,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2017/一般入試/04_理科/H29_一般入試_理科_解答・解説集.pdf",
     "file": "data/広島県_広島国際学院高等学校_高校入試問題/2017/一般入試/04_理科/H29_一般入試_理科_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "1053889",
+    "bytes": "333950",
     "school": "広島国際学院高等学校"
   },
   {
@@ -2563,7 +2546,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2017/一般入試/05_社会/H29_一般入試_社会_解答・解説集.pdf",
     "file": "data/広島県_広島国際学院高等学校_高校入試問題/2017/一般入試/05_社会/H29_一般入試_社会_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "1053889",
+    "bytes": "634967",
     "school": "広島国際学院高等学校"
   },
   {
@@ -2597,7 +2580,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2018/一般入試/01_国語/H30_一般入試_国語_解答・解説集.pdf",
     "file": "data/広島県_広島国際学院高等学校_高校入試問題/2018/一般入試/01_国語/H30_一般入試_国語_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "1155056",
+    "bytes": "737987",
     "school": "広島国際学院高等学校"
   },
   {
@@ -2631,7 +2614,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2018/一般入試/02_数学/H30_一般入試_数学_解答・解説集.pdf",
     "file": "data/広島県_広島国際学院高等学校_高校入試問題/2018/一般入試/02_数学/H30_一般入試_数学_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "1155056",
+    "bytes": "372318",
     "school": "広島国際学院高等学校"
   },
   {
@@ -2665,7 +2648,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2018/一般入試/03_英語/H30_一般入試_英語_解答・解説集.pdf",
     "file": "data/広島県_広島国際学院高等学校_高校入試問題/2018/一般入試/03_英語/H30_一般入試_英語_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "1155056",
+    "bytes": "347109",
     "school": "広島国際学院高等学校"
   },
   {
@@ -2699,7 +2682,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2018/一般入試/04_理科/H30_一般入試_理科_解答・解説集.pdf",
     "file": "data/広島県_広島国際学院高等学校_高校入試問題/2018/一般入試/04_理科/H30_一般入試_理科_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "1155056",
+    "bytes": "372318",
     "school": "広島国際学院高等学校"
   },
   {
@@ -2733,7 +2716,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2018/一般入試/05_社会/H30_一般入試_社会_解答・解説集.pdf",
     "file": "data/広島県_広島国際学院高等学校_高校入試問題/2018/一般入試/05_社会/H30_一般入試_社会_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "1155056",
+    "bytes": "577440",
     "school": "広島国際学院高等学校"
   },
   {
@@ -2767,7 +2750,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2019/一般入試/01_国語/H31_一般入試_国語_解答・解説集.pdf",
     "file": "data/広島県_広島国際学院高等学校_高校入試問題/2019/一般入試/01_国語/H31_一般入試_国語_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "959515",
+    "bytes": "208308",
     "school": "広島国際学院高等学校"
   },
   {
@@ -2801,7 +2784,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2019/一般入試/02_数学/H31_一般入試_数学_解答・解説集.pdf",
     "file": "data/広島県_広島国際学院高等学校_高校入試問題/2019/一般入試/02_数学/H31_一般入試_数学_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "959515",
+    "bytes": "355812",
     "school": "広島国際学院高等学校"
   },
   {
@@ -2835,7 +2818,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2019/一般入試/03_英語/H31_一般入試_英語_解答・解説集.pdf",
     "file": "data/広島県_広島国際学院高等学校_高校入試問題/2019/一般入試/03_英語/H31_一般入試_英語_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "959515",
+    "bytes": "340565",
     "school": "広島国際学院高等学校"
   },
   {
@@ -2869,7 +2852,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2019/一般入試/04_理科/H31_一般入試_理科_解答・解説集.pdf",
     "file": "data/広島県_広島国際学院高等学校_高校入試問題/2019/一般入試/04_理科/H31_一般入試_理科_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "959515",
+    "bytes": "362588",
     "school": "広島国際学院高等学校"
   },
   {
@@ -2903,7 +2886,7 @@ window.EXAM_PDF_DATA = [
     "originalRelativePath": "2019/一般入試/05_社会/H31_一般入試_社会_解答・解説集.pdf",
     "file": "data/広島県_広島国際学院高等学校_高校入試問題/2019/一般入試/05_社会/H31_一般入試_社会_解答・解説集.pdf",
     "archivePath": "",
-    "bytes": "959515",
+    "bytes": "366388",
     "school": "広島国際学院高等学校"
   },
   {
