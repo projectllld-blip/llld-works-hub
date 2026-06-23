@@ -5,7 +5,7 @@
     "category": "社内運営",
     "type": "HTMLアプリ",
     "description": "出退勤の記録・集計を効率化",
-    "url": "./apps/dakokun/index.html",
+    "url": "./apps/dakokun/index.html?v=20260623-calendar",
     "icon": "勤",
     "thumbnailType": "attendance",
     "thumbnailImage": "./assets/reference/mock-generation-pack/llld_product_mock_generation_pack/references/04_attendance_card_reference.png",
@@ -13,7 +13,7 @@
     "tags": ["人気", "タイムカード", "勤怠", "HTMLアプリ"],
     "isFavorite": false,
     "lastUsedAt": "",
-    "updatedAt": "2026-06-22",
+    "updatedAt": "2026-06-23",
     "status": "公開中",
     "featured": true,
     "external": false
