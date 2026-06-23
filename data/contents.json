@@ -5,7 +5,7 @@
     "category": "社内運営",
     "type": "HTMLアプリ",
     "description": "出退勤の記録・集計を効率化",
-    "url": "./apps/dakokun/index.html?v=20260623-calendar",
+    "url": "./apps/dakokun/index.html?v=20260623-calendar-lines",
     "icon": "勤",
     "thumbnailType": "attendance",
     "thumbnailImage": "./assets/reference/mock-generation-pack/llld_product_mock_generation_pack/references/04_attendance_card_reference.png",
