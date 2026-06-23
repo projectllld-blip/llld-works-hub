@@ -11,6 +11,7 @@ from pathlib import Path
 
 
 SUBJECT_ORDER = {
+    "全教科": "00",
     "国語": "01",
     "数学": "02",
     "算数": "02",
@@ -45,6 +46,8 @@ CSV_FIELDS = [
 
 def era_for_year(year: str) -> str:
     value = int(year)
+    if value == 2019:
+        return "H31"
     if value >= 2019:
         return f"R{value - 2018}"
     if value >= 1989:
@@ -92,6 +95,8 @@ def doc_type_from_name(path: Path) -> str:
     if "解答用紙" in stem:
         return "解答用紙"
     if "解答・解説" in stem:
+        return "解答・解説"
+    if "解答解説" in stem:
         return "解答・解説"
     if "解説" in stem:
         return "解説"
