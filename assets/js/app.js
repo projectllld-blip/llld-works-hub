@@ -52,7 +52,8 @@ const storage = {
 
 const categoryFilters = [
   {id:'すべて', label:'すべて', icon:'ALL', test:() => true},
-  {id:'よく使う', label:'よく使う', icon:'★', test:(item, ctx) => item.featured || ctx.favoriteIds.includes(item.id) || ctx.historyIds.includes(item.id) || hasTag(item, ['人気','おすすめ'])},
+  {id:'お気に入り', label:'お気に入り', icon:'★', test:(item, ctx) => ctx.favoriteIds.includes(item.id)},
+  {id:'よく使う', label:'よく使う', icon:'◎', test:(item, ctx) => item.featured || ctx.favoriteIds.includes(item.id) || ctx.historyIds.includes(item.id) || hasTag(item, ['人気','おすすめ'])},
   {id:'塾事業', label:'塾事業', icon:'塾', test:item => item.category === '塾事業' || hasTag(item, ['塾事業','教材','教室運営'])},
   {id:'コンサル事業', label:'コンサル事業', icon:'Co', test:item => item.category === 'コンサル事業' || hasTag(item, ['コンサル','補助金'])},
   {id:'社内運営', label:'社内運営', icon:'社', test:item => item.category === '社内運営' || hasTag(item, ['社内運営','勤怠'])},

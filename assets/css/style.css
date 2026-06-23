@@ -88,16 +88,16 @@ button{cursor:pointer}
 .side-empty{border:1px dashed rgba(255,255,255,.22);border-radius:10px;padding:10px;color:#aabbd0;font-size:12px}
 .main{min-width:0;padding:88px 22px 42px}
 .topbar{
-  position:fixed;top:0;left:0;right:0;z-index:30;min-height:68px;display:grid;grid-template-columns:300px auto minmax(360px,480px) 1fr auto;gap:22px;align-items:center;
+  position:fixed;top:0;left:0;right:0;z-index:30;min-height:68px;display:grid;grid-template-columns:minmax(0,max-content) auto minmax(360px,480px) 1fr auto;gap:18px;align-items:center;
   padding:10px 22px;background:linear-gradient(90deg,#061b32 0%,#092542 58%,#061b32 100%);box-shadow:0 12px 30px rgba(3,16,31,.22);
 }
 .menu-button{display:none}
 .icon-button{border:1px solid var(--line);background:#fff;border-radius:10px;width:42px;height:42px}
 .menu-button span{display:block;width:18px;height:2px;background:#334155;margin:4px auto;border-radius:99px}
-.topbar-title{display:flex;align-items:baseline;gap:18px;min-width:0}
-.topbar-title strong{font-size:26px;line-height:1;color:#fff;white-space:nowrap;letter-spacing:-.035em}
-.topbar-title:before{content:"";width:32px;height:32px;border-radius:8px;flex:none;background:linear-gradient(135deg,#18d5c4,#2f81f7);box-shadow:0 8px 20px rgba(0,183,173,.24)}
-.topbar-title span{font-size:14px;color:#d8e5f2;font-weight:850;white-space:nowrap}
+.topbar-title{display:flex;align-items:baseline;gap:12px;min-width:0}
+.topbar-title strong{font-size:22px;line-height:1;color:#fff;white-space:nowrap;letter-spacing:-.03em}
+.topbar-title:before{content:"";width:30px;height:30px;border-radius:8px;flex:none;background:linear-gradient(135deg,#18d5c4,#2f81f7);box-shadow:0 8px 20px rgba(0,183,173,.24)}
+.topbar-title span{font-size:13px;color:#d8e5f2;font-weight:850;white-space:nowrap}
 .topbar-badge{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:0 18px;border-radius:7px;background:linear-gradient(135deg,#12c7b8,#009f91);color:#fff;font-size:13px;font-weight:950;white-space:nowrap;box-shadow:0 8px 20px rgba(0,159,145,.28)}
 .search{position:relative}
 .topbar .search{grid-column:3}
@@ -234,7 +234,7 @@ button{cursor:pointer}
 .detail-actions{display:flex;gap:9px;flex-wrap:wrap}
 
 @media(max-width:1240px){
-  .topbar{grid-template-columns:260px minmax(280px,1fr) auto}
+  .topbar{grid-template-columns:minmax(0,max-content) minmax(280px,1fr) auto}
   .topbar-badge{display:none}
   .topbar .search{grid-column:2}
   .topbar .account-slot{grid-column:3}
