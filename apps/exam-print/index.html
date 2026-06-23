@@ -199,7 +199,6 @@
     .subject-理科 { background: #f3e5f5; color: #4a148c; }
     .subject-社会 { background: #fff8e1; color: #f57f17; }
     .subject-社会・理科 { background: #fff3e0; color: #bf360c; }
-    .subject-全教科 { background: #eef2ff; color: #3730a3; }
     .subject-適性検査I, .subject-適性検査II { background: #e0f2f1; color: #004d40; }
     .subject-配点表, .subject-その他 { background: #eceff1; color: #37474f; }
     .type-problem { background: #e3f2fd; color: #1565c0; }
@@ -366,8 +365,8 @@ const EXAMS = RAW_EXAMS.map(row => ({
   ...row,
   school: row.school || (row.prefecture === '岡山県' && row.exam === '高校入試' ? '岡山県公立高校' : row.source || '学校未分類')
 }));
-const SUBJECT_ORDER = ['全教科','国語','算数','数学','英語','理科','社会','社会・理科','適性検査I','適性検査II','配点表','その他'];
-const SUBJECT_UI_ORDER = ['全教科','国語','社会','算数','理科','社会・理科','適性検査I','適性検査II','数学','英語','すべて'];
+const SUBJECT_ORDER = ['国語','算数','数学','英語','理科','社会','社会・理科','適性検査I','適性検査II','配点表','その他'];
+const SUBJECT_UI_ORDER = ['国語','社会','算数','理科','社会・理科','適性検査I','適性検査II','数学','英語','すべて'];
 const EXAM_ORDER = ['中学入試','高校入試','大学入試'];
 const examOrderIndex = value => {
   const index = EXAM_ORDER.indexOf(value);

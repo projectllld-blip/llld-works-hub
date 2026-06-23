@@ -11,7 +11,6 @@ from pathlib import Path
 
 
 SUBJECT_ORDER = {
-    "全教科": "00",
     "国語": "01",
     "数学": "02",
     "算数": "02",
