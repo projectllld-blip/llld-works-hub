@@ -215,7 +215,7 @@ function renderPersonalCalendar(){
   const blanks=blankCount>0?Array(blankCount).fill('<div class="personalCalDay blank"></div>'):[];
   const dows=['日','月','火','水','木','金','土'].map(x=>`<div class="personalCalDow">${x}</div>`).join('');
   const monthNav=`<div class="monthNav"><button class="monthNavBtn" type="button" data-month-shift="-1" aria-label="前の月">◀</button><span class="monthNavLabel">${esc(monthLabelText(y,m))}</span><label class="monthNavBtn monthNavCalBtn" aria-label="年月を選択" title="年月を選択">📅<input type="month" id="personalLogMonth" value="${esc(personalLogMonth||monthInputValue())}"></label><button class="monthNavBtn" type="button" data-month-shift="1" aria-label="次の月">▶</button></div>`;
-  box.innerHTML=`<div class="personalCalHead"><div><div class="personalCalTitle">${esc(staff?.name||'選択スタッフ')} 出退勤実績</div><div class="personalCalSummary">${workDays}日勤務 / ${esc(totalText)}${missingDays?` / 要確認${missingDays}日`:''}</div></div>${monthNav}</div><div class="personalCalGrid">${dows}${blanks.join('')}${dayCells.join('')}</div>`;
+  box.innerHTML=`<div class="personalCalHead"><div><div class="personalCalTitle">${esc(staff?.name||'選択スタッフ')}</div><div class="personalCalSummary">${workDays}日勤務 / ${esc(totalText)}${missingDays?` / 要確認${missingDays}日`:''}</div></div>${monthNav}</div><div class="personalCalGrid">${dows}${blanks.join('')}${dayCells.join('')}</div>`;
   if(bar){
     bar.classList.remove('hide');
     bar.innerHTML=`<span class="label">今月の総勤務時間</span><span class="value">${esc(totalText)}</span>`;
