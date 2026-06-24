@@ -1040,6 +1040,31 @@ body[data-market-page="detail"] .market-badge:last-child{
 .request-form textarea{
   resize:vertical;
 }
+.request-note{
+  margin:0 0 var(--sp-2);
+  color:var(--text-sub);
+  font-weight:700;
+}
+.request-output{
+  margin-top:var(--sp-3);
+  border:1px solid var(--border);
+  border-radius:var(--radius-card);
+  background:var(--bg-page);
+  padding:var(--sp-2);
+}
+.request-output h3{
+  margin:0 0 var(--sp-1);
+  color:var(--text);
+  font-size:16px;
+}
+.request-output pre{
+  margin:0;
+  white-space:pre-wrap;
+  color:var(--text-sub);
+  font-family:var(--font);
+  font-size:13px;
+  line-height:1.6;
+}
 .thanks-panel{
   max-width:1040px;
   margin:0 auto;

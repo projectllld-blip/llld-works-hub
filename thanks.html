@@ -18,30 +18,20 @@
       </nav>
     </header>
 
-    <section class="thanks-panel">
-      <span class="market-kicker">送信完了</span>
-      <h1>送信ありがとうございます。</h1>
-      <p>内容を確認して、手動で連絡します。</p>
+    <section class="thanks-panel" id="thanksContent">
+      <span class="market-kicker" id="thanksKicker">送信完了</span>
+      <h1 id="thanksTitle">送信ありがとうございます。</h1>
+      <p id="thanksLead">内容を確認して、手動で連絡します。</p>
 
       <div class="detail-lp-grid">
         <article class="detail-panel">
-          <h2>購入済み・購入相談の場合</h2>
-          <ul>
-            <li>対象商品とお支払い方法を確認します</li>
-            <li>銀行振込、手動請求、決済リンクなどを個別に案内します</li>
-            <li>納品はメール添付、Google Drive限定リンク、手動共有のいずれかで行います</li>
-            <li>有料ファイル本体はGitHub Pages上に直接置きません</li>
-          </ul>
+          <h2 id="thanksPrimaryHeading">次の流れ</h2>
+          <ul id="thanksPrimaryList"></ul>
         </article>
 
         <article class="detail-panel">
-          <h2>開発相談の場合</h2>
-          <ul>
-            <li>困りごとと利用場面を確認します</li>
-            <li>必要な機能、納期、予算感を整理します</li>
-            <li>返信目安は通常1〜3営業日です</li>
-            <li>制作範囲が固まってから見積もりを案内します</li>
-          </ul>
+          <h2 id="thanksSecondaryHeading">確認事項</h2>
+          <ul id="thanksSecondaryList"></ul>
         </article>
       </div>
 
@@ -51,5 +41,6 @@
       </div>
     </section>
   </main>
+  <script src="./assets/js/thanksPage.js"></script>
 </body>
 </html>

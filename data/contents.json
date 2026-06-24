@@ -16,12 +16,11 @@
       "店舗"
     ],
     "tags": [
-      "人気",
+      "開発相談",
       "勤怠",
       "QR",
       "Excel出力",
-      "小規模事業",
-      "HTMLアプリ"
+      "小規模事業"
     ],
     "thumbnail": "./assets/thumbs/dakokun.png",
     "contentUrl": "./contents/dakokun/index.html",
@@ -91,11 +90,11 @@
       "教室スタッフ"
     ],
     "tags": [
-      "おすすめ",
+      "開発相談",
       "座席",
       "教室運営",
       "出欠",
-      "HTMLアプリ"
+      "カスタマイズ"
     ],
     "thumbnail": "./assets/thumbs/seatflow.png",
     "contentUrl": "./contents/seatflow/index.html",
@@ -165,6 +164,7 @@
       "小規模事業者"
     ],
     "tags": [
+      "無料入口",
       "人気",
       "PDF",
       "結合",
@@ -314,6 +314,7 @@
       "面談担当"
     ],
     "tags": [
+      "販売中",
       "面談",
       "聞き取り",
       "提案",
@@ -350,20 +351,21 @@
       "次回提案と対応履歴を残す"
     ],
     "notes": [
-      "購入後は個別連絡で納品します。GitHub Pages上に有料ファイル本体は置いていません。"
+      "資料販売商品です。購入希望は問い合わせ後、手動で支払い方法を案内します。",
+      "購入後はメール添付またはGoogle Drive限定リンクで納品します。"
     ],
     "price": 1980,
     "currency": "JPY",
-    "saleStatus": "inquiry-only",
+    "saleStatus": "on-sale",
     "deliveryType": "manual",
     "paymentUrl": "",
     "inquiryUrl": "./request.html?type=purchase&item=meeting-hearing-sheet",
-    "primaryCtaLabel": "購入する",
-    "primaryCtaType": "purchase",
+    "primaryCtaLabel": "購入について相談する",
+    "primaryCtaType": "purchase-inquiry",
     "primaryCtaUrl": "./request.html?type=purchase&item=meeting-hearing-sheet",
     "secondaryCtaLabel": "使い方を相談する",
     "secondaryCtaType": "consultation",
-    "secondaryCtaUrl": "./request.html?type=consultation&item=meeting-hearing-sheet",
+    "secondaryCtaUrl": "./request.html?type=request&item=meeting-hearing-sheet",
     "deliverables": [
       "面談ヒアリングシート",
       "面談前チェック項目",
@@ -460,10 +462,11 @@
       "小規模事業者"
     ],
     "tags": [
-      "おすすめ",
+      "販売中",
       "補助金",
       "申請書",
-      "テンプレート"
+      "テンプレート",
+      "高めの資料"
     ],
     "thumbnail": "./assets/thumbs/subsidy-templates.png",
     "contentUrl": "./contents/subsidy-templates/index.html",
@@ -496,20 +499,21 @@
       "申請書類作成の下準備に使う"
     ],
     "notes": [
-      "制度ごとの最新要件は必ず公式情報で確認してください。購入後は手動で納品します。"
+      "高めの資料販売商品です。購入希望は問い合わせ後、手動で支払い方法を案内します。",
+      "制度ごとの最新要件は必ず公式情報で確認してください。"
     ],
     "price": 4980,
     "currency": "JPY",
-    "saleStatus": "inquiry-only",
+    "saleStatus": "on-sale",
     "deliveryType": "manual",
     "paymentUrl": "",
     "inquiryUrl": "./request.html?type=purchase&item=subsidy-starter-kit",
-    "primaryCtaLabel": "購入する",
-    "primaryCtaType": "purchase",
+    "primaryCtaLabel": "購入について相談する",
+    "primaryCtaType": "purchase-inquiry",
     "primaryCtaUrl": "./request.html?type=purchase&item=subsidy-starter-kit",
     "secondaryCtaLabel": "補助金資料を相談する",
     "secondaryCtaType": "consultation",
-    "secondaryCtaUrl": "./request.html?type=consultation&item=subsidy-starter-kit",
+    "secondaryCtaUrl": "./request.html?type=request&item=subsidy-starter-kit",
     "deliverables": [
       "補助金準備チェックリスト",
       "ヒアリングシート",
@@ -603,14 +607,14 @@
     "status": "published",
     "visibility": "public",
     "deliveryType": "manual",
-    "paymentUrl": "./thanks.html?type=purchase&item=monthly-operations-checklist",
+    "paymentUrl": "",
     "inquiryUrl": "./request.html?type=purchase&item=monthly-operations-checklist",
-    "primaryCtaLabel": "購入する",
-    "primaryCtaType": "purchase",
-    "primaryCtaUrl": "./thanks.html?type=purchase&item=monthly-operations-checklist",
-    "secondaryCtaLabel": "相談する",
-    "secondaryCtaType": "inquiry",
-    "secondaryCtaUrl": "./request.html?type=purchase&item=monthly-operations-checklist",
+    "primaryCtaLabel": "購入について相談する",
+    "primaryCtaType": "purchase-inquiry",
+    "primaryCtaUrl": "./request.html?type=purchase&item=monthly-operations-checklist",
+    "secondaryCtaLabel": "納品までの流れを見る",
+    "secondaryCtaType": "thanks",
+    "secondaryCtaUrl": "./thanks.html?type=purchase&item=monthly-operations-checklist",
     "targetUsers": [
       "小規模事業者",
       "店舗",
@@ -618,6 +622,7 @@
     ],
     "tags": [
       "販売中",
+      "低価格",
       "チェックリスト",
       "月末業務",
       "テンプレート"
@@ -654,11 +659,12 @@
     ],
     "deliverables": [
       "月末業務チェックリスト",
-      "運用メモ欄",
+      "請求・入金・勤怠・書類整理の確認欄",
       "納品後に編集できるテンプレート"
     ],
     "notes": [
-      "購入後は個別連絡で納品します。GitHub Pages上に有料ファイル本体は置いていません。"
+      "低価格の販売商品です。購入希望は問い合わせ後、手動で支払い方法を案内します。",
+      "有料ファイル本体はGitHub Pages上に直接置いていません。"
     ]
   },
   {

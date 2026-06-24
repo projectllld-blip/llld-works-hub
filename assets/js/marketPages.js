@@ -327,6 +327,9 @@
   }
 
   function getPrimaryAction(content) {
+    if (content.priceType === 'paid' && content.saleStatus === 'on-sale' && content.paymentUrl) {
+      return { label: content.primaryCtaLabel || '購入する', href: content.paymentUrl };
+    }
     if (content.primaryCtaLabel && content.primaryCtaUrl) {
       return { label: content.primaryCtaLabel, href: content.primaryCtaUrl };
     }

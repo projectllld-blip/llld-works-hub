@@ -56,40 +56,46 @@
     </section>
 
     <section class="detail-panel request-panel">
-      <h2>相談内容を送る</h2>
-      <form class="request-form" action="./thanks.html" method="get">
-        <input type="hidden" name="source" value="request">
+      <h2>相談内容を作成する</h2>
+      <p class="request-note">このページでは自前の送信処理を行いません。内容をコピーするか、メールソフトを開いて送信してください。</p>
+      <form class="request-form" id="requestForm">
         <label>
           相談種別
-          <select name="type">
+          <select name="type" id="requestType">
             <option value="development">開発を相談する</option>
             <option value="estimate">見積もりを相談する</option>
             <option value="purchase">購入について相談する</option>
-            <option value="template">資料・テンプレート化を相談する</option>
           </select>
         </label>
         <label>
           気になる商品・内容
-          <input name="item" type="text" placeholder="例: PDF編集ツール、社内ポータル制作">
+          <input name="item" id="requestItem" type="text" placeholder="例: PDF編集ツール、社内ポータル制作">
         </label>
         <label>
           お名前
-          <input name="name" type="text" placeholder="例: 山田 太郎">
+          <input name="name" id="requestName" type="text" placeholder="例: 山田 太郎">
         </label>
         <label>
           連絡先
-          <input name="contact" type="text" placeholder="メール、電話、LINEなど">
+          <input name="contact" id="requestContact" type="text" placeholder="メール、電話、LINEなど">
         </label>
         <label>
           相談内容
-          <textarea name="message" rows="6" placeholder="今の困りごと、使いたい場面、納期感などを自由に書いてください。"></textarea>
+          <textarea name="message" id="requestMessage" rows="6" placeholder="今の困りごと、使いたい場面、納期感などを自由に書いてください。"></textarea>
         </label>
         <div class="detail-cta-row">
-          <button class="btn primary" type="submit">開発を相談する</button>
-          <button class="btn secondary" type="submit" name="type" value="estimate">見積もりを相談する</button>
+          <a class="btn primary" id="requestMailLink" href="mailto:?subject=LLLD Works Marketへの相談">開発を相談する</a>
+          <button class="btn secondary" id="copyRequestText" type="button">相談内容をコピー</button>
+          <a class="btn secondary" id="purchaseThanksLink" href="./thanks.html?type=request">送信後の流れを見る</a>
         </div>
       </form>
+
+      <div class="request-output">
+        <h3>送信内容プレビュー</h3>
+        <pre id="requestPreview"></pre>
+      </div>
     </section>
   </main>
+  <script src="./assets/js/requestPage.js"></script>
 </body>
 </html>

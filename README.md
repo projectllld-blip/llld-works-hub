@@ -54,6 +54,8 @@ HTMLファイルを直接ダブルクリックせず、必ず `localhost` で確
 - `assets/js/app.js`
 - `assets/js/contentService.js`
 - `assets/js/marketPages.js`
+- `assets/js/requestPage.js`
+- `assets/js/thanksPage.js`
 - `assets/js/authMockService.js`
 - `assets/js/storagePolicy.js`
 - `data/contents.json`
