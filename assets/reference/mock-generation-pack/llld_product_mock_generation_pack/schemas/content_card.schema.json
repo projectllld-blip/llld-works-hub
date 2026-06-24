@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LLLD Works Hub Content Card",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "category",
+    "type",
+    "description",
+    "url",
+    "thumbnailType",
+    "iconType",
+    "primaryActionLabel"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string"
+    },
+    "thumbnailType": {
+      "type": "string"
+    },
+    "thumbnailImage": {
+      "type": "string"
+    },
+    "iconType": {
+      "type": "string"
+    },
+    "badge": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "string"
+    },
+    "featured": {
+      "type": "boolean"
+    },
+    "favoriteEnabled": {
+      "type": "boolean"
+    },
+    "detailEnabled": {
+      "type": "boolean"
+    },
+    "primaryActionLabel": {
+      "type": "string"
+    },
+    "lastUsedAt": {
+      "type": "string"
+    },
+    "updatedAt": {
+      "type": "string"
+    },
+    "audience": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "thumbnailFocus": {
+      "type": "string"
+    },
+    "sourceHtml": {
+      "type": "string"
+    },
+    "mockImage": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

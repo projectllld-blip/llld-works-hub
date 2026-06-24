@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>投稿者 | LLLD Works Hub</title>
+  <meta name="description" content="LLLD Works Hubの投稿者情報">
+  <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+  <main class="main detail-page">
+    <header class="topbar">
+      <div class="topbar-title">
+        <strong>LLLD Works Hub</strong>
+        <span>投稿者情報</span>
+      </div>
+      <a class="text-button" href="./index.html">Hubへ戻る</a>
+    </header>
+    <section class="content-section">
+      <div id="authorDetail" class="detail-content">
+        <p>読み込み中です。</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="./assets/js/contentService.js"></script>
+  <script>
+    'use strict';
+
+    const params = new URLSearchParams(window.location.search);
+    const authorId = params.get('id') || '';
+    const detail = document.getElementById('authorDetail');
+
+    function escapeHtml(value) {
+      return String(value || '').replace(/[&<>"']/g, char => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[char]));
+    }
+
+    function renderNotFound() {
+      detail.innerHTML = '<h1>投稿者が見つかりません</h1><p>Hubに戻って、一覧から確認してください。</p>';
+    }
+
+    async function init() {
+      if (!authorId || !window.ContentService) {
+        renderNotFound();
+        return;
+      }
+
+      try {
+        const author = await window.ContentService.getAuthorById(authorId);
+        if (!author) {
+          renderNotFound();
+          return;
+        }
+
+        detail.innerHTML = `
+          <h1>${escapeHtml(author.name)}</h1>
+          <p>${escapeHtml(author.summary || '')}</p>
+          <p>${escapeHtml(author.type || '')}</p>
+        `;
+      } catch (error) {
+        renderNotFound();
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>

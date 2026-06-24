@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>入試問題印刷システム</title>
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --ink: #263042;
+      --muted: #6b7280;
+      --line: #dfe5f0;
+      --blue: #5c6bc0;
+      --blue-strong: #3949ab;
+      --green: #2e7d32;
+      --warn: #b45309;
+      --shadow: 0 18px 55px rgba(18, 31, 61, .22);
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Hiragino Sans", "Yu Gothic", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 48%, #0f3460 100%);
+      padding: 20px;
+    }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    .container {
+      max-width: 1480px;
+      min-height: calc(100vh - 40px);
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+    }
+    header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
+      color: #fff;
+      padding: 26px 34px;
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: center;
+    }
+    h1 { margin: 0; font-size: 1.78rem; line-height: 1.2; letter-spacing: .03em; }
+    .subtitle { color: rgba(255,255,255,.72); margin-top: 5px; font-size: .9rem; }
+    .stats { display: grid; grid-template-columns: repeat(3, minmax(86px, auto)); gap: 10px; }
+    .stat {
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 10px;
+      padding: 9px 12px;
+      text-align: right;
+      min-width: 92px;
+    }
+    .stat strong { display: block; color: #64ffda; font-size: 1.35rem; line-height: 1; }
+    .stat span { display: block; color: rgba(255,255,255,.7); font-size: .72rem; margin-top: 4px; }
+    .toolbar {
+      background: #f8f9ff;
+      border-bottom: 1px solid var(--line);
+      padding: 13px 22px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .btn {
+      border-radius: 8px;
+      padding: 9px 14px;
+      font-size: .86rem;
+      font-weight: 800;
+      color: #334155;
+      background: #eef2ff;
+      border: 1px solid #c8d0f0;
+      text-decoration: none;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 5px 12px rgba(47, 65, 140, .16); }
+    .btn.primary { color: #fff; background: linear-gradient(135deg, #667eea, #764ba2); border-color: transparent; }
+    .btn.success { color: #fff; background: linear-gradient(135deg, #43a047, #1b5e20); border-color: transparent; }
+    .btn:disabled { opacity: .42; cursor: not-allowed; transform: none; box-shadow: none; }
+    .main {
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 322px minmax(420px, 1fr) 410px;
+    }
+    aside {
+      min-height: 0;
+      overflow: auto;
+      background: #f8f9fb;
+      border-right: 1px solid var(--line);
+      padding: 20px 18px;
+    }
+    .filter-section { border-bottom: 1px solid #e7ebf4; padding-bottom: 18px; margin-bottom: 18px; }
+    .filter-section:last-child { border-bottom: 0; }
+    .filter-title {
+      font-size: .78rem;
+      font-weight: 900;
+      color: #778197;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .check-list { display: grid; gap: 6px; }
+    #subjectChecks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .check-row {
+      display: grid;
+      grid-template-columns: 18px 1fr auto;
+      align-items: center;
+      gap: 8px;
+      border-radius: 8px;
+      padding: 6px 7px;
+      font-size: .88rem;
+      cursor: pointer;
+    }
+    .check-row:hover { background: #eef2ff; }
+    .check-row.disabled { color: #a0a8b8; background: transparent; }
+    input[type="checkbox"], input[type="radio"] { accent-color: var(--blue); }
+    .count-pill { color: #667085; font-size: .75rem; background: #edf0f7; border-radius: 999px; padding: 2px 7px; }
+    .search-box { width: 100%; border: 1px solid #cfd6e6; border-radius: 9px; padding: 9px 10px; outline: none; }
+    .filter-actions { display: grid; gap: 8px; margin-top: 10px; }
+    .preset-list { display: grid; gap: 8px; }
+    .preset-row {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 9px;
+      align-items: start;
+      border: 1px solid #d8deee;
+      border-radius: 9px;
+      padding: 10px;
+      background: #fff;
+    }
+    .preset-row:has(input:checked) { border-color: #9fa8da; background: #eef2ff; }
+    .preset-title { font-weight: 900; font-size: .88rem; }
+    .preset-desc { color: var(--muted); font-size: .75rem; margin-top: 2px; line-height: 1.45; }
+    .print-actions { display: grid; gap: 8px; }
+    .print-actions .btn { width: 100%; }
+    .content {
+      min-height: 0;
+      overflow: auto;
+      padding: 20px;
+      background: #fff;
+    }
+    .selection-bar {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(135deg, #e8eaf6, #ede7f6);
+      border: 1px solid #d9ddf0;
+      border-radius: 10px;
+      padding: 11px 14px;
+      margin-bottom: 16px;
+    }
+    .selection-count { color: var(--blue); font-weight: 900; }
+    .selection-count strong { color: var(--blue-strong); font-size: 1.45rem; vertical-align: -2px; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(258px, 1fr)); gap: 14px; }
+    .card {
+      border: 2px solid #e0e4ef;
+      border-radius: 10px;
+      background: #fff;
+      overflow: hidden;
+      transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+      cursor: pointer;
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+    .card:hover { transform: translateY(-2px); border-color: #9fa8da; box-shadow: 0 8px 22px rgba(102,126,234,.16); }
+    .card.selected { border-color: var(--blue); background: #f7f8ff; box-shadow: 0 0 0 3px rgba(92,107,192,.2); }
+    .card.unselected { opacity: .56; background: #f8fafc; }
+    .card-head {
+      min-height: 104px;
+      background: linear-gradient(135deg, #f6f8ff, #eef2ff);
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+    }
+    .card-top { display: flex; justify-content: space-between; gap: 10px; align-items: start; }
+    .card-select { width: 18px; height: 18px; flex: 0 0 auto; }
+    .card-title { font-weight: 900; font-size: .98rem; line-height: 1.35; }
+    .card-body { padding: 11px 12px 12px; background: #fafbff; border-top: 1px solid #edf0f7; }
+    .meta { color: #6b7280; font-size: .78rem; line-height: 1.45; overflow-wrap: anywhere; }
+    .tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px; }
+    .tag { border-radius: 999px; padding: 3px 8px; font-size: .72rem; font-weight: 900; }
+    .subject-国語 { background: #fce4ec; color: #880e4f; }
+    .subject-算数 { background: #e8f5e9; color: #1b5e20; }
+    .subject-数学 { background: #e8eaf6; color: #283593; }
+    .subject-英語 { background: #e0f7fa; color: #006064; }
+    .subject-理科 { background: #f3e5f5; color: #4a148c; }
+    .subject-社会 { background: #fff8e1; color: #f57f17; }
+    .subject-社会・理科 { background: #fff3e0; color: #bf360c; }
+    .subject-適性検査I, .subject-適性検査II { background: #e0f2f1; color: #004d40; }
+    .subject-配点表, .subject-その他 { background: #eceff1; color: #37474f; }
+    .type-problem { background: #e3f2fd; color: #1565c0; }
+    .type-answer { background: #e8f5e9; color: #1b5e20; }
+    .missing {
+      color: var(--warn);
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: 8px;
+      padding: 7px 8px;
+      font-size: .75rem;
+      line-height: 1.45;
+      margin-top: 9px;
+    }
+    .viewer {
+      min-height: 0;
+      overflow: auto;
+      border-left: 1px solid var(--line);
+      background: #f5f7fb;
+      padding: 18px;
+    }
+    .viewer-head { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
+    .viewer-head-top {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .viewer-title { font-weight: 900; margin-bottom: 5px; }
+    .viewer-print { flex: 0 0 auto; }
+    .preview-list { display: grid; gap: 12px; margin-top: 12px; }
+    .preview-item { background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+    .preview-item header {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      padding: 9px 10px;
+      border-bottom: 1px solid #e7ebf4;
+      font-size: .78rem;
+      font-weight: 900;
+    }
+    .preview-frame { width: 100%; height: 520px; border: 0; display: block; background: #fff; }
+    a { color: var(--blue-strong); text-decoration: none; font-weight: 800; }
+    .empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      color: #8a94a6;
+      padding: 70px 20px;
+      border: 2px dashed #dce2ee;
+      border-radius: 12px;
+      background: #fbfcff;
+    }
+    .empty strong { display: block; color: #596579; font-size: 1.08rem; margin-bottom: 6px; }
+    .notice { color: #667085; font-size: .78rem; line-height: 1.5; }
+    @media (max-width: 1180px) {
+      .main { grid-template-columns: 300px 1fr; }
+      .viewer { grid-column: 1 / -1; border-left: 0; border-top: 1px solid var(--line); }
+    }
+    @media (max-width: 760px) {
+      body { padding: 0; }
+      .container { border-radius: 0; min-height: 100vh; }
+      header { align-items: flex-start; flex-direction: column; padding: 22px; }
+      .stats { width: 100%; grid-template-columns: repeat(3, 1fr); }
+      .main { grid-template-columns: 1fr; }
+      aside { border-right: 0; border-bottom: 1px solid var(--line); }
+      .selection-bar { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div>
+      <h1>入試問題印刷システム</h1>
+      <div class="subtitle">学校を選んだら年度・実施区分まで一気に絞り込み</div>
+    </div>
+    <div class="stats">
+      <div class="stat"><strong id="statTotal">0</strong><span>PDF登録数</span></div>
+      <div class="stat"><strong id="statSets">0</strong><span>問題セット</span></div>
+      <div class="stat"><strong id="statSelected">0</strong><span>印刷対象</span></div>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <a class="btn" href="exam_manifest.csv" download>CSV</a>
+    <span class="notice">学校を選ぶと、その学校の年度・実施区分をすぐ表示します。教科は必要に応じて追加で絞り込めます。</span>
+  </div>
+
+  <div class="main">
+    <aside>
+      <div class="filter-section">
+        <div class="filter-title">検索</div>
+        <input class="search-box" id="searchInput" placeholder="学校・年度・教科・元ファイル名で検索">
+        <div class="filter-actions">
+          <button class="btn" id="clearFiltersBtn">検索条件を全クリア</button>
+        </div>
+      </div>
+      <div class="filter-section">
+        <div class="filter-title">入試区分</div>
+        <div class="check-list" id="examChecks"></div>
+      </div>
+      <div class="filter-section">
+        <div class="filter-title">学校</div>
+        <div class="check-list" id="schoolChecks"></div>
+      </div>
+      <div class="filter-section">
+        <div class="filter-title">教科</div>
+        <div class="check-list" id="subjectChecks"></div>
+      </div>
+      <div class="filter-section">
+        <div class="filter-title">年度</div>
+        <div class="check-list" id="yearChecks"></div>
+      </div>
+      <div class="filter-section">
+        <div class="filter-title">実施区分</div>
+        <div class="check-list" id="examTypeChecks"></div>
+      </div>
+      <div class="filter-section">
+        <div class="filter-title">出力セット</div>
+        <div class="preset-list">
+          <label class="preset-row"><input type="radio" name="outputSet" value="all" checked><div><div class="preset-title">全部</div><div class="preset-desc">登録PDFをまとめて確認・印刷</div></div></label>
+          <label class="preset-row"><input type="radio" name="outputSet" value="problem"><div><div class="preset-title">問題系</div><div class="preset-desc">問題用紙 + 解答用紙を1セット</div></div></label>
+          <label class="preset-row"><input type="radio" name="outputSet" value="answer"><div><div class="preset-title">解答系</div><div class="preset-desc">解答 + 解説を1セット</div></div></label>
+        </div>
+      </div>
+      <div class="filter-section">
+        <div class="filter-title">印刷</div>
+        <div class="print-actions">
+          <button class="btn success" id="printBtn" disabled>印刷</button>
+          <button class="btn primary" id="previewBtn" disabled>プレビュー表示</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="content">
+      <div class="selection-bar">
+        <div class="selection-count"><strong id="selectedCount">0</strong> 件を印刷対象に表示中</div>
+        <div class="notice" id="filterSummary">学校を選択してください</div>
+      </div>
+      <div class="cards" id="cards"></div>
+    </main>
+
+    <section class="viewer">
+      <div class="viewer-head">
+        <div class="viewer-head-top">
+          <div>
+            <div class="viewer-title" id="viewerTitle">印刷プレビュー</div>
+            <div class="meta" id="viewerMeta">表示中の条件に合わせて、印刷対象PDFを統合表示します。</div>
+          </div>
+          <button class="btn success viewer-print" id="printBtnViewer" disabled>印刷</button>
+        </div>
+      </div>
+      <div class="preview-list" id="previewList"><div class="notice">印刷対象を選んで「プレビュー表示」を押してください。</div></div>
+    </section>
+  </div>
+</div>
+
+<script src="vendor/pdf-lib.min.js"></script>
+<script src="exam_data.js"></script>
+<script>
+const RAW_EXAMS = window.EXAM_PDF_DATA || window.EXAM_DATA || [];
+const EXAMS = RAW_EXAMS.map(row => ({
+  ...row,
+  school: row.school || (row.prefecture === '岡山県' && row.exam === '高校入試' ? '岡山県公立高校' : row.source || '学校未分類')
+}));
+const SUBJECT_ORDER = ['国語','算数','数学','英語','理科','社会','社会・理科','適性検査I','適性検査II','配点表','その他'];
+const SUBJECT_UI_ORDER = ['国語','社会','算数','理科','社会・理科','適性検査I','適性検査II','数学','英語','すべて'];
+const EXAM_ORDER = ['中学入試','高校入試','大学入試'];
+const examOrderIndex = value => {
+  const index = EXAM_ORDER.indexOf(value);
+  return index < 0 ? 99 : index;
+};
+const DOC_ORDER = ['問題','問題・解答用紙','解答用紙','解答','解説','解答・解説','問題・解答','配点表','その他'];
+const state = {
+  exams: new Set(),
+  schools: new Set(),
+  subjects: new Set(),
+  subjectAll: false,
+  years: new Set(),
+  examTypes: new Set(),
+  included: new Set(),
+  outputSet: 'all',
+  search: '',
+};
+let previewVersion = 0;
+let previewUrls = [];
+let mergedUrl = null;
+const $ = id => document.getElementById(id);
+function uniq(list){ return [...new Set(list)].filter(Boolean); }
+function byOrder(order){
+  return (a,b) => (order.indexOf(a) < 0 ? 99 : order.indexOf(a)) - (order.indexOf(b) < 0 ? 99 : order.indexOf(b)) || a.localeCompare(b,'ja');
+}
+function escapeHtml(s){
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function fmtBytes(bytes){
+  if (!bytes) return '';
+  const mb = bytes / 1024 / 1024;
+  return mb >= 1 ? mb.toFixed(1) + 'MB' : Math.round(bytes / 1024) + 'KB';
+}
+function setKey(row){
+  return [row.school, row.year, row.examType, row.subject].join('|');
+}
+function buildSets(){
+  const map = new Map();
+  EXAMS.forEach(row => {
+    const key = setKey(row);
+    if (!map.has(key)) {
+      map.set(key, {
+        id: key,
+        school: row.school,
+        prefecture: row.prefecture,
+        exam: row.exam,
+        year: row.year,
+        era: row.era,
+        examType: row.examType,
+        subject: row.subject,
+        rows: [],
+      });
+    }
+    map.get(key).rows.push(row);
+  });
+  return [...map.values()].map(item => {
+    item.rows.sort((a,b) => byOrder(DOC_ORDER)(a.docType,b.docType) || a.sourceName.localeCompare(b.sourceName,'ja'));
+    item.problemFiles = item.rows.filter(r => ['問題','問題・解答','問題・解答用紙'].includes(r.docType));
+    item.answerSheetFiles = item.rows.filter(r => ['解答用紙','問題・解答用紙'].includes(r.docType));
+    item.answerFiles = item.rows.filter(r => ['解答','問題・解答','解答・解説'].includes(r.docType));
+    item.explanationFiles = item.rows.filter(r => ['解説','解答・解説'].includes(r.docType));
+    item.otherFiles = item.rows.filter(r => ['配点表','その他'].includes(r.docType));
+    return item;
+  });
+}
+const SETS = buildSets();
+function sortSets(rows){
+  return rows.slice().sort((a,b) =>
+    a.school.localeCompare(b.school,'ja') ||
+    String(b.year).localeCompare(String(a.year)) ||
+    a.examType.localeCompare(b.examType,'ja') ||
+    byOrder(SUBJECT_ORDER)(a.subject,b.subject)
+  );
+}
+function rowsForSet(item){
+  if (state.outputSet === 'problem') return [...item.problemFiles, ...item.answerSheetFiles];
+  if (state.outputSet === 'answer') return [...item.answerFiles, ...item.explanationFiles];
+  return item.rows;
+}
+function isProblemSet(item){
+  return item.problemFiles.length > 0;
+}
+function missingNotes(item){
+  const notes = [];
+  if (state.outputSet === 'problem' || state.outputSet === 'all') {
+    if (!item.problemFiles.length) notes.push('※問題用紙なし');
+    if (!item.answerSheetFiles.length) notes.push('※解答用紙なし');
+  }
+  if (state.outputSet === 'answer' || state.outputSet === 'all') {
+    if (!item.answerFiles.length) notes.push('※解答なし');
+    if (!item.explanationFiles.length) notes.push('※解説なし');
+  }
+  return notes;
+}
+function baseRowsForDynamicFilters(){
+  return SETS.filter(item => {
+    if (state.exams.size && !state.exams.has(item.exam)) return false;
+    if (state.schools.size && !state.schools.has(item.school)) return false;
+    if (!state.subjectAll && state.subjects.size && !state.subjects.has(item.subject)) return false;
+    return true;
+  });
+}
+function filteredSets(){
+  const q = state.search.trim().toLowerCase();
+  if (!state.exams.size && !state.schools.size && !state.subjects.size && !state.subjectAll) return [];
+  return sortSets(SETS.filter(item => {
+    if (state.exams.size && !state.exams.has(item.exam)) return false;
+    if (state.schools.size && !state.schools.has(item.school)) return false;
+    if (!state.subjectAll && state.subjects.size && !state.subjects.has(item.subject)) return false;
+    if (state.years.size && !state.years.has(item.year)) return false;
+    if (state.examTypes.size && !state.examTypes.has(item.examType)) return false;
+    if (!rowsForSet(item).length && state.outputSet !== 'all') return false;
+    if (!q) return true;
+    const hay = [item.school, item.year, item.era, item.examType, item.subject, ...item.rows.map(r => r.sourceName), ...item.rows.map(r => r.originalRelativePath)].join(' ').toLowerCase();
+    return hay.includes(q);
+  }));
+}
+function resetTargetSelection(){
+  state.included.clear();
+}
+function pruneSelectedSet(selectedSet, values){
+  const available = new Set(values);
+  [...selectedSet].forEach(value => {
+    if (!available.has(value)) selectedSet.delete(value);
+  });
+}
+function renderFilters(){
+  const exams = uniq(SETS.map(x => x.exam)).sort((a,b) => examOrderIndex(a) - examOrderIndex(b) || a.localeCompare(b,'ja'));
+  renderCheckGroup('examChecks', exams, state.exams, x => x, SETS);
+  const examScoped = SETS.filter(item => !state.exams.size || state.exams.has(item.exam));
+  renderCheckGroup('schoolChecks', uniq(examScoped.map(x => x.school)).sort((a,b)=>a.localeCompare(b,'ja')), state.schools, x => x, examScoped);
+  const schoolScoped = examScoped.filter(item => !state.schools.size || state.schools.has(item.school));
+  renderSubjectChecks(uniq(schoolScoped.map(x => x.subject)), schoolScoped);
+  const canShowDynamic = state.schools.size > 0 || state.subjects.size > 0 || state.subjectAll;
+  if (canShowDynamic) {
+    const scoped = baseRowsForDynamicFilters();
+    const years = uniq(scoped.map(x => x.year)).sort((a,b)=>b.localeCompare(a));
+    const examTypes = uniq(scoped.map(x => x.examType)).sort((a,b)=>a.localeCompare(b,'ja'));
+    pruneSelectedSet(state.years, years);
+    pruneSelectedSet(state.examTypes, examTypes);
+    renderCheckGroup('yearChecks', years, state.years, y => `${y}年度`, scoped);
+    renderCheckGroup('examTypeChecks', examTypes, state.examTypes, x => x, scoped);
+  } else {
+    state.years.clear();
+    state.examTypes.clear();
+    $('yearChecks').innerHTML = '<div class="notice">学校を選ぶと該当年度を表示します。</div>';
+    $('examTypeChecks').innerHTML = '<div class="notice">学校を選ぶと該当区分を表示します。</div>';
+  }
+}
+function renderSubjectChecks(availableSubjects, countSource){
+  const values = SUBJECT_UI_ORDER.filter(v => v === 'すべて' || availableSubjects.includes(v));
+  $('subjectChecks').innerHTML = values.map(v => {
+    const checked = v === 'すべて' ? state.subjectAll : state.subjects.has(v);
+    const count = v === 'すべて'
+      ? countSource.filter(isProblemSet).length
+      : countSource.filter(r => isProblemSet(r) && r.subject === v).length;
+    return `<label class="check-row"><input type="checkbox" value="${escapeHtml(v)}" ${checked ? 'checked' : ''}><span>${escapeHtml(v)}</span><span class="count-pill">${count}</span></label>`;
+  }).join('');
+  $('subjectChecks').querySelectorAll('input').forEach(input => input.addEventListener('change', () => {
+    if (input.value === 'すべて') {
+      state.subjectAll = input.checked;
+      state.subjects.clear();
+    } else {
+      state.subjectAll = false;
+      if (input.checked) state.subjects.add(input.value);
+      else state.subjects.delete(input.value);
+    }
+    resetTargetSelection();
+    renderFilters();
+    renderCards();
+  }));
+}
+function renderCheckGroup(id, values, selectedSet, labeler, countSource){
+  if (!values.length) {
+    $(id).innerHTML = '<div class="notice">該当なし</div>';
+    return;
+  }
+  $(id).innerHTML = values.map(v => {
+    const count = countSource.filter(r => isProblemSet(r) && (r.exam === v || r.school === v || r.subject === v || r.year === v || r.examType === v)).length;
+    return `<label class="check-row"><input type="checkbox" value="${escapeHtml(v)}" ${selectedSet.has(v) ? 'checked' : ''}><span>${escapeHtml(labeler(v))}</span><span class="count-pill">${count}</span></label>`;
+  }).join('');
+  $(id).querySelectorAll('input').forEach(input => input.addEventListener('change', () => {
+    if (input.checked) selectedSet.add(input.value);
+    else selectedSet.delete(input.value);
+    resetTargetSelection();
+    renderFilters();
+    renderCards();
+  }));
+}
+function cardLabel(item){
+  return `${item.school} ${item.year}年度 ${item.examType} ${item.subject}`;
+}
+function renderCards(){
+  const rows = filteredSets();
+  const targetSets = selectedVisibleSets(rows);
+  $('filterSummary').textContent = rows.length ? `${rows.length}セット表示 / ${SETS.length}セット登録` : '条件を選択してください';
+  $('statSelected').textContent = targetSets.length;
+  $('selectedCount').textContent = targetSets.length;
+  $('printBtn').disabled = targetSets.length === 0;
+  $('printBtnViewer').disabled = targetSets.length === 0;
+  $('previewBtn').disabled = targetSets.length === 0;
+  if (!rows.length) {
+    const text = state.exams.size || state.schools.size || state.subjects.size ? '条件に合うセットがありません' : '条件を選択してください';
+    $('cards').innerHTML = `<div class="empty"><strong>${text}</strong>左側のチェックで表示対象を選びます。</div>`;
+    renderPreviewStandby([]);
+    return;
+  }
+  $('cards').innerHTML = rows.map(item => {
+    const files = rowsForSet(item);
+    const missing = missingNotes(item);
+    const selected = state.included.has(item.id);
+    return `<article class="card ${selected ? 'selected' : 'unselected'}" data-id="${escapeHtml(item.id)}">
+      <div class="card-head">
+        <div class="card-top">
+          <input class="card-select" type="checkbox" ${selected ? 'checked' : ''} aria-label="印刷対象">
+          <div class="card-title">${escapeHtml(cardLabel(item))}</div>
+        </div>
+        <div class="tags">
+          <span class="tag subject-${escapeHtml(item.subject)}">${escapeHtml(item.subject)}</span>
+          <span class="tag type-${state.outputSet === 'answer' ? 'answer' : 'problem'}">${state.outputSet === 'answer' ? '解答系' : state.outputSet === 'problem' ? '問題系' : '全部'}</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="meta">${escapeHtml(item.prefecture)} ${escapeHtml(item.exam)} / ${escapeHtml(item.year)}年度</div>
+        <div class="meta">登録PDF: ${item.rows.length}件 / 出力対象: ${files.length}件</div>
+        <div class="meta">${escapeHtml(item.rows.map(r => r.docType).join('・'))}</div>
+        ${missing.length ? `<div class="missing">${missing.map(escapeHtml).join('<br>')}</div>` : ''}
+      </div>
+    </article>`;
+  }).join('');
+  $('cards').querySelectorAll('.card').forEach(card => {
+    const id = card.dataset.id;
+    const checkbox = card.querySelector('.card-select');
+    card.addEventListener('click', () => toggleTarget(id));
+    checkbox.addEventListener('click', e => {
+      e.stopPropagation();
+      toggleTarget(id);
+    });
+  });
+  if (targetSets.length) renderPreview(targetSets);
+  else renderPreviewStandby(targetSets);
+}
+function selectedVisibleSets(rows = filteredSets()){
+  return rows.filter(item => state.included.has(item.id));
+}
+function toggleTarget(id){
+  if (state.included.has(id)) state.included.delete(id);
+  else state.included.add(id);
+  renderCards();
+}
+function filesForSets(sets){
+  const seen = new Set();
+  return sortSets(sets).flatMap(item => rowsForSet(item).map(row => ({item, row}))).filter(({row}) => {
+    const key = row.file || row.id;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+function currentFiles(){
+  return filesForSets(selectedVisibleSets());
+}
+async function loadPdfBytes(row){
+  if (location.protocol === 'file:') {
+    throw new Error('HTMLを直接開くとブラウザ制限でPDFを結合できません。「入試問題印刷システム.app」から開いてください。');
+  }
+  const response = await fetch(encodeURI(row.file));
+  if (!response.ok) throw new Error(`${row.file} を読み込めません。`);
+  return response.arrayBuffer();
+}
+async function mergeRowsToUrl(rows){
+  if (!window.PDFLib) throw new Error('PDF結合ライブラリを読み込めませんでした。vendor/pdf-lib.min.js を確認してください。');
+  const merged = await PDFLib.PDFDocument.create();
+  for (const row of rows) {
+    const bytes = await loadPdfBytes(row);
+    const source = await PDFLib.PDFDocument.load(bytes, {ignoreEncryption: true});
+    const pages = await merged.copyPages(source, source.getPageIndices());
+    pages.forEach(page => merged.addPage(page));
+  }
+  const bytes = await merged.save();
+  const blob = new Blob([bytes], {type: 'application/pdf'});
+  return URL.createObjectURL(blob);
+}
+function releasePreviewUrls(){
+  previewUrls.forEach(url => URL.revokeObjectURL(url));
+  previewUrls = [];
+}
+function renderPreviewStandby(sets){
+  ++previewVersion;
+  releasePreviewUrls();
+  $('viewerMeta').textContent = sets.length ? `${sets.length}件の問題セットを選択中` : '印刷対象を選択してください。';
+  $('previewList').innerHTML = sets.length
+    ? '<div class="notice">「プレビュー表示」を押すと、選択した問題セットをここに統合表示します。</div>'
+    : '<div class="notice">表示された問題セットをクリックして印刷対象を選択してください。</div>';
+}
+async function renderPreview(sets){
+  const version = ++previewVersion;
+  releasePreviewUrls();
+  $('viewerMeta').textContent = sets.length ? `${sets.length}件の問題セットを統合表示中` : '印刷対象を選択してください。';
+  if (!sets.length) {
+    $('previewList').innerHTML = '<div class="notice">表示された問題セットをクリックすると、選択した分だけここに統合PDFプレビューが表示されます。</div>';
+    return;
+  }
+  const sorted = sortSets(sets);
+  $('previewList').innerHTML = sorted.map((item, index) => {
+    const docs = rowsForSet(item);
+    return `
+    <section class="preview-item" id="preview-${escapeHtml(item.id)}-${index}">
+      <header>
+        <span>${escapeHtml(cardLabel(item))}</span>
+        <span>${docs.length}PDF</span>
+      </header>
+      <div class="notice" style="padding:12px;">PDFを結合しています...</div>
+    </section>`;
+  }).join('');
+  for (let index = 0; index < sorted.length; index++) {
+    const item = sorted[index];
+    const docs = rowsForSet(item);
+    try {
+      const url = await mergeRowsToUrl(docs);
+      if (version !== previewVersion) {
+        URL.revokeObjectURL(url);
+        return;
+      }
+      previewUrls.push(url);
+      const section = document.getElementById(`preview-${item.id}-${index}`);
+      if (section) {
+        section.innerHTML = `<header><span>${escapeHtml(cardLabel(item))}</span><a href="${url}" target="_blank" rel="noopener">結合PDFを開く</a></header><iframe class="preview-frame" src="${url}"></iframe>`;
+      }
+    } catch (error) {
+      const section = document.getElementById(`preview-${item.id}-${index}`);
+      if (section) section.innerHTML = `<header><span>${escapeHtml(cardLabel(item))}</span></header><div class="missing">PDF結合に失敗しました。<br>${escapeHtml(error.message)}</div>`;
+    }
+  }
+}
+function scrollPreviewToSet(item){
+  const target = document.querySelector(`[id^="preview-${CSS.escape(item.id)}"]`);
+  if (target) target.scrollIntoView({behavior: 'smooth', block: 'start'});
+}
+function clearFilters(){
+  state.exams.clear();
+  state.schools.clear();
+  state.subjects.clear();
+  state.subjectAll = false;
+  state.years.clear();
+  state.examTypes.clear();
+  state.included.clear();
+  state.search = '';
+  $('searchInput').value = '';
+  renderFilters();
+  renderCards();
+}
+function openPacket(autoPrint){
+  const sets = selectedVisibleSets();
+  if (!sets.length) return;
+  const rows = filesForSets(sets).map(({row}) => row);
+  mergeRowsToUrl(rows).then(url => {
+    if (mergedUrl) URL.revokeObjectURL(mergedUrl);
+    mergedUrl = url;
+    const pdfWindow = window.open(url, '_blank');
+    if (autoPrint && pdfWindow) {
+      setTimeout(() => {
+        try { pdfWindow.print(); } catch (_) {}
+      }, 900);
+    }
+  }).catch(error => alert('PDFの結合に失敗しました。\n' + error.message));
+}
+function init(){
+  $('statTotal').textContent = EXAMS.length;
+  $('statSets').textContent = SETS.filter(isProblemSet).length;
+  renderFilters();
+  renderCards();
+}
+$('searchInput').addEventListener('input', e => {
+  state.search = e.target.value;
+  resetTargetSelection();
+  renderCards();
+});
+document.querySelectorAll('input[name="outputSet"]').forEach(r => r.addEventListener('change', e => {
+  state.outputSet = e.target.value;
+  resetTargetSelection();
+  renderCards();
+}));
+$('clearFiltersBtn').addEventListener('click', clearFilters);
+$('printBtn').addEventListener('click', () => openPacket(true));
+$('printBtnViewer').addEventListener('click', () => openPacket(true));
+$('previewBtn').addEventListener('click', () => renderPreview(selectedVisibleSets()));
+init();
+</script>
+</body>
+</html>

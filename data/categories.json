@@ -1,0 +1,32 @@
+[
+  {
+    "id": "attendance-hr",
+    "name": "勤怠・人事",
+    "slug": "attendance-hr",
+    "description": "勤怠、スタッフ管理、出勤簿、労務まわりの実務ツール。"
+  },
+  {
+    "id": "classroom-tools",
+    "name": "塾・教室運営",
+    "slug": "classroom-tools",
+    "description": "塾、教室、教材作成、面談、座席管理などの現場向けツール。"
+  },
+  {
+    "id": "office-documents",
+    "name": "PDF・事務処理",
+    "slug": "office-documents",
+    "description": "PDF、書類整理、出力、日常事務の作業を軽くするツール。"
+  },
+  {
+    "id": "sales-consulting",
+    "name": "営業・コンサル支援",
+    "slug": "sales-consulting",
+    "description": "商談、提案、補助金支援、ヒアリングに使う資料やテンプレート。"
+  },
+  {
+    "id": "internal-ops",
+    "name": "社内運用",
+    "slug": "internal-ops",
+    "description": "社内ルール、運用資料、制作管理に関するコンテンツ。"
+  }
+]

@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>選択式小テスト作成システム</title>
+<style>
+:root {
+  --ink: #1f2937;
+  --muted: #6b7280;
+  --line: #d9e0e8;
+  --panel: #f7f8fb;
+  --paper: #ffffff;
+  --blue: #315f8c;
+  --blue-dark: #244866;
+  --green: #16845b;
+  --amber: #a46016;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: var(--ink); background: #eef2f6; }
+.app { min-height: 100vh; display: grid; grid-template-columns: 360px 1fr; }
+aside { background: var(--paper); border-right: 1px solid var(--line); padding: 20px; overflow-y: auto; }
+main { padding: 20px 24px 48px; overflow-x: hidden; }
+.brand { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+h1 { font-size: 22px; line-height: 1.2; margin: 0; letter-spacing: 0; }
+.version { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.section { border-top: 1px solid var(--line); padding-top: 16px; margin-top: 16px; }
+.section:first-of-type { border-top: 0; padding-top: 0; }
+.section h2 { font-size: 14px; margin: 0 0 12px; color: #374151; }
+.section-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+.section-heading h2 { margin: 0; }
+.compact-action { padding: 6px 9px; background: transparent; border: 1px solid #cbd5e1; color: #4b5563; font-size: 12px; white-space: nowrap; }
+.compact-action:hover { background: #f3f6f9; border-color: #94a3b8; }
+.field { margin-bottom: 12px; }
+label { display: block; font-size: 12px; font-weight: 700; color: #4b5563; margin-bottom: 6px; }
+select, input[type="number"] { width: 100%; border: 1px solid #c8d1dc; border-radius: 6px; background: white; color: var(--ink); padding: 10px 11px; font-size: 14px; }
+input[type="file"] { width: 100%; border: 1px dashed #aab6c5; border-radius: 6px; background: #fff; color: var(--ink); padding: 10px; font-size: 13px; }
+select:focus, input:focus { outline: 2px solid rgba(49,95,140,.2); border-color: var(--blue); }
+.state-control { display: none; }
+.choice-stage { margin-bottom: 14px; }
+.choice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+.choice-button { min-height: 42px; border: 1px solid #cbd5e1; border-radius: 6px; padding: 9px 10px; background: #fff; color: #334155; font-size: 13px; font-weight: 700; text-align: left; line-height: 1.35; overflow-wrap: anywhere; }
+.choice-button:hover { border-color: #7b93aa; background: #f5f8fb; }
+.choice-button.active { border-color: var(--blue); background: #e9f1f8; color: var(--blue-dark); box-shadow: inset 3px 0 0 var(--blue); }
+.choice-button .choice-meta { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; font-weight: 500; }
+.choice-button.active .choice-meta { color: #466985; }
+.dataset-choice-grid, .pdf-unit-grid { grid-template-columns: 1fr; }
+.pdf-unit-grid { max-height: 390px; overflow-y: auto; padding-right: 3px; }
+.pdf-unit-option { display: grid; grid-template-columns: 20px 62px minmax(0, 1fr); gap: 8px; align-items: center; min-height: 50px; margin: 0; border: 1px solid #cbd5e1; border-radius: 6px; padding: 9px 10px; background: #fff; color: #334155; cursor: pointer; }
+.pdf-unit-option:hover { border-color: #7b93aa; background: #f5f8fb; }
+.pdf-unit-option.active { border-color: var(--blue); background: #e9f1f8; box-shadow: inset 3px 0 0 var(--blue); }
+.pdf-unit-option input { width: 16px; height: 16px; margin: 0; accent-color: var(--blue); }
+.pdf-unit-no { color: var(--blue); font-size: 14px; font-weight: 800; white-space: nowrap; }
+.pdf-unit-title { min-width: 0; display: grid; gap: 2px; }
+.pdf-unit-heading { color: #1f2937; font-size: 13px; font-weight: 800; line-height: 1.35; overflow-wrap: anywhere; }
+.pdf-unit-sub { color: var(--muted); font-size: 11px; font-weight: 600; line-height: 1.35; }
+.pdf-unit-option.missing { border-style: dashed; color: #7c5a2d; }
+.pdf-selection-tools { display: flex; align-items: center; gap: 7px; margin-bottom: 9px; }
+.pdf-selection-tools button { padding: 7px 9px; font-size: 12px; }
+.pdf-selected-count { margin-left: auto; color: var(--muted); font-size: 12px; white-space: nowrap; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.segmented { display: grid; grid-template-columns: 1fr; gap: 6px; }
+.option { display: flex; align-items: center; gap: 8px; padding: 9px 10px; border: 1px solid #d1dae5; border-radius: 6px; background: #fff; font-size: 13px; }
+.option input { margin: 0; }
+.output-options { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.output-options .option { justify-content: center; margin: 0; padding: 9px 6px; }
+.hint { color: var(--muted); font-size: 12px; line-height: 1.45; margin-top: 6px; }
+.pdf-mode .excel-only { display: none !important; }
+.excel-mode .pdf-only { display: none !important; }
+.pdf-file-name { overflow-wrap: anywhere; }
+.actions { display: grid; grid-template-columns: 1fr; gap: 9px; }
+button { border: 0; border-radius: 6px; padding: 11px 14px; font-size: 14px; font-weight: 700; cursor: pointer; }
+button:disabled { cursor: not-allowed; opacity: .45; }
+.primary { background: var(--blue); color: #fff; }
+.primary:hover { background: var(--blue-dark); }
+.secondary { background: #e8edf3; color: #243447; }
+.secondary:hover { background: #dce4ec; }
+.success { background: var(--green); color: #fff; }
+.success:hover { background: #116844; }
+.status { min-height: 44px; border: 1px solid var(--line); background: var(--panel); border-radius: 6px; padding: 10px; color: #4b5563; font-size: 13px; line-height: 1.45; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+.stat { background: var(--paper); border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+.stat .num { font-size: 22px; font-weight: 800; color: var(--blue); }
+.stat .label { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.toolbar { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
+.toolbar-copy { min-width: 0; flex: 1; }
+.toolbar h2 { margin: 0; font-size: 18px; }
+.toolbar .status { margin-top: 8px; }
+.toolbar-print { flex: 0 0 auto; min-width: 92px; }
+.print-wrap { display: grid; gap: 18px; }
+.sheet { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 14px; box-shadow: 0 8px 20px rgba(31,41,55,.08); }
+.sheet-head { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: start; border-bottom: 1px solid var(--line); padding-bottom: 8px; margin-bottom: 9px; }
+.sheet-title { font-size: 17px; font-weight: 800; }
+.sheet-meta { font-size: 12px; color: #4b5563; line-height: 1.5; }
+.name-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; color: #4b5563; font-size: 12px; margin-bottom: 8px; }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 6px; }
+.card { border: 1.4px solid #2f3845; border-radius: 6px; min-height: 55px; padding: 7px; display: grid; grid-template-columns: 42px 1fr; gap: 7px; align-items: center; break-inside: avoid; }
+.no { width: 38px; height: 38px; border-radius: 4px; display: flex; align-items: center; justify-content: center; background: var(--blue); color: white; font-weight: 800; font-size: 11px; overflow: hidden; }
+.q { min-width: 0; }
+.prompt { font-size: 12px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 5px; }
+.answer-line { height: 17px; border-bottom: 2px solid var(--blue); display: flex; align-items: end; min-width: 0; }
+.answer-line span { color: var(--green); font-weight: 800; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.answer-sheet .answer-line { border-bottom-color: var(--green); }
+.target-underline { text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+.kanji-sheet { border-color: #cfd6df; padding: 10px 10px 28px; position: relative; }
+.kanji-print-layout { display: grid; grid-template-columns: 1fr 92px; gap: 14px; min-height: 500px; }
+.kanji-main { min-width: 0; }
+.kanji-grid { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); direction: rtl; gap: 10px; align-items: stretch; justify-items: center; }
+.kanji-problem { min-width: 0; width: 100%; direction: ltr; display: grid; grid-template-rows: 24px minmax(230px, 1fr) 122px; justify-items: center; align-items: start; gap: 8px; break-inside: avoid; }
+.kanji-no { width: 22px; height: 22px; border: 1px solid #6b7280; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; line-height: 1; background: #fff; }
+.kanji-prompt { writing-mode: vertical-rl; text-orientation: mixed; white-space: normal; overflow-wrap: anywhere; line-height: 1.55; font-size: 16px; font-family: "Hiragino Mincho ProN", "Yu Mincho", serif; height: 100%; max-height: 360px; width: max-content; max-width: 100%; justify-self: center; text-align: start; }
+.kanji-answer-box { width: 46px; height: 108px; border: 1.6px solid #4b5563; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 700; line-height: 1.15; overflow: hidden; }
+.kanji-answer-box.filled { writing-mode: vertical-rl; text-orientation: mixed; font-family: "Hiragino Mincho ProN", "Yu Mincho", serif; }
+.kanji-side { color: #374151; font-family: "Hiragino Mincho ProN", "Yu Mincho", serif; display: grid; grid-template-columns: repeat(5, auto); gap: 7px; align-content: start; justify-content: end; writing-mode: vertical-rl; text-orientation: mixed; }
+.kanji-badge { border: 2px solid #374151; border-radius: 6px; padding: 7px 5px; text-align: center; font-size: 12px; font-weight: 800; line-height: 1.35; }
+.kanji-side-meta { font-size: 10px; line-height: 1.45; max-height: 230px; overflow: hidden; }
+.kanji-date { font-size: 12px; letter-spacing: 3px; }
+.kanji-name-box { border: 1.4px solid #4b5563; width: 46px; height: 86px; display: grid; grid-template-rows: 18px 1fr; writing-mode: horizontal-tb; }
+.kanji-name-box span { border-bottom: 1.4px solid #4b5563; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+.kanji-score-box { border: 1.4px solid #4b5563; width: 46px; height: 70px; display: flex; align-items: end; justify-content: flex-end; padding: 4px; font-size: 12px; writing-mode: horizontal-tb; }
+.kanji-horizontal-number { display: inline-block; writing-mode: horizontal-tb; text-orientation: mixed; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+.kanji-footer { color: #b0b7c1; font-size: 10px; writing-mode: horizontal-tb; text-orientation: mixed; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; position: absolute; left: 10px; right: 10px; bottom: 8px; text-align: center; }
+.footer { border-top: 1px solid #e5e7eb; margin-top: 10px; padding-top: 8px; text-align: center; color: #9ca3af; font-size: 10px; }
+.empty { border: 1px dashed #b7c2cf; background: rgba(255,255,255,.7); border-radius: 8px; padding: 40px 20px; text-align: center; color: var(--muted); }
+.pdf-sheet { display: grid; gap: 8px; }
+.pdf-page-frame { border: 1px solid #cfd6df; border-radius: 6px; background: white; padding: 6px; break-inside: avoid; }
+.pdf-page-frame img { display: block; width: 100%; max-height: 260mm; object-fit: contain; }
+.pdf-page-label { border-left: 4px solid var(--blue); background: #eef4f9; color: #243447; font-size: 13px; font-weight: 800; line-height: 1.4; margin: 0 0 7px; padding: 7px 9px; }
+.pdf-embed { width: 100%; height: 72vh; min-height: 760px; border: 1px solid #cfd6df; border-radius: 6px; background: #fff; }
+.pdf-render { display: grid; gap: 8px; }
+.pdf-render-status { border: 1px dashed #c8d1dc; border-radius: 6px; padding: 18px; color: #6b7280; text-align: center; background: #fff; }
+.pdf-render-error { border-color: #d8a8a8; color: #8a3434; background: #fff8f8; }
+.pdf-retry { display: block; margin: 10px auto 0; padding: 7px 12px; background: #e8edf3; color: #243447; font-size: 12px; }
+body:not(.excel-dataset) .excel-only { display: none !important; }
+body:not(.pdf-dataset) .pdf-unit-section { display: none !important; }
+body:not(.excel-dataset):not(.pdf-dataset) .output-section { display: none !important; }
+body.output-problem .answer-sheet { display: none !important; }
+body.output-answer .question-sheet { display: none !important; }
+.hidden { display: none !important; }
+@media (max-width: 900px) {
+  .app { grid-template-columns: minmax(0, 1fr); }
+  aside, main { min-width: 0; }
+  aside { border-right: 0; border-bottom: 1px solid var(--line); padding: 18px 16px; }
+  main { padding: 20px 16px 40px; }
+  .brand { align-items: flex-start; flex-wrap: wrap; }
+  .stats { grid-template-columns: 1fr; }
+  .toolbar { align-items: stretch; }
+  .toolbar-print { min-width: 78px; }
+  .output-options { grid-template-columns: 1fr; }
+}
+@media print {
+  @page { size: A4; margin: 0; }
+  @page kanji { size: A4 landscape; margin: 0; }
+  body { background: white; }
+  aside, .toolbar, .stats, .empty { display: none !important; }
+  .app { display: block; }
+  main { padding: 0; }
+  .print-wrap { display: block; }
+  .sheet { box-shadow: none; border: 0; border-radius: 0; padding: 8mm; break-after: page; page-break-after: always; }
+  .sheet:last-child { break-after: auto; page-break-after: auto; }
+  .grid { gap: 5px; }
+  .card { min-height: 48px; padding: 6px; grid-template-columns: 38px 1fr 16px; gap: 5px; }
+  .no { width: 34px; height: 34px; font-size: 10px; }
+  .prompt { font-size: 11px; }
+  .answer-line span { font-size: 10px; }
+  .sheet.kanji-sheet { page: kanji; width: 297mm; min-height: 210mm; padding: 8mm 9mm 14mm; }
+  .kanji-print-layout { min-height: 185mm; grid-template-columns: 1fr 33mm; gap: 5mm; }
+  .kanji-grid { grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 3.2mm; }
+  .kanji-problem { grid-template-rows: 7mm minmax(101mm, 1fr) 42mm; gap: 2.5mm; }
+  .kanji-prompt { font-size: 15pt; max-height: 101mm; line-height: 1.45; }
+  .kanji-answer-box { width: 13mm; height: 37.5mm; font-size: 14pt; }
+  .kanji-side { gap: 2.5mm; }
+  .kanji-side-meta { font-size: 8.5pt; max-height: 92mm; }
+  .kanji-footer { left: 9mm; right: 9mm; bottom: 5mm; }
+  .sheet.pdf-sheet { display: block; padding: 0; break-after: auto; page-break-after: auto; }
+  .pdf-sheet > .sheet-head { display: none; }
+  .pdf-render { display: block; }
+  .pdf-page-frame {
+    width: 210mm;
+    height: 297mm;
+    overflow: hidden;
+    border: 0;
+    border-radius: 0;
+    padding: 8mm;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    display: flex;
+    flex-direction: column;
+  }
+  .pdf-page-label { flex: 0 0 auto; border: 1px solid #6b7280; border-left-width: 4px; background: white; color: black; font-size: 10pt; margin-bottom: 3mm; padding: 2mm 3mm; }
+  .pdf-page-frame img { flex: 1 1 auto; min-height: 0; width: 100%; max-height: 265mm; object-fit: contain; }
+  .pdf-embed { width: 210mm; height: 297mm; min-height: 0; border: 0; border-radius: 0; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand"><h1>選択式小テスト作成システム</h1><div class="version">Excel・PDF対応</div></div>
+    <div class="section">
+      <div class="section-heading"><h2>教材選択</h2><button class="compact-action" id="resetBtnHeading">条件をリセット</button></div>
+      <div class="choice-stage" id="subjectStage"><label>教科</label><div class="choice-grid" id="subjectChoices"></div><select id="subjectSelect" class="state-control" aria-hidden="true"></select></div>
+      <div class="choice-stage hidden" id="groupStage"><label>分類</label><div class="choice-grid" id="groupChoices"></div><select id="groupSelect" class="state-control" aria-hidden="true"></select></div>
+      <div class="choice-stage hidden" id="levelStage"><label>学年・級</label><div class="choice-grid" id="levelChoices"></div><select id="levelSelect" class="state-control" aria-hidden="true"></select></div>
+      <div class="choice-stage hidden" id="datasetField"><label>教材</label><div class="choice-grid dataset-choice-grid" id="datasetChoices"></div><select id="datasetSelect" class="state-control" aria-hidden="true"></select></div>
+      <div class="status" id="datasetInfo"></div>
+    </div>
+    <div class="section pdf-unit-section hidden">
+      <h2>問題を選択</h2>
+      <div class="pdf-selection-tools">
+        <button class="secondary" id="pdfSelectAllBtn" type="button">全て選択</button>
+        <button class="secondary" id="pdfClearBtn" type="button">選択解除</button>
+        <span class="pdf-selected-count" id="pdfSelectedCount">0件選択</span>
+      </div>
+      <div class="choice-grid pdf-unit-grid" id="pdfUnitChoices"></div>
+      <div class="status" id="pdfDatasetInfo">複数の問題を選ぶと、問題・解答をまとめて表示します。</div>
+    </div>
+    <div class="section output-section">
+      <h2>表示・印刷する内容</h2>
+      <div class="segmented output-options">
+        <label class="option"><input type="radio" name="outputSet" value="problem"> 問題系</label>
+        <label class="option"><input type="radio" name="outputSet" value="answer"> 解答系</label>
+        <label class="option"><input type="radio" name="outputSet" value="all" checked> 全て</label>
+      </div>
+    </div>
+    <div class="section excel-only">
+      <h2>出題設定</h2>
+      <div class="field"><label>出題形式</label><div class="segmented">
+        <label class="option"><input type="radio" name="mode" value="qa" checked> <span id="modeQaLabel">英語 → 日本語</span></label>
+        <label class="option"><input type="radio" name="mode" value="aq"> <span id="modeAqLabel">日本語 → 英語</span></label>
+        <label class="option"><input type="radio" name="mode" value="mixed"> <span id="modeMixedLabel">混在</span></label>
+      </div></div>
+      <div class="field"><label>出題順</label><div class="segmented">
+        <label class="option"><input type="radio" name="orderMode" value="sequence" checked> 問題順（序数順）</label>
+        <label class="option"><input type="radio" name="orderMode" value="random"> ランダム</label>
+      </div></div>
+      <div class="row">
+        <div class="field"><label for="startNumber">開始番号</label><input id="startNumber" type="number" min="1" value="1"></div>
+        <div class="field"><label for="endNumber">終了番号</label><input id="endNumber" type="number" min="1" value="30"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label for="questionCount">問題数</label><input id="questionCount" type="number" min="1" max="100" value="30"></div>
+        <div class="field"><label for="difficultySelect">難易度</label><select id="difficultySelect"><option value="all">すべて</option><option value="基礎">基礎</option><option value="標準">標準</option><option value="発展">発展</option></select></div>
+      </div>
+    </div>
+    <div class="section actions">
+      <button class="primary" id="generateBtn">小テストを作成</button>
+      <button class="success" id="printBtn">印刷</button>
+      <button class="secondary" id="resetBtn">条件をリセット</button>
+    </div>
+  </aside>
+  <main>
+    <div class="toolbar">
+      <div class="toolbar-copy"><h2 id="previewTitle">プレビュー</h2><div class="status" id="resultStatus">教材を選択して小テストを作成してください。</div></div>
+      <button class="success toolbar-print" id="printBtnPreview" disabled>印刷</button>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="num" id="statDataset">0</div><div class="label">選択教材の問題数</div></div>
+      <div class="stat"><div class="num" id="statFiltered">0</div><div class="label">範囲内の候補</div></div>
+      <div class="stat"><div class="num" id="statOutput">0</div><div class="label">出題数</div></div>
+    </div>
+    <div id="emptyState" class="empty">小テストはここに表示されます。</div>
+    <div id="printWrap" class="print-wrap hidden">
+      <section class="sheet question-sheet">
+        <div class="sheet-head"><div><div class="sheet-title">問題用紙</div><div class="sheet-meta" id="questionMeta"></div></div><div class="sheet-meta" id="questionCountMeta"></div></div>
+        <div class="name-row"><div>名前: __________________</div><div>日付: __________________</div><div>点数: ____ / <span id="scoreTotal">0</span></div></div>
+        <div class="grid" id="questionGrid"></div><div class="footer">株式会社 LLLD - テスト作成・印刷システム</div>
+      </section>
+      <section class="sheet answer-sheet">
+        <div class="sheet-head"><div><div class="sheet-title">解答用紙</div><div class="sheet-meta" id="answerMeta"></div></div><div class="sheet-meta" id="answerCountMeta"></div></div>
+        <div class="grid" id="answerGrid"></div><div class="footer">株式会社 LLLD - テスト作成・印刷システム</div>
+      </section>
+    </div>
+  </main>
+</div>
+<script src="quiz_data.js"></script>
+<script src="PDF小テストデータ/pdf_quiz_manifest.js"></script>
+<script src="vendor/pdfjs/pdf.min.js"></script>
+<script>
+const DATASETS = window.QUIZ_DATASETS || [];
+const PDF_UNITS = window.PDF_QUIZ_MANIFEST || [];
+function buildPdfDatasets(records) {
+  const grouped = new Map();
+  records.forEach(record => {
+    const key = `${record.title}|${record.subject}`;
+    if (!grouped.has(key)) {
+      grouped.set(key, {
+        id: `pdf_${grouped.size + 1}`,
+        format: 'pdf',
+        subject: record.subject,
+        group: record.group,
+        level: record.level,
+        type: 'PDF小テスト型',
+        title: record.title,
+        source: record.source,
+        count: 0,
+        min: record.unit,
+        max: record.unit,
+        hasDifficulty: false,
+        items: []
+      });
+    }
+    const dataset = grouped.get(key);
+    dataset.items.push(record);
+    dataset.count = dataset.items.length;
+    dataset.min = Math.min(dataset.min, record.unit);
+    dataset.max = Math.max(dataset.max, record.unit);
+  });
+  return [...grouped.values()].map(dataset => {
+    dataset.items.sort((a, b) => a.unit - b.unit);
+    return dataset;
+  });
+}
+DATASETS.push(...buildPdfDatasets(PDF_UNITS));
+const byId = new Map(DATASETS.map(d => [d.id, d]));
+const el = id => document.getElementById(id);
+const subjectSelect = el('subjectSelect');
+const groupSelect = el('groupSelect');
+const levelSelect = el('levelSelect');
+const datasetSelect = el('datasetSelect');
+let selectedPdfUnits = new Set();
+let activePdfDatasetId = '';
+let pdfRenderGeneration = 0;
+let activePdf = null;
+let activePdfFileName = '';
+const PDF_PRESETS = [
+  { id:'math4a', title:'中受新演習 小4上 算数', expected:'中受新演習小４上　算数　小テスト　問題　解答.pdf', problemStart:1, problemPages:2, answerStart:41, answerCols:2, answerRows:1, units:20 },
+  { id:'math4b', title:'中受新演習 小4下 算数', expected:'中受新演習小4下　算数　小テスト　問題　解答.pdf', problemStart:1, problemPages:2, answerStart:37, answerCols:2, answerRows:1, units:18 },
+  { id:'science4a', title:'中受新演習 小4上 理科', expected:'中受新演習小４上　理科　小テスト　問題　解答.pdf', problemStart:1, problemPages:1, answerStart:20, answerCols:2, answerRows:2, units:20 },
+  { id:'science4b', title:'中受新演習 小4下 理科', expected:'中受新演習小４下　理科　小テスト　問題　解答.pdf', problemStart:1, problemPages:1, answerStart:19, answerCols:2, answerRows:2, units:18 },
+  { id:'science5a', title:'中受新演習 小5上 理科', expected:'中受新演習小5上　理科　小テスト　問題　解答.pdf', problemStart:1, problemPages:2, answerStart:39, answerCols:2, answerRows:1, units:19 },
+  { id:'science5b', title:'中受新演習 小5下 理科', expected:'中受新演習小5下　理科　小テスト　問題　解答.pdf', problemStart:1, problemPages:2, answerStart:36, answerCols:2, answerRows:1, units:18 },
+  { id:'science6a', title:'中受新演習 小6上 理科', expected:'中受新演習小6上　理科　小テスト　問題　解答.pdf', problemStart:1, problemPages:2, answerStart:41, answerCols:2, answerRows:1, units:20 },
+  { id:'science6b', title:'中受新演習 小6下 理科', expected:'中受新演習小6下　理科　小テスト　問題　解答.pdf', problemStart:1, problemPages:2, answerStart:36, answerCols:2, answerRows:1, units:18 },
+  { id:'custom', title:'手動設定', expected:'', problemStart:1, problemPages:1, answerStart:1, answerCols:2, answerRows:1, units:1 }
+];
+const order = ['国語','社会','算数','数学','理科','英語','その他'];
+const levelOrder = ['小1','小2','小3','小4','小5','小6','小４上','小４下','小4上','小4下','小5上','小5下','小6上','小6下','中1','中2','中3','高1','高2','高3','全学年共通','10級','9級','8級','7級','6級','5級','4級','3級','準2級','2級','準1級','1級','級未分類'];
+const groupOrder = ['古典','漢検','学校準拠漢字'];
+function uniq(arr) { return [...new Set(arr.filter(Boolean))]; }
+function sortedBy(list, orderList) { return [...list].sort((a,b) => { const ai=orderList.indexOf(a), bi=orderList.indexOf(b); return (ai<0?999:ai)-(bi<0?999:bi) || a.localeCompare(b,'ja'); }); }
+function fillSelect(select, values, current) {
+  select.innerHTML = '';
+  const blank=document.createElement('option'); blank.value=''; blank.textContent=''; select.appendChild(blank);
+  values.forEach(v => { const o=document.createElement('option'); o.value=v; o.textContent=v; select.appendChild(o); });
+  select.value = current && values.includes(current) ? current : '';
+}
+function renderChoiceButtons(containerId, choices, selectedValue, onSelect) {
+  const container = el(containerId);
+  container.innerHTML = '';
+  choices.forEach(choice => {
+    const value = typeof choice === 'string' ? choice : choice.value;
+    const label = typeof choice === 'string' ? choice : choice.label;
+    const meta = typeof choice === 'string' ? '' : choice.meta;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = `choice-button${value === selectedValue ? ' active' : ''}`;
+    button.dataset.value = value;
+    button.setAttribute('aria-pressed', value === selectedValue ? 'true' : 'false');
+    button.innerHTML = `${escapeHtml(label)}${meta ? `<span class="choice-meta">${escapeHtml(meta)}</span>` : ''}`;
+    button.addEventListener('click', () => onSelect(value));
+    container.appendChild(button);
+  });
+}
+function selectOnlyChoice(select, values) {
+  if (!select.value && values.length === 1) select.value = values[0];
+}
+function clearSelect(select) {
+  select.innerHTML = '<option value=""></option>';
+  select.value = '';
+}
+function clearPreview() {
+  pdfRenderGeneration += 1;
+  el('emptyState').classList.remove('hidden');
+  el('printWrap').classList.add('hidden');
+  el('printWrap').innerHTML = '';
+  el('previewTitle').textContent = 'プレビュー';
+  el('resultStatus').textContent = '教材を選択して小テストを作成してください。';
+  setPrintEnabled(false);
+}
+function setPrintEnabled(enabled) {
+  el('printBtn').disabled = !enabled;
+  el('printBtnPreview').disabled = !enabled;
+}
+function applyOutputSet() {
+  const value = document.querySelector('input[name="outputSet"]:checked')?.value || 'all';
+  document.body.classList.toggle('output-problem', value === 'problem');
+  document.body.classList.toggle('output-answer', value === 'answer');
+}
+function uiGroup(d) {
+  if (d.subject !== '国語') return d.group;
+  const text = `${d.title} ${d.source} ${d.type}`;
+  if (/漢検|漢字検定/.test(text)) return '漢検';
+  if (/学校準拠漢字|小学校準拠漢字|小学.*漢字|小[1-6].*漢字/.test(text)) return '学校準拠漢字';
+  if (/古典|古文|古語/.test(text)) return '古典';
+  return '学校準拠漢字';
+}
+function updateModeLabels() {
+  const isJapanese = subjectSelect.value === '国語';
+  const group = groupSelect.value;
+  if (isJapanese && (group === '漢検' || group === '学校準拠漢字')) {
+    el('modeQaLabel').textContent = '漢字→読み';
+    el('modeAqLabel').textContent = '読み→漢字';
+  } else {
+    el('modeQaLabel').textContent = isJapanese ? '古語 → 現代語' : '英語 → 日本語';
+    el('modeAqLabel').textContent = isJapanese ? '現代語 → 古語' : '日本語 → 英語';
+  }
+  el('modeMixedLabel').textContent = '混在';
+}
+function currentDatasets() {
+  if (!subjectSelect.value || !groupSelect.value || !levelSelect.value) return [];
+  return DATASETS.filter(d => d.subject===subjectSelect.value && uiGroup(d)===groupSelect.value && d.level===levelSelect.value);
+}
+function isKanjiDataset(d) { return d && d.subject === '国語' && (uiGroup(d) === '漢検' || uiGroup(d) === '学校準拠漢字'); }
+function selectedDataset() { return byId.get(datasetSelect.value) || null; }
+function refreshSubjects() {
+  const subjects = sortedBy(uniq(DATASETS.map(d=>d.subject)), order);
+  fillSelect(subjectSelect, subjects, subjectSelect.value);
+  selectOnlyChoice(subjectSelect, subjects);
+  renderChoiceButtons('subjectChoices', subjects, subjectSelect.value, value => {
+    if (subjectSelect.value === value) return;
+    subjectSelect.value = value;
+    groupSelect.value = ''; levelSelect.value = ''; datasetSelect.value = '';
+    clearPreview();
+    refreshSubjects();
+  });
+  refreshGroups();
+}
+function refreshGroups() {
+  updateModeLabels();
+  el('groupStage').classList.toggle('hidden', !subjectSelect.value);
+  if (!subjectSelect.value) {
+    clearSelect(groupSelect); clearSelect(levelSelect); clearSelect(datasetSelect);
+    el('groupChoices').innerHTML = ''; el('levelChoices').innerHTML = ''; el('datasetChoices').innerHTML = '';
+    el('levelStage').classList.add('hidden'); el('datasetField').classList.add('hidden');
+    updateDatasetInfo(); return;
+  }
+  const groups=uniq(DATASETS.filter(d=>d.subject===subjectSelect.value).map(uiGroup));
+  const desired=subjectSelect.value==='国語' ? groupOrder.filter(g => groups.includes(g)) : sortedBy(groups, ['全学年共通','英検']);
+  fillSelect(groupSelect, desired, groupSelect.value);
+  selectOnlyChoice(groupSelect, desired);
+  renderChoiceButtons('groupChoices', desired, groupSelect.value, value => {
+    if (groupSelect.value === value) return;
+    groupSelect.value = value;
+    levelSelect.value = ''; datasetSelect.value = '';
+    clearPreview();
+    refreshGroups();
+  });
+  refreshLevels();
+}
+function refreshLevels() {
+  el('levelStage').classList.toggle('hidden', !groupSelect.value);
+  if (!subjectSelect.value || !groupSelect.value) {
+    clearSelect(levelSelect); clearSelect(datasetSelect);
+    el('levelChoices').innerHTML = ''; el('datasetChoices').innerHTML = '';
+    el('datasetField').classList.add('hidden');
+    updateDatasetInfo(); return;
+  }
+  const levels=uniq(DATASETS.filter(d=>d.subject===subjectSelect.value && uiGroup(d)===groupSelect.value).map(d=>d.level));
+  const desired = sortedBy(levels, levelOrder);
+  fillSelect(levelSelect, desired, levelSelect.value);
+  selectOnlyChoice(levelSelect, desired);
+  renderChoiceButtons('levelChoices', desired, levelSelect.value, value => {
+    if (levelSelect.value === value) return;
+    levelSelect.value = value;
+    datasetSelect.value = '';
+    clearPreview();
+    refreshLevels();
+  });
+  refreshDatasets();
+}
+function refreshDatasets() {
+  const currentDatasetId = datasetSelect.value;
+  let sets=currentDatasets(); datasetSelect.innerHTML='';
+  const blank=document.createElement('option'); blank.value=''; blank.textContent=''; datasetSelect.appendChild(blank);
+  if (groupSelect.value === '漢検' || groupSelect.value === '学校準拠漢字') sets=[...sets].sort((a,b)=>a.title.localeCompare(b.title,'ja'));
+  sets.forEach(d => { const o=document.createElement('option'); o.value=d.id; o.textContent=d.format === 'pdf' ? `${d.title}（PDF ${d.count}回）` : `${d.title}（${d.count}問）`; datasetSelect.appendChild(o); });
+  datasetSelect.value = sets.some(d => d.id === currentDatasetId) ? currentDatasetId : '';
+  if (!datasetSelect.value && sets.length === 1) datasetSelect.value = sets[0].id;
+  el('datasetField').classList.toggle('hidden', !levelSelect.value);
+  renderChoiceButtons('datasetChoices', sets.map(d => ({
+    value: d.id,
+    label: d.title,
+    meta: d.format === 'pdf' ? `PDF ${d.count}回` : `${d.count.toLocaleString()}問`
+  })), datasetSelect.value, value => {
+    if (datasetSelect.value === value) return;
+    datasetSelect.value = value;
+    clearPreview();
+    refreshDatasets();
+  });
+  updateDatasetInfo();
+}
+function updateDatasetInfo() {
+  const d=selectedDataset();
+  const isPdf = Boolean(d && d.format === 'pdf');
+  const isExcel = Boolean(d && d.format !== 'pdf');
+  document.body.classList.toggle('pdf-dataset', isPdf);
+  document.body.classList.toggle('excel-dataset', isExcel);
+  document.querySelector('.pdf-unit-section').classList.toggle('hidden', !isPdf);
+  if (!d) {
+    activePdfDatasetId = '';
+    selectedPdfUnits.clear();
+    el('datasetInfo').innerHTML = subjectSelect.value ? `${subjectSelect.value}${groupSelect.value ? ' / ' + groupSelect.value : ''}<br>教材を選択してください。` : '教材を選択してください。';
+    el('startNumber').value = 1; el('endNumber').value = 30;
+    el('statDataset').textContent = '0'; el('statFiltered').textContent = '0'; el('statOutput').textContent = '0';
+    el('difficultySelect').disabled = true; return;
+  }
+  if (d.format === 'pdf') {
+    el('datasetInfo').innerHTML = `${d.subject} / ${uiGroup(d)} / ${d.level}<br>${d.type}<br>第${d.min}回〜第${d.max}回 / ${d.count}単元`;
+    if (activePdfDatasetId !== d.id) {
+      activePdfDatasetId = d.id;
+      selectedPdfUnits = new Set(d.items.length ? [d.items[0].unit] : []);
+    }
+    renderPdfUnitChoices(d);
+    el('pdfDatasetInfo').innerHTML = `${d.title} / ${d.subject}<br>チェックした問題をまとめてプレビュー・印刷できます。`;
+    el('statDataset').textContent = d.count.toLocaleString();
+    el('statFiltered').textContent = d.items.filter(x => x.problem).length.toLocaleString();
+    el('statOutput').textContent = '0';
+    el('generateBtn').textContent = 'PDFプリントを表示';
+    generatePdfTest(d);
+    return;
+  }
+  el('datasetInfo').innerHTML = `${d.subject} / ${uiGroup(d)} / ${d.level}<br>${d.type}<br>番号 ${d.min}〜${d.max} / ${d.count}問`;
+  el('startNumber').value=d.min; el('endNumber').value=Math.min(d.max, d.min+29); el('statDataset').textContent=d.count.toLocaleString();
+  el('difficultySelect').disabled = !d.hasDifficulty;
+  if (!d.hasDifficulty) el('difficultySelect').value = 'all';
+  el('generateBtn').textContent = '小テストを作成';
+  updateFilteredCount();
+}
+function getFiltered() {
+  const d=selectedDataset(); if (!d) return [];
+  if (d.format === 'pdf') return d.items;
+  const start=Number(el('startNumber').value)||d.min, end=Number(el('endNumber').value)||d.max, diff=el('difficultySelect').value;
+  return d.items.filter(x => x.n>=start && x.n<=end && (diff==='all' || x.d===diff));
+}
+function updateFilteredCount() {
+  const d = selectedDataset();
+  if (d && d.format === 'pdf') {
+    el('statFiltered').textContent = d.items.filter(x => x.problem).length.toLocaleString();
+    return;
+  }
+  el('statFiltered').textContent = getFiltered().length.toLocaleString();
+}
+function shuffle(items) { const arr=[...items]; for (let i=arr.length-1;i>0;i--) { const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
+function escapeHtml(s) { return String(s ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
+function underlinedHtml(s) {
+  const escaped = escapeHtml(s);
+  return escaped.replace(/_([^_]+)_/g, '<span class="target-underline">$1</span>');
+}
+function kanjiPrompt(item, actualMode) {
+  if (!item.reading || !item.kanji) return actualMode === 'qa' ? item.q : item.a;
+  return actualMode === 'qa'
+    ? item.q.replace(/（[^（）]+）/, `（_${item.kanji}_）`)
+    : item.q.replace(/（[^（）]+）/, `（_${item.reading}_）`);
+}
+function kanjiAnswer(item, actualMode) {
+  if (!item.reading || !item.kanji) return actualMode === 'qa' ? item.a : item.q;
+  return actualMode === 'qa' ? item.reading : item.kanji;
+}
+function makeCard(item, mode, answerSheet) {
+  const actualMode = item._mode || mode;
+  const isKanji = Boolean(item.reading && item.kanji);
+  const prompt = isKanji ? kanjiPrompt(item, actualMode) : (actualMode === 'qa' ? item.q : item.a);
+  const answer = isKanji ? kanjiAnswer(item, actualMode) : (actualMode === 'qa' ? item.a : item.q);
+  return `<div class="card"><div class="no">${item.n}</div><div class="q"><div class="prompt" title="${escapeHtml(prompt.replaceAll('_',''))}">${underlinedHtml(prompt)}<\/div><div class="answer-line">${answerSheet ? `<span title="${escapeHtml(answer)}">${escapeHtml(answer)}<\/span>` : ''}<\/div><\/div><\/div>`;
+}
+function makeKanjiCard(item, mode, answerSheet) {
+  const actualMode = item._mode || mode;
+  const prompt = kanjiPrompt(item, actualMode);
+  const answer = kanjiAnswer(item, actualMode);
+  return `<div class="kanji-problem"><div class="kanji-no">${item.n}</div><div class="kanji-prompt" title="${escapeHtml(prompt.replaceAll('_',''))}">${underlinedHtml(prompt)}<\/div><div class="kanji-answer-box ${answerSheet ? 'filled' : ''}">${answerSheet ? escapeHtml(answer) : ''}<\/div><\/div>`;
+}
+function chunkItems(items, size) {
+  const chunks = [];
+  for (let i = 0; i < items.length; i += size) chunks.push(items.slice(i, i + size));
+  return chunks;
+}
+function stripMeta(meta) {
+  return meta.replace(/<br>/g, ' / ').replace(/<[^>]+>/g, '');
+}
+function kanjiTitleHtml(title) {
+  return escapeHtml(title).replace(/([0-9]+(?:\/[0-9]+)?)/g, '<span class="kanji-horizontal-number">$1</span>');
+}
+function kanjiSheetHtml(kind, items, pageIndex, totalPages, meta, totalCount, mode) {
+  const isAnswer = kind === 'answer';
+  const titleBase = isAnswer ? '解答用紙' : '問題用紙';
+  const title = totalPages > 1 ? `${titleBase} ${pageIndex + 1}/${totalPages}` : titleBase;
+  const cards = items.map(x => makeKanjiCard(x, mode, isAnswer)).join('');
+  return `<section class="sheet ${isAnswer ? 'answer-sheet' : 'question-sheet'} kanji-sheet">
+    <div class="kanji-print-layout">
+      <div class="kanji-main">
+        <div class="kanji-grid">${cards}</div>
+      </div>
+      <div class="kanji-side">
+        <div class="kanji-badge">漢字<br>${isAnswer ? '解答' : 'テスト'}</div>
+        <div class="kanji-side-meta">${kanjiTitleHtml(title)}<br>${escapeHtml(stripMeta(meta))}<br><span class="kanji-horizontal-number">${items.length}</span>問 / 全<span class="kanji-horizontal-number">${totalCount}</span>問</div>
+        <div class="kanji-date">月　日</div>
+        <div class="kanji-name-box"><span>名前</span><div></div></div>
+        <div class="kanji-score-box">点</div>
+      </div>
+    </div>
+    <div class="kanji-footer">株式会社 LLLD</div>
+  </section>`;
+}
+function sheetHtml(kind, items, pageIndex, totalPages, meta, totalCount, mode) {
+  if (items.some(x => x.reading && x.kanji)) return kanjiSheetHtml(kind, items, pageIndex, totalPages, meta, totalCount, mode);
+  const isAnswer = kind === 'answer';
+  const titleBase = isAnswer ? '解答用紙' : '問題用紙';
+  const title = totalPages > 1 ? `${titleBase} ${pageIndex + 1}/${totalPages}` : titleBase;
+  const nameRow = isAnswer ? '' : `<div class="name-row"><div>名前: __________________</div><div>日付: __________________</div><div>点数: ____ / ${totalCount}</div></div>`;
+  const cards = items.map(x => makeCard(x, mode, isAnswer)).join('');
+  return `<section class="sheet ${isAnswer ? 'answer-sheet' : 'question-sheet'}">
+    <div class="sheet-head"><div><div class="sheet-title">${title}</div><div class="sheet-meta">${meta}</div></div><div class="sheet-meta">問題数: ${items.length}</div></div>
+    ${nameRow}
+    <div class="grid">${cards}</div>
+    <div class="footer">株式会社 LLLD - テスト作成・印刷システム</div>
+  </section>`;
+}
+function renderPdfUnitChoices(dataset) {
+  const container = el('pdfUnitChoices');
+  container.innerHTML = '';
+  dataset.items.forEach(item => {
+    const label = document.createElement('label');
+    const checked = selectedPdfUnits.has(item.unit);
+    label.className = `pdf-unit-option${checked ? ' active' : ''}${item.problem ? '' : ' missing'}`;
+    const unitHeading = item.unitTitle || '単元名未登録';
+    label.innerHTML = `<input type="checkbox" value="${item.unit}" ${checked ? 'checked' : ''}><span class="pdf-unit-no">第${item.unit}回</span><span class="pdf-unit-title"><span class="pdf-unit-heading">${escapeHtml(unitHeading)}</span><span class="pdf-unit-sub">単元名・見出し${item.answer ? '' : ' / 解答未登録'}</span>${item.problem ? '' : '<span class="choice-meta">問題未検出・解答のみ</span>'}</span>`;
+    label.querySelector('input').addEventListener('change', event => {
+      if (event.target.checked) selectedPdfUnits.add(item.unit);
+      else selectedPdfUnits.delete(item.unit);
+      label.classList.toggle('active', event.target.checked);
+      updatePdfSelectedCount();
+      generatePdfTest(dataset);
+    });
+    container.appendChild(label);
+  });
+  updatePdfSelectedCount();
+}
+function updatePdfSelectedCount() {
+  el('pdfSelectedCount').textContent = `${selectedPdfUnits.size}件選択`;
+}
+function pdfFallbackEmbed(url, label) {
+  if (!url) return `<div class="empty">${escapeHtml(label)}がありません。</div>`;
+  return `<iframe class="pdf-embed" src="${encodeURI(url)}#toolbar=0&navpanes=0" title="${escapeHtml(label)}"></iframe>`;
+}
+function pdfRenderBox(url, label, kind) {
+  if (!url) return `<div class="empty">${escapeHtml(label)}がありません。</div>`;
+  return `<div class="pdf-render" data-pdf-url="${escapeHtml(url)}" data-pdf-label="${escapeHtml(label)}" data-pdf-kind="${escapeHtml(kind)}" data-state="waiting"><div class="pdf-render-status">PDFを読み込んでいます。</div></div>`;
+}
+async function fetchPdfBytes(url) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 30000);
+  try {
+    const response = await fetch(url, { cache: 'no-store', signal: controller.signal });
+    if (!response.ok) throw new Error(`PDF取得エラー (${response.status})`);
+    return new Uint8Array(await response.arrayBuffer());
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+async function renderPdfInto(container, generation) {
+  const url = container.dataset.pdfUrl;
+  const label = container.dataset.pdfLabel || 'PDF';
+  const kind = container.dataset.pdfKind || '';
+  if (!url) return;
+  container.dataset.state = 'loading';
+  try {
+    if (!window.pdfjsLib) throw new Error('PDF.js is not loaded.');
+    pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('vendor/pdfjs/pdf.worker.min.js', document.baseURI).href;
+    const bytes = await fetchPdfBytes(url);
+    if (generation !== pdfRenderGeneration || !container.isConnected) return;
+    const pdf = await pdfjsLib.getDocument({ data: bytes, disableWorker: true }).promise;
+    if (generation !== pdfRenderGeneration || !container.isConnected) return;
+    container.innerHTML = '';
+    for (let pageNo = 1; pageNo <= pdf.numPages; pageNo++) {
+      const page = await pdf.getPage(pageNo);
+      const viewport = page.getViewport({ scale: 1.65 });
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.ceil(viewport.width);
+      canvas.height = Math.ceil(viewport.height);
+      const ctx = canvas.getContext('2d');
+      await page.render({ canvasContext: ctx, viewport }).promise;
+      if (generation !== pdfRenderGeneration || !container.isConnected) return;
+      const frame = document.createElement('div');
+      frame.className = 'pdf-page-frame';
+      const pageLabel = document.createElement('div');
+      pageLabel.className = 'pdf-page-label';
+      pageLabel.textContent = `${label} ${pdf.numPages > 1 ? pageNo + '/' + pdf.numPages : ''}`;
+      const img = document.createElement('img');
+      img.alt = pageLabel.textContent;
+      img.src = canvas.toDataURL('image/png');
+      frame.appendChild(pageLabel);
+      frame.appendChild(img);
+      container.appendChild(frame);
+    }
+    container.dataset.state = 'rendered';
+  } catch (error) {
+    if (generation !== pdfRenderGeneration || !container.isConnected) return;
+    container.dataset.state = 'error';
+    container.innerHTML = `<div class="pdf-render-status pdf-render-error">PDFを表示できませんでした。<br>${escapeHtml(error.message || String(error))}<button type="button" class="pdf-retry">再読み込み</button></div>`;
+    container.querySelector('.pdf-retry').addEventListener('click', () => {
+      container.innerHTML = '<div class="pdf-render-status">PDFを再読み込みしています。</div>';
+      renderPdfInto(container, pdfRenderGeneration);
+    });
+  }
+}
+async function renderPdfPreviews(generation) {
+  const containers = [...document.querySelectorAll('.pdf-render')];
+  for (const container of containers) {
+    if (generation !== pdfRenderGeneration) return;
+    await renderPdfInto(container, generation);
+  }
+}
+function generatePdfTest(dataset = selectedDataset()) {
+  if (!dataset || dataset.format !== 'pdf') return;
+  const items = dataset.items.filter(item => selectedPdfUnits.has(item.unit));
+  if (!items.length) {
+    clearPreview();
+    el('resultStatus').textContent = '表示する問題を1つ以上選択してください。';
+    el('statOutput').textContent = '0';
+    return;
+  }
+  const question = items.map(item => {
+    const unitTitle = item.unitTitle || '単元名未登録';
+    const meta = `${dataset.subject} / ${uiGroup(dataset)} / ${dataset.level} / ${dataset.title}<br>第${item.unit}回　${escapeHtml(unitTitle)}`;
+    return `<section class="sheet question-sheet pdf-sheet">
+    <div class="sheet-head"><div><div class="sheet-title">問題用紙</div><div class="sheet-meta">${meta}</div></div><div class="sheet-meta">PDF</div></div>
+    ${pdfRenderBox(item.problem, `第${item.unit}回　${unitTitle}　問題`, 'problem')}
+  </section>`;
+  }).join('');
+  const answer = items.map(item => {
+    const unitTitle = item.unitTitle || '単元名未登録';
+    const meta = `${dataset.subject} / ${uiGroup(dataset)} / ${dataset.level} / ${dataset.title}<br>第${item.unit}回　${escapeHtml(unitTitle)}`;
+    return `<section class="sheet answer-sheet pdf-sheet">
+    <div class="sheet-head"><div><div class="sheet-title">解答・解説</div><div class="sheet-meta">${meta}</div></div><div class="sheet-meta">PDF</div></div>
+    ${pdfRenderBox(item.answer, `第${item.unit}回　${unitTitle}　解答・解説`, 'answer')}
+  </section>`;
+  }).join('');
+  el('printWrap').innerHTML = question + answer;
+  el('emptyState').classList.add('hidden');
+  el('printWrap').classList.remove('hidden');
+  el('statOutput').textContent = items.length.toLocaleString();
+  el('previewTitle').textContent = `${dataset.title} ${dataset.subject}`;
+  const missingProblems = items.filter(item => !item.problem).length;
+  el('resultStatus').textContent = `${items.length}回分の問題・解答を表示しました。${missingProblems ? `うち${missingProblems}回は問題ページが未検出です。` : ''}`;
+  applyOutputSet();
+  setPrintEnabled(true);
+  const generation = ++pdfRenderGeneration;
+  renderPdfPreviews(generation);
+}
+function generateTest() {
+  const d=selectedDataset(); const candidates=getFiltered();
+  if (!d) { el('resultStatus').textContent='教材を選択してください。'; return; }
+  if (d.format === 'pdf') { generatePdfTest(d); return; }
+  const desired=Math.max(1, Math.min(100, Number(el('questionCount').value)||30));
+  const orderMode=document.querySelector('input[name="orderMode"]:checked').value;
+  const ordered = orderMode === 'random' ? shuffle(candidates) : [...candidates].sort((a,b) => Number(a.n)-Number(b.n));
+  const chosen=ordered.slice(0, desired);
+  if (!chosen.length) { el('resultStatus').textContent='条件に合う問題がありません。範囲や難易度を確認してください。'; return; }
+  const mode=document.querySelector('input[name="mode"]:checked').value;
+  const prepared=chosen.map(item => ({...item, _mode: mode === 'mixed' ? (Math.random() > .5 ? 'qa' : 'aq') : mode}));
+  const meta=`${d.subject} / ${uiGroup(d)} / ${d.level} / ${d.title}<br>範囲 ${el('startNumber').value}〜${el('endNumber').value}`;
+  const pageSize = isKanjiDataset(d) ? 10 : 30;
+  const pages = chunkItems(prepared, pageSize);
+  const questionPages = pages.map((items, idx) => sheetHtml('question', items, idx, pages.length, meta, chosen.length, mode)).join('');
+  const answerPages = pages.map((items, idx) => sheetHtml('answer', items, idx, pages.length, meta, chosen.length, mode)).join('');
+  el('printWrap').innerHTML = questionPages + answerPages;
+  el('emptyState').classList.add('hidden'); el('printWrap').classList.remove('hidden');
+  applyOutputSet();
+  setPrintEnabled(true);
+  el('statOutput').textContent=chosen.length.toLocaleString();
+  el('previewTitle').textContent=`${d.title}`;
+  el('resultStatus').textContent=`${candidates.length}問の候補から${chosen.length}問を作成しました。${pages.length > 1 ? `問題用紙・解答用紙は各${pages.length}ページです。` : '問題用紙・解答用紙は各1ページです。'}`;
+}
+['startNumber','endNumber','difficultySelect'].forEach(id => el(id).addEventListener('input', updateFilteredCount));
+el('generateBtn').addEventListener('click', generateTest);
+function printPreview() {
+  if (!el('printWrap').classList.contains('hidden')) window.print();
+}
+function resetConditions() {
+  subjectSelect.value = ''; groupSelect.value = ''; levelSelect.value = ''; datasetSelect.value = '';
+  activePdfDatasetId = '';
+  selectedPdfUnits.clear();
+  document.querySelector('input[name="outputSet"][value="all"]').checked = true;
+  document.body.classList.remove('pdf-dataset', 'excel-dataset', 'output-problem', 'output-answer');
+  clearPreview();
+  refreshSubjects();
+}
+el('printBtn').addEventListener('click', printPreview);
+el('printBtnPreview').addEventListener('click', printPreview);
+el('resetBtn').addEventListener('click', resetConditions);
+el('resetBtnHeading').addEventListener('click', resetConditions);
+el('pdfSelectAllBtn').addEventListener('click', () => {
+  const dataset = selectedDataset();
+  if (!dataset || dataset.format !== 'pdf') return;
+  selectedPdfUnits = new Set(dataset.items.map(item => item.unit));
+  renderPdfUnitChoices(dataset);
+  generatePdfTest(dataset);
+});
+el('pdfClearBtn').addEventListener('click', () => {
+  const dataset = selectedDataset();
+  if (!dataset || dataset.format !== 'pdf') return;
+  selectedPdfUnits.clear();
+  renderPdfUnitChoices(dataset);
+  generatePdfTest(dataset);
+});
+document.querySelectorAll('input[name="outputSet"]').forEach(input => input.addEventListener('change', applyOutputSet));
+setPrintEnabled(false);
+refreshSubjects();
+</script>
+</body>
+</html>

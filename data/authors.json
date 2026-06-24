@@ -1,0 +1,10 @@
+[
+  {
+    "id": "llld-official",
+    "name": "LLLD公式",
+    "type": "official",
+    "summary": "株式会社LLLDが作成・管理する公式コンテンツです。",
+    "avatar": "./assets/images/author-llld.png",
+    "profileUrl": "./author.html?id=llld-official"
+  }
+]

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-label="座席管理">
+  <rect width="640" height="360" rx="34" fill="#f4f8ff"/>
+  <circle cx="95" cy="64" r="110" fill="#dce8ff"/>
+  <rect x="84" y="76" width="472" height="214" rx="30" fill="#fff" stroke="#d9e2f2" stroke-width="4"/>
+  <g fill="#1f5eff">
+    <rect x="130" y="120" width="72" height="54" rx="16"/>
+    <rect x="232" y="120" width="72" height="54" rx="16" opacity=".68"/>
+    <rect x="334" y="120" width="72" height="54" rx="16" opacity=".34"/>
+    <rect x="436" y="120" width="72" height="54" rx="16" opacity=".84"/>
+  </g>
+  <g fill="#101828">
+    <rect x="130" y="204" width="72" height="54" rx="16" opacity=".18"/>
+    <rect x="232" y="204" width="72" height="54" rx="16" opacity=".42"/>
+    <rect x="334" y="204" width="72" height="54" rx="16" opacity=".72"/>
+    <rect x="436" y="204" width="72" height="54" rx="16" opacity=".25"/>
+  </g>
+  <text x="320" y="54" text-anchor="middle" font-size="34" font-family="Arial, sans-serif" font-weight="800" fill="#14213d">SeatFlow</text>
+</svg>
