@@ -2,9 +2,32 @@
 
 (() => {
   const ROLES = ['guest', 'member', 'author', 'admin'];
-  let currentRole = 'guest';
+  const STORAGE_KEY = 'llldWorksHub.mockRole';
+  let currentRole = readStoredRole();
 
-  function getCurrentUser() {
+  function readStoredRole() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      const role = raw ? JSON.parse(raw) : 'guest';
+      return ROLES.includes(role) ? role : 'guest';
+    } catch {
+      return 'guest';
+    }
+  }
+
+  function writeStoredRole(role) {
+    try {
+      if (window.StoragePolicy) {
+        window.StoragePolicy.setItem(STORAGE_KEY, role);
+      } else {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(role));
+      }
+    } catch {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(role));
+    }
+  }
+
+  function getCurrentUserMock() {
     return {
       id: currentRole === 'guest' ? null : `mock-${currentRole}`,
       role: currentRole,
@@ -18,13 +41,19 @@
     };
   }
 
-  function setMockRole(role) {
+  function setCurrentRoleMock(role) {
     if (!ROLES.includes(role)) {
       throw new Error(`Unknown mock role: ${role}`);
     }
     currentRole = role;
-    return getCurrentUser();
+    writeStoredRole(role);
+    return getCurrentUserMock();
   }
+
+  const isGuest = () => currentRole === 'guest';
+  const isMember = () => currentRole === 'member';
+  const isAuthor = () => currentRole === 'author';
+  const isAdmin = () => currentRole === 'admin';
 
   function can(action) {
     const role = currentRole;
@@ -40,8 +69,14 @@
 
   window.AuthMockService = {
     roles: [...ROLES],
-    getCurrentUser,
-    setMockRole,
+    getCurrentUser: getCurrentUserMock,
+    setMockRole: setCurrentRoleMock,
+    getCurrentUserMock,
+    setCurrentRoleMock,
+    isGuest,
+    isMember,
+    isAuthor,
+    isAdmin,
     can
   };
 })();

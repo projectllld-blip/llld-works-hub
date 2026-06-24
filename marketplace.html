@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LLLD Works Market β</title>
+  <meta name="description" content="現場で生まれた便利ツール・資料・テンプレートを探せる実務コンテンツマーケット">
+  <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body data-market-page="marketplace">
+  <main class="market-page">
+    <header class="market-header">
+      <a class="market-brand" href="./index.html">LLLD Works Hub</a>
+      <nav aria-label="マーケット導線">
+        <a href="./index.html">社内Hub</a>
+        <a href="./marketplace.html">Market β</a>
+        <a href="./submit.html">投稿募集</a>
+      </nav>
+    </header>
+
+    <section class="market-hero">
+      <div>
+        <span class="market-kicker">LLLD Works Market β</span>
+        <h1>現場で生まれた便利ツールを、必要な人へ。</h1>
+        <p>教室・店舗・事務所の小さな困りごとを解決する、実務コンテンツマーケットのローカル検証版です。</p>
+        <div class="detail-cta-row">
+          <a class="btn primary" href="#marketGrid">コンテンツを見る</a>
+          <a class="btn secondary" href="./submit.html">投稿を相談する</a>
+        </div>
+      </div>
+      <div class="hero-preview" aria-label="マーケット概要">
+        <span>HTMLアプリ</span>
+        <span>PDF資料</span>
+        <span>Excelテンプレート</span>
+        <span>面談・営業支援</span>
+      </div>
+    </section>
+
+    <section class="market-section">
+      <div class="market-section-head">
+        <div>
+          <h2>探す</h2>
+          <p id="marketResultMeta">読み込み中です。</p>
+        </div>
+        <div class="market-filter-line">
+          <input id="marketSearch" class="market-search" type="search" placeholder="キーワードで検索">
+          <select id="priceFilter" class="market-select" aria-label="価格タイプ"></select>
+        </div>
+      </div>
+      <div id="marketCategoryChips" class="type-chips"></div>
+      <div id="tagChips" class="type-chips market-tags"></div>
+    </section>
+
+    <section class="market-section">
+      <div class="market-section-head">
+        <h2>人気コンテンツ</h2>
+      </div>
+      <div id="featuredGrid" class="market-grid compact"></div>
+    </section>
+
+    <section class="market-section">
+      <div class="market-section-head">
+        <h2>新着コンテンツ</h2>
+      </div>
+      <div id="recentMarketGrid" class="market-grid compact"></div>
+    </section>
+
+    <section class="market-section">
+      <div class="market-section-head">
+        <h2>すべてのコンテンツ</h2>
+      </div>
+      <div id="marketGrid" class="market-grid"></div>
+    </section>
+
+    <section class="submit-band">
+      <div>
+        <h2>あなたの現場の工夫も、次のコンテンツになります。</h2>
+        <p>HTMLアプリ、テンプレート、チェックリスト、授業資料など、まずは審査制で掲載相談を受け付けます。</p>
+      </div>
+      <a class="btn primary" href="./submit.html">投稿募集を見る</a>
+    </section>
+  </main>
+
+  <script src="./assets/js/contentService.js"></script>
+  <script src="./assets/js/marketPages.js"></script>
+</body>
+</html>

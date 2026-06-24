@@ -54,9 +54,8 @@
   }
 
   async function getContents() {
-    // Future DB swap point:
-    // Replace this fetch-backed implementation with Supabase/API calls while
-    // keeping the public function names below stable for screen code.
+    // 将来的には、このfetch層をSupabaseやAPI呼び出しに差し替える想定。
+    // 画面側はこのService関数群だけを見ることで、DB化時の変更範囲を絞る。
     return fetchJson('contents');
   }
 
@@ -65,9 +64,21 @@
     return contents.find(content => content.slug === slug) || null;
   }
 
+  async function getContentById(id) {
+    const contents = await getContents();
+    return contents.find(content => content.id === id) || null;
+  }
+
   async function getFeaturedContents() {
     const contents = await getContents();
     return contents.filter(content => content.featured);
+  }
+
+  async function getRecentContents(limit = 8) {
+    const contents = await getContents();
+    return [...contents]
+      .sort((a, b) => String(b.updatedAt || '').localeCompare(String(a.updatedAt || '')))
+      .slice(0, limit);
   }
 
   async function getContentsByCategory(categoryId) {
@@ -88,6 +99,11 @@
     return fetchJson('categories');
   }
 
+  async function getCategoryById(categoryId) {
+    const categories = await getCategories();
+    return categories.find(category => category.id === categoryId) || null;
+  }
+
   async function searchContents(query) {
     const contents = await getContents();
     return contents.filter(content => matchesQuery(content, query));
@@ -101,11 +117,14 @@
   window.ContentService = {
     getContents,
     getContentBySlug,
+    getContentById,
     getFeaturedContents,
+    getRecentContents,
     getContentsByCategory,
     getAuthors,
     getAuthorById,
     getCategories,
+    getCategoryById,
     searchContents,
     filterContents
   };

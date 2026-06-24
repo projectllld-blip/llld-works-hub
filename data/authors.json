@@ -5,6 +5,9 @@
     "type": "official",
     "summary": "株式会社LLLDが作成・管理する公式コンテンツです。",
     "avatar": "./assets/images/author-llld.png",
-    "profileUrl": "./author.html?id=llld-official"
+    "profileUrl": "./author.html?id=llld-official",
+    "slug": "llld-official",
+    "contactUrl": "./submit.html?author=llld-official",
+    "profile": "株式会社LLLDが作成・管理する公式コンテンツです。小規模事業者、塾、店舗、社内運営の現場で使いやすいツールと資料を整備しています。"
   }
 ]

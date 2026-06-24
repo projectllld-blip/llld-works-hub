@@ -9,15 +9,17 @@
    * - Last 8 usage history records
    * - Display preferences
    * - Temporary drafts
+   * - Mock role for local display checks
    *
    * Do not store locally:
-   * - Account information
+   * - Production account information
    * - Author information
    * - Purchase history
    * - Review status
    * - Published/private status
    * - Permission information
    * - Sales information
+   * - Business data that contains personal information
    *
    * Future account, purchase, review, permission, and sales data must live in
    * a real backend such as Supabase, not in browser localStorage.
@@ -27,7 +29,8 @@
     'llldWorksHub.history',
     'llldWorksHub.favorites',
     'llldWorksHub.display',
-    'llldWorksHub.draft'
+    'llldWorksHub.draft',
+    'llldWorksHub.mockRole'
   ];
 
   const disallowedDomains = [
@@ -37,7 +40,8 @@
     'review',
     'visibility',
     'permission',
-    'sales'
+    'sales',
+    'personal'
   ];
 
   function isAllowedKey(key) {

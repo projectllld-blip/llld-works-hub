@@ -10,8 +10,19 @@
     "priceType": "free-beta",
     "status": "published",
     "visibility": "internal-and-public",
-    "targetUsers": ["塾", "小規模事業者", "店舗"],
-    "tags": ["人気", "勤怠", "QR", "Excel出力", "小規模事業", "HTMLアプリ"],
+    "targetUsers": [
+      "塾",
+      "小規模事業者",
+      "店舗"
+    ],
+    "tags": [
+      "人気",
+      "勤怠",
+      "QR",
+      "Excel出力",
+      "小規模事業",
+      "HTMLアプリ"
+    ],
     "thumbnail": "./assets/thumbs/dakokun.png",
     "contentUrl": "./contents/dakokun/index.html",
     "detailUrl": "./content-detail.html?slug=dakokun",
@@ -23,7 +34,28 @@
     "icon": "勤",
     "thumbnailType": "attendance",
     "thumbnailImage": "./assets/reference/mock-generation-pack/llld_product_mock_generation_pack/references/04_attendance_card_reference.png",
-    "external": false
+    "external": false,
+    "ctaLabel": "使ってみる",
+    "ctaType": "open",
+    "requestUrl": "./submit.html?request=dakokun",
+    "problems": [
+      "紙やExcelの打刻管理が毎月ばらつく",
+      "少人数の勤怠を大げさなシステムなしで整えたい",
+      "出勤簿やログをすぐ確認できる形にしたい"
+    ],
+    "features": [
+      "QR・社員番号・名前から打刻",
+      "日別ログと出勤簿の確認",
+      "CSV/Excel出力を想定した現場向け設計"
+    ],
+    "usageSteps": [
+      "スタッフ情報を登録する",
+      "打刻方法を選んで出退勤を記録する",
+      "月末にログや出勤簿を確認する"
+    ],
+    "notes": [
+      "ブラウザ保存データは端末依存です。重要データは定期的に出力してください。"
+    ]
   },
   {
     "id": "seatflow",
@@ -31,13 +63,23 @@
     "title": "座席管理アプリ",
     "summary": "教室の座席配置と出欠をすばやく管理するツール。",
     "description": "塾や教室の座席表を作成し、出欠や席替えの状況を現場で確認しやすくする座席管理アプリです。",
-    "categoryId": "classroom-tools",
+    "categoryId": "education-school",
     "authorId": "llld-official",
     "priceType": "free-beta",
     "status": "published",
     "visibility": "internal-and-public",
-    "targetUsers": ["塾", "教室長", "教室スタッフ"],
-    "tags": ["おすすめ", "座席", "教室運営", "出欠", "HTMLアプリ"],
+    "targetUsers": [
+      "塾",
+      "教室長",
+      "教室スタッフ"
+    ],
+    "tags": [
+      "おすすめ",
+      "座席",
+      "教室運営",
+      "出欠",
+      "HTMLアプリ"
+    ],
     "thumbnail": "./assets/thumbs/seatflow.png",
     "contentUrl": "./contents/seatflow/index.html",
     "detailUrl": "./content-detail.html?slug=seatflow",
@@ -49,7 +91,28 @@
     "icon": "席",
     "thumbnailType": "seats",
     "thumbnailImage": "./assets/reference/mock-generation-pack/llld_product_mock_generation_pack/references/08_seats_card_reference.png",
-    "external": false
+    "external": false,
+    "ctaLabel": "使ってみる",
+    "ctaType": "open",
+    "requestUrl": "./submit.html?request=seatflow",
+    "problems": [
+      "座席表の更新が授業直前に間に合わない",
+      "出欠や席替えの共有が口頭になりやすい",
+      "教室運営の小さな変更を見える化したい"
+    ],
+    "features": [
+      "座席配置の確認",
+      "教室運営向けのシンプルな管理",
+      "現場スタッフが見やすいカード型UI"
+    ],
+    "usageSteps": [
+      "教室や座席の配置を開く",
+      "当日の状況に合わせて確認する",
+      "必要に応じて席替えや出欠管理に使う"
+    ],
+    "notes": [
+      "現在はローカル検証向けの社内プロトタイプです。"
+    ]
   },
   {
     "id": "pdf-tool",
@@ -57,13 +120,23 @@
     "title": "PDF編集ツール",
     "summary": "PDFの結合・分割・整理をブラウザで行う実務ツール。",
     "description": "PDFの結合、ページ整理、向きの確認など、現場でよく使うPDF作業を軽く処理するためのツールです。",
-    "categoryId": "office-documents",
+    "categoryId": "pdf-docs",
     "authorId": "llld-official",
     "priceType": "free-beta",
     "status": "published",
     "visibility": "internal-and-public",
-    "targetUsers": ["事務", "塾", "小規模事業者"],
-    "tags": ["人気", "PDF", "結合", "分割", "HTMLアプリ"],
+    "targetUsers": [
+      "事務",
+      "塾",
+      "小規模事業者"
+    ],
+    "tags": [
+      "人気",
+      "PDF",
+      "結合",
+      "分割",
+      "HTMLアプリ"
+    ],
     "thumbnail": "./assets/thumbs/pdf-tool.png",
     "contentUrl": "./contents/pdf-tool/index.html",
     "detailUrl": "./content-detail.html?slug=pdf-tool",
@@ -75,7 +148,28 @@
     "icon": "PDF",
     "thumbnailType": "pdf",
     "thumbnailImage": "./assets/reference/mock-generation-pack/llld_product_mock_generation_pack/references/01_pdf_card_reference.png",
-    "external": false
+    "external": false,
+    "ctaLabel": "使ってみる",
+    "ctaType": "open",
+    "requestUrl": "./submit.html?request=pdf-tool",
+    "problems": [
+      "PDFの結合・分割が毎回手作業になる",
+      "教材や資料のページ整理に時間がかかる",
+      "現場で軽くPDF処理したい"
+    ],
+    "features": [
+      "PDF結合・分割・整理",
+      "ページ向きや順番の確認",
+      "ブラウザで使える軽量ツール"
+    ],
+    "usageSteps": [
+      "PDFを読み込む",
+      "必要な順番や処理を指定する",
+      "整理したPDFを出力する"
+    ],
+    "notes": [
+      "著作権物や重いPDFはGitHubに置かず、ローカルまたはDrive等で管理してください。"
+    ]
   },
   {
     "id": "quiz-maker",
@@ -83,13 +177,23 @@
     "title": "小テスト作成ツール",
     "summary": "教材データから小テストを選んで作成・印刷するツール。",
     "description": "塾向け教材を選択し、小テストの作成、PDF表示、印刷につなげるための教材運用ツールです。",
-    "categoryId": "classroom-tools",
+    "categoryId": "education-school",
     "authorId": "llld-official",
     "priceType": "free-beta",
     "status": "published",
     "visibility": "internal-and-public",
-    "targetUsers": ["塾", "教室長", "講師"],
-    "tags": ["NEW", "小テスト", "教材", "PDF", "HTMLアプリ"],
+    "targetUsers": [
+      "塾",
+      "教室長",
+      "講師"
+    ],
+    "tags": [
+      "NEW",
+      "小テスト",
+      "教材",
+      "PDF",
+      "HTMLアプリ"
+    ],
     "thumbnail": "./assets/thumbs/quiz-maker.png",
     "contentUrl": "./contents/quiz-maker/index.html",
     "detailUrl": "./content-detail.html?slug=quiz-maker",
@@ -101,7 +205,28 @@
     "icon": "問",
     "thumbnailType": "quiz",
     "thumbnailImage": "./assets/reference/mock-generation-pack/llld_product_mock_generation_pack/references/03_quiz_card_reference.png",
-    "external": false
+    "external": false,
+    "ctaLabel": "使ってみる",
+    "ctaType": "open",
+    "requestUrl": "./submit.html?request=quiz-maker",
+    "problems": [
+      "小テスト作成に毎回時間がかかる",
+      "教材ごとの問題と解答を探す手間がある",
+      "教室で印刷しやすい形に整えたい"
+    ],
+    "features": [
+      "教材データから小テストを選択",
+      "PDF表示・印刷を想定",
+      "単元名や教材別の整理に対応しやすい構成"
+    ],
+    "usageSteps": [
+      "教材と単元を選ぶ",
+      "出題したい小テストを確認する",
+      "PDF表示または印刷する"
+    ],
+    "notes": [
+      "教材データの著作権・掲載可否は運用側で確認してください。"
+    ]
   },
   {
     "id": "meeting-support",
@@ -109,13 +234,22 @@
     "title": "面談支援ツール",
     "summary": "塾の面談で聞き取りと提案を整理する支援ツール。",
     "description": "保護者面談や学習相談で、聞き取り項目、課題整理、次回提案をまとめるための面談支援コンテンツです。",
-    "categoryId": "classroom-tools",
+    "categoryId": "meeting-sales",
     "authorId": "llld-official",
     "priceType": "coming-soon",
     "status": "coming-soon",
     "visibility": "internal",
-    "targetUsers": ["塾", "教室長", "面談担当"],
-    "tags": ["面談", "聞き取り", "提案", "塾事業"],
+    "targetUsers": [
+      "塾",
+      "教室長",
+      "面談担当"
+    ],
+    "tags": [
+      "面談",
+      "聞き取り",
+      "提案",
+      "塾事業"
+    ],
     "thumbnail": "./assets/thumbs/meeting-support.png",
     "contentUrl": "./contents/meeting-support/index.html",
     "detailUrl": "./content-detail.html?slug=meeting-support",
@@ -127,7 +261,28 @@
     "icon": "面",
     "thumbnailType": "proposal",
     "thumbnailImage": "",
-    "external": false
+    "external": false,
+    "ctaLabel": "掲載準備中",
+    "ctaType": "request",
+    "requestUrl": "./submit.html?request=meeting-support",
+    "problems": [
+      "面談内容が担当者ごとにばらつく",
+      "聞き取りから提案までの流れを整理したい",
+      "次回アクションを残しやすくしたい"
+    ],
+    "features": [
+      "面談前の確認項目整理",
+      "課題と提案のメモ欄",
+      "保護者対応や学習相談に使いやすい構成"
+    ],
+    "usageSteps": [
+      "面談前に確認項目を準備する",
+      "面談中に聞き取り内容を整理する",
+      "次回提案と対応履歴を残す"
+    ],
+    "notes": [
+      "現在は掲載準備中です。詳細内容は今後整備します。"
+    ]
   },
   {
     "id": "sales-talk-support",
@@ -135,13 +290,22 @@
     "title": "営業トーク支援ツール",
     "summary": "商談や提案時の会話を整理する営業支援コンテンツ。",
     "description": "ヒアリング、課題整理、提案の切り返しをまとめ、営業現場で会話の質をそろえるための支援ツールです。",
-    "categoryId": "sales-consulting",
+    "categoryId": "meeting-sales",
     "authorId": "llld-official",
     "priceType": "coming-soon",
     "status": "coming-soon",
     "visibility": "internal",
-    "targetUsers": ["営業", "コンサル", "小規模事業者"],
-    "tags": ["営業", "商談", "ヒアリング", "提案"],
+    "targetUsers": [
+      "営業",
+      "コンサル",
+      "小規模事業者"
+    ],
+    "tags": [
+      "営業",
+      "商談",
+      "ヒアリング",
+      "提案"
+    ],
     "thumbnail": "./assets/thumbs/sales-talk-support.png",
     "contentUrl": "./contents/sales-talk-support/index.html",
     "detailUrl": "./content-detail.html?slug=sales-talk-support",
@@ -153,7 +317,28 @@
     "icon": "営",
     "thumbnailType": "proposal",
     "thumbnailImage": "",
-    "external": false
+    "external": false,
+    "ctaLabel": "申請・相談する",
+    "ctaType": "request",
+    "requestUrl": "./submit.html?request=sales-talk-support",
+    "problems": [
+      "商談で聞くべきことが抜けやすい",
+      "提案の型が担当者ごとに異なる",
+      "初回相談から次の提案へつなげたい"
+    ],
+    "features": [
+      "ヒアリング項目の整理",
+      "提案トークの型づくり",
+      "営業・相談業務の標準化"
+    ],
+    "usageSteps": [
+      "商談前に相手の課題を整理する",
+      "会話中に聞き取り項目を確認する",
+      "提案や次回アクションへつなげる"
+    ],
+    "notes": [
+      "営業現場の実例に合わせて調整予定です。"
+    ]
   },
   {
     "id": "subsidy-templates",
@@ -161,13 +346,22 @@
     "title": "補助金テンプレート",
     "summary": "補助金申請で使う書類やチェック項目のテンプレート集。",
     "description": "補助金支援業務で使うヒアリング、要件整理、申請書作成の型をまとめたテンプレートコンテンツです。",
-    "categoryId": "sales-consulting",
+    "categoryId": "subsidy-admin",
     "authorId": "llld-official",
     "priceType": "internal",
     "status": "published",
     "visibility": "internal",
-    "targetUsers": ["コンサル", "事務", "小規模事業者"],
-    "tags": ["おすすめ", "補助金", "申請書", "テンプレート"],
+    "targetUsers": [
+      "コンサル",
+      "事務",
+      "小規模事業者"
+    ],
+    "tags": [
+      "おすすめ",
+      "補助金",
+      "申請書",
+      "テンプレート"
+    ],
     "thumbnail": "./assets/thumbs/subsidy-templates.png",
     "contentUrl": "./contents/subsidy-templates/index.html",
     "detailUrl": "./content-detail.html?slug=subsidy-templates",
@@ -179,7 +373,28 @@
     "icon": "補",
     "thumbnailType": "document",
     "thumbnailImage": "",
-    "external": false
+    "external": false,
+    "ctaLabel": "内容を見る",
+    "ctaType": "open",
+    "requestUrl": "./submit.html?request=subsidy-templates",
+    "problems": [
+      "補助金支援の聞き取り項目が散らばる",
+      "申請前の確認事項を抜けなく整理したい",
+      "支援先ごとの資料作成を効率化したい"
+    ],
+    "features": [
+      "ヒアリング用テンプレート",
+      "要件確認チェックリスト",
+      "申請支援資料の型"
+    ],
+    "usageSteps": [
+      "支援先の状況を聞き取る",
+      "対象制度や必要資料を整理する",
+      "申請書類作成の下準備に使う"
+    ],
+    "notes": [
+      "制度ごとの最新要件は必ず公式情報で確認してください。"
+    ]
   },
   {
     "id": "internal-operations",
@@ -187,13 +402,22 @@
     "title": "社内運用資料",
     "summary": "社内ツール運用や制作ルールをまとめる資料置き場。",
     "description": "LLLD Works Hubや各HTMLツールの運用ルール、整理方針、社内向け手順を集約するための資料コンテンツです。",
-    "categoryId": "internal-ops",
+    "categoryId": "internal-only",
     "authorId": "llld-official",
     "priceType": "internal",
     "status": "published",
     "visibility": "internal",
-    "targetUsers": ["社内スタッフ", "制作担当", "運用担当"],
-    "tags": ["社内運営", "運用", "マニュアル", "テンプレート"],
+    "targetUsers": [
+      "社内スタッフ",
+      "制作担当",
+      "運用担当"
+    ],
+    "tags": [
+      "社内運営",
+      "運用",
+      "マニュアル",
+      "テンプレート"
+    ],
     "thumbnail": "./assets/thumbs/internal-operations.png",
     "contentUrl": "./contents/internal-operations/index.html",
     "detailUrl": "./content-detail.html?slug=internal-operations",
@@ -205,6 +429,27 @@
     "icon": "社",
     "thumbnailType": "dashboard",
     "thumbnailImage": "",
-    "external": false
+    "external": false,
+    "ctaLabel": "内容を見る",
+    "ctaType": "open",
+    "requestUrl": "./submit.html?request=internal-operations",
+    "problems": [
+      "社内ツールのルールが散らばりやすい",
+      "制作方針や運用手順を共有したい",
+      "AI作業のチェック基準を残したい"
+    ],
+    "features": [
+      "運用ルールの集約",
+      "制作・確認チェックリスト",
+      "社内向け資料への導線"
+    ],
+    "usageSteps": [
+      "目的に近い資料を探す",
+      "運用ルールやチェック項目を確認する",
+      "作業前後の確認に使う"
+    ],
+    "notes": [
+      "社内限定情報を外部公開しないよう注意してください。"
+    ]
   }
 ]
