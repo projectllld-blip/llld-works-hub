@@ -33,10 +33,16 @@
       content.categoryId,
       content.authorId,
       content.priceType,
+      content.price,
+      content.currency,
+      content.saleStatus,
       content.status,
       content.visibility,
+      content.deliveryType,
       ...(content.targetUsers || []),
-      ...(content.tags || [])
+      ...(content.tags || []),
+      ...(content.deliverables || []),
+      ...(content.notes || [])
     ].join(' '));
     return haystack.includes(q);
   }
@@ -45,6 +51,8 @@
     if (filters.categoryId && content.categoryId !== filters.categoryId) return false;
     if (filters.authorId && content.authorId !== filters.authorId) return false;
     if (filters.priceType && content.priceType !== filters.priceType) return false;
+    if (filters.saleStatus && content.saleStatus !== filters.saleStatus) return false;
+    if (filters.deliveryType && content.deliveryType !== filters.deliveryType) return false;
     if (filters.status && content.status !== filters.status) return false;
     if (filters.visibility && content.visibility !== filters.visibility) return false;
     if (typeof filters.featured === 'boolean' && Boolean(content.featured) !== filters.featured) return false;

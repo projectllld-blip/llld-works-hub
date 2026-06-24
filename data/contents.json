@@ -7,7 +7,7 @@
     "description": "QR・社員番号・名前から打刻でき、出勤簿やログ出力にも対応した勤怠管理ツールです。",
     "categoryId": "attendance-hr",
     "authorId": "llld-official",
-    "priceType": "free-beta",
+    "priceType": "consultation",
     "status": "published",
     "visibility": "internal-and-public",
     "targetUsers": [
@@ -54,7 +54,24 @@
       "月末にログや出勤簿を確認する"
     ],
     "notes": [
-      "ブラウザ保存データは端末依存です。重要データは定期的に出力してください。"
+      "標準版はβ利用できます。自社用調整は内容確認後に個別見積もりします。"
+    ],
+    "price": null,
+    "currency": "JPY",
+    "saleStatus": "inquiry-only",
+    "deliveryType": "inquiry-only",
+    "paymentUrl": "",
+    "inquiryUrl": "./request.html?type=development&item=dakokun-custom",
+    "primaryCtaLabel": "開発を相談する",
+    "primaryCtaType": "consultation",
+    "primaryCtaUrl": "./request.html?type=development&item=dakokun-custom",
+    "secondaryCtaLabel": "β版を試す",
+    "secondaryCtaType": "open",
+    "secondaryCtaUrl": "./apps/dakokun/index.html?v=20260623-calendar-lines",
+    "deliverables": [
+      "自社用の勤怠画面設計",
+      "スタッフ登録・打刻・出勤簿の調整",
+      "現場運用に合わせたカスタマイズ相談"
     ]
   },
   {
@@ -65,7 +82,7 @@
     "description": "塾や教室の座席表を作成し、出欠や席替えの状況を現場で確認しやすくする座席管理アプリです。",
     "categoryId": "education-school",
     "authorId": "llld-official",
-    "priceType": "free-beta",
+    "priceType": "consultation",
     "status": "published",
     "visibility": "internal-and-public",
     "targetUsers": [
@@ -111,7 +128,24 @@
       "必要に応じて席替えや出欠管理に使う"
     ],
     "notes": [
-      "現在はローカル検証向けの社内プロトタイプです。"
+      "教室ごとの運用を確認したうえで、必要な範囲を見積もります。"
+    ],
+    "price": null,
+    "currency": "JPY",
+    "saleStatus": "inquiry-only",
+    "deliveryType": "inquiry-only",
+    "paymentUrl": "",
+    "inquiryUrl": "./request.html?type=development&item=seatflow-classroom",
+    "primaryCtaLabel": "教室用に相談する",
+    "primaryCtaType": "consultation",
+    "primaryCtaUrl": "./request.html?type=development&item=seatflow-classroom",
+    "secondaryCtaLabel": "β版を試す",
+    "secondaryCtaType": "open",
+    "secondaryCtaUrl": "./apps/seatflow/index.html",
+    "deliverables": [
+      "教室レイアウトに合わせた座席管理設計",
+      "出欠・席替え運用の相談",
+      "iPad/PCで使いやすい画面調整"
     ]
   },
   {
@@ -122,7 +156,7 @@
     "description": "PDFの結合、ページ整理、向きの確認など、現場でよく使うPDF作業を軽く処理するためのツールです。",
     "categoryId": "pdf-docs",
     "authorId": "llld-official",
-    "priceType": "free-beta",
+    "priceType": "free",
     "status": "published",
     "visibility": "internal-and-public",
     "targetUsers": [
@@ -168,7 +202,25 @@
       "整理したPDFを出力する"
     ],
     "notes": [
-      "著作権物や重いPDFはGitHubに置かず、ローカルまたはDrive等で管理してください。"
+      "PDFファイル本体はサーバーへ保存しません。",
+      "著作権物や個人情報を含むPDFは利用者側で管理してください。"
+    ],
+    "price": 0,
+    "currency": "JPY",
+    "saleStatus": "on-sale",
+    "deliveryType": "app-link",
+    "paymentUrl": "",
+    "inquiryUrl": "./request.html?type=customize&item=pdf-tool",
+    "primaryCtaLabel": "無料で使う",
+    "primaryCtaType": "open",
+    "primaryCtaUrl": "./apps/pdf-tool/index.html",
+    "secondaryCtaLabel": "PDF業務を相談する",
+    "secondaryCtaType": "consultation",
+    "secondaryCtaUrl": "./request.html?type=customize&item=pdf-tool",
+    "deliverables": [
+      "ブラウザで使えるPDF編集ツール",
+      "PDF結合・分割・ページ整理",
+      "ローカルPCでの利用"
     ]
   },
   {
@@ -225,20 +277,37 @@
       "PDF表示または印刷する"
     ],
     "notes": [
-      "教材データの著作権・掲載可否は運用側で確認してください。"
+      "教材データの著作権・利用範囲は運用側で確認してください。"
+    ],
+    "price": 0,
+    "currency": "JPY",
+    "saleStatus": "beta",
+    "deliveryType": "app-link",
+    "paymentUrl": "",
+    "inquiryUrl": "./request.html?type=customize&item=quiz-maker",
+    "primaryCtaLabel": "β版を試す",
+    "primaryCtaType": "open",
+    "primaryCtaUrl": "./apps/quiz-maker/index.html",
+    "secondaryCtaLabel": "教材運用を相談する",
+    "secondaryCtaType": "consultation",
+    "secondaryCtaUrl": "./request.html?type=customize&item=quiz-maker",
+    "deliverables": [
+      "小テスト作成ツールβ版",
+      "教材別・単元別の出力導線",
+      "ローカル検証向けの利用"
     ]
   },
   {
     "id": "meeting-support",
     "slug": "meeting-support",
-    "title": "面談支援ツール",
-    "summary": "塾の面談で聞き取りと提案を整理する支援ツール。",
-    "description": "保護者面談や学習相談で、聞き取り項目、課題整理、次回提案をまとめるための面談支援コンテンツです。",
+    "title": "面談ヒアリングシート",
+    "summary": "塾や小規模事業者の面談前後に使える聞き取りテンプレート。",
+    "description": "保護者面談、学習相談、初回ヒアリングで、聞くこと・整理すること・次に提案することを抜けにくくするテンプレートです。",
     "categoryId": "meeting-sales",
     "authorId": "llld-official",
-    "priceType": "coming-soon",
-    "status": "coming-soon",
-    "visibility": "internal",
+    "priceType": "paid",
+    "status": "published",
+    "visibility": "internal-and-public",
     "targetUsers": [
       "塾",
       "教室長",
@@ -281,7 +350,24 @@
       "次回提案と対応履歴を残す"
     ],
     "notes": [
-      "現在は掲載準備中です。詳細内容は今後整備します。"
+      "購入後は個別連絡で納品します。GitHub Pages上に有料ファイル本体は置いていません。"
+    ],
+    "price": 1980,
+    "currency": "JPY",
+    "saleStatus": "inquiry-only",
+    "deliveryType": "manual",
+    "paymentUrl": "",
+    "inquiryUrl": "./request.html?type=purchase&item=meeting-hearing-sheet",
+    "primaryCtaLabel": "購入する",
+    "primaryCtaType": "purchase",
+    "primaryCtaUrl": "./request.html?type=purchase&item=meeting-hearing-sheet",
+    "secondaryCtaLabel": "使い方を相談する",
+    "secondaryCtaType": "consultation",
+    "secondaryCtaUrl": "./request.html?type=consultation&item=meeting-hearing-sheet",
+    "deliverables": [
+      "面談ヒアリングシート",
+      "面談前チェック項目",
+      "次回提案メモ欄"
     ]
   },
   {
@@ -294,7 +380,7 @@
     "authorId": "llld-official",
     "priceType": "coming-soon",
     "status": "coming-soon",
-    "visibility": "internal",
+    "visibility": "internal-and-public",
     "targetUsers": [
       "営業",
       "コンサル",
@@ -337,20 +423,37 @@
       "提案や次回アクションへつなげる"
     ],
     "notes": [
-      "営業現場の実例に合わせて調整予定です。"
+      "現在は有料予定コンテンツとして準備中です。"
+    ],
+    "price": null,
+    "currency": "JPY",
+    "saleStatus": "preparing",
+    "deliveryType": "manual",
+    "paymentUrl": "",
+    "inquiryUrl": "./request.html?type=early-access&item=sales-talk-support",
+    "primaryCtaLabel": "先行案内を受ける",
+    "primaryCtaType": "inquiry",
+    "primaryCtaUrl": "./request.html?type=early-access&item=sales-talk-support",
+    "secondaryCtaLabel": "営業資料を相談する",
+    "secondaryCtaType": "consultation",
+    "secondaryCtaUrl": "./request.html?type=consultation&item=sales-talk-support",
+    "deliverables": [
+      "営業ヒアリング項目",
+      "提案トーク整理シート",
+      "切り返しメモ"
     ]
   },
   {
     "id": "subsidy-templates",
     "slug": "subsidy-templates",
-    "title": "補助金テンプレート",
-    "summary": "補助金申請で使う書類やチェック項目のテンプレート集。",
-    "description": "補助金支援業務で使うヒアリング、要件整理、申請書作成の型をまとめたテンプレートコンテンツです。",
+    "title": "補助金準備テンプレート",
+    "summary": "申請前のヒアリング・必要資料・確認事項を整理するテンプレート集。",
+    "description": "補助金申請の前段階で、事業内容、経費、必要資料、確認事項を整理するためのテンプレートです。",
     "categoryId": "subsidy-admin",
     "authorId": "llld-official",
-    "priceType": "internal",
+    "priceType": "paid",
     "status": "published",
-    "visibility": "internal",
+    "visibility": "internal-and-public",
     "targetUsers": [
       "コンサル",
       "事務",
@@ -393,7 +496,24 @@
       "申請書類作成の下準備に使う"
     ],
     "notes": [
-      "制度ごとの最新要件は必ず公式情報で確認してください。"
+      "制度ごとの最新要件は必ず公式情報で確認してください。購入後は手動で納品します。"
+    ],
+    "price": 4980,
+    "currency": "JPY",
+    "saleStatus": "inquiry-only",
+    "deliveryType": "manual",
+    "paymentUrl": "",
+    "inquiryUrl": "./request.html?type=purchase&item=subsidy-starter-kit",
+    "primaryCtaLabel": "購入する",
+    "primaryCtaType": "purchase",
+    "primaryCtaUrl": "./request.html?type=purchase&item=subsidy-starter-kit",
+    "secondaryCtaLabel": "補助金資料を相談する",
+    "secondaryCtaType": "consultation",
+    "secondaryCtaUrl": "./request.html?type=consultation&item=subsidy-starter-kit",
+    "deliverables": [
+      "補助金準備チェックリスト",
+      "ヒアリングシート",
+      "必要資料整理テンプレート"
     ]
   },
   {
@@ -450,6 +570,314 @@
     ],
     "notes": [
       "社内限定情報を外部公開しないよう注意してください。"
+    ],
+    "price": null,
+    "currency": "JPY",
+    "saleStatus": "internal-only",
+    "deliveryType": "direct-link",
+    "paymentUrl": "",
+    "inquiryUrl": "./request.html",
+    "primaryCtaLabel": "社内限定",
+    "primaryCtaType": "internal",
+    "primaryCtaUrl": "./contents/internal-operations/index.html",
+    "secondaryCtaLabel": "相談する",
+    "secondaryCtaType": "inquiry",
+    "secondaryCtaUrl": "./request.html",
+    "deliverables": [
+      "社内運用資料",
+      "制作・確認チェックリスト"
+    ]
+  },
+  {
+    "id": "monthly-operations-checklist",
+    "slug": "monthly-operations-checklist",
+    "title": "月末業務チェックリスト",
+    "summary": "月末に抜けやすい確認作業をまとめた小規模事業者向けチェックリスト。",
+    "description": "請求、入金確認、勤怠、書類整理、翌月準備など、月末業務を手早く確認するためのチェックリストです。",
+    "categoryId": "business-efficiency",
+    "authorId": "llld-official",
+    "priceType": "paid",
+    "price": 980,
+    "currency": "JPY",
+    "saleStatus": "on-sale",
+    "status": "published",
+    "visibility": "public",
+    "deliveryType": "manual",
+    "paymentUrl": "./thanks.html?type=purchase&item=monthly-operations-checklist",
+    "inquiryUrl": "./request.html?type=purchase&item=monthly-operations-checklist",
+    "primaryCtaLabel": "購入する",
+    "primaryCtaType": "purchase",
+    "primaryCtaUrl": "./thanks.html?type=purchase&item=monthly-operations-checklist",
+    "secondaryCtaLabel": "相談する",
+    "secondaryCtaType": "inquiry",
+    "secondaryCtaUrl": "./request.html?type=purchase&item=monthly-operations-checklist",
+    "targetUsers": [
+      "小規模事業者",
+      "店舗",
+      "事務"
+    ],
+    "tags": [
+      "販売中",
+      "チェックリスト",
+      "月末業務",
+      "テンプレート"
+    ],
+    "thumbnail": "./assets/thumbs/internal-operations.png",
+    "contentUrl": "",
+    "detailUrl": "./content-detail.html?slug=monthly-operations-checklist",
+    "updatedAt": "2026-06-25",
+    "featured": true,
+    "category": "業務効率化",
+    "type": "資料・テンプレート",
+    "url": "",
+    "icon": "月",
+    "thumbnailType": "document",
+    "thumbnailImage": "",
+    "external": false,
+    "ctaLabel": "購入する",
+    "ctaType": "purchase",
+    "requestUrl": "./request.html?type=purchase&item=monthly-operations-checklist",
+    "problems": [
+      "月末の確認作業が毎回属人的になる",
+      "請求・入金・書類整理の抜け漏れを減らしたい",
+      "小さな会社で使える簡単な月次運用表がほしい"
+    ],
+    "features": [
+      "月末業務の確認項目",
+      "翌月準備のチェック欄",
+      "手動運用でも使えるシンプルな構成"
+    ],
+    "usageSteps": [
+      "月末前にチェックリストを開く",
+      "該当項目を確認する",
+      "未完了項目を翌営業日に回す"
+    ],
+    "deliverables": [
+      "月末業務チェックリスト",
+      "運用メモ欄",
+      "納品後に編集できるテンプレート"
+    ],
+    "notes": [
+      "購入後は個別連絡で納品します。GitHub Pages上に有料ファイル本体は置いていません。"
+    ]
+  },
+  {
+    "id": "dakokun-custom",
+    "slug": "dakokun-custom",
+    "title": "だこくん 自社用カスタマイズ",
+    "summary": "自社の勤怠ルールに合わせて、打刻・集計・出力を相談できます。",
+    "description": "小規模事業者や店舗向けに、既存の勤怠管理ツールを現場ルールへ合わせる開発相談メニューです。",
+    "categoryId": "attendance-hr",
+    "authorId": "llld-official",
+    "priceType": "consultation",
+    "price": null,
+    "currency": "JPY",
+    "saleStatus": "inquiry-only",
+    "status": "published",
+    "visibility": "public",
+    "deliveryType": "inquiry-only",
+    "paymentUrl": "",
+    "inquiryUrl": "./request.html?type=development&item=dakokun-custom",
+    "primaryCtaLabel": "開発を相談する",
+    "primaryCtaType": "consultation",
+    "primaryCtaUrl": "./request.html?type=development&item=dakokun-custom",
+    "secondaryCtaLabel": "β版を見る",
+    "secondaryCtaType": "open",
+    "secondaryCtaUrl": "./apps/dakokun/index.html?v=20260623-calendar-lines",
+    "targetUsers": [
+      "小規模事業者",
+      "店舗",
+      "塾"
+    ],
+    "tags": [
+      "開発相談",
+      "勤怠",
+      "カスタマイズ",
+      "小規模事業"
+    ],
+    "thumbnail": "./assets/thumbs/dakokun.png",
+    "contentUrl": "",
+    "detailUrl": "./content-detail.html?slug=dakokun-custom",
+    "updatedAt": "2026-06-25",
+    "featured": true,
+    "category": "勤怠・人事",
+    "type": "開発相談",
+    "url": "",
+    "icon": "勤",
+    "thumbnailType": "attendance",
+    "thumbnailImage": "./assets/reference/mock-generation-pack/llld_product_mock_generation_pack/references/04_attendance_card_reference.png",
+    "external": false,
+    "ctaLabel": "開発を相談する",
+    "ctaType": "consultation",
+    "requestUrl": "./request.html?type=development&item=dakokun-custom",
+    "problems": [
+      "市販の勤怠ツールが大げさすぎる",
+      "自社ルールに合う集計や出力にしたい",
+      "紙やExcelから小さく移行したい"
+    ],
+    "features": [
+      "打刻方法の相談",
+      "出勤簿・ログ出力の調整",
+      "現場ルールに合わせた画面設計"
+    ],
+    "usageSteps": [
+      "現在の勤怠管理方法を共有する",
+      "必要な機能を整理する",
+      "見積もり後に制作範囲を決める"
+    ],
+    "deliverables": [
+      "要件整理",
+      "画面・出力項目の設計",
+      "個別見積もり"
+    ],
+    "notes": [
+      "相談内容により金額と納期が変わります。"
+    ]
+  },
+  {
+    "id": "seatflow-classroom-custom",
+    "slug": "seatflow-classroom-custom",
+    "title": "座席管理アプリ 教室用カスタマイズ",
+    "summary": "教室レイアウトや運用ルールに合わせた座席管理を相談できます。",
+    "description": "塾・教室向けに、座席配置、出欠、席替え、スタッフ共有を現場に合わせて整える開発相談メニューです。",
+    "categoryId": "education-school",
+    "authorId": "llld-official",
+    "priceType": "consultation",
+    "price": null,
+    "currency": "JPY",
+    "saleStatus": "inquiry-only",
+    "status": "published",
+    "visibility": "public",
+    "deliveryType": "inquiry-only",
+    "paymentUrl": "",
+    "inquiryUrl": "./request.html?type=development&item=seatflow-classroom-custom",
+    "primaryCtaLabel": "教室用に相談する",
+    "primaryCtaType": "consultation",
+    "primaryCtaUrl": "./request.html?type=development&item=seatflow-classroom-custom",
+    "secondaryCtaLabel": "β版を見る",
+    "secondaryCtaType": "open",
+    "secondaryCtaUrl": "./apps/seatflow/index.html",
+    "targetUsers": [
+      "塾",
+      "教室長",
+      "教室スタッフ"
+    ],
+    "tags": [
+      "開発相談",
+      "座席",
+      "教室運営",
+      "カスタマイズ"
+    ],
+    "thumbnail": "./assets/thumbs/seatflow.png",
+    "contentUrl": "",
+    "detailUrl": "./content-detail.html?slug=seatflow-classroom-custom",
+    "updatedAt": "2026-06-25",
+    "featured": true,
+    "category": "教育・塾運営",
+    "type": "開発相談",
+    "url": "",
+    "icon": "席",
+    "thumbnailType": "seats",
+    "thumbnailImage": "./assets/reference/mock-generation-pack/llld_product_mock_generation_pack/references/08_seats_card_reference.png",
+    "external": false,
+    "ctaLabel": "教室用に相談する",
+    "ctaType": "consultation",
+    "requestUrl": "./request.html?type=development&item=seatflow-classroom-custom",
+    "problems": [
+      "座席表や出欠が紙・口頭で散らばる",
+      "教室ごとの運用をシンプルに見える化したい",
+      "iPadで現場スタッフが使える形にしたい"
+    ],
+    "features": [
+      "教室レイアウトに合わせた設計",
+      "出欠・席替え運用の整理",
+      "スタッフ共有しやすい画面調整"
+    ],
+    "usageSteps": [
+      "教室レイアウトと運用を共有する",
+      "必要な管理項目を整理する",
+      "見積もり後に制作範囲を決める"
+    ],
+    "deliverables": [
+      "要件整理",
+      "座席管理画面の設計",
+      "個別見積もり"
+    ],
+    "notes": [
+      "相談内容により金額と納期が変わります。"
+    ]
+  },
+  {
+    "id": "internal-portal-build",
+    "slug": "internal-portal-build",
+    "title": "社内ポータル制作",
+    "summary": "社内ツール・資料・マニュアルを探しやすくまとめるポータル制作相談。",
+    "description": "小規模事業者や塾向けに、散らばったツール、Google Drive資料、HTMLアプリ、マニュアルを一覧化する社内ポータルを制作します。",
+    "categoryId": "business-efficiency",
+    "authorId": "llld-official",
+    "priceType": "consultation",
+    "price": null,
+    "currency": "JPY",
+    "saleStatus": "inquiry-only",
+    "status": "published",
+    "visibility": "public",
+    "deliveryType": "inquiry-only",
+    "paymentUrl": "",
+    "inquiryUrl": "./request.html?type=development&item=internal-portal-build",
+    "primaryCtaLabel": "相談する",
+    "primaryCtaType": "consultation",
+    "primaryCtaUrl": "./request.html?type=development&item=internal-portal-build",
+    "secondaryCtaLabel": "見積もりを相談する",
+    "secondaryCtaType": "estimate",
+    "secondaryCtaUrl": "./request.html?type=estimate&item=internal-portal-build",
+    "targetUsers": [
+      "小規模事業者",
+      "塾",
+      "店舗"
+    ],
+    "tags": [
+      "開発相談",
+      "社内ポータル",
+      "業務効率化",
+      "資料整理"
+    ],
+    "thumbnail": "./assets/thumbs/internal-operations.png",
+    "contentUrl": "",
+    "detailUrl": "./content-detail.html?slug=internal-portal-build",
+    "updatedAt": "2026-06-25",
+    "featured": true,
+    "category": "業務効率化",
+    "type": "開発相談",
+    "url": "",
+    "icon": "社",
+    "thumbnailType": "dashboard",
+    "thumbnailImage": "",
+    "external": false,
+    "ctaLabel": "相談する",
+    "ctaType": "consultation",
+    "requestUrl": "./request.html?type=development&item=internal-portal-build",
+    "problems": [
+      "社内資料やツールが散らばっている",
+      "スタッフが必要なリンクを探せない",
+      "小さく使える社内入口を作りたい"
+    ],
+    "features": [
+      "ツール・資料の一覧化",
+      "カテゴリ・検索・履歴導線",
+      "GitHub Pagesで動く軽量構成"
+    ],
+    "usageSteps": [
+      "現在の資料やツールを共有する",
+      "必要なカテゴリと導線を整理する",
+      "見積もり後に制作範囲を決める"
+    ],
+    "deliverables": [
+      "社内ポータル構成案",
+      "静的HTMLプロトタイプ",
+      "個別見積もり"
+    ],
+    "notes": [
+      "個人情報や機密資料はGitHub Pagesに直接置かない設計にします。"
     ]
   }
 ]

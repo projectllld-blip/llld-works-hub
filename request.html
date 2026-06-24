@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>開発・購入相談 | LLLD Works Market β</title>
+  <meta name="description" content="LLLD Works Market βの開発相談・購入相談ページ">
+  <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body data-market-page="request">
+  <main class="market-page">
+    <header class="market-header">
+      <a class="market-brand" href="./index.html">LLLD Works Hub</a>
+      <nav aria-label="相談ページ導線">
+        <a href="./index.html">社内Hub</a>
+        <a href="./marketplace.html">Market β</a>
+        <a href="./request.html">開発相談</a>
+      </nav>
+    </header>
+
+    <section class="market-hero">
+      <div>
+        <span class="market-kicker">相談・購入受付</span>
+        <h1>現場に合わせたツールや資料を、まずは手動で相談できます。</h1>
+        <p>決済・納品・開発相談は、最初は個別連絡で進めます。自動決済やログインはまだ入れず、必要な内容を確認してから案内します。</p>
+      </div>
+      <div class="hero-preview" aria-label="相談例">
+        <span>勤怠アプリ</span>
+        <span>Excelのアプリ化</span>
+        <span>座席管理</span>
+        <span>社内ポータル</span>
+      </div>
+    </section>
+
+    <section class="detail-lp-grid">
+      <article class="detail-panel">
+        <h2>相談できること</h2>
+        <ul>
+          <li>自社用の勤怠アプリを作りたい</li>
+          <li>Excel管理をアプリ化したい</li>
+          <li>教室用の座席管理を作りたい</li>
+          <li>社内ポータルを作りたい</li>
+          <li>補助金資料や面談資料をテンプレート化したい</li>
+        </ul>
+      </article>
+
+      <article class="detail-panel">
+        <h2>進め方</h2>
+        <ul>
+          <li>相談内容を確認します</li>
+          <li>必要に応じて質問します</li>
+          <li>購入・納品・見積もりの方法を個別に案内します</li>
+          <li>有料ファイル本体はGitHub Pagesに直接置きません</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="detail-panel request-panel">
+      <h2>相談内容を送る</h2>
+      <form class="request-form" action="./thanks.html" method="get">
+        <input type="hidden" name="source" value="request">
+        <label>
+          相談種別
+          <select name="type">
+            <option value="development">開発を相談する</option>
+            <option value="estimate">見積もりを相談する</option>
+            <option value="purchase">購入について相談する</option>
+            <option value="template">資料・テンプレート化を相談する</option>
+          </select>
+        </label>
+        <label>
+          気になる商品・内容
+          <input name="item" type="text" placeholder="例: PDF編集ツール、社内ポータル制作">
+        </label>
+        <label>
+          お名前
+          <input name="name" type="text" placeholder="例: 山田 太郎">
+        </label>
+        <label>
+          連絡先
+          <input name="contact" type="text" placeholder="メール、電話、LINEなど">
+        </label>
+        <label>
+          相談内容
+          <textarea name="message" rows="6" placeholder="今の困りごと、使いたい場面、納期感などを自由に書いてください。"></textarea>
+        </label>
+        <div class="detail-cta-row">
+          <button class="btn primary" type="submit">開発を相談する</button>
+          <button class="btn secondary" type="submit" name="type" value="estimate">見積もりを相談する</button>
+        </div>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

@@ -28,6 +28,8 @@ HTMLファイルを直接ダブルクリックせず、必ず `localhost` で確
 ├── marketplace.html           # マーケット一覧
 ├── content-detail.html        # コンテンツ詳細
 ├── author.html                # 投稿者ページ
+├── request.html               # 購入・開発相談
+├── thanks.html                # 送信後・購入後案内
 ├── submit.html                # 投稿募集ページ
 ├── assets/                    # CSS / JS / 画像 / サムネイル
 ├── data/                      # 仮DB。将来Supabase等へ置換予定
@@ -45,6 +47,8 @@ HTMLファイルを直接ダブルクリックせず、必ず `localhost` で確
 - `marketplace.html`
 - `content-detail.html`
 - `author.html`
+- `request.html`
+- `thanks.html`
 - `submit.html`
 - `assets/css/style.css`
 - `assets/js/app.js`
