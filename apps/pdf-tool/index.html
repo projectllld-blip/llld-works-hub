@@ -1144,18 +1144,29 @@ async function hydrateCardCanvas(card){
   wrap.innerHTML='';
   wrap.appendChild(cloneCanvas(canvas));
 }
+let _splitSyncObs=null, _splitSyncTimer=null;
 function syncSplitBoxHeights(){
-  if(state.view!=='splitBoard') return;
-  const boxes=[...document.querySelectorAll('#splitGrid .box')];
-  if(boxes.length<2) return;
-  boxes.forEach(b=>b.style.minHeight='');
-  const maxH=Math.max(...boxes.map(b=>b.getBoundingClientRect().height));
-  if(maxH>0) boxes.forEach(b=>b.style.minHeight=maxH+'px');
+  clearTimeout(_splitSyncTimer);
+  _splitSyncTimer=setTimeout(()=>{
+    const boxes=[...document.querySelectorAll('#splitGrid .box')];
+    if(boxes.length<2) return;
+    const box1=boxes[0];
+    box1.style.minHeight='';
+    const refH=box1.getBoundingClientRect().height;
+    if(refH>100) for(let i=1;i<boxes.length;i++) boxes[i].style.minHeight=refH+'px';
+  },50);
+}
+function startSplitBoxSync(){
+  if(_splitSyncObs){_splitSyncObs.disconnect();_splitSyncObs=null;}
+  const box1=document.querySelector('#splitBoxWrap1');
+  if(!box1) return;
+  _splitSyncObs=new ResizeObserver(syncSplitBoxHeights);
+  _splitSyncObs.observe(box1);
+  syncSplitBoxHeights();
 }
 async function hydrateAllVisibleCards(){
   const cards=[...document.querySelectorAll('.thumbCard.pageItem')];
   for(const card of cards){ await hydrateCardCanvas(card); }
-  syncSplitBoxHeights();
 }
 async function createPageCard(input, opts={deletable:false, sourceLabel:''}){
   const spec=pageSpec(input);
@@ -1605,7 +1616,7 @@ async function renderSplitBoard(options={}){
   });
   const reflectBtn=$('#applyPdfToSplitTop'); if(reflectBtn) reflectBtn.onclick=()=>reflectPdfToSplitBox1({manual:true});
   initHistoryPoint(); updateStats();
-  setTimeout(syncSplitBoxHeights, 200);
+  startSplitBoxSync();
 }
 async function handleMergeFiles(files){ state.mergeFiles.push(...files); renderCurrentView(); setTimeout(recordHistory,50); }
 function renderMerge(){
