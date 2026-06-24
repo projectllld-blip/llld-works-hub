@@ -16,6 +16,10 @@ python3 -m http.server 5500
 ```text
 http://localhost:5500/
 http://localhost:5500/marketplace.html
+http://localhost:5500/content-detail.html?slug=monthly-operations-checklist
+http://localhost:5500/request.html
+http://localhost:5500/thanks.html?type=purchase
+http://localhost:5500/thanks.html?type=request
 ```
 
 HTMLファイルを直接ダブルクリックせず、必ず `localhost` で確認してください。JSONを `fetch()` で読むためです。
@@ -92,3 +96,5 @@ Markdown資料は `docs/` に整理しています。
 このローカル検証版にはGitHub remoteを設定していません。
 
 本番へ反映するときは、このフォルダをそのままpushするのではなく、必要な差分だけ本番リポジトリへ移植して確認します。
+
+本番反映前には、必ず `docs/02_監査/release-checklist.md` を確認してください。
