@@ -1,77 +1,88 @@
-# LLLD Works Hub
+# LLLD Works Hub / Market ローカル検証版
 
-株式会社LLLDの社内コンテンツポータルです。GitHub Pagesで静的に公開できます。
+このフォルダは、本番GitHub Pagesを壊さずに LLLD Works Hub のマーケット化を検証するためのローカルパッケージです。
 
-## 構成
+## まず使う人へ
+
+このフォルダごと渡せば、ローカルPC上で動作確認できます。
+
+```bash
+cd "/Users/tetsuya/川岡哲也専用　AI軍団/04_社内運営/02_案件管理/コンテンツ販売（ローカル検証版）"
+python3 -m http.server 5500
+```
+
+確認URL:
+
+```text
+http://localhost:5500/
+http://localhost:5500/marketplace.html
+```
+
+HTMLファイルを直接ダブルクリックせず、必ず `localhost` で確認してください。JSONを `fetch()` で読むためです。
+
+## フォルダの役割
 
 ```text
 /
-├── index.html
-├── AGENTS.md
-├── README.md
-├── assets/
-│   ├── thumbnails/
-│   └── icons/
-├── apps/
-│   ├── pdf-tool/
-│   ├── seatflow/
-│   ├── quiz-maker/
-│   ├── exam-print/
-│   └── consulting-kit/
-└── data/
-    └── contents.json
+├── index.html                 # 社内Hubトップ
+├── marketplace.html           # マーケット一覧
+├── content-detail.html        # コンテンツ詳細
+├── author.html                # 投稿者ページ
+├── submit.html                # 投稿募集ページ
+├── assets/                    # CSS / JS / 画像 / サムネイル
+├── data/                      # 仮DB。将来Supabase等へ置換予定
+├── apps/                      # 実際に開くHTMLアプリ本体
+├── contents/                  # マーケット側コンテンツ入口
+├── docs/                      # ルール、構想、監査、フェーズ記録
+├── archive/                   # 元資料や整理済み素材
+├── AGENTS.md                  # このパッケージでAIが守る作業ルール
+└── README.md                  # このファイル
 ```
 
-## コンテンツ追加方法
+## 動作に必要な主なファイル
 
-1. HTMLアプリを `apps/app-name/index.html` に置く
-2. サムネイルを `assets/thumbnails/app-name.svg` または `.png` に置く
-3. `data/contents.json` に1件追加する
+- `index.html`
+- `marketplace.html`
+- `content-detail.html`
+- `author.html`
+- `submit.html`
+- `assets/css/style.css`
+- `assets/js/app.js`
+- `assets/js/contentService.js`
+- `assets/js/marketPages.js`
+- `assets/js/authMockService.js`
+- `assets/js/storagePolicy.js`
+- `data/contents.json`
+- `data/authors.json`
+- `data/categories.json`
+- `apps/`
+- `contents/`
+- `assets/thumbs/`
+- `assets/thumbnails/`
 
-```json
-{
-  "id": "app-name",
-  "title": "表示名",
-  "category": "教室運用",
-  "type": "HTMLアプリ",
-  "description": "短い説明文",
-  "url": "./apps/app-name/index.html",
-  "thumbnail": "./assets/thumbnails/app-name.svg",
-  "tags": ["タグ"],
-  "updatedAt": "2026-06-17",
-  "external": false
-}
-```
+## データ管理
 
-トップページは `data/contents.json` から一覧を読み込みます。カード追加のたびに `index.html` を直接編集する必要はありません。
+現在は本物のDBを使っていません。`data/` 配下のJSONを仮DBとして使っています。
 
-## ローカル確認
+- コンテンツ: `data/contents.json`
+- 投稿者: `data/authors.json`
+- カテゴリ: `data/categories.json`
 
-```bash
-python3 -m http.server 8000
-```
+画面側は `assets/js/contentService.js` 経由でデータを読みます。将来Supabaseなどに移行するときは、まずこのService層を差し替える方針です。
 
-ブラウザで以下を開きます。
+## ルール・構想・監査
 
-```text
-http://localhost:8000/
-```
+Markdown資料は `docs/` に整理しています。
 
-`index.html` を直接開いた場合、ブラウザ制限で `contents.json` が読めないことがあります。その場合も初期データで表示されます。
+- パッケージ構造: `docs/00_パッケージ構造/`
+- ローカル起動: `docs/01_セットアップ/`
+- 監査チェック: `docs/02_監査/`
+- 構想・進行方針: `docs/03_構想/`
+- フェーズ記録: `docs/04_フェーズ記録/`
+- 実装指示・過去プロンプト: `docs/05_実装指示/`
 
-## GitHub Pages公開
+## 本番反映について
 
-1. このフォルダをGitHubリポジトリのルートとして配置する
-2. GitHubの `Settings` を開く
-3. `Pages` を開く
-4. `Source` を `Deploy from a branch` にする
-5. `Branch` を `main`、フォルダを `/root` にする
-6. `Save`
+このローカル検証版にはGitHub remoteを設定していません。
 
-## 初期登録
-
-- PDF編集ツール
-- 座席管理
-- 小テスト作成
-- 入試問題印刷
-- コンサル支援キット
+本番へ反映するときは、このフォルダをそのままpushするのではなく、必要な差分だけ本番リポジトリへ移植して確認します。
