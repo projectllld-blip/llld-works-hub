@@ -46,12 +46,14 @@ select:focus, input:focus { outline: 2px solid rgba(49,95,140,.2); border-color:
 .choice-button.active .choice-meta { color: #466985; }
 .dataset-choice-grid, .pdf-unit-grid { grid-template-columns: 1fr; }
 .pdf-unit-grid { max-height: 390px; overflow-y: auto; padding-right: 3px; }
-.pdf-unit-option { display: grid; grid-template-columns: 20px 58px minmax(0, 1fr); gap: 8px; align-items: center; min-height: 46px; margin: 0; border: 1px solid #cbd5e1; border-radius: 6px; padding: 9px 10px; background: #fff; color: #334155; cursor: pointer; }
+.pdf-unit-option { display: grid; grid-template-columns: 20px 62px minmax(0, 1fr); gap: 8px; align-items: center; min-height: 50px; margin: 0; border: 1px solid #cbd5e1; border-radius: 6px; padding: 9px 10px; background: #fff; color: #334155; cursor: pointer; }
 .pdf-unit-option:hover { border-color: #7b93aa; background: #f5f8fb; }
 .pdf-unit-option.active { border-color: var(--blue); background: #e9f1f8; box-shadow: inset 3px 0 0 var(--blue); }
 .pdf-unit-option input { width: 16px; height: 16px; margin: 0; accent-color: var(--blue); }
 .pdf-unit-no { color: var(--blue); font-size: 14px; font-weight: 800; white-space: nowrap; }
-.pdf-unit-title { min-width: 0; }
+.pdf-unit-title { min-width: 0; display: grid; gap: 2px; }
+.pdf-unit-heading { color: #1f2937; font-size: 13px; font-weight: 800; line-height: 1.35; overflow-wrap: anywhere; }
+.pdf-unit-sub { color: var(--muted); font-size: 11px; font-weight: 600; line-height: 1.35; }
 .pdf-unit-option.missing { border-style: dashed; color: #7c5a2d; }
 .pdf-selection-tools { display: flex; align-items: center; gap: 7px; margin-bottom: 9px; }
 .pdf-selection-tools button { padding: 7px 9px; font-size: 12px; }
@@ -621,7 +623,8 @@ function renderPdfUnitChoices(dataset) {
     const label = document.createElement('label');
     const checked = selectedPdfUnits.has(item.unit);
     label.className = `pdf-unit-option${checked ? ' active' : ''}${item.problem ? '' : ' missing'}`;
-    label.innerHTML = `<input type="checkbox" value="${item.unit}" ${checked ? 'checked' : ''}><span class="pdf-unit-no">第${item.unit}回</span><span class="pdf-unit-title">${escapeHtml(item.unitTitle || '単元')}${item.problem ? '' : '<span class="choice-meta">問題未検出・解答のみ</span>'}</span>`;
+    const unitHeading = item.unitTitle || '単元名未登録';
+    label.innerHTML = `<input type="checkbox" value="${item.unit}" ${checked ? 'checked' : ''}><span class="pdf-unit-no">第${item.unit}回</span><span class="pdf-unit-title"><span class="pdf-unit-heading">${escapeHtml(unitHeading)}</span><span class="pdf-unit-sub">単元名・見出し${item.answer ? '' : ' / 解答未登録'}</span>${item.problem ? '' : '<span class="choice-meta">問題未検出・解答のみ</span>'}</span>`;
     label.querySelector('input').addEventListener('change', event => {
       if (event.target.checked) selectedPdfUnits.add(item.unit);
       else selectedPdfUnits.delete(item.unit);
