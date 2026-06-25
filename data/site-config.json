@@ -1,4 +1,9 @@
 {
+  "auth": {
+    "mode": "mock",
+    "supabaseUrl": "",
+    "supabaseAnonKey": ""
+  },
   "contact": {
     "mode": "demo",
     "email": "",

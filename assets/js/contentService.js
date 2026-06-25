@@ -113,7 +113,10 @@
     try {
       return await fetchJson('siteConfig');
     } catch {
-      return { contact: { mode: 'demo', email: '', endpointUrl: '', ownerName: 'LLLD Works Hub' } };
+      return {
+        auth: { mode: 'mock', supabaseUrl: '', supabaseAnonKey: '' },
+        contact: { mode: 'demo', email: '', endpointUrl: '', ownerName: 'LLLD Works Hub' }
+      };
     }
   }
 

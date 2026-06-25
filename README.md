@@ -18,6 +18,9 @@ http://localhost:5500/
 http://localhost:5500/marketplace.html
 http://localhost:5500/content-detail.html?slug=monthly-operations-checklist
 http://localhost:5500/request.html
+http://localhost:5500/login.html
+http://localhost:5500/signup.html
+http://localhost:5500/account.html
 http://localhost:5500/thanks.html?type=purchase
 http://localhost:5500/thanks.html?type=request
 http://localhost:5500/admin.html
@@ -34,6 +37,9 @@ HTMLファイルを直接ダブルクリックせず、必ず `localhost` で確
 ├── content-detail.html        # コンテンツ詳細
 ├── author.html                # 投稿者ページ
 ├── request.html               # 購入・開発相談
+├── login.html                 # 企業アカウントログインUIモック
+├── signup.html                # 企業アカウント登録UIモック
+├── account.html               # 企業アカウント画面モック
 ├── thanks.html                # 送信後・購入後案内
 ├── submit.html                # 投稿募集ページ
 ├── admin.html                 # 管理画面モック。本番操作不可
@@ -54,6 +60,9 @@ HTMLファイルを直接ダブルクリックせず、必ず `localhost` で確
 - `content-detail.html`
 - `author.html`
 - `request.html`
+- `login.html`
+- `signup.html`
+- `account.html`
 - `thanks.html`
 - `submit.html`
 - `admin.html`
@@ -62,6 +71,9 @@ HTMLファイルを直接ダブルクリックせず、必ず `localhost` で確
 - `assets/js/contentService.js`
 - `assets/js/marketPages.js`
 - `assets/js/requestPage.js`
+- `assets/js/siteConfigService.js`
+- `assets/js/authService.js`
+- `assets/js/accountPage.js`
 - `assets/js/thanksPage.js`
 - `assets/js/adminMockPage.js`
 - `assets/js/authMockService.js`
@@ -81,8 +93,11 @@ HTMLファイルを直接ダブルクリックせず、必ず `localhost` で確
 - コンテンツ: `data/contents.json`
 - 投稿者: `data/authors.json`
 - カテゴリ: `data/categories.json`
+- サイト設定: `data/site-config.json`
 
 画面側は `assets/js/contentService.js` 経由でデータを読みます。将来Supabaseなどに移行するときは、まずこのService層を差し替える方針です。
+
+企業アカウント関連は、現在 `mock mode` のUI検証です。本番ログイン、本番登録、パスワード保存、実データ同期はまだ行いません。
 
 ## ルール・構想・監査
 
