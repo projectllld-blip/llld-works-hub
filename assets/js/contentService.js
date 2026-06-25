@@ -113,7 +113,7 @@
     try {
       return await fetchJson('siteConfig');
     } catch {
-      return { forms: {}, contact: { email: '', ownerName: 'LLLD Works Hub' } };
+      return { contact: { mode: 'demo', email: '', endpointUrl: '', ownerName: 'LLLD Works Hub' } };
     }
   }
 
