@@ -10,16 +10,20 @@
   init();
 
   async function init() {
-    const mode = await window.AuthService.getAuthMode();
-    setText('[data-auth-mode]', `${mode} mode`);
-    setText('[data-mode-note]', modeNote(mode));
+    try {
+      const status = await window.AuthService.getAuthStatus();
+      renderModeStatus(status);
 
-    if (page === 'login') initLogin(mode);
-    if (page === 'signup') initSignup(mode);
-    if (page === 'account') initAccount(mode);
+      if (page === 'login') initLogin(status);
+      if (page === 'signup') initSignup(status);
+      if (page === 'account') initAccount(status);
+    } catch {
+      setText('[data-auth-mode]', 'mock mode');
+      setText('[data-mode-note]', '認証設定の読み込みに失敗したため、mock modeで表示しています。');
+    }
   }
 
-  function initLogin(mode) {
+  function initLogin(status) {
     const form = $('#loginForm');
     if (!form) return;
 
@@ -29,16 +33,17 @@
 
       const email = $('#loginEmail').value.trim();
       const result = await window.AuthService.mockLogin({ email });
+      renderModeStatus(result.status || status);
       renderStatus(result.message, result.ok);
       renderPreview([
-        ['認証方式', mode],
+        ['認証方式', modeLabel(result.status || status)],
         ['メールアドレス', email || '未入力'],
         ['保存', 'パスワード・認証トークンは保存していません']
       ]);
     });
   }
 
-  function initSignup(mode) {
+  function initSignup(status) {
     const form = $('#signupForm');
     if (!form) return;
 
@@ -54,9 +59,10 @@
         apps: $$('input[name="apps"]:checked').map(input => input.value)
       };
       const result = await window.AuthService.mockSignup(input);
+      renderModeStatus(result.status || status);
       renderStatus(result.message, result.ok);
       renderPreview([
-        ['認証方式', mode],
+        ['認証方式', modeLabel(result.status || status)],
         ['会社名 / 店舗名 / 教室名', input.companyName || '未入力'],
         ['担当者名', input.contactName || '未入力'],
         ['メールアドレス', input.email || '未入力'],
@@ -67,29 +73,36 @@
     });
   }
 
-  async function initAccount(mode) {
+  async function initAccount(status) {
     const result = await window.AuthService.getCurrentAccount();
-    renderAccount(result.account, mode);
+    renderModeStatus(result.status || status);
+    renderAccount(result.account, result.status || status);
 
     const logoutButton = $('#logoutButton');
     if (logoutButton) {
       logoutButton.addEventListener('click', async () => {
         const logout = await window.AuthService.logout();
+        renderModeStatus(logout.status || status);
         renderStatus(logout.message, logout.ok);
         const latest = await window.AuthService.getCurrentAccount();
-        renderAccount(latest.account, mode);
+        renderAccount(latest.account, latest.status || status);
       });
     }
   }
 
-  function renderAccount(account, mode) {
-    setText('#accountStatus', `${mode} mode / 本番同期なし`);
+  function renderAccount(account, status) {
+    setText('#accountStatus', `${modeLabel(status)} / 本番同期なし`);
     setText('#accountCompany', account.companyName);
     setText('#accountContact', account.contactName);
     setText('#accountEmail', account.email);
-    setText('#accountSyncStatus', account.syncStatus);
+    setText('#accountSyncStatus', status.message || account.syncStatus);
     renderList('#accountApps', account.apps);
     renderList('#accountRecentApps', account.recentApps);
+  }
+
+  function renderModeStatus(status) {
+    setText('[data-auth-mode]', modeLabel(status));
+    setText('[data-mode-note]', modeNote(status));
   }
 
   function renderStatus(message, ok) {
@@ -117,11 +130,20 @@
     root.innerHTML = items.map(item => `<li>${escapeHtml(item)}</li>`).join('');
   }
 
-  function modeNote(mode) {
-    if (mode === 'supabase') {
-      return 'Supabase mode設定ですが、この画面では本番認証処理をまだ実行しません。RLSと接続設計の確認後に有効化します。';
+  function modeLabel(status) {
+    const mode = status?.mode || 'mock';
+    if (mode === 'supabase') return 'supabase mode（本番処理未接続）';
+    return 'mock mode';
+  }
+
+  function modeNote(status) {
+    if (!status) {
+      return '現在はログインUIの検証モードです。本番アカウント登録・実データ保存はまだ行いません。';
     }
-    return '現在はログインUIの検証モードです。本番アカウント登録・実データ保存はまだ行いません。';
+    if (status.mode === 'supabase') {
+      return `${status.message} 本番アカウント登録・ログイン・データ保存はまだ行いません。`;
+    }
+    return `${status.message} 入力内容・パスワード・認証トークンは保存しません。`;
   }
 
   function labelForBusinessType(value) {

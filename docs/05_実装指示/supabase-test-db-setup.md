@@ -101,6 +101,8 @@ v0.10時点では、まだフロント接続しない。
 ```
 
 ただし、RLS確認が終わるまでは設定しない。
+`auth.mode` を `supabase` にしても、URLまたはanon keyが空ならフロントは `mock mode` に戻す。
+URL / anon key が設定されている場合でも、v0.10.5時点では本番signup / loginは実行しない。
 
 ## 8. 絶対にやらないこと
 

@@ -3,109 +3,124 @@
 (() => {
   const DEFAULT_ACCOUNT = {
     status: 'mock',
-    companyName: 'LLLDデモ教室',
+    companyName: 'デモ企業 / 教室',
     contactName: 'デモ担当者',
     email: 'demo@example.com',
     businessType: 'demo',
-    apps: ['勤怠管理', '座席管理', 'PDF編集'],
+    planStatus: 'demo',
+    apps: ['SeatFlow', 'PDF編集'],
     recentApps: ['PDF編集ツール', '座席管理アプリ', '小テスト作成'],
     syncStatus: 'mock mode: クラウド同期はまだ行っていません'
   };
 
-  let mockAccount = { ...DEFAULT_ACCOUNT };
-
-  async function getAuthConfig() {
-    if (window.SiteConfigService?.getAuthConfig) {
-      return window.SiteConfigService.getAuthConfig();
-    }
-    return { mode: 'mock', supabaseUrl: '', supabaseAnonKey: '' };
+  async function getAuthMode() {
+    const status = await getAuthStatus();
+    return status.mode;
   }
 
-  async function getAuthMode() {
-    const config = await getAuthConfig();
-    if (config.mode === 'supabase' && config.supabaseUrl && config.supabaseAnonKey) {
-      return 'supabase';
+  async function getAuthStatus() {
+    if (window.SupabaseClientService?.getSupabaseConnectionStatus) {
+      const connection = await window.SupabaseClientService.getSupabaseConnectionStatus();
+      return {
+        requestedMode: connection.requestedMode,
+        mode: connection.safeMode,
+        configured: connection.configured,
+        clientAvailable: connection.clientAvailable,
+        clientReady: connection.clientReady,
+        reason: connection.reason,
+        message: connection.message,
+        isConnected: false,
+        productionAuthEnabled: false
+      };
     }
-    return 'mock';
+
+    const safeMode = await window.SiteConfigService?.getSafeAuthMode?.() || 'mock';
+    return {
+      requestedMode: safeMode,
+      mode: safeMode,
+      configured: false,
+      clientAvailable: false,
+      clientReady: false,
+      reason: 'service_missing',
+      message: '認証設定サービスを確認できないため、mock modeで動作しています。',
+      isConnected: false,
+      productionAuthEnabled: false
+    };
+  }
+
+  async function isMockMode() {
+    return (await getAuthMode()) === 'mock';
   }
 
   async function isSupabaseReady() {
-    return (await getAuthMode()) === 'supabase';
+    const status = await getAuthStatus();
+    return status.mode === 'supabase' && status.configured;
   }
 
-  async function mockLogin({ email }) {
-    const mode = await getAuthMode();
-    if (mode !== 'mock') {
+  async function mockLogin() {
+    const status = await getAuthStatus();
+    if (status.mode !== 'mock') {
       return {
         ok: false,
-        mode,
-        message: 'Supabase modeの実認証はまだ未実装です。'
+        mode: status.mode,
+        status,
+        message: 'Supabase設定は検出されていますが、このフェーズでは本番ログインはまだ実行しません。'
       };
     }
 
-    mockAccount = {
-      ...mockAccount,
-      email: email || mockAccount.email,
-      status: 'mock'
-    };
-
     return {
       ok: true,
-      mode,
-      account: { ...mockAccount },
-      message: 'mock modeのため、本番ログインは行っていません。'
+      mode: status.mode,
+      status,
+      account: { ...DEFAULT_ACCOUNT },
+      message: 'mock modeのため、本番ログインは行っていません。入力内容・パスワードは保存していません。'
     };
   }
 
-  async function mockSignup(input = {}) {
-    const mode = await getAuthMode();
-    if (mode !== 'mock') {
+  async function mockSignup() {
+    const status = await getAuthStatus();
+    if (status.mode !== 'mock') {
       return {
         ok: false,
-        mode,
-        message: 'Supabase modeの本登録はまだ未実装です。'
+        mode: status.mode,
+        status,
+        message: 'Supabase設定は検出されていますが、このフェーズでは本番登録はまだ実行しません。'
       };
     }
 
-    mockAccount = {
-      ...mockAccount,
-      companyName: input.companyName || mockAccount.companyName,
-      contactName: input.contactName || mockAccount.contactName,
-      email: input.email || mockAccount.email,
-      businessType: input.businessType || mockAccount.businessType,
-      apps: Array.isArray(input.apps) && input.apps.length ? input.apps : mockAccount.apps,
-      status: 'mock'
-    };
-
     return {
       ok: true,
-      mode,
-      account: { ...mockAccount },
-      message: 'mock modeのため、本番登録・実データ保存は行っていません。'
+      mode: status.mode,
+      status,
+      account: { ...DEFAULT_ACCOUNT },
+      message: 'mock modeのため、本番登録・実データ保存は行っていません。入力内容・パスワードは保存していません。'
     };
   }
 
   async function getCurrentAccount() {
-    const mode = await getAuthMode();
+    const status = await getAuthStatus();
     return {
-      mode,
-      account: { ...mockAccount },
-      isAuthenticated: mode === 'mock'
+      mode: status.mode,
+      status,
+      account: { ...DEFAULT_ACCOUNT },
+      isAuthenticated: status.mode === 'mock'
     };
   }
 
   async function logout() {
-    const mode = await getAuthMode();
-    mockAccount = { ...DEFAULT_ACCOUNT };
+    const status = await getAuthStatus();
     return {
       ok: true,
-      mode,
+      mode: status.mode,
+      status,
       message: 'mock modeの表示状態を初期化しました。本番ログアウト処理はまだありません。'
     };
   }
 
   window.AuthService = {
     getAuthMode,
+    getAuthStatus,
+    isMockMode,
     isSupabaseReady,
     mockLogin,
     mockSignup,

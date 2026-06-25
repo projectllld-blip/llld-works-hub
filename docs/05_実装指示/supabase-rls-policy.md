@@ -20,6 +20,8 @@ RLS未設定のまま本番運用しない。
 - GitHub Pagesに置かない。
 - HTML / JS / JSONに直書きしない。
 - `.env` をGitHubに置かない。
+- `auth.mode = supabase` としても、URL / anon key不足時は必ずmock modeへ戻す。
+- v0.10.5時点では、Supabase設定を検出しても本番signup / loginは実行しない。
 
 ## company_accounts
 
