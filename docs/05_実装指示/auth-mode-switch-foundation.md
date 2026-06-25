@@ -53,6 +53,7 @@
 ## v0.12 login / account接続時の注意
 
 - ログイン後に読めるデータは `company_account_id` で分離する
+- account画面では `company_accounts.owner_user_id = auth user id` を使う
 - app_instances / app_data / audit_logs は自分の会社アカウントのものだけ読めるようにする
 - RLS未設定のまま本番運用しない
 - 勤怠実データは最後に慎重に扱う

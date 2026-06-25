@@ -23,7 +23,7 @@
       <div>
         <span class="market-kicker">企業アカウント</span>
         <h1>企業アカウントのマイページ確認画面です。</h1>
-        <p>現在はアカウント画面の検証モードです。この画面では本番データ保存・同期はまだ行いません。</p>
+        <p>Supabase設定済みの場合はログイン中の企業アカウント情報を表示します。利用アプリ一覧の本格接続は次フェーズ予定です。</p>
       </div>
       <div class="account-mode-card">
         <span>現在の認証状態</span>
@@ -40,6 +40,10 @@
           <div><dt>会社名 / 店舗名 / 教室名</dt><dd id="accountCompany">-</dd></div>
           <div><dt>担当者名</dt><dd id="accountContact">-</dd></div>
           <div><dt>メールアドレス</dt><dd id="accountEmail">-</dd></div>
+          <div><dt>業種</dt><dd id="accountBusinessType">-</dd></div>
+          <div><dt>プラン状態</dt><dd id="accountPlanStatus">-</dd></div>
+          <div><dt>登録日</dt><dd id="accountCreatedAt">-</dd></div>
+          <div><dt>更新日</dt><dd id="accountUpdatedAt">-</dd></div>
           <div><dt>データ同期状態</dt><dd id="accountSyncStatus">-</dd></div>
         </dl>
         <div class="detail-cta-row">
@@ -73,6 +77,7 @@
   </main>
 
   <script src="./assets/js/siteConfigService.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./assets/js/supabaseClientService.js"></script>
   <script src="./assets/js/authService.js"></script>
   <script src="./assets/js/accountPage.js"></script>

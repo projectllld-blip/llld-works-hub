@@ -41,6 +41,12 @@ login.html?signup=confirmed
 
 GitHub Pagesとlocalhostのどちらでも、相対URLから生成する。
 
+## v0.12 login / account接続
+
+login後はSupabase client標準のセッション管理を使う。
+
+`account.html` は `auth.getUser()` でログイン中ユーザーを確認し、`company_accounts.owner_user_id = user.id` の行だけを取得する。
+
 ## password reset
 
 パスワード再設定はまだ本実装しない。

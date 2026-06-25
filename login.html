@@ -23,7 +23,7 @@
       <div>
         <span class="market-kicker">企業アカウント</span>
         <h1>企業・店舗・教室アカウントのログイン画面です。</h1>
-        <p>将来クラウド保存に進むためのUI検証です。今は本番ログイン、実データ保存、同期は行いません。</p>
+        <p>Supabase設定済みの場合は企業アカウントでログインできます。未設定時はmock modeで安全に表示確認します。</p>
       </div>
       <div class="account-mode-card">
         <span>現在の認証状態</span>
@@ -35,7 +35,7 @@
     <section class="detail-lp-grid account-layout">
       <article class="detail-panel">
         <h2>ログイン</h2>
-        <p class="account-note">mock modeでは、入力内容やパスワードを保存しません。</p>
+        <p class="account-note">パスワードはLLLD Works Hub側では保存しません。Supabase未設定時はmock modeで確認します。</p>
         <form class="account-form" id="loginForm">
           <label>
             メールアドレス
@@ -56,12 +56,13 @@
 
       <article class="detail-panel">
         <h2>入力確認</h2>
-        <p class="account-note">本番認証ではありません。Supabase接続前の画面確認用です。</p>
+        <p class="account-note">ログイン結果を画面上で確認します。入力内容はlocalStorageに保存しません。</p>
         <dl class="account-preview" id="accountPreview" hidden></dl>
       </article>
     </section>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./assets/js/siteConfigService.js"></script>
   <script src="./assets/js/supabaseClientService.js"></script>
   <script src="./assets/js/authService.js"></script>
