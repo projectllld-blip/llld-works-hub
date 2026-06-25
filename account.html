@@ -23,7 +23,7 @@
       <div>
         <span class="market-kicker">企業アカウント</span>
         <h1>企業アカウントのマイページ確認画面です。</h1>
-        <p>Supabase設定済みの場合はログイン中の企業アカウント情報を表示します。利用アプリ一覧の本格接続は次フェーズ予定です。</p>
+        <p>Supabase設定済みの場合はログイン中の企業アカウント情報と利用中アプリ一覧を表示します。アプリ内データ保存はまだ未接続です。</p>
       </div>
       <div class="account-mode-card">
         <span>現在の認証状態</span>
@@ -55,6 +55,7 @@
 
       <article class="detail-panel">
         <h2>利用中アプリ</h2>
+        <p class="account-note" id="accountAppsStatus">利用アプリ一覧を確認しています。</p>
         <ul class="account-list" id="accountApps"></ul>
       </article>
 
@@ -80,6 +81,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./assets/js/supabaseClientService.js"></script>
   <script src="./assets/js/authService.js"></script>
+  <script src="./assets/js/appInstanceService.js"></script>
   <script src="./assets/js/accountPage.js"></script>
 </body>
 </html>

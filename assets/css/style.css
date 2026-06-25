@@ -584,6 +584,12 @@ button{cursor:pointer}
   .author-hero{grid-template-columns:1fr}
 }
 
+@media(max-width:640px){
+  .account-app-meta{
+    grid-template-columns:1fr;
+  }
+}
+
 @media(max-width:960px){
   .app-shell{display:block}
   .sidebar{position:fixed;left:0;top:0;bottom:0;width:min(320px,86vw);height:100vh;transform:translateX(-105%);transition:.2s var(--ease)}
@@ -1654,6 +1660,78 @@ body[data-market-page="detail"] .market-badge:last-child{
   border-radius:var(--radius-btn);
   background:var(--bg-page);
   padding:8px 10px;
+}
+.account-app-card{
+  display:grid;
+  gap:10px;
+}
+.account-app-main{
+  display:grid;
+  gap:4px;
+}
+.account-app-main strong{
+  color:var(--text);
+  font-size:14px;
+  line-height:1.35;
+}
+.account-app-main p{
+  margin:0;
+  color:var(--text-sub);
+  font-size:12px;
+  font-weight:800;
+  line-height:1.55;
+}
+.account-app-key{
+  width:max-content;
+  border-radius:var(--radius-pill);
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  color:var(--text-sub);
+  padding:3px 8px;
+  font-size:11px;
+  font-weight:900;
+}
+.account-app-meta{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:6px;
+  margin:0;
+}
+.account-app-meta div{
+  border:1px solid var(--border);
+  border-radius:var(--radius-btn);
+  background:var(--bg-card);
+  padding:6px 8px;
+}
+.account-app-meta dt{
+  color:var(--text-sub);
+  font-size:10px;
+  font-weight:900;
+}
+.account-app-meta dd{
+  margin:2px 0 0;
+  color:var(--text);
+  font-size:12px;
+  font-weight:850;
+}
+.account-app-action{
+  width:max-content;
+  min-height:34px;
+  padding:8px 16px;
+}
+.account-app-disabled{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid var(--border);
+  border-radius:var(--radius-btn);
+  background:var(--bg-card);
+  color:var(--text-sub);
+  font-size:13px;
+  font-weight:900;
+}
+.account-app-empty{
+  color:var(--text-sub);
 }
 
 @media(max-width:860px){

@@ -44,6 +44,15 @@ supabase/migrations/20260625_v011_signup_company_account_trigger.sql
 このtriggerは、Supabase Authでユーザーが作成されたときに `company_accounts` を作成する。
 フロントからservice role keyで強制作成する方式は使わない。
 
+v0.13で利用アプリ一覧を使う場合は、続けて以下も実行する。
+
+```text
+supabase/migrations/20260625_v013_app_instances_from_signup_metadata.sql
+```
+
+このSQLは `company_account_id + app_key` の重複防止unique indexを追加し、signup metadataの `selected_app_keys` から `app_instances` を作成する。
+既存の `app_instances` に重複がある場合は、SQL適用前に整理する。
+
 ## 3. seed.sqlを流す
 
 次にSQL Editorで以下を実行する。
