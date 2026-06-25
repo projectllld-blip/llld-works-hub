@@ -92,6 +92,11 @@ input:focus,select:focus,textarea:focus{border-color:#93c5fd;box-shadow:0 0 0 3p
 .brand h1{font-size:17px;margin:0;letter-spacing:.01em}
 .brand span{font-size:11px;color:var(--muted);display:block;margin-top:2px}
 .top-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cloud-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-left:8px;padding-left:8px;border-left:1px solid rgba(148,163,184,.35)}
+.cloud-note{font-size:11px;font-weight:900;color:#64748b;max-width:360px;line-height:1.35}
+.pill.cloudMock{background:#f1f5f9;color:#475569;border-color:#cbd5e1}
+.pill.cloudReady{background:#dcfce7;color:#166534;border-color:#bbf7d0}
+.pill.cloudWarn{background:#fef3c7;color:#92400e;border-color:#fde68a}
 .spacer{flex:1}
 .pill{border-radius:999px;padding:7px 10px;font-size:12px;font-weight:900;border:1px solid var(--line);background:#fff;color:var(--muted)}
 .pill.blue{background:#dbeafe;color:#1d4ed8;border-color:#bfdbfe}
@@ -600,11 +605,18 @@ body.operateOnly #userProcessBox > .hint{display:none!important;}
       <button id="redoBtn" class="small">Redo</button>
       <button id="saveBtn" class="small primary">保存</button>
     </div>
+    <div class="cloud-actions" aria-label="SeatFlowクラウド保存">
+      <button id="cloudSaveBtn" class="small success">クラウド保存</button>
+      <button id="cloudLoadBtn" class="small">クラウド読込</button>
+      <span id="cloudModePill" class="pill cloudMock">mock</span>
+      <span id="cloudLastSavedPill" class="pill">未同期</span>
+    </div>
     <div class="spacer"></div>
     <span id="modePill" class="pill blue">EDIT</span>
     <span id="savePill" class="pill green">保存済み</span>
     <span id="clock" class="pill">--:--</span>
   </div>
+  <div id="cloudStatusText" class="cloud-note" style="padding:0 14px 8px">このフェーズでは、座席レイアウトのみクラウド保存します。生徒名・利用状況・勤怠情報は保存しません。</div>
 
   <div id="mainGrid" class="main">
     <div class="panel left">
@@ -931,6 +943,11 @@ body.operateOnly #userProcessBox > .hint{display:none!important;}
 
 <div id="toast" class="toast"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../assets/js/siteConfigService.js"></script>
+<script src="../../assets/js/supabaseClientService.js"></script>
+<script src="../../assets/js/authService.js"></script>
+<script src="../../assets/js/seatflowCloudService.js"></script>
 <script>
 if (typeof window.structuredClone !== "function") {
   window.structuredClone = value => JSON.parse(JSON.stringify(value));
@@ -1031,6 +1048,127 @@ function markUnsaved(){ $("savePill").textContent="編集中";$("savePill").clas
 function dirty(){pushHistory();markUnsaved()}
 function save(show=true){localStorage.setItem(KEY,JSON.stringify(state));$("savePill").textContent="保存済み";$("savePill").className="pill green";if(show)toast("保存しました")}
 function load(){try{return {...structuredClone(template),...JSON.parse(localStorage.getItem(KEY)||"{}")}}catch(e){return structuredClone(template)}}
+
+function buildSeatFlowCloudLayout(){
+ const l=layout();
+ return {
+   version:1,
+   layoutName:l?.name||"SeatFlowレイアウト",
+   source:"seatflow",
+   canvas:{
+     width:Number(l?.floor?.w)||1200,
+     height:Number(l?.floor?.h)||760,
+     gridSize:Number(l?.floor?.grid)||20,
+     zoom:Number(state.zoom)||1
+   },
+   items:(l?.items||[]).map(i=>({
+     id:i.id,
+     type:i.type,
+     label:i.label,
+     x:i.x,
+     y:i.y,
+     width:i.w,
+     height:i.h,
+     rotation:i.r||0,
+     z:i.z||1,
+     groupId:i.groupId||"",
+     assignable:i.type==="seat"||!!i.assignable,
+     noBorder:!!i.noBorder,
+     color:i.color||""
+   })),
+   settings:{
+     showGrid:!!state.grid,
+     snapToGrid:true
+   }
+ };
+}
+function applySeatFlowCloudLayout(cloudLayout){
+ if(!cloudLayout||!Array.isArray(cloudLayout.items))return toast("クラウドレイアウトを読み込めませんでした");
+ const l=layout();
+ l.name=cloudLayout.layoutName||l.name||"SeatFlowレイアウト";
+ l.floor={
+   w:Number(cloudLayout.canvas?.width)||l.floor.w||1200,
+   h:Number(cloudLayout.canvas?.height)||l.floor.h||760,
+   grid:Number(cloudLayout.canvas?.gridSize)||l.floor.grid||20
+ };
+ l.items=cloudLayout.items.map((item,idx)=>normalizeItem({
+   id:item.id||uid("item"),
+   type:item.type||"seat",
+   label:item.label||"",
+   x:Number(item.x)||0,
+   y:Number(item.y)||0,
+   w:Number(item.width)||80,
+   h:Number(item.height)||60,
+   r:Number(item.rotation)||0,
+   z:Number(item.z)||idx+1,
+   groupId:item.groupId||null,
+   status:"free",
+   assignedName:"",
+   personId:"",
+   note:"",
+   locked:false,
+   assignable:item.type==="seat"||!!item.assignable,
+   assignableLocked:item.type==="seat",
+   noBorder:!!item.noBorder,
+   color:item.color||"",
+   fontSize:isTextItem(item)?18:13,
+   textVertical:item.type==="textV"
+ }));
+ state.grid=cloudLayout.settings?.showGrid!==false;
+ state.zoom=Number(cloudLayout.canvas?.zoom)||state.zoom||1;
+ clearSelection();
+ normalizeLoaded();
+ dirty();
+ render();
+}
+function setSeatFlowCloudUi(result){
+ const mode=$("cloudModePill"), last=$("cloudLastSavedPill"), text=$("cloudStatusText");
+ if(mode){
+   mode.textContent=result?.mode==="supabase"?"supabase":"mock";
+   mode.className=`pill ${result?.mode==="supabase"&&result?.ok?"cloudReady":result?.mode==="supabase"?"cloudWarn":"cloudMock"}`;
+ }
+ if(text)text.textContent=result?.message||"このフェーズでは、座席レイアウトのみ保存します。生徒名・利用状況・勤怠情報は保存しません。";
+ if(last&&result?.savedAt)last.textContent=`最終保存 ${formatCloudTime(result.savedAt)}`;
+}
+function formatCloudTime(value){
+ try{return new Date(value).toLocaleString("ja-JP",{month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"})}catch{return "保存済み"}
+}
+async function refreshSeatFlowCloudStatus(){
+ if(!window.SeatFlowCloudService?.getSeatFlowCloudStatus){
+   setSeatFlowCloudUi({mode:"mock",message:"クラウド保存サービスを確認できません。ローカル保存を利用してください。"});
+   return;
+ }
+ const result=await window.SeatFlowCloudService.getSeatFlowCloudStatus();
+ setSeatFlowCloudUi(result);
+}
+function bindSeatFlowCloudControls(){
+ const saveBtn=$("cloudSaveBtn"), loadBtn=$("cloudLoadBtn");
+ if(saveBtn)saveBtn.onclick=async()=>{
+   if(!window.SeatFlowCloudService?.saveSeatLayoutToCloud)return toast("クラウド保存サービスを確認できません");
+   saveBtn.disabled=true;
+   try{
+     const result=await window.SeatFlowCloudService.saveSeatLayoutToCloud(buildSeatFlowCloudLayout());
+     setSeatFlowCloudUi(result);
+     toast(result.message,2600);
+   }catch(err){toast("クラウド保存を実行できませんでした")}
+   finally{saveBtn.disabled=false;}
+ };
+ if(loadBtn)loadBtn.onclick=async()=>{
+   if(!window.SeatFlowCloudService?.loadSeatLayoutFromCloud)return toast("クラウド読込サービスを確認できません");
+   loadBtn.disabled=true;
+   try{
+     const result=await window.SeatFlowCloudService.loadSeatLayoutFromCloud();
+     setSeatFlowCloudUi(result);
+     if(result.ok&&result.layout){
+       if(confirm("現在のレイアウトをクラウド保存されたレイアウトで置き換えます。よろしいですか？")){
+         applySeatFlowCloudLayout(result.layout);
+         toast(result.message,2600);
+       }
+     }else toast(result.message,2600);
+   }catch(err){toast("クラウド読込を実行できませんでした")}
+   finally{loadBtn.disabled=false;}
+ };
+}
 function normalizeLoaded(){
  state.dashboardWidth=clamp(Number(state.dashboardWidth)||390,280,720);
  if(!state.layouts.length){state.layouts=[newLayout("学習塾レイアウト","juku")];state.activeLayoutId=state.layouts[0].id;sampleJuku(false)}
@@ -1062,6 +1200,8 @@ function init(){
  normalizeLoaded();
  bind();
  render();
+ bindSeatFlowCloudControls();
+ refreshSeatFlowCloudStatus();
  if(!state.history.length)pushHistory();
  setInterval(()=>$("clock").textContent=new Date().toLocaleTimeString("ja-JP",{hour:"2-digit",minute:"2-digit"}),1000);
 }

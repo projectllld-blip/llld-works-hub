@@ -18,6 +18,7 @@
   };
 
   let cache = null;
+  const scriptUrl = document.currentScript?.src || '';
 
   async function loadSiteConfig() {
     cache = null;
@@ -28,7 +29,7 @@
     if (cache) return cache;
 
     try {
-      const response = await fetch('./data/site-config.json', { cache: 'no-store' });
+      const response = await fetch(resolveConfigUrl(), { cache: 'no-store' });
       if (!response.ok) throw new Error(`Failed to load site-config.json: ${response.status}`);
       const config = await response.json();
       cache = mergeConfig(config);
@@ -80,6 +81,17 @@
       supabaseUrl: String(rawAuth.supabaseUrl || '').trim(),
       supabaseAnonKey: String(rawAuth.supabaseAnonKey || '').trim()
     };
+  }
+
+  function resolveConfigUrl() {
+    if (scriptUrl) {
+      try {
+        return new URL('../../data/site-config.json', scriptUrl).href;
+      } catch {
+        return './data/site-config.json';
+      }
+    }
+    return './data/site-config.json';
   }
 
   window.SiteConfigService = {

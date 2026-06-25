@@ -121,6 +121,50 @@ data_type候補:
 - `meeting_note`
 - `settings`
 
+## v0.14 SeatFlow seat_layout
+
+v0.14では、最初のクラウド保存対象としてSeatFlowの座席レイアウトだけを `app_data` に保存する。
+
+保存キー:
+
+```text
+app_key = seatflow
+data_type = seat_layout
+```
+
+1つの `app_instance_id` と `data_type` につき1件を上書き保存する方針にする。
+
+```text
+company_account_id
+app_instance_id
+app_key
+data_type
+data_json
+```
+
+`data_json` に保存してよいもの:
+
+- レイアウト名
+- 座席や什器の位置
+- 座席や什器のサイズ
+- 座席番号やパーツ名
+- 床サイズ、グリッド、ズームなどの表示設定
+
+`data_json` に保存しないもの:
+
+- 生徒名
+- 保護者名
+- 講師名
+- 電話番号
+- メールアドレス
+- 出席状況
+- 予約状況
+- 使用中座席
+- 面談メモ
+- 勤怠情報
+
+SeatFlowの既存localStorage保存は維持し、クラウド保存は追加機能として扱う。
+
 ## audit_logs
 
 変更履歴。
@@ -164,3 +208,5 @@ supabase/seed.sql
 v0.10ではテーブル、RLS、seedのみを用意する。
 
 フロントから本番登録、本番ログイン、SeatFlow実データ保存、勤怠実データ保存はまだ行わない。
+
+v0.14ではSeatFlowの座席レイアウトのみ `app_data` に保存する。生徒名、利用状態、勤怠データは保存対象外。

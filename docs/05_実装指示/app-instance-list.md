@@ -85,3 +85,21 @@ signup時の selected_app_keys、app_instances作成SQL、またはv0.13 migrati
 - app_data保存の設計
 
 勤怠データはv1.8以降で慎重に扱う。
+
+## v0.14での利用
+
+SeatFlowクラウド保存では、ログイン中の企業アカウントに紐づく `app_instances` から `app_key = seatflow` の行を取得する。
+
+取得できない場合は保存・読込を行わない。
+
+この状態でフロントから勝手に `app_instances` を作らない。重複作成や権限混在を避けるため、作成はsignup triggerまたは管理されたSQLで行う。
+
+SeatFlow保存時は以下の関係を守る。
+
+```text
+company_accounts.id
+-> app_instances.company_account_id
+-> app_data.company_account_id / app_data.app_instance_id
+```
+
+`app_data` へ保存するのは `seat_layout` のみ。名簿、利用者名、座席利用状態、勤怠情報は保存しない。
