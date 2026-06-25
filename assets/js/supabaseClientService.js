@@ -55,7 +55,7 @@
       message = 'Supabase設定は検出されていますが、ライブラリ未読込のため本番処理は実行しません。';
     } else if (config.requestedMode === 'supabase' && configured && clientAvailable) {
       reason = 'supabase_configured';
-      message = 'Supabase設定は検出されています。v0.11ではsignupのみ接続対象です。';
+      message = 'Supabase設定は検出されています。v0.12ではsignup / login / account接続が対象です。';
     }
 
     return {

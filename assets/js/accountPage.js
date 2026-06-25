@@ -26,20 +26,37 @@
   function initLogin(status) {
     const form = $('#loginForm');
     if (!form) return;
+    setLoginButtonLabel(form, status);
 
     form.addEventListener('submit', async event => {
       event.preventDefault();
       if (!form.reportValidity()) return;
 
-      const email = $('#loginEmail').value.trim();
-      const result = await window.AuthService.mockLogin({ email });
-      renderModeStatus(result.status || status);
-      renderStatus(result.message, result.ok);
-      renderPreview([
-        ['認証方式', modeLabel(result.status || status)],
-        ['メールアドレス', email || '未入力'],
-        ['保存', 'パスワード・認証トークンは保存していません']
-      ]);
+      const input = {
+        email: $('#loginEmail').value.trim(),
+        password: $('#loginPassword').value
+      };
+
+      setFormBusy(form, true, 'ログイン処理中...');
+      renderStatus('ログイン処理を確認しています...', true);
+
+      try {
+        const result = await window.AuthService.login(input);
+        renderModeStatus(result.status || status);
+        setLoginButtonLabel(form, result.status || status);
+        renderStatus(result.message, result.ok);
+        renderLoginPreview(input, result.status || status, result);
+
+        if (result.ok && result.mode === 'supabase') {
+          window.setTimeout(() => {
+            window.location.href = './account.html';
+          }, 900);
+        }
+      } catch {
+        renderStatus('ログインに失敗しました。メールアドレスまたはパスワードを確認してください。', false);
+      } finally {
+        setFormBusy(form, false);
+      }
     });
   }
 
@@ -81,28 +98,65 @@
   async function initAccount(status) {
     const result = await window.AuthService.getCurrentAccount();
     renderModeStatus(result.status || status);
-    renderAccount(result.account, result.status || status);
+    renderAccountState(result, result.status || status);
 
     const logoutButton = $('#logoutButton');
     if (logoutButton) {
       logoutButton.addEventListener('click', async () => {
+        logoutButton.disabled = true;
         const logout = await window.AuthService.logout();
         renderModeStatus(logout.status || status);
         renderStatus(logout.message, logout.ok);
+        if (logout.ok && logout.mode === 'supabase') {
+          window.setTimeout(() => {
+            window.location.href = './login.html?logged_out=1';
+          }, 900);
+          return;
+        }
         const latest = await window.AuthService.getCurrentAccount();
-        renderAccount(latest.account, latest.status || status);
+        renderAccountState(latest, latest.status || status);
+        logoutButton.disabled = false;
       });
     }
   }
 
+  function renderAccountState(result, status) {
+    if (result?.account) {
+      renderAccount(result.account, status, result);
+      renderStatus(result.message || 'アカウント情報を表示しています。', result.ok !== false);
+      return;
+    }
+
+    clearAccount();
+    setText('#accountStatus', accountStateLabel(result?.accountStatus || 'not_logged_in'));
+    setText('#accountSyncStatus', result?.message || 'ログインが必要です。企業アカウントでログインしてください。');
+    renderList('#accountApps', ['利用アプリ一覧は v0.13 で接続予定です。']);
+    renderList('#accountRecentApps', ['最近使ったアプリのクラウド同期はまだ未接続です。']);
+    renderStatus(`${result?.message || 'ログインが必要です。'} login.html または signup.html へ進んでください。`, false);
+  }
+
   function renderAccount(account, status) {
-    setText('#accountStatus', `${modeLabel(status)} / 本番同期なし`);
+    setText('#accountStatus', `${modeLabel(status)} / ${account.status || 'account'}`);
     setText('#accountCompany', account.companyName);
     setText('#accountContact', account.contactName);
     setText('#accountEmail', account.email);
+    setText('#accountBusinessType', labelForBusinessType(account.businessType));
+    setText('#accountPlanStatus', labelForPlanStatus(account.planStatus));
+    setText('#accountCreatedAt', formatDate(account.createdAt));
+    setText('#accountUpdatedAt', formatDate(account.updatedAt));
     setText('#accountSyncStatus', status.message || account.syncStatus);
     renderList('#accountApps', account.apps);
     renderList('#accountRecentApps', account.recentApps);
+  }
+
+  function clearAccount() {
+    setText('#accountCompany', '-');
+    setText('#accountContact', '-');
+    setText('#accountEmail', '-');
+    setText('#accountBusinessType', '-');
+    setText('#accountPlanStatus', '-');
+    setText('#accountCreatedAt', '-');
+    setText('#accountUpdatedAt', '-');
   }
 
   function renderModeStatus(status) {
@@ -144,6 +198,15 @@
     renderPreview(rows);
   }
 
+  function renderLoginPreview(input, status, result = {}) {
+    renderPreview([
+      ['認証方式', modeLabel(status)],
+      ['メールアドレス', input.email || '未入力'],
+      ['ログイン状態', loginResultLabel(result)],
+      ['保存', '入力内容・パスワードはlocalStorageに保存していません']
+    ]);
+  }
+
   function renderList(selector, items = []) {
     const root = $(selector);
     if (!root) return;
@@ -152,7 +215,7 @@
 
   function modeLabel(status) {
     const mode = status?.mode || 'mock';
-    if (mode === 'supabase') return 'supabase mode（本番処理未接続）';
+    if (mode === 'supabase') return 'supabase mode';
     return 'mock mode';
   }
 
@@ -162,9 +225,12 @@
     }
     if (status.mode === 'supabase') {
       if (page === 'signup') {
-        return `${status.message} パスワードはLLLD Works Hub側では保存しません。login / account接続はv0.12予定です。`;
+        return `${status.message} パスワードはLLLD Works Hub側では保存しません。`;
       }
-      return `${status.message} 本番アカウント登録・ログイン・データ保存はまだ行いません。`;
+      if (page === 'login') {
+        return `${status.message} パスワードはLLLD Works Hub側では保存しません。`;
+      }
+      return `${status.message} app_instances / app_data はまだ接続しません。`;
     }
     return `${status.message} 入力内容・パスワード・認証トークンは保存しません。`;
   }
@@ -181,6 +247,18 @@
     return labels[value] || value || '未選択';
   }
 
+  function labelForPlanStatus(value) {
+    const labels = {
+      demo: 'デモ',
+      free: '無料',
+      trial: 'トライアル',
+      paid: '有料',
+      paused: '一時停止',
+      cancelled: '解約'
+    };
+    return labels[value] || value || '-';
+  }
+
   function labelForAppKey(value) {
     const labels = window.AuthService?.APP_LABELS || {};
     return labels[value] || value || '未選択';
@@ -193,11 +271,35 @@
     return '登録リクエスト受付済み';
   }
 
-  function setFormBusy(form, busy) {
+  function loginResultLabel(result = {}) {
+    if (!result.ok) return '未ログイン / エラー';
+    if (result.mode === 'mock') return 'mock確認のみ';
+    return 'ログイン成功';
+  }
+
+  function accountStateLabel(status) {
+    const labels = {
+      not_logged_in: '未ログイン',
+      account_not_found: '企業アカウント未作成',
+      account_load_failed: '取得エラー',
+      client_unavailable: 'Supabase client未準備'
+    };
+    return labels[status] || '未ログイン';
+  }
+
+  function setFormBusy(form, busy, busyLabel = '登録処理中...') {
     const button = form.querySelector('button[type="submit"]');
     if (!button) return;
     button.disabled = busy;
-    button.textContent = busy ? '登録処理中...' : button.dataset.idleLabel || '登録UIを確認する';
+    button.textContent = busy ? busyLabel : button.dataset.idleLabel || '登録UIを確認する';
+  }
+
+  function setLoginButtonLabel(form, status) {
+    const button = form.querySelector('button[type="submit"]');
+    if (!button) return;
+    const label = status?.mode === 'supabase' ? 'ログインする' : 'ログインUIを確認する';
+    button.dataset.idleLabel = label;
+    if (!button.disabled) button.textContent = label;
   }
 
   function setSignupButtonLabel(form, status) {
@@ -211,6 +313,13 @@
   function setText(selector, value) {
     const el = $(selector);
     if (el) el.textContent = value || '';
+  }
+
+  function formatDate(value) {
+    if (!value) return '-';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return value;
+    return date.toLocaleDateString('ja-JP');
   }
 
   function escapeHtml(value) {
