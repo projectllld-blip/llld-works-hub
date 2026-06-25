@@ -51,7 +51,7 @@
           </label>
           <label>
             パスワード
-            <input id="signupPassword" name="password" type="password" autocomplete="new-password" required placeholder="検証用。保存されません">
+            <input id="signupPassword" name="password" type="password" autocomplete="new-password" minlength="8" required placeholder="8文字以上。保存されません">
           </label>
           <label>
             業種
@@ -67,12 +67,12 @@
 
           <fieldset class="account-checks">
             <legend>使いたいアプリ</legend>
-            <label><input type="checkbox" name="apps" value="勤怠管理">勤怠管理</label>
-            <label><input type="checkbox" name="apps" value="座席管理">座席管理</label>
-            <label><input type="checkbox" name="apps" value="PDF編集">PDF編集</label>
-            <label><input type="checkbox" name="apps" value="小テスト作成">小テスト作成</label>
-            <label><input type="checkbox" name="apps" value="面談支援">面談支援</label>
-            <label><input type="checkbox" name="apps" value="営業トーク支援">営業トーク支援</label>
+            <label><input type="checkbox" name="apps" value="attendance">勤怠管理</label>
+            <label><input type="checkbox" name="apps" value="seatflow">座席管理</label>
+            <label><input type="checkbox" name="apps" value="pdf_tool">PDF編集</label>
+            <label><input type="checkbox" name="apps" value="quiz_maker">小テスト作成</label>
+            <label><input type="checkbox" name="apps" value="meeting_support">面談支援</label>
+            <label><input type="checkbox" name="apps" value="sales_talk_support">営業トーク支援</label>
           </fieldset>
 
           <div class="detail-cta-row">
@@ -91,6 +91,7 @@
     </section>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./assets/js/siteConfigService.js"></script>
   <script src="./assets/js/supabaseClientService.js"></script>
   <script src="./assets/js/authService.js"></script>
