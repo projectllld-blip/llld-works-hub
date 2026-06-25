@@ -35,6 +35,15 @@ supabase/migrations/20260625_v010_company_account_foundation.sql
 - updated_at trigger
 - index
 
+v0.11でsignup接続を使う場合は、続けて以下のtrigger SQLも実行する。
+
+```text
+supabase/migrations/20260625_v011_signup_company_account_trigger.sql
+```
+
+このtriggerは、Supabase Authでユーザーが作成されたときに `company_accounts` を作成する。
+フロントからservice role keyで強制作成する方式は使わない。
+
 ## 3. seed.sqlを流す
 
 次にSQL Editorで以下を実行する。
