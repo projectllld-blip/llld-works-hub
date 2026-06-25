@@ -135,6 +135,12 @@
     setText('#accountAppsStatus', 'ログイン後に利用アプリ一覧を表示します。');
     renderList('#accountRecentApps', ['最近使ったアプリのクラウド同期はまだ未接続です。']);
     renderStatus(`${result?.message || 'ログインが必要です。'} login.html または signup.html へ進んでください。`, false);
+
+    if (status?.mode === 'supabase' && result?.accountStatus === 'not_logged_in') {
+      window.setTimeout(() => {
+        window.location.href = './login.html?redirect=account';
+      }, 1200);
+    }
   }
 
   function renderAccount(account, status) {
