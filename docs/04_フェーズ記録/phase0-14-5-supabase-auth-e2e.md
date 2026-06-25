@@ -38,69 +38,58 @@ service role key / secret key は未使用。
 - Auth user IDが返った。
 - `confirmation_sent_at` が返り、確認メール送信状態になった。
 
-### 停止
+### 2026-06-26 再開確認
 
-```text
-分類: メール確認未完了
-```
+対象テストユーザーのメール確認完了後、v0.14.5の実接続確認を再開した。
 
-signup後にsession / access tokenが返らなかった。
-
-```text
-sessionReturned: false
-accessTokenReturned: false
-emailConfirmedAt: null
-```
-
-その後、同じテストメール / パスワードでpassword loginを試したが、以下で停止した。
-
-```text
-error_code: email_not_confirmed
-message: Email not confirmed
-```
-
-そのため、ログイン済みsessionが必要なRLS付きの `company_accounts` / `app_instances` / `app_data` 確認には進んでいない。
-
-今回作成したテストアカウント:
+対象ユーザー:
 
 ```text
 email: llld.e2e.test+20260625183052@gmail.com
 password: 記録しない
 ```
 
+確認結果:
+
+- `login` APIでsession / access tokenが返った。
+- `company_accounts` が1件取得できた。
+- `company_accounts.owner_user_id` がAuth user idと一致した。
+- RLS越しに見える `company_accounts` は自分の1件のみだった。
+- `app_instances` が3件取得できた。
+  - `seatflow`
+  - `pdf_tool`
+  - `quiz_maker`
+- `apps` 参照と組み合わせて利用中アプリ一覧に必要な情報を取得できた。
+- SeatFlow用 `app_instance_id` が取得できた。
+- `app_data` に `app_key = seatflow` / `data_type = seat_layout` で保存できた。
+- 保存後、同じログインユーザーで `app_data` から読込できた。
+- 保存データに生徒名・講師名・電話番号・メール・予約状態・勤怠情報などの禁止フィールドは検出されなかった。
+- anon / logged out相当では `app_data` は0件で、保存データは見えなかった。
+- logout APIは成功した。
+- logout後のtokenでは `auth/v1/user` が拒否された。
+
+### v0.14.5 完了判断
+
+コード/API上の確認は完了。
+
+ブラウザ上の目視確認は、GitHub Pagesまたはローカル画面で人間が最終確認する。
+
 ### 未確認
 
-- `company_accounts` 作成確認
-- `app_instances` 作成確認
-- `login.html` でのログイン完了
-- `account.html` での企業情報表示
-- `account.html` での利用アプリ一覧表示
-- SeatFlowクラウド保存
-- `app_data` 保存・読込
+- ブラウザで `account.html` に企業情報と利用アプリカードが見えることの目視確認
+- ブラウザで `apps/seatflow/index.html` のクラウド保存 / 読込ボタン表示と操作感
+- 別ブラウザまたはシークレットウィンドウでの同一アカウント読込の目視確認
 
 ## 次に必要な作業
 
-Supabase Dashboardで、以下のどちらかを行う。
-
-1. 今回作成したテストメールの確認リンクを開いて、メール確認を完了する。
-2. 検証中のみ Email confirmation をOFFにして、再度テストアカウントを作成する。
-
-その後、以下を再確認する。
-
-```text
-login
--> company_accounts
--> app_instances
--> account.html
--> SeatFlow cloud save
--> app_data
-```
+次はブラウザでの見た目確認と、v0.15の空状態・エラー処理整理へ進む。
 
 重要:
 
 - migration / seed は新プロジェクトで適用済みと確認できた。
 - publishable key / anon keyのみを使う。
 - service role keyやdatabase passwordをフロントへ置く方法では絶対に対応しない。
+- 今回作成したテストユーザー・テスト `app_data` は、必要に応じてSupabase Dashboard上で削除してよい。
 
 ## 接続前に必要な設定
 

@@ -204,3 +204,28 @@ data_type = seat_layout
 公開してよいanon/public keyであっても、検証プロジェクトと本番プロジェクトを分ける。
 
 本番運用前にはRLS、Auth URL、メール確認、ログアウト動作、他社データ非表示を再確認する。
+
+## 10. v0.14.5確認済み項目
+
+2026-06-26時点で、コード/API上は以下を確認済み。
+
+- メール確認済みテストユーザーでloginできる。
+- session / access tokenが返る。
+- `company_accounts` を1件取得できる。
+- `company_accounts.owner_user_id` がAuth user idと一致する。
+- RLS越しに自分の `company_accounts` のみ見える。
+- `app_instances` を取得できる。
+- `seatflow` / `pdf_tool` / `quiz_maker` が利用中アプリとして取得できる。
+- `apps` 参照と組み合わせて表示用情報を作れる。
+- `app_data` にSeatFlowの `seat_layout` を保存できる。
+- `app_data` から同じSeatFlowレイアウトを読込できる。
+- 保存JSONに生徒名・講師名・電話番号・メール・予約状態・勤怠情報などの禁止フィールドは入っていない。
+- anon / logged out相当では対象 `app_data` が見えない。
+- logout APIが成功し、logout後のtokenではuser取得が拒否される。
+
+ブラウザ上では以下を人間が確認する。
+
+- `account.html` に企業情報が表示されること。
+- `account.html` に利用中アプリカードが表示されること。
+- `apps/seatflow/index.html` のクラウド保存 / 読込UIが分かりやすいこと。
+- 同一アカウントで別ブラウザまたはシークレットウィンドウから読込できること。
