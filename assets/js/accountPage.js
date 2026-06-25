@@ -288,7 +288,7 @@
       if (page === 'login') {
         return `${status.message} パスワードはLLLD Works Hub側では保存しません。`;
       }
-      return `${status.message} app_instances / app_data はまだ接続しません。`;
+      return `${status.message} 利用アプリ一覧を表示し、app_data保存はSeatFlowレイアウトのみ検証中です。`;
     }
     return `${status.message} 入力内容・パスワード・認証トークンは保存しません。`;
   }
