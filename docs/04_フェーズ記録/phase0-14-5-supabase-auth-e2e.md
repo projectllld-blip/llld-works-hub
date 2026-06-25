@@ -26,42 +26,50 @@ service role key / secret key は未使用。
 - anon/public keyが空ではない。
 - service role / `sb_secret_` / secret keyの混入なし。
 - 新Supabase REST endpointへ到達できた。
+- `apps` / `company_accounts` / `app_instances` / `app_data` のREST endpointが存在する。
+- `apps` seedとして以下が確認できた。
+  - `attendance`
+  - `meeting_support`
+  - `pdf_tool`
+  - `quiz_maker`
+  - `sales_talk_support`
+  - `seatflow`
+- `signup` APIは200で応答した。
+- Auth user IDが返った。
+- `confirmation_sent_at` が返り、確認メール送信状態になった。
 
 ### 停止
 
 ```text
-分類: migration未適用
+分類: メール確認未完了
 ```
 
-新Supabaseプロジェクトで以下のテーブルが見つからなかった。
+signup後にsession / access tokenが返らなかった。
 
 ```text
-public.apps
-public.company_accounts
-public.app_instances
-public.app_data
+sessionReturned: false
+accessTokenReturned: false
+emailConfirmedAt: null
 ```
 
-REST APIは以下の応答を返した。
+その後、同じテストメール / パスワードでpassword loginを試したが、以下で停止した。
 
 ```text
-PGRST205: Could not find the table in the schema cache
+error_code: email_not_confirmed
+message: Email not confirmed
 ```
 
-この状態で `signup.html` から新規登録すると、Auth userだけが作成され、`company_accounts` / `app_instances` が作成されない孤立状態になる可能性がある。
+そのため、ログイン済みsessionが必要なRLS付きの `company_accounts` / `app_instances` / `app_data` 確認には進んでいない。
 
-そのため、signup / login / account / SeatFlowクラウド保存確認には進んでいない。
+今回作成したテストアカウント:
 
-重要:
-
-- publishable key / anon keyだけではSupabase SQL migrationを適用できない。
-- migrationはSupabase DashboardのSQL Editor、またはDB接続権限を持つ安全な運用経路で手動適用する必要がある。
-- service role keyやdatabase passwordをフロントへ置く方法では絶対に対応しない。
+```text
+email: llld.e2e.test+20260625183052@gmail.com
+password: 記録しない
+```
 
 ### 未確認
 
-- `signup.html` からの新規企業アカウント作成
-- Auth user作成
 - `company_accounts` 作成確認
 - `app_instances` 作成確認
 - `login.html` でのログイン完了
@@ -72,22 +80,15 @@ PGRST205: Could not find the table in the schema cache
 
 ## 次に必要な作業
 
-Supabase DashboardのSQL Editorで、新プロジェクトに以下を順番に適用する。
+Supabase Dashboardで、以下のどちらかを行う。
 
-1. `supabase/migrations/20260625_v010_company_account_foundation.sql`
-2. `supabase/seed.sql`
-3. `supabase/migrations/20260625_v011_signup_company_account_trigger.sql`
-4. `supabase/migrations/20260625_v013_app_instances_from_signup_metadata.sql`
-5. `supabase/migrations/20260625_v014_seatflow_app_data_constraints.sql`
+1. 今回作成したテストメールの確認リンクを開いて、メール確認を完了する。
+2. 検証中のみ Email confirmation をOFFにして、再度テストアカウントを作成する。
 
 その後、以下を再確認する。
 
 ```text
-signup
--> auth.users
--> company_accounts
--> app_instances
--> login
+login
 -> company_accounts
 -> app_instances
 -> account.html
@@ -95,7 +96,11 @@ signup
 -> app_data
 ```
 
-もしsignup後にsession / access tokenが返らない場合は、次の停止分類は `メール確認未完了` とする。
+重要:
+
+- migration / seed は新プロジェクトで適用済みと確認できた。
+- publishable key / anon keyのみを使う。
+- service role keyやdatabase passwordをフロントへ置く方法では絶対に対応しない。
 
 ## 接続前に必要な設定
 
