@@ -31,7 +31,7 @@
       displayName: '座席管理 SeatFlow',
       updatedAt: '',
       link: APP_LINKS.seatflow,
-      cloudNote: 'クラウド保存は v0.14 予定です。'
+      cloudNote: 'SeatFlowの座席レイアウトのみクラウド保存に対応しています。'
     },
     {
       id: 'mock-pdf-tool',
@@ -212,7 +212,7 @@
   }
 
   function cloudNoteForApp(appKey) {
-    if (appKey === 'seatflow') return 'SeatFlowクラウド保存は v0.14 予定です。';
+    if (appKey === 'seatflow') return '座席レイアウトのみクラウド保存に対応しています。生徒名や利用状況は保存しません。';
     if (appKey === 'attendance') return '勤怠クラウド保存は v1.8 以降に慎重に扱います。';
     return 'app_data保存はまだ未接続です。';
   }

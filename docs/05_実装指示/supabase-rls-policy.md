@@ -21,8 +21,8 @@ RLS未設定のまま本番運用しない。
 - HTML / JS / JSONに直書きしない。
 - `.env` をGitHubに置かない。
 - `auth.mode = supabase` としても、URL / anon key不足時は必ずmock modeへ戻す。
-- v0.13時点では、signup / login / account表示 / app_instances一覧のみ接続対象にする。
-- app_data / 勤怠実データはまだ接続しない。
+- v0.14時点では、signup / login / account表示 / app_instances一覧 / SeatFlowのseat_layout保存のみ接続対象にする。
+- 勤怠実データ、名簿、座席利用状態はまだ接続しない。
 
 ## company_accounts
 
@@ -61,6 +61,19 @@ exists (
 
 他社データ混入を防ぐ最重要キーは `company_account_id`。
 
+v0.14のSeatFlow保存では以下だけを扱う。
+
+```text
+app_key = seatflow
+data_type = seat_layout
+```
+
+insert / update / select は、ログイン中ユーザーが所有する `company_accounts.id` と `app_data.company_account_id` が一致する場合だけ許可する。
+
+SeatFlow画面から保存する場合も、`app_instance_id` と `data_type` の一意制約を使い、同じSeatFlowインスタンスの `seat_layout` を上書きする。
+
+フロントにservice role keyは置かない。RLSを迂回しない。
+
 ## audit_logs
 
 `company_account_id` が本人の企業アカウントと一致するログだけ読めるようにする。
@@ -93,6 +106,8 @@ v0.10のSQLでは、select / insertのみを許可し、update / deleteポリシ
 
 クラウド保存の初回候補は、座席管理やPDFツール設定など、リスクが比較的低いものから始める。
 
+v0.14で保存するSeatFlowレイアウトには、生徒名、予約状況、使用中座席、勤怠情報を含めない。
+
 ## v0.10 SQLとの対応
 
 対応SQL:
@@ -109,3 +124,11 @@ supabase/migrations/20260625_v010_company_account_foundation.sql
 - `app_instances / app_data / audit_logs` は `company_account_id` 経由で所有確認
 - `apps` はカタログとしてselectのみ許可
 - フロントからappsのinsert / update / deleteは許可しない
+
+v0.14追加SQL:
+
+```text
+supabase/migrations/20260625_v014_seatflow_app_data_constraints.sql
+```
+
+このSQLでは、SeatFlowの `seat_layout` をupsertしやすくするために `app_data(app_instance_id, data_type)` のunique indexを追加する。
