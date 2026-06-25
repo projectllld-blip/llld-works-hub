@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>アカウント準備中 | LLLD Works Hub</title>
+  <meta name="description" content="LLLD Works Hub / Works Marketの企業アカウント画面モック">
+  <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body data-market-page="account" data-account-page="account">
+  <main class="market-page account-page">
+    <header class="market-header">
+      <a class="market-brand" href="./index.html">LLLD Works Hub</a>
+      <nav aria-label="アカウント導線">
+        <a href="./index.html">社内Hub</a>
+        <a href="./marketplace.html">Market β</a>
+        <a href="./login.html">ログイン準備中</a>
+        <a href="./account.html">アカウント</a>
+      </nav>
+    </header>
+
+    <section class="market-hero account-hero">
+      <div>
+        <span class="market-kicker">企業アカウント</span>
+        <h1>企業アカウントのマイページ確認画面です。</h1>
+        <p>現在はアカウント画面の検証モードです。この画面では本番データ保存・同期はまだ行いません。</p>
+      </div>
+      <div class="account-mode-card">
+        <span>現在の認証状態</span>
+        <strong data-auth-mode>mock mode</strong>
+        <p data-mode-note>現在はアカウント画面の検証モードです。</p>
+      </div>
+    </section>
+
+    <section class="detail-lp-grid account-layout">
+      <article class="detail-panel">
+        <h2>アカウント状態</h2>
+        <dl class="account-detail-list">
+          <div><dt>状態</dt><dd id="accountStatus">mock mode / 本番同期なし</dd></div>
+          <div><dt>会社名 / 店舗名 / 教室名</dt><dd id="accountCompany">-</dd></div>
+          <div><dt>担当者名</dt><dd id="accountContact">-</dd></div>
+          <div><dt>メールアドレス</dt><dd id="accountEmail">-</dd></div>
+          <div><dt>データ同期状態</dt><dd id="accountSyncStatus">-</dd></div>
+        </dl>
+        <div class="detail-cta-row">
+          <button class="btn secondary" id="logoutButton" type="button">ログアウト表示を確認</button>
+          <a class="btn primary" href="./marketplace.html">Marketへ戻る</a>
+        </div>
+        <p class="account-status" id="accountStatusMessage" aria-live="polite"></p>
+      </article>
+
+      <article class="detail-panel">
+        <h2>利用中アプリ</h2>
+        <ul class="account-list" id="accountApps"></ul>
+      </article>
+
+      <article class="detail-panel">
+        <h2>最近使ったアプリ</h2>
+        <ul class="account-list" id="accountRecentApps"></ul>
+      </article>
+
+      <article class="detail-panel">
+        <h2>まだ本番化しないこと</h2>
+        <ul>
+          <li>スタッフ個別ログイン</li>
+          <li>所属組織管理</li>
+          <li>権限分岐</li>
+          <li>勤怠・座席の実データDB保存</li>
+          <li>決済・購入履歴・自動納品</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+
+  <script src="./assets/js/siteConfigService.js"></script>
+  <script src="./assets/js/authService.js"></script>
+  <script src="./assets/js/accountPage.js"></script>
+</body>
+</html>

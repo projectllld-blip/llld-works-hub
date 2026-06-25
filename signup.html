@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>企業アカウント登録準備中 | LLLD Works Hub</title>
+  <meta name="description" content="LLLD Works Hub / Works Marketの企業アカウント登録画面モック">
+  <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body data-market-page="account" data-account-page="signup">
+  <main class="market-page account-page">
+    <header class="market-header">
+      <a class="market-brand" href="./index.html">LLLD Works Hub</a>
+      <nav aria-label="アカウント導線">
+        <a href="./index.html">社内Hub</a>
+        <a href="./marketplace.html">Market β</a>
+        <a href="./login.html">ログイン準備中</a>
+        <a href="./account.html">アカウント</a>
+      </nav>
+    </header>
+
+    <section class="market-hero account-hero">
+      <div>
+        <span class="market-kicker">企業アカウント登録</span>
+        <h1>会社・店舗・教室ごとに1つのアカウントで使う前提です。</h1>
+        <p>所属組織や複数スタッフログインはまだ作りません。まずは1企業アカウントでクラウド保存へ進める土台を確認します。</p>
+      </div>
+      <div class="account-mode-card">
+        <span>現在の認証状態</span>
+        <strong data-auth-mode>mock mode</strong>
+        <p data-mode-note>現在は登録UIの検証モードです。</p>
+      </div>
+    </section>
+
+    <section class="detail-lp-grid account-layout">
+      <article class="detail-panel">
+        <h2>新規登録</h2>
+        <p class="account-note">mock modeでは、本番登録・実データ保存・パスワード保存は行いません。</p>
+        <form class="account-form" id="signupForm">
+          <label>
+            会社名 / 店舗名 / 教室名
+            <input id="signupCompany" name="companyName" type="text" required placeholder="例: LLLD塾 ○○教室">
+          </label>
+          <label>
+            担当者名
+            <input id="signupContact" name="contactName" type="text" autocomplete="name" required placeholder="例: 担当者名">
+          </label>
+          <label>
+            メールアドレス
+            <input id="signupEmail" name="email" type="email" autocomplete="email" required placeholder="example@example.com">
+          </label>
+          <label>
+            パスワード
+            <input id="signupPassword" name="password" type="password" autocomplete="new-password" required placeholder="検証用。保存されません">
+          </label>
+          <label>
+            業種
+            <select id="signupBusinessType" name="businessType" required>
+              <option value="school">学習塾</option>
+              <option value="store">小売店</option>
+              <option value="restaurant">飲食店</option>
+              <option value="small_business">小規模事業者</option>
+              <option value="consulting">コンサル</option>
+              <option value="demo">デモ利用</option>
+            </select>
+          </label>
+
+          <fieldset class="account-checks">
+            <legend>使いたいアプリ</legend>
+            <label><input type="checkbox" name="apps" value="勤怠管理">勤怠管理</label>
+            <label><input type="checkbox" name="apps" value="座席管理">座席管理</label>
+            <label><input type="checkbox" name="apps" value="PDF編集">PDF編集</label>
+            <label><input type="checkbox" name="apps" value="小テスト作成">小テスト作成</label>
+            <label><input type="checkbox" name="apps" value="面談支援">面談支援</label>
+            <label><input type="checkbox" name="apps" value="営業トーク支援">営業トーク支援</label>
+          </fieldset>
+
+          <div class="detail-cta-row">
+            <button class="btn primary" type="submit">登録UIを確認する</button>
+            <a class="btn secondary" href="./login.html">ログインへ</a>
+          </div>
+          <p class="account-status" id="accountStatusMessage" aria-live="polite"></p>
+        </form>
+      </article>
+
+      <article class="detail-panel">
+        <h2>登録内容確認</h2>
+        <p class="account-note">入力内容は画面上だけで確認します。localStorageには保存しません。</p>
+        <dl class="account-preview" id="accountPreview" hidden></dl>
+      </article>
+    </section>
+  </main>
+
+  <script src="./assets/js/siteConfigService.js"></script>
+  <script src="./assets/js/authService.js"></script>
+  <script src="./assets/js/accountPage.js"></script>
+</body>
+</html>

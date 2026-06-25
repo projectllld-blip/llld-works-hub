@@ -144,6 +144,22 @@ button{cursor:pointer}
 .account-icon.bell:before{content:"";width:12px;height:14px;border:2px solid #fff;border-bottom:0;border-radius:8px 8px 3px 3px}
 .account-icon.help:before{content:"?";font-weight:950;font-size:16px}
 .account-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#eaf3ff,#fff);border:2px solid rgba(255,255,255,.75);box-shadow:0 6px 16px rgba(0,0,0,.18)}
+.account-link-pill{
+  min-height:34px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:8px;
+  color:#fff;
+  padding:0 10px;
+  font-size:12px;
+  font-weight:900;
+  white-space:nowrap;
+}
+.account-link-pill:hover{
+  background:rgba(255,255,255,.1);
+}
 
 .summary-grid{display:grid;grid-template-columns:1fr;gap:6px;margin:auto 0 0;padding-top:18px}
 .summary-card{
@@ -967,7 +983,8 @@ body[data-market-page="marketplace"] .detail-cta-row .btn.secondary{
 body[data-market-page="detail"],
 body[data-market-page="request"],
 body[data-market-page="thanks"],
-body[data-market-page="admin"]{
+body[data-market-page="admin"],
+body[data-market-page="account"]{
   background:var(--bg-page);
   color:var(--text);
   font-family:var(--font);
@@ -975,7 +992,8 @@ body[data-market-page="admin"]{
 body[data-market-page="detail"] .market-page,
 body[data-market-page="request"] .market-page,
 body[data-market-page="thanks"] .market-page,
-body[data-market-page="admin"] .market-page{
+body[data-market-page="admin"] .market-page,
+body[data-market-page="account"] .market-page{
   max-width:none;
   margin:0;
   padding:92px var(--sp-3) var(--sp-5);
@@ -984,7 +1002,8 @@ body[data-market-page="admin"] .market-page{
 body[data-market-page="detail"] .market-header,
 body[data-market-page="request"] .market-header,
 body[data-market-page="thanks"] .market-header,
-body[data-market-page="admin"] .market-header{
+body[data-market-page="admin"] .market-header,
+body[data-market-page="account"] .market-header{
   position:fixed;
   top:0;
   left:0;
@@ -1001,7 +1020,8 @@ body[data-market-page="admin"] .market-header{
 body[data-market-page="detail"] .market-brand,
 body[data-market-page="request"] .market-brand,
 body[data-market-page="thanks"] .market-brand,
-body[data-market-page="admin"] .market-brand{
+body[data-market-page="admin"] .market-brand,
+body[data-market-page="account"] .market-brand{
   color:var(--bg-card);
   font-family:var(--font);
   font-size:20px;
@@ -1010,7 +1030,8 @@ body[data-market-page="admin"] .market-brand{
 body[data-market-page="detail"] .market-brand:before,
 body[data-market-page="request"] .market-brand:before,
 body[data-market-page="thanks"] .market-brand:before,
-body[data-market-page="admin"] .market-brand:before{
+body[data-market-page="admin"] .market-brand:before,
+body[data-market-page="account"] .market-brand:before{
   width:30px;
   height:30px;
   border-radius:var(--radius-btn);
@@ -1020,7 +1041,8 @@ body[data-market-page="admin"] .market-brand:before{
 body[data-market-page="detail"] .market-header nav a,
 body[data-market-page="request"] .market-header nav a,
 body[data-market-page="thanks"] .market-header nav a,
-body[data-market-page="admin"] .market-header nav a{
+body[data-market-page="admin"] .market-header nav a,
+body[data-market-page="account"] .market-header nav a{
   min-height:36px;
   border:1px solid var(--border);
   border-radius:var(--radius-btn);
@@ -1033,7 +1055,10 @@ body[data-market-page="admin"] .market-header nav a{
 body[data-market-page="detail"] .market-header nav a[href="./marketplace.html"],
 body[data-market-page="request"] .market-header nav a[href="./request.html"],
 body[data-market-page="thanks"] .market-header nav a[href="./request.html"],
-body[data-market-page="admin"] .market-header nav a[href="./admin.html"]{
+body[data-market-page="admin"] .market-header nav a[href="./admin.html"],
+body[data-account-page="login"] .market-header nav a[href="./login.html"],
+body[data-account-page="signup"] .market-header nav a[href="./login.html"],
+body[data-account-page="account"] .market-header nav a[href="./account.html"]{
   border-color:var(--primary);
   background:var(--primary);
   color:var(--bg-card);
@@ -1042,9 +1067,11 @@ body[data-market-page="detail"] .detail-panel,
 body[data-market-page="request"] .detail-panel,
 body[data-market-page="thanks"] .detail-panel,
 body[data-market-page="admin"] .detail-panel,
+body[data-market-page="account"] .detail-panel,
 body[data-market-page="detail"] .detail-lp-hero,
 body[data-market-page="request"] .market-hero,
-body[data-market-page="admin"] .market-hero{
+body[data-market-page="admin"] .market-hero,
+body[data-market-page="account"] .market-hero{
   border:1px solid var(--border);
   border-radius:var(--radius-card);
   background:var(--bg-card);
@@ -1052,13 +1079,15 @@ body[data-market-page="admin"] .market-hero{
 }
 body[data-market-page="detail"] .detail-lp-hero,
 body[data-market-page="request"] .market-hero,
-body[data-market-page="admin"] .market-hero{
+body[data-market-page="admin"] .market-hero,
+body[data-market-page="account"] .market-hero{
   padding:var(--sp-3);
 }
 body[data-market-page="detail"] .detail-panel,
 body[data-market-page="request"] .detail-panel,
 body[data-market-page="thanks"] .detail-panel,
-body[data-market-page="admin"] .detail-panel{
+body[data-market-page="admin"] .detail-panel,
+body[data-market-page="account"] .detail-panel{
   padding:var(--sp-3);
 }
 body[data-market-page="detail"] .market-badge:first-child{
@@ -1490,18 +1519,156 @@ body[data-market-page="detail"] .market-badge:last-child{
   color:var(--text-sub);
   margin-top:2px;
 }
+.account-page .account-hero{
+  grid-template-columns:minmax(0,1fr) minmax(260px,340px);
+}
+.account-mode-card{
+  border:1px solid var(--border);
+  border-radius:var(--radius-card);
+  background:var(--bg-page);
+  padding:var(--sp-2);
+}
+.account-mode-card span{
+  display:block;
+  color:var(--text-sub);
+  font-size:12px;
+  font-weight:900;
+}
+.account-mode-card strong{
+  display:block;
+  margin:4px 0;
+  color:var(--text);
+  font-size:22px;
+  line-height:1.2;
+}
+.account-mode-card p,
+.account-note{
+  margin:0 0 var(--sp-2);
+  color:var(--text-sub);
+  font-weight:750;
+}
+.account-form{
+  display:grid;
+  gap:var(--sp-2);
+}
+.account-form label{
+  display:grid;
+  gap:6px;
+  color:var(--text);
+  font-size:13px;
+  font-weight:850;
+}
+.account-form input,
+.account-form select{
+  width:100%;
+  border:1px solid var(--border);
+  border-radius:var(--radius-btn);
+  background:var(--bg-card);
+  color:var(--text);
+  padding:10px 12px;
+  outline:none;
+}
+.account-checks{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:var(--sp-1);
+  margin:0;
+  border:1px solid var(--border);
+  border-radius:var(--radius-card);
+  background:var(--bg-page);
+  padding:var(--sp-2);
+}
+.account-checks legend{
+  color:var(--text);
+  font-size:13px;
+  font-weight:900;
+  padding:0 4px;
+}
+.account-checks label{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:0;
+}
+.account-link{
+  color:var(--link);
+  font-size:13px;
+  font-weight:850;
+}
+.account-status{
+  min-height:38px;
+  margin:0;
+  border:1px solid var(--border);
+  border-radius:var(--radius-btn);
+  background:var(--bg-page);
+  color:var(--text-sub);
+  padding:9px 10px;
+  font-size:13px;
+  font-weight:800;
+}
+.account-status[data-state="ok"]{
+  border-color:var(--primary);
+  color:var(--primary-hover);
+}
+.account-status[data-state="warn"]{
+  border-color:var(--badge-rec);
+  color:#9a6500;
+}
+.account-preview,
+.account-detail-list{
+  display:grid;
+  gap:var(--sp-1);
+  margin:0;
+}
+.account-preview div,
+.account-detail-list div{
+  border:1px solid var(--border);
+  border-radius:var(--radius-btn);
+  background:var(--bg-page);
+  padding:var(--sp-1);
+}
+.account-preview dt,
+.account-detail-list dt{
+  color:var(--text-sub);
+  font-size:11px;
+  font-weight:900;
+}
+.account-preview dd,
+.account-detail-list dd{
+  margin:2px 0 0;
+  color:var(--text);
+  font-size:13px;
+  font-weight:800;
+  overflow-wrap:anywhere;
+}
+.account-list{
+  display:grid;
+  gap:var(--sp-1);
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+.account-list li{
+  margin:0;
+  border:1px solid var(--border);
+  border-radius:var(--radius-btn);
+  background:var(--bg-page);
+  padding:8px 10px;
+}
 
 @media(max-width:860px){
   body[data-market-page="detail"] .market-page,
   body[data-market-page="request"] .market-page,
   body[data-market-page="thanks"] .market-page,
-  body[data-market-page="admin"] .market-page{
+  body[data-market-page="admin"] .market-page,
+  body[data-market-page="account"] .market-page{
     padding:118px var(--sp-2) var(--sp-4);
   }
   body[data-market-page="detail"] .market-header,
   body[data-market-page="request"] .market-header,
   body[data-market-page="thanks"] .market-header,
-  body[data-market-page="admin"] .market-header{
+  body[data-market-page="admin"] .market-header,
+  body[data-market-page="account"] .market-header{
     align-items:flex-start;
     flex-direction:column;
     gap:var(--sp-1);
@@ -1512,9 +1679,11 @@ body[data-market-page="detail"] .market-badge:last-child{
   body[data-market-page="request"] .detail-panel,
   body[data-market-page="thanks"] .detail-panel,
   body[data-market-page="admin"] .detail-panel,
+  body[data-market-page="account"] .detail-panel,
   body[data-market-page="detail"] .detail-lp-hero,
   body[data-market-page="request"] .market-hero,
-  body[data-market-page="admin"] .market-hero{
+  body[data-market-page="admin"] .market-hero,
+  body[data-market-page="account"] .market-hero{
     padding:var(--sp-2);
   }
   .admin-summary-grid{
@@ -1531,7 +1700,9 @@ body[data-market-page="detail"] .market-badge:last-child{
   .admin-submission-row,
   .request-form,
   .request-context-meta,
-  .request-context-grid{
+  .request-context-grid,
+  .account-page .account-hero,
+  .account-checks{
     grid-template-columns:1fr;
   }
 }
