@@ -1,8 +1,8 @@
 {
   "auth": {
-    "mode": "mock",
-    "supabaseUrl": "",
-    "supabaseAnonKey": ""
+    "mode": "supabase",
+    "supabaseUrl": "https://pjcyusmifjoxxuqwgaoh.supabase.co",
+    "supabaseAnonKey": "sb_publishable_chV2oP3dKsrGg_Fm2AeThw_pJstuz9F"
   },
   "contact": {
     "mode": "demo",
