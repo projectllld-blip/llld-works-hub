@@ -55,5 +55,31 @@ LLLD Works Hub / Works Marketのアカウントは、当面以下の単位で扱
 
 - Supabase Authの利用範囲を決める。
 - RLSを有効化する。
+- `company_accounts.owner_user_id = auth.uid()` を基本にする。
 - `company_account_id` で必ずデータ分離する。
 - 本番前に監査チェックリストを通す。
+
+## v0.10 検証DB
+
+v0.10では、以下のSQLを追加した。
+
+```text
+supabase/migrations/20260625_v010_company_account_foundation.sql
+supabase/seed.sql
+```
+
+`company_accounts` には、Supabase Authと紐づけるために以下を持たせる。
+
+```text
+owner_user_id uuid references auth.users(id)
+```
+
+考え方:
+
+```text
+1つの企業 / 店舗 / 教室アカウント
+= Supabase Auth上の1ユーザー
+= company_accounts.owner_user_id = auth.uid()
+```
+
+現時点では、複数スタッフログインや `organization_members` は作らない。
