@@ -1108,6 +1108,7 @@ body[data-market-page="detail"] .market-badge:last-child{
 }
 .request-form{
   display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
   gap:var(--sp-2);
 }
 .request-form label{
@@ -1131,6 +1132,14 @@ body[data-market-page="detail"] .market-badge:last-child{
 .request-form textarea{
   resize:vertical;
 }
+.request-wide{
+  grid-column:1/-1;
+}
+.required{
+  color:var(--primary);
+  font-size:11px;
+  font-weight:900;
+}
 .request-note{
   margin:0 0 var(--sp-2);
   color:var(--text-sub);
@@ -1151,6 +1160,38 @@ body[data-market-page="detail"] .market-badge:last-child{
   pointer-events:none;
   opacity:.62;
   filter:grayscale(.15);
+}
+.request-confirm-panel{
+  margin-top:var(--sp-3);
+  border:1px solid var(--border);
+  border-radius:var(--radius-card);
+  background:var(--bg-card);
+  padding:var(--sp-3);
+  box-shadow:var(--shadow-card);
+}
+.request-confirm-panel h3{
+  margin:0 0 var(--sp-1);
+  color:var(--text);
+  font-size:17px;
+}
+.request-confirm-panel p{
+  margin:0 0 var(--sp-2);
+  color:var(--text-sub);
+  font-weight:800;
+}
+.request-confirm-panel pre{
+  max-height:320px;
+  overflow:auto;
+  margin:0;
+  border:1px solid var(--border);
+  border-radius:var(--radius-btn);
+  background:var(--bg-page);
+  color:var(--text);
+  padding:var(--sp-2);
+  white-space:pre-wrap;
+  font-family:var(--font);
+  font-size:13px;
+  line-height:1.6;
 }
 .request-output{
   margin-top:var(--sp-3);
@@ -1206,6 +1247,29 @@ body[data-market-page="detail"] .market-badge:last-child{
   margin:0 0 var(--sp-1);
   color:var(--text-sub);
   font-weight:700;
+}
+.request-context-meta{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:var(--sp-1);
+  margin:var(--sp-1) 0 0;
+}
+.request-context-meta div{
+  border:1px solid var(--border);
+  border-radius:var(--radius-btn);
+  background:var(--bg-page);
+  padding:7px 8px;
+}
+.request-context-meta dt{
+  color:var(--text-sub);
+  font-size:11px;
+  font-weight:900;
+}
+.request-context-meta dd{
+  margin:2px 0 0;
+  color:var(--text);
+  font-size:12px;
+  font-weight:800;
 }
 .thanks-panel{
   max-width:1040px;
@@ -1465,6 +1529,8 @@ body[data-market-page="detail"] .market-badge:last-child{
   .admin-checklist,
   .admin-edit-grid,
   .admin-submission-row,
+  .request-form,
+  .request-context-meta,
   .request-context-grid{
     grid-template-columns:1fr;
   }

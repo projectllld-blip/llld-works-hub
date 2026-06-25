@@ -1,78 +1,24 @@
 # 問い合わせ・購入相談導線ルール
 
-## 目的
+この文書は `owned-contact-form-rules.md` と同じ方針を参照する。
+v0.8以降、Googleフォーム連携は使わず、自社フォームUIとして整備する。
 
-GitHub Pages上の静的サイトでも、問い合わせ・購入相談の導線をすぐ差し替えられるようにする。
+## 現行方針
 
-## 設定ファイル
+- `request.html` は自社フォームUI。
+- GitHub Pages単体ではサーバー側送信処理ができない。
+- 送信モードは `data/site-config.json` の `contact.mode` で管理する。
+- 問い合わせ内容は localStorage に保存しない。
 
-問い合わせ先は `data/site-config.json` で管理する。
+## 送信モード
 
-```json
-{
-  "forms": {
-    "purchase": "",
-    "request": "",
-    "consultation": "",
-    "customize": "",
-    "earlyAccess": "",
-    "beta": "",
-    "submit": "",
-    "support": ""
-  },
-  "contact": {
-    "email": "",
-    "ownerName": "LLLD Works Hub"
-  }
-}
-```
-
-## 接続優先順位
-
-1. 該当typeのGoogleフォームURLへ遷移
-2. フォーム未設定でメールアドレスがあれば `mailto:` を開く
-3. どちらも未設定なら準備中表示にする
-
-未設定時は、thanks.htmlへ偽遷移させない。
-
-## 対応type
-
-- `purchase`
-- `request`
-- `consultation`
-- `customize`
-- `early-access`
-- `beta`
-- `submit`
-- `support`
-- `development`
-- `estimate`
-
-## item / slug 互換
-
-request.html は `item` と `slug` の両方に対応する。
-
-- `item` があれば `item` を優先する。
-- `item` がなければ `slug` を使う。
-- 商品データ上のCTA URLは、できるだけ実在するslugまたはidを指定する。
-
-## thanks.html の扱い
-
-`thanks.html` はローカル検証用・導線確認用の完了画面。
-
-Googleフォームやメールを使う場合、実際の送信完了は外部フォームまたはメール運用に合わせる。
-
-## まだ実装しないこと
-
-- 決済
-- 認証
-- DB接続
-- 自動納品
-- 購入履歴管理
+- `demo`: 実送信せず、入力内容の確認と準備中表示のみ。
+- `mailto`: 設定メールアドレスへメール作成。
+- `endpoint`: 将来自社APIへPOSTするための設計。API未設定時はdemo扱い。
 
 ## 禁止事項
 
+- Googleフォーム連携を追加しない。
+- Supabase、認証、決済、自動納品、購入履歴管理はまだ実装しない。
+- APIキーや秘密キーをフロントに置かない。
 - 有料商品の本体をGitHub Pagesに置かない。
-- 個人情報や顧客情報をJSONに入れない。
-- Supabase service role key や Stripe secret key を置かない。
-- `internal` / `internal_only` をMarket側に出さない。

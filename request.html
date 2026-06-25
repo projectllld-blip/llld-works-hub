@@ -57,7 +57,7 @@
 
     <section class="detail-panel request-panel">
       <h2>相談内容を作成する</h2>
-      <p class="request-note">このページでは自前の送信処理を行いません。内容をコピーするか、メールソフトを開いて送信してください。</p>
+      <p class="request-note">このフォームは自社フォーム化の準備版です。現在は設定に応じて、デモ確認、メール作成、将来API送信の3モードで動きます。</p>
       <section id="requestItemContext" class="detail-panel request-context" hidden></section>
       <form class="request-form" id="requestForm">
         <label>
@@ -76,23 +76,50 @@
           </select>
         </label>
         <label>
-          気になる商品・内容
+          対象商品
           <input name="item" id="requestItem" type="text" placeholder="例: PDF編集ツール、社内ポータル制作">
         </label>
         <label>
-          お名前
-          <input name="name" id="requestName" type="text" placeholder="例: 山田 太郎">
+          会社名 / 店舗名 / 教室名
+          <input name="organization" id="requestOrganization" type="text" placeholder="例: LLLD塾 ○○教室">
         </label>
         <label>
-          連絡先
-          <input name="contact" id="requestContact" type="text" placeholder="メール、電話、LINEなど">
+          担当者名 <span class="required">必須</span>
+          <input name="name" id="requestName" type="text" autocomplete="name" required placeholder="例: 担当者名">
         </label>
         <label>
-          相談内容
-          <textarea name="message" id="requestMessage" rows="6" placeholder="今の困りごと、使いたい場面、納期感などを自由に書いてください。"></textarea>
+          メールアドレス <span class="required">必須</span>
+          <input name="email" id="requestEmail" type="email" autocomplete="email" required placeholder="例: name@example.com">
+        </label>
+        <label>
+          電話番号
+          <input name="phone" id="requestPhone" type="tel" autocomplete="tel" placeholder="例: 090-0000-0000">
+        </label>
+        <label>
+          希望内容
+          <select name="desired" id="requestDesired">
+            <option value="購入について相談したい">購入について相談したい</option>
+            <option value="開発を相談したい">開発を相談したい</option>
+            <option value="導入方法を相談したい">導入方法を相談したい</option>
+            <option value="カスタマイズを相談したい">カスタマイズを相談したい</option>
+            <option value="β版を試したい">β版を試したい</option>
+            <option value="先行案内を受けたい">先行案内を受けたい</option>
+          </select>
+        </label>
+        <label>
+          希望時期
+          <input name="timing" id="requestTiming" type="text" placeholder="例: 今月中、急ぎではない、相談して決めたい">
+        </label>
+        <label>
+          予算感
+          <input name="budget" id="requestBudget" type="text" placeholder="例: 1万円以内、相談して決めたい">
+        </label>
+        <label class="request-wide">
+          相談内容 <span class="required">必須</span>
+          <textarea name="message" id="requestMessage" rows="6" required placeholder="今の困りごと、使いたい場面、納期感などを自由に書いてください。"></textarea>
         </label>
         <div class="detail-cta-row">
-          <a class="btn primary" id="requestMailLink" href="mailto:?subject=LLLD Works Marketへの相談">開発を相談する</a>
+          <button class="btn primary" id="requestSubmitButton" type="submit">入力内容を確認する</button>
           <button class="btn secondary" id="copyRequestText" type="button">相談内容をコピー</button>
           <a class="btn secondary" id="purchaseThanksLink" href="./thanks.html?type=request">検証用完了画面を見る</a>
         </div>
@@ -103,6 +130,17 @@
         <h3>送信内容プレビュー</h3>
         <pre id="requestPreview"></pre>
       </div>
+
+      <section class="request-confirm-panel" id="requestConfirmPanel" hidden>
+        <h3>送信前確認</h3>
+        <p id="requestConfirmMessage"></p>
+        <pre id="requestConfirmPreview"></pre>
+        <div class="detail-cta-row">
+          <a class="btn primary" id="requestMailtoLink" href="#">メールアプリを開く</a>
+          <button class="btn primary" id="requestEndpointButton" type="button">送信する</button>
+          <button class="btn secondary" id="requestCloseConfirm" type="button">内容を修正する</button>
+        </div>
+      </section>
     </section>
   </main>
   <script src="./assets/js/contentService.js"></script>

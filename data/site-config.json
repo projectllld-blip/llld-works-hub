@@ -1,16 +1,8 @@
 {
-  "forms": {
-    "purchase": "",
-    "request": "",
-    "consultation": "",
-    "customize": "",
-    "earlyAccess": "",
-    "beta": "",
-    "submit": "",
-    "support": ""
-  },
   "contact": {
+    "mode": "demo",
     "email": "",
+    "endpointUrl": "",
     "ownerName": "LLLD Works Hub"
   }
 }
