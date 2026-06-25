@@ -17,6 +17,7 @@
 | column | 説明 |
 |---|---|
 | id | 企業アカウントID |
+| owner_user_id | Supabase AuthのユーザーID。`auth.users(id)` を参照 |
 | email | ログイン用メール |
 | company_name | 会社名 / 店舗名 / 教室名 |
 | contact_name | 担当者名 |
@@ -44,6 +45,10 @@ plan_status候補:
 - `paid`
 - `paused`
 - `cancelled`
+
+v0.10時点では、`owner_user_id = auth.uid()` を基本にして1企業アカウントと1ログインユーザーを紐づける。
+
+複数メンバー管理はまだ作らない。将来必要になった場合は `company_users` や `account_members` のようなテーブルをv1.7以降で追加検討する。
 
 ## apps
 
@@ -148,3 +153,14 @@ data_type候補:
 PDFツールの設定同期は、実データを扱いすぎずにクラウド保存の検証がしやすい。
 
 勤怠は修正履歴、労務リスク、実データ保護が重いため、最後に慎重に扱う。
+
+## v0.10で追加したSQL
+
+```text
+supabase/migrations/20260625_v010_company_account_foundation.sql
+supabase/seed.sql
+```
+
+v0.10ではテーブル、RLS、seedのみを用意する。
+
+フロントから本番登録、本番ログイン、SeatFlow実データ保存、勤怠実データ保存はまだ行わない。
