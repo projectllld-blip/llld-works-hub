@@ -10,6 +10,7 @@
 - `/content-detail.html?slug=monthly-operations-checklist` が表示される。
 - `/request.html` が表示される。
 - `/thanks.html?type=purchase` が表示される。
+- `/admin.html` が本番操作不可のモックとして表示される。
 - CSS、JS、JSON、画像が読み込める。
 - Chrome console error がない。
 - スマホ幅で大きく崩れない。
@@ -31,6 +32,7 @@
 - 教材PDFや著作権物がない。
 - 契約書、見積書、請求書、財務資料がない。
 - 有料商品の本体ファイルがGitHub Pages上にない。
+- `admin.html` に保存、公開、削除、権限変更、決済処理がない。
 
 ## Git確認
 
@@ -38,4 +40,3 @@
 - 未追跡ファイルを誤って混ぜていない。
 - `git diff --check` が通る。
 - 本番リポジトリへ移す差分が明確である。
-

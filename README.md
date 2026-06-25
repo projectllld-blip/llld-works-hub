@@ -20,6 +20,7 @@ http://localhost:5500/content-detail.html?slug=monthly-operations-checklist
 http://localhost:5500/request.html
 http://localhost:5500/thanks.html?type=purchase
 http://localhost:5500/thanks.html?type=request
+http://localhost:5500/admin.html
 ```
 
 HTMLファイルを直接ダブルクリックせず、必ず `localhost` で確認してください。JSONを `fetch()` で読むためです。
@@ -35,6 +36,7 @@ HTMLファイルを直接ダブルクリックせず、必ず `localhost` で確
 ├── request.html               # 購入・開発相談
 ├── thanks.html                # 送信後・購入後案内
 ├── submit.html                # 投稿募集ページ
+├── admin.html                 # 管理画面モック。本番操作不可
 ├── assets/                    # CSS / JS / 画像 / サムネイル
 ├── data/                      # 仮DB。将来Supabase等へ置換予定
 ├── apps/                      # 実際に開くHTMLアプリ本体
@@ -54,12 +56,14 @@ HTMLファイルを直接ダブルクリックせず、必ず `localhost` で確
 - `request.html`
 - `thanks.html`
 - `submit.html`
+- `admin.html`
 - `assets/css/style.css`
 - `assets/js/app.js`
 - `assets/js/contentService.js`
 - `assets/js/marketPages.js`
 - `assets/js/requestPage.js`
 - `assets/js/thanksPage.js`
+- `assets/js/adminMockPage.js`
 - `assets/js/authMockService.js`
 - `assets/js/storagePolicy.js`
 - `data/contents.json`

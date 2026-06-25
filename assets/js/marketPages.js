@@ -44,6 +44,15 @@
     'inquiry-only': '相談後案内'
   };
 
+  const visibilityLabels = {
+    public: '一般公開',
+    limited: '限定公開',
+    internal: '社内向け',
+    internal_only: '完全社内限定',
+    'internal-and-public': '社内・一般公開',
+    private: '非公開'
+  };
+
   const authorTypeLabels = {
     official: '公式',
     partner: '提携',
@@ -179,7 +188,13 @@
   }
 
   function visibleMarketContents(contents) {
-    return contents.filter(content => content.priceType !== 'internal' && content.saleStatus !== 'internal-only' && content.visibility !== 'internal');
+    const internalValues = new Set(['internal', 'internal-only', 'internal_only']);
+    return contents.filter(content =>
+      !internalValues.has(content.priceType) &&
+      !internalValues.has(content.saleStatus) &&
+      !internalValues.has(content.visibility) &&
+      !internalValues.has(content.categoryId)
+    );
   }
 
   function renderCards(selector, contents) {
@@ -234,7 +249,10 @@
     const author = getAuthor(content.authorId);
     const category = getCategory(content.categoryId);
     const action = getPrimaryAction(content);
-    const secondaryAction = getSecondaryAction(content);
+    const secondaryAction = getSecondaryAction(content, action);
+    const secondaryButton = secondaryAction
+      ? `<a class="btn secondary" href="${escapeAttr(secondaryAction.href)}">${escapeHtml(secondaryAction.label)}</a>`
+      : '';
     const related = state.contents
       .filter(item => item.id !== content.id && item.priceType !== 'internal' && (item.categoryId === content.categoryId || hasOverlap(item.tags, content.tags)))
       .slice(0, 3);
@@ -250,7 +268,7 @@
           <p>${escapeHtml(content.description || content.summary || '')}</p>
           <div class="detail-cta-row">
             <a class="btn primary" href="${escapeAttr(action.href)}">${escapeHtml(action.label)}</a>
-            <a class="btn secondary" href="${escapeAttr(secondaryAction.href)}">${escapeHtml(secondaryAction.label)}</a>
+            ${secondaryButton}
           </div>
         </div>
         <figure>
@@ -261,7 +279,8 @@
       <section class="detail-lp-grid">
         ${infoBlock('誰向けか', content.targetUsers)}
         ${infoBlock('解決する悩み', content.problems)}
-        ${infoBlock('内容物', content.deliverables && content.deliverables.length ? content.deliverables : content.features)}
+        ${infoBlock('主な機能', content.features)}
+        ${infoBlock('内容物', content.deliverables)}
         ${infoBlock('使い方', content.usageSteps)}
         ${infoBlock('注意事項', content.notes)}
       </section>
@@ -271,11 +290,14 @@
         <dl class="detail-definition">
           <div><dt>カテゴリ</dt><dd>${escapeHtml(category?.name || content.category || '未分類')}</dd></div>
           <div><dt>投稿者</dt><dd><a href="${escapeAttr(author?.profileUrl || '#')}">${escapeHtml(author?.name || '投稿者未設定')}</a></dd></div>
+          <div><dt>公開状態</dt><dd>${escapeHtml(statusLabels[content.status] || content.status || '-')}</dd></div>
+          <div><dt>販売状態</dt><dd>${escapeHtml(saleStatusLabels[content.saleStatus] || content.saleStatus || '-')}</dd></div>
           <div><dt>価格</dt><dd>${escapeHtml(formatPrice(content))}</dd></div>
-          <div><dt>提供状態</dt><dd>${escapeHtml(saleStatusLabels[content.saleStatus] || '-')}</dd></div>
-          <div><dt>納品方法</dt><dd>${escapeHtml(deliveryLabels[content.deliveryType] || content.deliveryType || '-')}</dd></div>
+          <div><dt>提供方法</dt><dd>${escapeHtml(deliveryLabels[content.deliveryType] || content.deliveryType || '-')}</dd></div>
+          <div><dt>対象ユーザー</dt><dd>${escapeHtml(listText(content.targetUsers))}</dd></div>
           <div><dt>更新日</dt><dd>${escapeHtml(content.updatedAt || '-')}</dd></div>
-          <div><dt>公開範囲</dt><dd>${escapeHtml(content.visibility || '-')}</dd></div>
+          <div><dt>公開範囲</dt><dd>${escapeHtml(visibilityLabels[content.visibility] || content.visibility || '-')}</dd></div>
+          <div><dt>CTA種別</dt><dd>${escapeHtml(content.primaryCtaType || action.label || '-')}</dd></div>
         </dl>
         <div class="tag-row">${(content.tags || []).map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>
       </section>
@@ -327,41 +349,44 @@
   }
 
   function getPrimaryAction(content) {
-    if (content.priceType === 'paid' && content.saleStatus === 'on-sale' && content.paymentUrl) {
-      return { label: content.primaryCtaLabel || '購入する', href: content.paymentUrl };
+    const openUrl = content.url || content.contentUrl || content.primaryCtaUrl;
+    const inquiryUrl = content.inquiryUrl || content.requestUrl || content.primaryCtaUrl || './request.html';
+
+    if (content.priceType === 'free') {
+      return { label: content.primaryCtaLabel || '無料で使う', href: openUrl || content.detailUrl || './marketplace.html' };
     }
-    if (content.primaryCtaLabel && content.primaryCtaUrl) {
-      return { label: content.primaryCtaLabel, href: content.primaryCtaUrl };
-    }
-    if (content.priceType === 'free' && (content.url || content.contentUrl)) {
-      return { label: '無料で使う', href: content.url || content.contentUrl };
+    if (content.priceType === 'free-beta') {
+      return { label: content.primaryCtaLabel || 'β版を試す', href: openUrl || inquiryUrl };
     }
     if (content.priceType === 'paid' && content.saleStatus === 'on-sale') {
-      return { label: '購入する', href: content.paymentUrl || content.inquiryUrl || './request.html' };
+      if (content.paymentUrl) return { label: '購入する', href: content.paymentUrl };
+      return { label: content.primaryCtaLabel || '購入について相談する', href: inquiryUrl };
     }
     if (content.priceType === 'paid' && content.saleStatus === 'preparing') {
-      return { label: '先行案内を受ける', href: content.inquiryUrl || './request.html' };
-    }
-    if (content.priceType === 'free-beta' && (content.url || content.contentUrl)) {
-      return { label: 'β版を試す', href: content.url || content.contentUrl };
+      return { label: content.primaryCtaLabel || '先行案内を受ける', href: inquiryUrl };
     }
     if (content.priceType === 'consultation') {
-      return { label: '開発を相談する', href: content.inquiryUrl || './request.html' };
+      return { label: content.primaryCtaLabel || '開発を相談する', href: inquiryUrl };
     }
     if (content.priceType === 'coming-soon') {
-      return { label: '準備中', href: content.inquiryUrl || './request.html' };
+      return { label: content.primaryCtaLabel || '先行案内を受ける', href: inquiryUrl };
     }
     if (content.priceType === 'internal') {
-      return { label: '社内限定', href: content.url || content.contentUrl || './index.html' };
+      return { label: content.primaryCtaLabel || '社内限定', href: openUrl || './index.html' };
     }
     return { label: content.ctaLabel || '相談する', href: content.inquiryUrl || content.requestUrl || './request.html' };
   }
 
-  function getSecondaryAction(content) {
+  function getSecondaryAction(content, primaryAction = null) {
     if (content.secondaryCtaLabel && content.secondaryCtaUrl) {
+      if (primaryAction && content.secondaryCtaUrl === primaryAction.href && content.secondaryCtaLabel === primaryAction.label) return null;
       return { label: content.secondaryCtaLabel, href: content.secondaryCtaUrl };
     }
-    return { label: '相談する', href: content.inquiryUrl || './request.html' };
+    if (content.priceType === 'free' || content.priceType === 'free-beta') {
+      const href = content.inquiryUrl || './request.html';
+      if (!primaryAction || primaryAction.href !== href) return { label: '相談する', href };
+    }
+    return null;
   }
 
   function chipButton(value, label, active, type) {
@@ -370,7 +395,8 @@
   }
 
   function infoBlock(title, items = []) {
-    const list = Array.isArray(items) && items.length ? items : ['準備中です。'];
+    if (!Array.isArray(items) || !items.length) return '';
+    const list = items;
     return `<article class="detail-panel">
       <h2>${escapeHtml(title)}</h2>
       <ul>${list.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
@@ -409,6 +435,10 @@
 
   function includesAny(values = [], candidates = []) {
     return values.some(value => candidates.includes(value));
+  }
+
+  function listText(items = []) {
+    return Array.isArray(items) && items.length ? items.join('、') : '-';
   }
 
   function formatPrice(content) {

@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>管理モック | LLLD Works Market β</title>
+  <meta name="description" content="LLLD Works Marketの管理画面モック。ローカル検証専用で本番操作はできません。">
+  <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body data-market-page="admin">
+  <main class="market-page">
+    <header class="market-header">
+      <a class="market-brand" href="./index.html">LLLD Works Hub</a>
+      <nav aria-label="管理画面導線">
+        <a href="./index.html">社内Hub</a>
+        <a href="./marketplace.html">Market β</a>
+        <a href="./request.html">開発相談</a>
+        <a href="./admin.html">管理モック</a>
+      </nav>
+    </header>
+
+    <section class="market-hero">
+      <div>
+        <span class="market-kicker">Phase 6 Skeleton</span>
+        <h1>管理画面モック</h1>
+        <p>投稿管理、審査、販売管理、アカウント制へ進むための骨組みです。現在はローカル検証専用で、公開・削除・決済などの本番操作はできません。</p>
+      </div>
+      <div class="hero-preview" aria-label="管理モック概要">
+        <span>投稿管理</span>
+        <span>審査制</span>
+        <span>販売管理</span>
+        <span>DB準備</span>
+      </div>
+    </section>
+
+    <section class="detail-panel admin-warning">
+      <h2>本番操作不可</h2>
+      <p>この管理画面はローカル検証用のモックです。データは `data/*.json` を読むだけで、本番DBへの書き込み、公開状態の変更、決済処理、購入履歴管理、保存・公開・削除・権限変更は行いません。</p>
+    </section>
+
+    <section class="market-section">
+      <div class="market-section-head">
+        <div>
+          <h2>確認ロール</h2>
+          <p>表示確認用のモックロールです。本番権限ではありません。</p>
+        </div>
+        <div class="market-filter-line">
+          <select id="mockRoleSelect" class="market-select" aria-label="表示確認用ロール"></select>
+        </div>
+      </div>
+      <div id="adminRoleNote" class="admin-note"></div>
+    </section>
+
+    <section class="admin-summary-grid" aria-label="管理サマリー">
+      <article class="detail-panel">
+        <span>登録コンテンツ</span>
+        <strong id="adminTotalContents">-</strong>
+      </article>
+      <article class="detail-panel">
+        <span>Market表示対象</span>
+        <strong id="adminMarketContents">-</strong>
+      </article>
+      <article class="detail-panel">
+        <span>販売中</span>
+        <strong id="adminOnSaleContents">-</strong>
+      </article>
+      <article class="detail-panel">
+        <span>審査・準備中</span>
+        <strong id="adminPendingContents">-</strong>
+      </article>
+    </section>
+
+    <section class="market-section">
+      <div class="market-section-head">
+        <div>
+          <h2>コンテンツ管理モック</h2>
+          <p>公開状態、販売状態、カテゴリ、投稿者の確認用一覧です。</p>
+        </div>
+        <div class="market-filter-line">
+          <input id="adminSearch" class="market-search" type="search" placeholder="タイトル・タグで検索">
+          <select id="adminStatusFilter" class="market-select" aria-label="状態で絞り込み"></select>
+        </div>
+      </div>
+      <div id="adminContentList" class="admin-table"></div>
+    </section>
+
+    <section class="market-section">
+      <div class="market-section-head">
+        <div>
+          <h2>審査・公開判断パネル</h2>
+          <p>一覧のボタンを押すと、ここに確認内容を表示します。すべて画面上だけのモックです。</p>
+        </div>
+      </div>
+      <div id="adminInspectorPanel" class="detail-panel admin-inspector">
+        <h3>コンテンツを選択してください</h3>
+        <p class="admin-note">詳細、審査、編集モック、公開判定のいずれも実データは変更しません。</p>
+      </div>
+    </section>
+
+    <section class="market-section">
+      <div class="market-section-head">
+        <div>
+          <h2>投稿申請一覧モック</h2>
+          <p>外部投稿型へ進める前の確認用サンプルです。実データ保存はありません。</p>
+        </div>
+      </div>
+      <div id="submissionMockList" class="admin-table"></div>
+    </section>
+
+    <section class="market-section">
+      <div class="market-section-head">
+        <h2>今後つなぐ管理機能</h2>
+      </div>
+      <div class="detail-lp-grid">
+        <article class="detail-panel">
+          <h3>投稿申請</h3>
+          <ul>
+            <li>投稿内容の受け取り</li>
+            <li>著作権・個人情報チェック</li>
+            <li>公開可否の判断</li>
+          </ul>
+        </article>
+        <article class="detail-panel">
+          <h3>販売管理</h3>
+          <ul>
+            <li>購入相談の確認</li>
+            <li>手動請求・手動納品の記録</li>
+            <li>決済連携前の運用整理</li>
+          </ul>
+        </article>
+        <article class="detail-panel">
+          <h3>アカウント制</h3>
+          <ul>
+            <li>ゲスト、会員、投稿者、管理者</li>
+            <li>本番権限はDB側で管理</li>
+            <li>localStorageには保存しない</li>
+          </ul>
+        </article>
+        <article class="detail-panel">
+          <h3>Supabase移行</h3>
+          <ul>
+            <li>まずService層を差し替える</li>
+            <li>RLSと公開範囲を分離</li>
+            <li>秘密キーはフロントに置かない</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script src="./assets/js/storagePolicy.js"></script>
+  <script src="./assets/js/authMockService.js"></script>
+  <script src="./assets/js/contentService.js"></script>
+  <script src="./assets/js/adminMockPage.js"></script>
+</body>
+</html>

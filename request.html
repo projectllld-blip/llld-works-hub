@@ -58,6 +58,7 @@
     <section class="detail-panel request-panel">
       <h2>相談内容を作成する</h2>
       <p class="request-note">このページでは自前の送信処理を行いません。内容をコピーするか、メールソフトを開いて送信してください。</p>
+      <section id="requestItemContext" class="detail-panel request-context" hidden></section>
       <form class="request-form" id="requestForm">
         <label>
           相談種別
@@ -65,6 +66,11 @@
             <option value="development">開発を相談する</option>
             <option value="estimate">見積もりを相談する</option>
             <option value="purchase">購入について相談する</option>
+            <option value="request">相談する</option>
+            <option value="consultation">相談する</option>
+            <option value="customize">カスタマイズを相談する</option>
+            <option value="early-access">先行案内を受ける</option>
+            <option value="beta">β版について相談する</option>
           </select>
         </label>
         <label>
@@ -96,6 +102,7 @@
       </div>
     </section>
   </main>
+  <script src="./assets/js/contentService.js"></script>
   <script src="./assets/js/requestPage.js"></script>
 </body>
 </html>
