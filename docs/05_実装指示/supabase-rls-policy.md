@@ -21,8 +21,8 @@ RLS未設定のまま本番運用しない。
 - HTML / JS / JSONに直書きしない。
 - `.env` をGitHubに置かない。
 - `auth.mode = supabase` としても、URL / anon key不足時は必ずmock modeへ戻す。
-- v0.12時点では、signup / login / account表示のみ接続対象にする。
-- app_instances / app_data / 勤怠実データはまだ接続しない。
+- v0.13時点では、signup / login / account表示 / app_instances一覧のみ接続対象にする。
+- app_data / 勤怠実データはまだ接続しない。
 
 ## company_accounts
 

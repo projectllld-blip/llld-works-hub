@@ -98,7 +98,7 @@
   async function initAccount(status) {
     const result = await window.AuthService.getCurrentAccount();
     renderModeStatus(result.status || status);
-    renderAccountState(result, result.status || status);
+    await renderAccountState(result, result.status || status);
 
     const logoutButton = $('#logoutButton');
     if (logoutButton) {
@@ -114,15 +114,16 @@
           return;
         }
         const latest = await window.AuthService.getCurrentAccount();
-        renderAccountState(latest, latest.status || status);
+        await renderAccountState(latest, latest.status || status);
         logoutButton.disabled = false;
       });
     }
   }
 
-  function renderAccountState(result, status) {
+  async function renderAccountState(result, status) {
     if (result?.account) {
       renderAccount(result.account, status, result);
+      await renderAppsForAccount(result.account, status);
       renderStatus(result.message || 'アカウント情報を表示しています。', result.ok !== false);
       return;
     }
@@ -130,7 +131,8 @@
     clearAccount();
     setText('#accountStatus', accountStateLabel(result?.accountStatus || 'not_logged_in'));
     setText('#accountSyncStatus', result?.message || 'ログインが必要です。企業アカウントでログインしてください。');
-    renderList('#accountApps', ['利用アプリ一覧は v0.13 で接続予定です。']);
+    renderAppCards('#accountApps', []);
+    setText('#accountAppsStatus', 'ログイン後に利用アプリ一覧を表示します。');
     renderList('#accountRecentApps', ['最近使ったアプリのクラウド同期はまだ未接続です。']);
     renderStatus(`${result?.message || 'ログインが必要です。'} login.html または signup.html へ進んでください。`, false);
   }
@@ -145,8 +147,27 @@
     setText('#accountCreatedAt', formatDate(account.createdAt));
     setText('#accountUpdatedAt', formatDate(account.updatedAt));
     setText('#accountSyncStatus', status.message || account.syncStatus);
-    renderList('#accountApps', account.apps);
     renderList('#accountRecentApps', account.recentApps);
+  }
+
+  async function renderAppsForAccount(account, status) {
+    setText('#accountAppsStatus', '利用アプリ一覧を確認しています。');
+
+    if (!window.AppInstanceService?.getMyAppInstances) {
+      renderAppCards('#accountApps', []);
+      setText('#accountAppsStatus', '利用アプリ一覧サービスを確認できません。');
+      return;
+    }
+
+    const result = await window.AppInstanceService.getMyAppInstances(account.id);
+    setText('#accountAppsStatus', result.message || '利用アプリ一覧を表示しています。');
+    renderAppCards('#accountApps', result.apps || []);
+
+    if (status.mode === 'supabase' && result.appStatus === 'empty') {
+      renderStatus(result.message, true);
+    } else if (result.ok === false) {
+      renderStatus(result.message, false);
+    }
   }
 
   function clearAccount() {
@@ -211,6 +232,37 @@
     const root = $(selector);
     if (!root) return;
     root.innerHTML = items.map(item => `<li>${escapeHtml(item)}</li>`).join('');
+  }
+
+  function renderAppCards(selector, apps = []) {
+    const root = $(selector);
+    if (!root) return;
+    if (!apps.length) {
+      root.innerHTML = '<li class="account-app-empty">利用中アプリはまだ登録されていません。</li>';
+      return;
+    }
+
+    root.innerHTML = apps.map(app => {
+      const link = app.link
+        ? `<a class="btn primary account-app-action" href="${escapeHtml(app.link)}">開く</a>`
+        : '<span class="account-app-action account-app-disabled">準備中</span>';
+      return `
+        <li class="account-app-card">
+          <div class="account-app-main">
+            <span class="account-app-key">${escapeHtml(app.appKey || '-')}</span>
+            <strong>${escapeHtml(app.displayName || app.name || '未設定アプリ')}</strong>
+            <p>${escapeHtml(app.description || '')}</p>
+          </div>
+          <dl class="account-app-meta">
+            <div><dt>利用状態</dt><dd>${escapeHtml(window.AppInstanceService?.getAppStatusLabel?.(app.status) || app.status || '-')}</dd></div>
+            <div><dt>アプリ状態</dt><dd>${escapeHtml(window.AppInstanceService?.getAppStatusLabel?.(app.appStatus) || app.appStatus || '-')}</dd></div>
+            <div><dt>最終更新</dt><dd>${escapeHtml(formatDate(app.updatedAt))}</dd></div>
+            <div><dt>クラウド保存</dt><dd>${escapeHtml(app.cloudNote || 'app_data保存はまだ未接続です。')}</dd></div>
+          </dl>
+          ${link}
+        </li>
+      `;
+    }).join('');
   }
 
   function modeLabel(status) {
