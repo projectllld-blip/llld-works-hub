@@ -71,6 +71,8 @@
             <option value="customize">カスタマイズを相談する</option>
             <option value="early-access">先行案内を受ける</option>
             <option value="beta">β版について相談する</option>
+            <option value="submit">投稿について相談する</option>
+            <option value="support">使い方を相談する</option>
           </select>
         </label>
         <label>
@@ -92,8 +94,9 @@
         <div class="detail-cta-row">
           <a class="btn primary" id="requestMailLink" href="mailto:?subject=LLLD Works Marketへの相談">開発を相談する</a>
           <button class="btn secondary" id="copyRequestText" type="button">相談内容をコピー</button>
-          <a class="btn secondary" id="purchaseThanksLink" href="./thanks.html?type=request">送信後の流れを見る</a>
+          <a class="btn secondary" id="purchaseThanksLink" href="./thanks.html?type=request">検証用完了画面を見る</a>
         </div>
+        <p class="request-status" id="requestStatus" aria-live="polite"></p>
       </form>
 
       <div class="request-output">

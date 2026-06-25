@@ -4,7 +4,8 @@
   const DATA_PATHS = {
     contents: './data/contents.json',
     authors: './data/authors.json',
-    categories: './data/categories.json'
+    categories: './data/categories.json',
+    siteConfig: './data/site-config.json'
   };
 
   const cache = new Map();
@@ -15,7 +16,7 @@
     const response = await fetch(path, { cache: 'no-store' });
     if (!response.ok) throw new Error(`Failed to load ${path}`);
     const data = await response.json();
-    cache.set(key, Array.isArray(data) ? data : []);
+    cache.set(key, key === 'siteConfig' ? data : (Array.isArray(data) ? data : []));
     return cache.get(key);
   }
 
@@ -107,6 +108,15 @@
     return fetchJson('categories');
   }
 
+  async function getSiteConfig() {
+    // 問い合わせ先も仮DBとしてJSON管理する。将来は管理画面やAPI側の設定に差し替える想定。
+    try {
+      return await fetchJson('siteConfig');
+    } catch {
+      return { forms: {}, contact: { email: '', ownerName: 'LLLD Works Hub' } };
+    }
+  }
+
   async function getCategoryById(categoryId) {
     const categories = await getCategories();
     return categories.find(category => category.id === categoryId) || null;
@@ -132,6 +142,7 @@
     getAuthors,
     getAuthorById,
     getCategories,
+    getSiteConfig,
     getCategoryById,
     searchContents,
     filterContents

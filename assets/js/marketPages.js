@@ -222,6 +222,10 @@
         </div>
         <h3><a href="${escapeAttr(content.detailUrl)}">${escapeHtml(content.title)}</a></h3>
         <p>${escapeHtml(content.summary || content.description || '')}</p>
+        <div class="market-card-facts">
+          <span>${escapeHtml(listText(content.targetUsers, 2) || '対象者確認中')}</span>
+          <span>${escapeHtml(deliveryLabels[content.deliveryType] || '提供方法確認中')}</span>
+        </div>
         <div class="market-meta">
           <span>${escapeHtml(category?.name || content.category || '未分類')}</span>
           <a href="${escapeAttr(author?.profileUrl || '#')}">${escapeHtml(author?.name || '投稿者未設定')}</a>
@@ -266,6 +270,12 @@
           </div>
           <h1>${escapeHtml(content.title)}</h1>
           <p>${escapeHtml(content.description || content.summary || '')}</p>
+          <div class="detail-hero-facts">
+            ${detailFact('対象者', listText(content.targetUsers, 3))}
+            ${detailFact('販売状態', saleStatusLabels[content.saleStatus] || content.saleStatus || '-')}
+            ${detailFact('価格', formatPrice(content))}
+            ${detailFact('提供方法', deliveryLabels[content.deliveryType] || content.deliveryType || '-')}
+          </div>
           <div class="detail-cta-row">
             <a class="btn primary" href="${escapeAttr(action.href)}">${escapeHtml(action.label)}</a>
             ${secondaryButton}
@@ -278,11 +288,22 @@
 
       <section class="detail-lp-grid">
         ${infoBlock('誰向けか', content.targetUsers)}
-        ${infoBlock('解決する悩み', content.problems)}
-        ${infoBlock('主な機能', content.features)}
-        ${infoBlock('内容物', content.deliverables)}
+        ${infoBlock('この商品で解決できること', content.problems)}
+        ${infoBlock('できること', content.features)}
+        ${infoBlock('入っているもの / 提供内容', content.deliverables)}
         ${infoBlock('使い方', content.usageSteps)}
         ${infoBlock('注意事項', content.notes)}
+      </section>
+
+      <section class="detail-panel detail-bottom-cta">
+        <div>
+          <h2>気になる場合は、まず相談できます。</h2>
+          <p>購入、導入、カスタマイズ、β版利用など、今の状態に合わせて手動で確認します。</p>
+        </div>
+        <div class="detail-cta-row">
+          <a class="btn primary" href="${escapeAttr(action.href)}">${escapeHtml(action.label)}</a>
+          ${secondaryButton}
+        </div>
       </section>
 
       <section class="detail-panel">
@@ -294,7 +315,7 @@
           <div><dt>販売状態</dt><dd>${escapeHtml(saleStatusLabels[content.saleStatus] || content.saleStatus || '-')}</dd></div>
           <div><dt>価格</dt><dd>${escapeHtml(formatPrice(content))}</dd></div>
           <div><dt>提供方法</dt><dd>${escapeHtml(deliveryLabels[content.deliveryType] || content.deliveryType || '-')}</dd></div>
-          <div><dt>対象ユーザー</dt><dd>${escapeHtml(listText(content.targetUsers))}</dd></div>
+          <div><dt>対象ユーザー</dt><dd>${escapeHtml(listText(content.targetUsers) || '-')}</dd></div>
           <div><dt>更新日</dt><dd>${escapeHtml(content.updatedAt || '-')}</dd></div>
           <div><dt>公開範囲</dt><dd>${escapeHtml(visibilityLabels[content.visibility] || content.visibility || '-')}</dd></div>
           <div><dt>CTA種別</dt><dd>${escapeHtml(content.primaryCtaType || action.label || '-')}</dd></div>
@@ -437,8 +458,15 @@
     return values.some(value => candidates.includes(value));
   }
 
-  function listText(items = []) {
-    return Array.isArray(items) && items.length ? items.join('、') : '-';
+  function detailFact(label, value) {
+    if (!value || value === '-') return '';
+    return `<span><b>${escapeHtml(label)}</b>${escapeHtml(value)}</span>`;
+  }
+
+  function listText(items = [], limit = 0) {
+    if (!Array.isArray(items) || !items.length) return '';
+    const list = limit ? items.slice(0, limit) : items;
+    return list.join('、');
   }
 
   function formatPrice(content) {
