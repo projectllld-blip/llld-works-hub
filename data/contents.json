@@ -531,6 +531,7 @@
     "priceType": "internal",
     "status": "published",
     "visibility": "internal",
+    "marketVisible": false,
     "targetUsers": [
       "社内スタッフ",
       "制作担当",

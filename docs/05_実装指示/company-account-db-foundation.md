@@ -39,7 +39,8 @@ LLLD Works Hub / Works Marketのアカウントは、当面以下の単位で扱
 
 ## 追加JS
 
-- `siteConfigService.js`: `data/site-config.json` を読み、安全なデフォルトを返す。
+- `siteConfigService.js`: `data/site-config.json` を読み、安全なデフォルトと `getSafeAuthMode()` を返す。
+- `supabaseClientService.js`: Supabase URL / anon key / JSライブラリの有無を判定する。未設定時はclientを作らない。
 - `authService.js`: mock / supabase modeを判定する。Supabase未設定ならmock扱いにする。
 - `accountPage.js`: 画面表示、入力バリデーション、mock mode注意表示を行う。
 
