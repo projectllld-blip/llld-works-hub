@@ -74,6 +74,15 @@ supabase/migrations/20260625_v014_seatflow_app_data_constraints.sql
 - `company_accounts.owner_user_id` がAuth user idと一致する。
 - `app_instances` に選択アプリが作成される。
 
+signup後に `confirmation_sent_at` が返り、session / access tokenが返らない場合は、メール確認必須設定で止まっている。
+
+この場合は、`company_accounts` / `app_instances` のRLS付き確認へ進まない。
+
+次のどちらかを行う。
+
+- テストメールの確認リンクを開いてメール確認を完了する。
+- 検証中のみSupabase Dashboardで Email confirmation をOFFにする。
+
 ## 4. login確認
 
 `login.html` からテストメールとパスワードでログインする。
