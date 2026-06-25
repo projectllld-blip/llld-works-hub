@@ -56,6 +56,44 @@ supabase/migrations/20260625_v014_seatflow_app_data_constraints.sql
 - `app_data` のRLSが有効。
 - Auth trigger `on_auth_user_created_company_account` が存在する。
 
+## 2.5 新Supabaseプロジェクト接続時の事前確認
+
+古いSupabaseプロジェクトを削除し、新しいプロジェクトへ接続し直した場合は、signupの前に必ずテーブル存在確認を行う。
+
+確認対象:
+
+```text
+apps
+company_accounts
+app_instances
+app_data
+```
+
+REST APIで `PGRST205: Could not find the table` が返る場合、その新プロジェクトにはmigrationが未適用である。
+
+この状態ではsignupへ進まない。
+
+理由:
+
+- Auth userだけ作成される可能性がある。
+- `company_accounts` が作成されない。
+- `app_instances` が作成されない。
+- その後のlogin / account / SeatFlowクラウド保存確認が正しくできない。
+
+publishable key / anon keyだけではSQL migrationを適用できない。
+
+新プロジェクトでは、Supabase DashboardのSQL Editorで以下を手動適用してからE2E確認へ進む。
+
+```text
+1. supabase/migrations/20260625_v010_company_account_foundation.sql
+2. supabase/seed.sql
+3. supabase/migrations/20260625_v011_signup_company_account_trigger.sql
+4. supabase/migrations/20260625_v013_app_instances_from_signup_metadata.sql
+5. supabase/migrations/20260625_v014_seatflow_app_data_constraints.sql
+```
+
+service role keyやdatabase passwordをフロントへ置いてmigration適用する方法は禁止。
+
 ## 3. signup確認
 
 `signup.html` でテスト企業アカウントを作成する。
