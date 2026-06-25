@@ -1,0 +1,62 @@
+[
+  {
+    "id": "education-school",
+    "name": "教育・塾運営",
+    "slug": "education-school",
+    "description": "塾、教室、教材、面談、授業準備に使う実務コンテンツ。"
+  },
+  {
+    "id": "store-operations",
+    "name": "店舗運営",
+    "slug": "store-operations",
+    "description": "店舗、受付、現場スタッフ管理、日々の運営改善に使うツール。"
+  },
+  {
+    "id": "attendance-hr",
+    "name": "勤怠・人事",
+    "slug": "attendance-hr",
+    "description": "勤怠、スタッフ管理、出勤簿、労務まわりの実務ツール。"
+  },
+  {
+    "id": "productivity",
+    "name": "業務効率化",
+    "slug": "productivity",
+    "description": "日常業務を軽くするHTMLアプリ、チェックリスト、運用テンプレート。"
+  },
+  {
+    "id": "ai-work",
+    "name": "AI活用",
+    "slug": "ai-work",
+    "description": "AIを使った文章作成、業務整理、支援ツールのテンプレート。"
+  },
+  {
+    "id": "pdf-docs",
+    "name": "PDF・資料編集",
+    "slug": "pdf-docs",
+    "description": "PDF、資料整理、印刷、編集、結合、分割に関するツール。"
+  },
+  {
+    "id": "meeting-sales",
+    "name": "面談・営業支援",
+    "slug": "meeting-sales",
+    "description": "面談、商談、ヒアリング、提案を整理するための支援コンテンツ。"
+  },
+  {
+    "id": "subsidy-admin",
+    "name": "補助金・行政書類",
+    "slug": "subsidy-admin",
+    "description": "補助金、申請書、行政手続き、支援業務で使うテンプレート。"
+  },
+  {
+    "id": "templates",
+    "name": "テンプレート",
+    "slug": "templates",
+    "description": "Excel、Word、PDF、チェックリストなどの再利用できる実務テンプレート。"
+  },
+  {
+    "id": "internal-only",
+    "name": "社内限定",
+    "slug": "internal-only",
+    "description": "LLLD社内運用、制作ルール、内部資料などの限定コンテンツ。"
+  }
+]

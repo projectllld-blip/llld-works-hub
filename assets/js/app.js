@@ -50,6 +50,11 @@ const storage = {
   favorites: 'llldWorksHub.favorites'
 };
 
+const contentSource = {
+  type: 'jsonFile',
+  path: './data/contents.json'
+};
+
 const categoryFilters = [
   {id:'すべて', label:'すべて', icon:'ALL', test:() => true},
   {id:'よく使う', label:'よく使う', icon:'★', test:(item, ctx) => item.featured || ctx.favoriteIds.includes(item.id) || ctx.historyIds.includes(item.id) || hasTag(item, ['人気','おすすめ'])},
@@ -87,9 +92,14 @@ async function init(){
   renderAll();
 }
 
-async function loadContents(){
+async function loadContents(source = contentSource){
+  if(source.type === 'jsonFile') return loadContentsFromJsonFile(source.path);
+  return fallbackContents;
+}
+
+async function loadContentsFromJsonFile(path){
   try{
-    const res = await fetch('./data/contents.json', {cache:'no-store'});
+    const res = await fetch(path, {cache:'no-store'});
     if(!res.ok) throw new Error('contents.json not found');
     const data = await res.json();
     return Array.isArray(data) && data.length ? data : fallbackContents;
