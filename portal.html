@@ -1,0 +1,1529 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLLD Works Hub | 社内ポータル</title>
+<style>
+:root{
+  --navy:#061829;--navy2:#071d33;--teal:#12b8ab;--teal2:#079b91;--tealSoft:#e8fbf8;
+  --bg:#f2f5f9;--card:#fff;--ink:#142033;--text:#2b3850;--muted:#6d7b92;
+  --line:#dce3ed;--line2:#e9eef5;--blue:#2f71d0;--blueSoft:#eaf2ff;
+  --yellow:#f4bd3d;--yellowSoft:#fff6dd;--shadow:0 8px 20px rgba(6,24,41,.055);
+  --r:16px;--side:204px;--head:64px;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,sans-serif;
+}
+*{box-sizing:border-box}
+html{font-size:80%;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);font-family:var(--font);color:var(--ink);font-weight:350;line-height:1.55}
+a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}button{cursor:pointer}
+
+/* Header / sidebar */
+.header{position:sticky;top:0;z-index:20;min-height:var(--head);display:grid;grid-template-columns:auto auto minmax(260px,520px) 1fr auto;align-items:center;gap:14px;padding:12px 22px;background:var(--navy);color:#fff;box-shadow:0 8px 24px rgba(3,13,24,.2)}
+.brand{display:flex;align-items:center;gap:12px;white-space:nowrap}.mark{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#3acde8,var(--teal))}.brand strong{font-size:2rem;font-weight:650;letter-spacing:-.045em}.brand span:last-child{color:rgba(255,255,255,.7);font-size:1.05rem;margin-left:10px}
+.market{height:34px;padding:0 17px;border-radius:8px;background:var(--teal);display:inline-flex;align-items:center;color:#fff;font-weight:500}
+.search{position:relative}.search input{width:100%;height:38px;border:0;border-radius:7px;padding:0 14px 0 39px;font-weight:350}.search span{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#48576d}
+.h-actions{display:flex;gap:10px;justify-content:flex-end}.hbtn{min-height:34px;border:1px solid rgba(255,255,255,.23);border-radius:8px;background:transparent;color:#fff;padding:0 14px;font-weight:500}
+.layout{display:grid;grid-template-columns:var(--side) minmax(0,1fr)}.side{position:sticky;top:var(--head);height:calc(100vh - var(--head));overflow:auto;background:var(--navy2);color:#fff;padding:26px 10px 20px}.side-title{margin:0 10px 9px;color:rgba(255,255,255,.58);font-size:.95rem;font-weight:450;letter-spacing:.08em}
+.side ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}.side a{display:grid;grid-template-columns:30px 1fr auto;align-items:center;gap:8px;min-height:40px;padding:6px 10px;border-radius:10px;color:rgba(255,255,255,.86);font-size:1.16rem;font-weight:450}.side a.active,.side a:hover{background:linear-gradient(90deg,rgba(18,184,171,.92),rgba(18,184,171,.42));color:#fff}
+.ico{width:24px;height:24px;border-radius:7px;border:1px solid rgba(255,255,255,.18);display:grid;place-items:center;font-size:.9rem}.cnt{min-width:28px;border-radius:999px;background:rgba(255,255,255,.12);text-align:center;padding:3px 7px;font-size:.92rem}.pins{margin-top:24px}.pins a{grid-template-columns:24px 1fr;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.055);font-size:1rem}.star{width:22px;height:22px;display:grid;place-items:center;border-radius:6px;background:var(--yellowSoft);color:#8a610e}
+
+/* Common */
+.main{min-width:0;padding:20px 22px 46px}.wrap{max-width:1220px;margin:0 auto}
+.section{margin-top:19px;border:1px solid var(--line);border-radius:var(--r);background:#fff;box-shadow:var(--shadow);overflow:hidden;scroll-margin-top:86px}.section:first-child{margin-top:0}.s-head{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;padding:14px 17px;border-bottom:1px solid var(--line2);background:#fff}h2{margin:0;font-size:1.68rem;font-weight:550;letter-spacing:-.04em}.s-actions{display:flex;gap:7px;align-items:center}.s-body{padding:16px;background:#f8fafc}.section.closed .s-body{display:none}
+.btn{min-height:34px;border:1px solid transparent;border-radius:8px;background:var(--teal);color:#fff;padding:0 14px;font-weight:450;display:inline-flex;align-items:center;justify-content:center}.btn:hover{background:var(--teal2)}.btn2{background:#fff;color:#143250;border-color:var(--line)}
+.pin,.collapse{width:34px;height:34px;border:1px solid #d7e0eb;border-radius:9px;background:#fff;color:#91a2b8;font-weight:450}.collapse{width:32px;height:32px;color:#143250}.pin.on{background:var(--yellowSoft);border-color:rgba(244,189,61,.65);color:#9a6c0f}
+
+/* Board + memo */
+.dashboard-grid,.quick-log-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:stretch}
+.panel{border:1px solid var(--line);border-radius:var(--r);background:#fff;box-shadow:var(--shadow);overflow:hidden}
+.panel.board-height{height:330px}.panel.quick-height{height:330px}
+.p-head{height:58px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line2);background:#fff}.p-head h3{margin:0;font-size:1.5rem;font-weight:550;letter-spacing:-.04em}
+.post-list{height:224px;padding:8px 14px 6px;display:grid;gap:7px;align-content:start;overflow:hidden}
+.post{display:grid;grid-template-columns:34px minmax(0,1fr) 30px;gap:9px;align-items:center;height:47px;padding:5px 8px;border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden}
+.post-ico{width:30px;height:30px;display:grid;place-items:center;border-radius:9px;background:var(--tealSoft);font-size:.92rem}
+.post h4{margin:0;font-size:1.02rem;font-weight:550;line-height:1.16;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.post p{margin:1px 0 3px;color:var(--muted);font-size:.82rem;line-height:1.18;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meta{display:flex;gap:4px;flex-wrap:nowrap;align-items:center;font-size:.72rem;color:#92a0b4;white-space:nowrap;overflow:hidden}.cat{padding:1px 5px;border-radius:999px;background:var(--blueSoft);color:#2360b6;flex:0 0 auto}.upd{display:inline-flex;gap:3px;padding:1px 6px;border-radius:999px;background:#fff8e6;color:#8a610e;border:1px solid rgba(244,189,61,.42);font-size:.72rem;white-space:nowrap;flex:0 0 auto}.upd:before{content:"最終更新";color:#6a7c94}
+.post .pin{width:28px;height:28px;border-radius:8px;font-size:.92rem}
+.post-pager{height:39px;display:flex;align-items:center;justify-content:center;gap:6px;padding:5px 12px;border-top:1px solid var(--line2);background:#fff}
+.page-btn{min-width:28px;height:28px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--text);font-size:.95rem}.page-btn.active{background:var(--teal);border-color:var(--teal);color:#fff}
+.todo-body{height:calc(100% - 58px);display:grid;grid-template-rows:1fr 92px;gap:9px;padding:12px}.todo-list{height:100%;overflow:hidden;display:grid;gap:7px;margin:0;padding:0;list-style:none;align-content:start}.todo-list li{display:grid;grid-template-columns:auto 1fr;gap:9px;align-items:center;min-height:38px;padding:7px 10px;border:1px solid var(--line2);border-radius:10px;background:#f9fbfd;font-size:1rem}.todo-list input{width:16px;height:16px;accent-color:var(--teal)}
+textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border-radius:11px;resize:none;font-weight:350;font-size:1rem}
+
+/* Quick / logs */
+.quick-list{height:calc(100% - 58px);overflow:hidden;display:grid;gap:9px;padding:12px}.quick-card{display:grid;grid-template-columns:84px 1fr auto;gap:11px;align-items:center;min-height:78px;padding:9px;border:1px solid var(--line);border-radius:13px;background:#fff}.quick-card h4{margin:0;font-size:1.1rem;font-weight:550}.quick-card p{margin:4px 0 0;color:var(--muted);font-size:.9rem}.qthumb{width:84px;height:54px;border-radius:8px;overflow:hidden;background:#eef3f9;border:1px solid #dfe7f0}
+.log-list{height:calc(100% - 58px);overflow:hidden;padding:12px;display:grid;gap:8px;align-content:start}.log-item{display:grid;grid-template-columns:30px 1fr auto;gap:8px;align-items:start;padding:8px 9px;border:1px solid var(--line2);border-radius:10px;background:#f9fbfd}.log-icon{width:30px;height:30px;display:grid;place-items:center;border-radius:8px;background:var(--tealSoft);color:var(--teal2)}.log-item strong{display:block;font-size:.98rem;font-weight:500;line-height:1.25}.log-item span{display:block;margin-top:2px;color:var(--muted);font-size:.86rem;line-height:1.35}.log-time{color:#92a0b4;font-size:.8rem;white-space:nowrap}
+
+/* Stable card design: restored from earlier direction */
+.mock-thumb{height:130px;padding:13px;background:linear-gradient(135deg,#f8fbff,#edf3f9);border-bottom:1px solid var(--line2)}.mock-screen{height:100%;border-radius:8px;background:#fff;border:1px solid #dbe3ed;box-shadow:0 10px 24px rgba(6,24,41,.09);overflow:hidden}.mock-top{height:18px;background:#071d33;display:flex;gap:4px;align-items:center;padding:0 8px}.mock-top span{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.45)}.mock-body{display:grid;grid-template-columns:30px 1fr;height:calc(100% - 18px)}.mock-menu{background:#102b45;padding:7px 5px}.mock-menu i{display:block;height:5px;margin-bottom:5px;border-radius:999px;background:rgba(255,255,255,.2)}.mock-main{padding:8px;background:#f6f8fb}.mock-main b{display:block;width:54%;height:8px;border-radius:999px;background:#d7e0ea;margin-bottom:7px}.mock-main p{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin:0 0 7px}.mock-main p i{height:22px;border-radius:6px;background:#fff;border:1px solid #e2e8f0}.mock-main em{display:block;height:26px;border-radius:6px;background:linear-gradient(90deg,var(--teal) 14%,transparent 14% 22%,var(--blue) 22% 34%,transparent 34% 45%,#82c991 45% 58%,transparent 58%),#fff;border:1px solid #e2e8f0}
+.scroll-wrap{position:relative}.card-scroll{display:flex;gap:14px;overflow-x:auto;overflow-y:hidden;scroll-behavior:smooth;scroll-snap-type:x mandatory;padding:2px 2px 8px;scrollbar-width:thin;overscroll-behavior-x:contain;overscroll-behavior-y:auto;touch-action:pan-x}.content-card{flex:0 0 calc((100% - 42px)/4);max-width:calc((100% - 42px)/4);min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:var(--r);background:#fff;box-shadow:var(--shadow);scroll-snap-align:start}
+.scroll-arrow{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--navy2);box-shadow:var(--shadow);position:absolute;top:50%;transform:translateY(-50%);z-index:3}.scroll-arrow.left{left:-11px}.scroll-arrow.right{right:-11px}
+.card-main{padding:13px 14px 14px}.card-top{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:start;margin-bottom:9px}.type-icon{width:24px;height:24px;display:grid;place-items:center;border-radius:7px;background:var(--tealSoft);color:var(--teal2);font-weight:550}.content-card h3{margin:0;font-size:1.22rem;font-weight:550;line-height:1.33;letter-spacing:-.035em}.content-card small{display:inline-flex;margin-top:3px;padding:2px 7px;border-radius:6px;background:var(--blueSoft);color:#2360b6;font-size:.9rem}.content-card p{margin:8px 0 11px;min-height:42px;color:var(--muted);font-weight:350;font-size:.98rem}.card-foot{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}.chips{display:flex;gap:6px;flex-wrap:wrap}.chips span{padding:3px 8px;border-radius:999px;background:#edf2f7;color:#526174;font-size:.88rem}
+
+/* File library */
+.file-layout{display:grid;grid-template-columns:minmax(420px,1fr) minmax(320px,.85fr);gap:14px}.tree-card,.preview{border:1px solid var(--line);border-radius:var(--r);background:#fff;box-shadow:var(--shadow);overflow:hidden}.tree-card{min-height:600px}.tree-head,.preview-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px;border-bottom:1px solid var(--line2)}.tree-head h3,.preview-head h3{margin:0;font-size:1.18rem;font-weight:550}.tools{display:flex;gap:6px}.tbtn{width:31px;height:31px;border:1px solid var(--line);border-radius:8px;background:#fff}.tbtn.primary{background:var(--teal);color:#fff;border-color:var(--teal)}.tree-actions{display:flex;gap:6px;flex-wrap:wrap;padding:10px 10px 0}.mini-btn{min-height:29px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--navy2);font-size:.92rem}.mini-btn.primary{background:var(--teal);border-color:var(--teal);color:#fff}
+.tree-body{height:520px;overflow:auto;padding:10px}.tree,.tree ul{margin:0;padding:0;list-style:none}.tree ul{margin-left:19px;padding-left:8px;border-left:1px dashed #cbd6e3}.node{margin:3px 0}.row{display:grid;grid-template-columns:24px 22px 20px 1fr auto auto;gap:5px;align-items:center;min-height:34px;padding:5px 7px;border:1px solid transparent;border-radius:9px;color:var(--text)}.row:hover{background:#f3f7fb;border-color:#e4ebf3}.row.sel,.row.drop-target{background:var(--tealSoft);border-color:rgba(18,184,171,.55)}.folder-btn{display:contents;border:0;background:transparent}.check{width:16px;height:16px;accent-color:var(--teal)}.caret{color:#92a0b4;transition:.14s}.node.closed>.row .caret{transform:rotate(-90deg)}.node.closed>ul{display:none}.fname{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-weight:400}.ftype{padding:2px 6px;border-radius:999px;background:#edf2f7;color:#536276;font-size:.84rem}.fdate{display:inline-flex;gap:4px;padding:2px 6px;border-radius:999px;background:#edf6ff;color:#2c5f99;border:1px solid #d4e9ff;font-size:.84rem}.fdate:before{content:"最終更新";color:#6a7c94}.legend{display:flex;gap:6px;flex-wrap:wrap;padding:0 10px 11px;color:var(--muted);font-size:.9rem}
+.viewer{height:360px;border:1px solid var(--line);border-radius:13px;background:#fff;overflow:hidden}.viewer-toolbar{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 10px;border-bottom:1px solid var(--line2);background:#f8fafc}.viewer-title{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500}.viewer-stage{height:calc(100% - 44px);background:#f3f6fa;display:grid;place-items:center;overflow:auto}.doc-preview{width:min(88%,420px);min-height:250px;padding:24px;background:#fff;border:1px solid #dfe7f0;box-shadow:0 12px 26px rgba(6,24,41,.08)}.doc-line{height:10px;border-radius:999px;background:#d9e2ee;margin-bottom:12px}.w70{width:70%}.w45{width:45%}.w90{width:90%}.preview-body{padding:14px}.preview-note{margin-top:10px;padding:9px 10px;border-radius:10px;background:#f8fafc;border:1px solid var(--line);color:var(--muted);font-size:.95rem}.pmeta{display:grid;gap:7px;margin-top:10px}.pmeta div{display:grid;grid-template-columns:86px 1fr;gap:8px;padding:8px 9px;border-radius:9px;background:#fff;border:1px solid var(--line2)}.pmeta span:first-child{color:#92a0b4}.pmeta span:last-child{overflow-wrap:anywhere;font-weight:450}
+.file-add{margin-top:14px;border:1px solid var(--line);border-radius:var(--r);background:#fff;box-shadow:var(--shadow);padding:14px}.file-add-top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:10px}.file-add h3{margin:0;font-size:1.22rem;font-weight:550}.file-add-grid{display:grid;grid-template-columns:1.2fr 1.2fr .8fr 1.4fr;gap:9px;align-items:end}.field{display:grid;gap:5px;min-width:0}.field label{font-size:.94rem;color:var(--text)}.field input,.field select{width:100%;min-height:34px;padding:8px 10px;border:1px solid #cfd9e6;border-radius:8px;background:#fff;font-weight:350}.dest{display:grid;grid-template-columns:1fr auto;gap:7px;align-items:center;min-height:34px;padding:4px 5px 4px 9px;border:1px solid #cfd9e6;border-radius:8px;background:var(--tealSoft)}.dest strong{color:var(--teal2);font-weight:550}
+.upload-queue{display:grid;gap:8px;margin-top:10px}.queue-item{display:grid;grid-template-columns:28px minmax(140px,1fr) 128px 170px auto auto auto;align-items:end;gap:8px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:#fff}.queue-item[draggable=true]{cursor:grab}.queue-icon{width:28px;height:28px;display:grid;place-items:center;border-radius:8px;background:var(--tealSoft);color:var(--teal2);align-self:center}.queue-field{display:grid;gap:4px}.queue-field label{font-size:.78rem;color:var(--muted)}.queue-field input,.queue-field select{min-height:30px;border:1px solid #dce3ed;border-radius:7px;padding:5px 7px;background:#f8fafc}.dropzone{margin-top:12px;min-height:96px;display:grid;place-items:center;padding:14px;border:2px dashed rgba(18,184,171,.42);border-radius:13px;background:linear-gradient(135deg,var(--tealSoft),#fff);color:var(--muted);text-align:center}.dropzone.dragover{background:#dbf8f4;border-color:var(--teal)}.dropzone strong{display:block;color:var(--ink);font-weight:550;font-size:1.12rem}.dropzone span{display:block;margin-top:4px;font-size:.96rem}
+
+/* v7 board compact fix */
+.post-list{
+  height:224px!important;
+  padding:7px 14px 5px!important;
+  display:grid!important;
+  gap:6px!important;
+  align-content:start!important;
+  overflow:hidden!important;
+}
+.post{
+  height:50px!important;
+  min-height:50px!important;
+  display:grid!important;
+  grid-template-columns:32px minmax(0,1fr) 28px!important;
+  gap:8px!important;
+  align-items:center!important;
+  padding:5px 8px!important;
+  overflow:hidden!important;
+}
+.post-ico{
+  width:28px!important;
+  height:28px!important;
+  border-radius:8px!important;
+  font-size:.88rem!important;
+}
+.post h4{
+  margin:0!important;
+  font-size:.98rem!important;
+  font-weight:550!important;
+  line-height:1.12!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+.post p{
+  margin:1px 0 2px!important;
+  font-size:.78rem!important;
+  line-height:1.12!important;
+  color:var(--muted)!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+.post .meta{
+  display:flex!important;
+  flex-wrap:nowrap!important;
+  align-items:center!important;
+  gap:4px!important;
+  font-size:.68rem!important;
+  line-height:1!important;
+  overflow:hidden!important;
+  white-space:nowrap!important;
+}
+.post .cat{
+  padding:1px 5px!important;
+  flex:0 0 auto!important;
+}
+.post .upd{
+  padding:1px 5px!important;
+  font-size:.68rem!important;
+  flex:0 0 auto!important;
+}
+.post .pin{
+  width:26px!important;
+  height:26px!important;
+  border-radius:8px!important;
+  font-size:.88rem!important;
+}
+.post-pager{
+  height:39px!important;
+  padding:5px 12px!important;
+}
+
+/* v7 todo: six compact subject cards + detail modal */
+.todo-body{
+  height:calc(100% - 58px)!important;
+  display:grid!important;
+  grid-template-rows:auto 1fr 46px!important;
+  gap:8px!important;
+  padding:11px!important;
+}
+.todo-toolbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+.todo-days,.todo-export{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+}
+.todo-day-btn,.export-btn{
+  min-height:28px;
+  padding:0 9px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:#fff;
+  color:var(--text);
+  font-size:.86rem;
+}
+.todo-day-btn.active{
+  background:var(--teal);
+  border-color:var(--teal);
+  color:#fff;
+}
+.todo-list{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  grid-auto-rows:minmax(42px, auto)!important;
+  gap:7px!important;
+  height:auto!important;
+  overflow:hidden!important;
+  align-content:start!important;
+}
+.todo-list li{
+  min-height:42px!important;
+  padding:7px 8px!important;
+  display:grid!important;
+  grid-template-columns:auto minmax(0,1fr)!important;
+  gap:7px!important;
+  align-items:center!important;
+  cursor:pointer;
+}
+.todo-main{
+  min-width:0;
+}
+.todo-title{
+  display:block;
+  font-size:.94rem;
+  line-height:1.18;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.todo-author{
+  display:block;
+  margin-top:2px;
+  color:var(--muted);
+  font-size:.72rem;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.todo-body textarea{
+  min-height:46px!important;
+  height:46px!important;
+  padding:9px 10px!important;
+  font-size:.94rem!important;
+}
+
+/* v7 carousel: no native scroll, one card movement */
+.card-scroll{
+  overflow:hidden!important;
+  display:flex!important;
+  gap:14px!important;
+  scroll-behavior:auto!important;
+  scroll-snap-type:none!important;
+  padding:2px 2px 8px!important;
+  touch-action:pan-y!important;
+}
+.card-scroll .content-card,
+.content-card{
+  flex:0 0 calc((100% - 42px)/4)!important;
+  max-width:calc((100% - 42px)/4)!important;
+  min-width:0!important;
+}
+.card-scroll.is-animating{
+  transition:transform .25s ease;
+}
+
+
+/* v8 upload queue drag area refinement */
+.queue-item{
+  position:relative;
+}
+.queue-item::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+.queue-item.is-drag-ready{
+  outline:2px solid rgba(18,184,171,.25);
+  background:#f8fffd;
+}
+.queue-icon,
+.queue-item .queue-field:first-of-type,
+.queue-item::before{
+  cursor:grab;
+}
+.queue-item:active .queue-icon{
+  cursor:grabbing;
+}
+.queue-field input,
+.queue-field select,
+.queue-item button{
+  cursor:auto;
+}
+.queue-item button{
+  cursor:pointer;
+}
+.drag-hint{
+  color:var(--muted);
+  font-size:.78rem;
+  line-height:1.2;
+  align-self:center;
+  white-space:nowrap;
+}
+@media(max-width:1180px){
+  .drag-hint{
+    display:none;
+  }
+}
+
+
+
+/* v10 tree spacing: tighten folder/file rows by roughly 2pt */
+.tree-body{
+  padding:8px 10px!important;
+}
+.tree-list,
+.tree,
+.tree ul{
+  line-height:1.32!important;
+}
+.tree ul{
+  margin-left:16px!important;
+  padding-left:7px!important;
+}
+.node{
+  margin:1px 0!important;
+}
+.row{
+  min-height:28px!important;
+  padding:3px 6px!important;
+  gap:4px!important;
+}
+.row .check,
+.check{
+  width:14px!important;
+  height:14px!important;
+}
+.caret{
+  width:18px!important;
+  height:18px!important;
+}
+.row span:nth-child(3),
+.tree-icon{
+  width:18px!important;
+  height:18px!important;
+}
+.fname{
+  font-size:.98rem!important;
+  line-height:1.25!important;
+}
+.ftype{
+  padding:1px 6px!important;
+  font-size:.8rem!important;
+}
+.fdate{
+  padding:1px 6px!important;
+  font-size:.8rem!important;
+}
+.legend{
+  padding:0 10px 9px!important;
+  gap:5px!important;
+  font-size:.86rem!important;
+}
+
+/* v9: upload queue drag target = whole row except controls */
+.queue-item{
+  cursor:grab!important;
+  user-select:none;
+}
+.queue-item:hover{
+  background:#fbfffe!important;
+  border-color:rgba(18,184,171,.38)!important;
+}
+.queue-item.is-drag-ready,
+.queue-item:active{
+  cursor:grabbing!important;
+  outline:2px solid rgba(18,184,171,.25)!important;
+  background:#f8fffd!important;
+}
+.queue-item .queue-icon,
+.queue-item .queue-field,
+.queue-item .queue-field label,
+.queue-item .drag-hint{
+  cursor:grab!important;
+}
+.queue-item input,
+.queue-item select,
+.queue-item button,
+.queue-item [data-no-drag]{
+  cursor:auto!important;
+  user-select:auto;
+  -webkit-user-drag:none;
+}
+.queue-item select,
+.queue-item button{
+  cursor:pointer!important;
+}
+.queue-field input{
+  cursor:text!important;
+}
+
+/* v9: tree folder/file name sits directly next to icon, never centered */
+.row{
+  justify-items:start;
+}
+.row .check{
+  justify-self:center;
+}
+.row .fname{
+  justify-self:start!important;
+  text-align:left!important;
+  margin-left:0!important;
+}
+.row .ftype,
+.row .fdate{
+  justify-self:end;
+}
+.folder-btn .fname,
+.row[data-folder-path] .fname{
+  text-align:left!important;
+}
+
+/* v9: preview auto-fits both width and height */
+.viewer-stage{
+  position:relative;
+  padding:10px;
+}
+.viewer-stage iframe,
+.viewer-stage object,
+.viewer-stage embed,
+.viewer-stage img,
+.viewer-stage video{
+  display:block;
+  width:100%;
+  height:100%;
+  max-width:100%;
+  max-height:100%;
+  object-fit:contain;
+  border:0;
+  background:#fff;
+}
+.viewer-stage .doc-preview,
+.viewer-stage .sheet-preview{
+  max-width:100%;
+  max-height:100%;
+  overflow:auto;
+}
+.doc-preview{
+  width:min(100%,420px)!important;
+  height:auto;
+}
+.sheet-preview{
+  width:min(100%,520px)!important;
+  height:auto;
+}
+.preview-fit-note{
+  position:absolute;
+  right:10px;
+  bottom:8px;
+  padding:3px 7px;
+  border-radius:999px;
+  background:rgba(255,255,255,.9);
+  border:1px solid var(--line);
+  color:var(--muted);
+  font-size:.78rem;
+}
+
+/* modal */
+.todo-modal{
+  position:fixed;
+  inset:0;
+  display:none;
+  place-items:center;
+  z-index:100;
+  background:rgba(6,24,41,.42);
+  padding:20px;
+}
+.todo-modal.show{
+  display:grid;
+}
+.todo-modal-card{
+  width:min(560px,100%);
+  border-radius:16px;
+  background:#fff;
+  border:1px solid var(--line);
+  box-shadow:0 20px 60px rgba(6,24,41,.25);
+  overflow:hidden;
+}
+.todo-modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  padding:15px 17px;
+  border-bottom:1px solid var(--line2);
+}
+.todo-modal-head h3{
+  margin:0;
+  font-size:1.35rem;
+  font-weight:550;
+}
+.todo-modal-body{
+  padding:16px 17px;
+  color:var(--text);
+}
+.todo-modal-body p{
+  margin:8px 0 0;
+  color:var(--muted);
+  line-height:1.65;
+}
+.todo-modal-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-top:12px;
+}
+.todo-modal-meta span{
+  padding:4px 8px;
+  border-radius:999px;
+  background:#f3f6fa;
+  color:var(--muted);
+  font-size:.9rem;
+}
+.todo-modal-close{
+  width:32px;
+  height:32px;
+  border-radius:8px;
+  border:1px solid var(--line);
+  background:#fff;
+}
+@media(max-width:900px){
+  .card-scroll .content-card,
+  .content-card{
+    flex-basis:280px!important;
+    max-width:280px!important;
+  }
+}
+
+
+/* v11 tree vertical density fix:
+   Keep width/layout as-is, but remove extra vertical whitespace inside the library tree. */
+.tree-body{
+  padding-top:6px!important;
+  padding-bottom:6px!important;
+}
+
+.tree,
+.tree ul{
+  line-height:1.08!important;
+}
+
+.tree ul{
+  margin-top:0!important;
+  margin-bottom:0!important;
+}
+
+.node{
+  margin-top:0!important;
+  margin-bottom:0!important;
+}
+
+.tree-body .row{
+  min-height:22px!important;
+  height:22px!important;
+  padding-top:1px!important;
+  padding-bottom:1px!important;
+  padding-left:6px!important;
+  padding-right:6px!important;
+  gap:4px!important;
+  align-items:center!important;
+}
+
+.tree-body .row + .row{
+  margin-top:0!important;
+}
+
+.tree-body li{
+  margin-top:0!important;
+  margin-bottom:0!important;
+}
+
+.tree-body .check{
+  width:13px!important;
+  height:13px!important;
+}
+
+.tree-body .caret{
+  width:16px!important;
+  height:16px!important;
+  line-height:1!important;
+}
+
+.tree-body .fname{
+  font-size:.9rem!important;
+  line-height:1.05!important;
+}
+
+.tree-body .ftype,
+.tree-body .fdate{
+  min-height:18px!important;
+  height:18px!important;
+  padding-top:0!important;
+  padding-bottom:0!important;
+  padding-left:6px!important;
+  padding-right:6px!important;
+  font-size:.76rem!important;
+  line-height:18px!important;
+}
+
+.tree-body .fdate::before{
+  line-height:18px!important;
+}
+
+.tree-body .folder-btn{
+  line-height:1!important;
+}
+
+.legend{
+  padding-top:2px!important;
+  padding-bottom:6px!important;
+}
+
+
+/* v12 tree cleanup:
+   - remove folder/file icons in the tree
+   - restore filename display width
+   - keep compact vertical spacing
+   - remove visual dependency on the icon column */
+.tree-body .row{
+  grid-template-columns:24px 18px minmax(0,1fr) auto auto!important;
+}
+
+/* Hide unclassed icon/blank spans inside tree rows.
+   Folder rows: caret / icon / fname / ftype / fdate
+   File rows: blank spacer / icon / fname / ftype / fdate */
+.tree-body .row > span:not(.caret):not(.fname):not(.ftype):not(.fdate),
+.tree-body .folder-btn > span:not(.caret):not(.fname):not(.ftype):not(.fdate){
+  display:none!important;
+}
+
+/* Undo the earlier narrow-width rule that accidentally squeezed folder/file names. */
+.tree-body .fname,
+.tree-body .folder-btn .fname,
+.row .fname{
+  width:auto!important;
+  min-width:0!important;
+  max-width:none!important;
+  justify-self:stretch!important;
+  text-align:left!important;
+  overflow:hidden!important;
+  white-space:nowrap!important;
+  text-overflow:ellipsis!important;
+}
+
+/* Keep the caret close to the folder name. */
+.tree-body .caret{
+  justify-self:center!important;
+}
+
+/* Slightly rebalance right-side badges after icon removal. */
+.tree-body .ftype{
+  justify-self:end!important;
+}
+.tree-body .fdate{
+  justify-self:end!important;
+}
+
+/* Remove upload button space if any primary tree toolbar button remains. */
+.tree-head .tools .tbtn.primary{
+  display:none!important;
+}
+
+
+/* v13 tree text-width restoration */
+.tree-body .row[data-folder-path]{
+  grid-template-columns:24px minmax(0,1fr)!important;
+}
+
+.tree-body .row:not([data-folder-path]){
+  grid-template-columns:24px minmax(240px,1fr) auto auto!important;
+}
+
+.tree-body .folder-btn{
+  display:grid!important;
+  grid-template-columns:18px minmax(220px,1fr) auto auto!important;
+  align-items:center!important;
+  justify-items:start!important;
+  width:100%!important;
+  min-width:0!important;
+  gap:6px!important;
+  padding:0!important;
+  margin:0!important;
+  background:transparent!important;
+  border:0!important;
+  text-align:left!important;
+}
+
+.tree-body .folder-btn .fname,
+.tree-body .row .fname{
+  min-width:0!important;
+  width:auto!important;
+  max-width:none!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+
+.tree-body .folder-btn .ftype,
+.tree-body .folder-btn .fdate,
+.tree-body .row .ftype,
+.tree-body .row .fdate{
+  justify-self:end!important;
+}
+
+.tree-body .folder-btn > span:not(.caret):not(.fname):not(.ftype):not(.fdate){
+  display:none!important;
+}
+
+.tree-body .row > span:not(.fname):not(.ftype):not(.fdate){
+  display:none!important;
+}
+
+/* keep checkbox visible for file rows */
+.tree-body .row > .check{
+  display:inline-block!important;
+}
+
+/* allow more filename display before ellipsis */
+.tree-body .row .fname{
+  padding-right:8px!important;
+}
+
+
+/* v14 file selection highlight in library tree */
+.tree-body .row.file-selected{
+  background:#eef8ff!important;
+  border-color:#8fc9ff!important;
+}
+.tree-body .row.file-selected .fname{
+  color:#123f73!important;
+  font-weight:550!important;
+}
+
+
+/* v15 tree text vertical alignment */
+.tree-body .row,
+.tree-body .row[data-folder-path],
+.tree-body .row:not([data-folder-path]){
+  display:grid!important;
+  align-items:center!important;
+}
+
+.tree-body .folder-btn{
+  align-items:center!important;
+  height:100%!important;
+}
+
+.tree-body .fname{
+  display:flex!important;
+  align-items:center!important;
+  min-height:20px!important;
+  line-height:1!important;
+}
+
+.tree-body .ftype,
+.tree-body .fdate{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  line-height:1!important;
+  vertical-align:middle!important;
+}
+
+.tree-body .check{
+  align-self:center!important;
+}
+
+.tree-body .caret{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  align-self:center!important;
+  line-height:1!important;
+}
+
+
+/* v16: tree rows are click targets, not text-selection targets */
+.tree-body,
+.tree-body .row,
+.tree-body .fname,
+.tree-body .folder-btn,
+.tree-body .ftype,
+.tree-body .fdate{
+  user-select:none!important;
+  -webkit-user-select:none!important;
+}
+
+.tree-body .row{
+  cursor:pointer!important;
+}
+
+.tree-body .row a.tree-file-link{
+  color:inherit;
+  text-decoration:none;
+  cursor:pointer;
+  user-select:none!important;
+  -webkit-user-select:none!important;
+}
+
+.tree-body .row a.tree-file-link:hover{
+  color:var(--blue);
+  text-decoration:underline;
+}
+
+.tree-body .row[data-file-type="Link"] .fname{
+  color:#1d5fb8!important;
+}
+
+/* v16: link URL field in upload queue */
+.queue-url{
+  grid-column:2 / 5;
+  display:none;
+  gap:4px;
+}
+
+.queue-item.is-link .queue-url{
+  display:grid;
+}
+
+.queue-url label{
+  color:var(--muted);
+  font-size:.78rem;
+}
+
+.queue-url input{
+  min-height:30px;
+  border:1px solid #dce3ed;
+  border-radius:7px;
+  padding:5px 7px;
+  background:#f8fafc;
+}
+
+.add-link-btn{
+  min-height:34px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:#fff;
+  color:var(--navy2);
+  padding:0 12px;
+  font-weight:450;
+}
+
+/* v16: printable preview */
+.print-frame{
+  display:none;
+}
+
+@media print{
+  body *{
+    visibility:hidden!important;
+  }
+  #viewerStage,
+  #viewerStage *{
+    visibility:visible!important;
+  }
+  #viewerStage{
+    position:absolute!important;
+    inset:0!important;
+    width:100%!important;
+    height:auto!important;
+    overflow:visible!important;
+    background:#fff!important;
+    padding:16px!important;
+  }
+  .preview-fit-note{
+    display:none!important;
+  }
+}
+
+
+/* v17 toolbar tooltips */
+.tree-head .tools .tbtn{
+  position:relative;
+}
+.tree-head .tools .tbtn[data-tip]::after{
+  content:attr(data-tip);
+  position:absolute;
+  right:0;
+  top:calc(100% + 7px);
+  z-index:20;
+  min-width:max-content;
+  max-width:180px;
+  padding:5px 8px;
+  border-radius:7px;
+  background:rgba(6,24,41,.94);
+  color:#fff;
+  font-size:.78rem;
+  line-height:1.25;
+  white-space:nowrap;
+  opacity:0;
+  transform:translateY(-3px);
+  pointer-events:none;
+  transition:.14s ease;
+}
+.tree-head .tools .tbtn[data-tip]:hover::after{
+  opacity:1;
+  transform:translateY(0);
+}
+.tree-head .tools .tbtn[data-tip]::before{
+  content:"";
+  position:absolute;
+  right:12px;
+  top:calc(100% + 2px);
+  border:5px solid transparent;
+  border-bottom-color:rgba(6,24,41,.94);
+  opacity:0;
+  pointer-events:none;
+  transition:.14s ease;
+}
+.tree-head .tools .tbtn[data-tip]:hover::before{
+  opacity:1;
+}
+
+/* v17 link URL field in base file-add settings */
+.link-url-field{
+  display:none;
+}
+.file-add.is-link-mode .link-url-field{
+  display:grid;
+}
+.link-url-field input{
+  width:100%;
+}
+
+/* v17 print should use current page print media, no popup */
+@media print{
+  body{
+    background:#fff!important;
+  }
+  body *{
+    visibility:hidden!important;
+  }
+  .preview,
+  .preview *,
+  #viewerStage,
+  #viewerStage *{
+    visibility:visible!important;
+  }
+  .preview{
+    position:absolute!important;
+    left:0!important;
+    top:0!important;
+    width:100%!important;
+    height:auto!important;
+    border:0!important;
+    box-shadow:none!important;
+    overflow:visible!important;
+  }
+  .preview-head,
+  .preview-note,
+  .pmeta,
+  .viewer-toolbar,
+  .preview-fit-note{
+    display:none!important;
+  }
+  .preview-body{
+    padding:0!important;
+  }
+  .viewer{
+    height:auto!important;
+    border:0!important;
+    overflow:visible!important;
+  }
+  #viewerStage{
+    position:static!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    overflow:visible!important;
+    padding:0!important;
+    background:#fff!important;
+  }
+  #viewerStage iframe,
+  #viewerStage object,
+  #viewerStage embed,
+  #viewerStage img,
+  #viewerStage video{
+    width:100%!important;
+    max-width:100%!important;
+    height:auto!important;
+    max-height:none!important;
+    object-fit:contain!important;
+  }
+  #viewerStage .doc-preview,
+  #viewerStage .sheet-preview{
+    width:100%!important;
+    max-width:100%!important;
+    max-height:none!important;
+    overflow:visible!important;
+    box-shadow:none!important;
+  }
+}
+
+
+/* v18 unified toolbar icons */
+.tbtn{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  color:#5b6b82;
+  font-size:0!important;
+}
+.tbtn svg{
+  width:18px;
+  height:18px;
+  stroke:currentColor;
+  fill:none;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  flex:0 0 auto;
+}
+.tbtn:hover{
+  color:#243650;
+}
+.tbtn.primary{
+  color:#fff!important;
+}
+
+.toast{position:fixed;right:18px;bottom:18px;z-index:50;max-width:min(360px,calc(100vw - 36px));padding:12px 14px;border-radius:12px;background:rgba(6,24,41,.96);color:#fff;box-shadow:var(--shadow);opacity:0;transform:translateY(14px);pointer-events:none;transition:.18s}.toast.show{opacity:1;transform:translateY(0)}
+@media(max-width:1180px){.header{grid-template-columns:auto auto minmax(230px,1fr) auto}.header-spacer{display:none}.content-card{flex-basis:calc((100% - 14px)/2);max-width:calc((100% - 14px)/2)}.file-add-grid{grid-template-columns:1fr 1fr}.file-layout{grid-template-columns:1fr}.queue-item{grid-template-columns:28px 1fr 120px 150px auto}}
+@media(max-width:900px){:root{--head:auto;--side:1fr}html{font-size:86%}.header{position:static;grid-template-columns:1fr}.layout{grid-template-columns:1fr}.side{position:static;height:auto;padding:12px 10px}.side ul{grid-auto-flow:column;grid-auto-columns:max-content;overflow-x:auto}.pins{display:none}.main{padding:14px 12px 36px}.dashboard-grid,.quick-log-grid{grid-template-columns:1fr}.content-card{flex-basis:280px;max-width:280px}.scroll-arrow{display:none}.panel.board-height,.panel.quick-height{height:330px}}
+@media(max-width:640px){.s-head,.file-add-top{grid-template-columns:1fr}.s-actions{justify-content:flex-start;flex-wrap:wrap}.file-add-grid,.queue-item{grid-template-columns:1fr}.row{grid-template-columns:22px 20px 18px 1fr auto}.fdate{display:none}}
+</style>
+</head>
+<body>
+<div class="portal-shell">
+<header class="header">
+  <a class="brand" href="#board"><i class="mark"></i><strong>LLLD Works Hub</strong><span>社内ポータル</span></a>
+  <a class="market" href="marketplace.html">LLLD Works Market β</a>
+  <div class="search"><span>🔍</span><input placeholder="コンテンツ名・カテゴリ・タグで検索"></div>
+  <div class="header-spacer"></div>
+  <nav class="h-actions"><a class="hbtn" href="login.html">ログイン</a><a class="hbtn" href="account.html">アカウント</a></nav>
+</header>
+
+<div class="layout">
+<aside class="side">
+  <p class="side-title">カテゴリ</p>
+  <ul>
+    <li><a class="active" href="#board"><span class="ico">ALL</span><span>すべて</span><span class="cnt">18</span></a></li>
+    <li><a href="#quick"><span class="ico">★</span><span>クイック</span><span class="cnt">8</span></a></li>
+    <li><a href="#favorites"><span class="ico">ツ</span><span>アプリ</span><span class="cnt">6</span></a></li>
+    <li><a href="#contents"><span class="ico">塾</span><span>購入済み</span><span class="cnt">6</span></a></li>
+    <li><a href="#files"><span class="ico">書</span><span>保管庫</span><span class="cnt">24</span></a></li>
+  </ul>
+  <div class="pins"><p class="side-title">ピン留め</p><ul>
+    <li><a href="#favorites"><span class="star">★</span><span>小テスト作成ツール</span></a></li>
+    <li><a href="#favorites"><span class="star">★</span><span>入試問題アプリ</span></a></li>
+    <li><a href="#favorites"><span class="star">★</span><span>PDF編集ツール</span></a></li>
+  </ul></div>
+</aside>
+
+<main class="main"><div class="wrap">
+  <section id="board" class="section" data-section>
+    <div class="s-head"><h2>掲示板・メモ</h2><div class="s-actions"><button class="pin" data-pin>☆</button><button class="collapse" data-collapse>▲</button></div></div>
+    <div class="s-body"><div class="dashboard-grid">
+      <div class="panel board-height">
+        <div class="p-head"><h3>新着投稿</h3><button class="btn" data-mock="投稿フォームは後続フェーズで実装します。">投稿する</button></div>
+        <div class="post-list" id="postList"></div>
+        <div class="post-pager" id="postPager"></div>
+      </div>
+      <aside class="panel board-height">
+        <div class="p-head"><h3>メモ / To Do</h3><button class="btn btn2" data-mock="メモ保存は後続フェーズで実装します。">保存</button></div>
+        <div class="todo-body">
+          <div class="todo-toolbar">
+            <div class="todo-days">
+              <button class="todo-day-btn" data-day="yesterday">昨日</button>
+              <button class="todo-day-btn active" data-day="today">今日</button>
+              <button class="todo-day-btn" data-day="tomorrow">明日</button>
+              <button class="todo-day-btn" data-day="calendar">📅</button>
+            </div>
+            <div class="todo-export">
+              <button class="export-btn" data-export="csv">CSV</button>
+              <button class="export-btn" data-export="excel">Excel</button>
+            </div>
+          </div>
+          <ul class="todo-list" id="todoList">
+            <li data-title="体験授業資料の更新確認" data-author="川岡" data-date="今日" data-detail="中学生向けの体験授業資料について、所見テンプレートと説明資料の最新版が反映されているか確認します。"><input type="checkbox"><span class="todo-main"><strong class="todo-title">体験授業資料の更新確認</strong><small class="todo-author">投稿者：川岡</small></span></li>
+            <li data-title="勤怠管理アプリの月末画面を確認" data-author="管理" data-date="今日" data-detail="月末確認画面で、未退勤・修正申請・打刻漏れの確認導線が分かりやすいか確認します。"><input type="checkbox"><span class="todo-main"><strong class="todo-title">勤怠管理アプリの月末画面</strong><small class="todo-author">投稿者：管理</small></span></li>
+            <li data-title="LPテンプレートの販売ページを見直す" data-author="LLLD" data-date="今日" data-detail="CTA、価格表、導入事例風の見せ方を確認し、販売ページとして弱い箇所を洗い出します。"><input type="checkbox"><span class="todo-main"><strong class="todo-title">LP販売ページを見直す</strong><small class="todo-author">投稿者：LLLD</small></span></li>
+            <li data-title="ファイル保管庫のフォルダ構成を確認" data-author="管理" data-date="今日" data-detail="教育事業、業務効率化、コンサルの3カテゴリで、資料が探しやすい構成になっているか確認します。"><input type="checkbox"><span class="todo-main"><strong class="todo-title">保管庫の構成確認</strong><small class="todo-author">投稿者：管理</small></span></li>
+            <li data-title="購入済みコンテンツの表示名を整理" data-author="川岡" data-date="今日" data-detail="購入済みコンテンツのタイトル、カテゴリ、表示順が実際の利用シーンに合っているか確認します。"><input type="checkbox"><span class="todo-main"><strong class="todo-title">購入済み表示名整理</strong><small class="todo-author">投稿者：川岡</small></span></li>
+            <li data-title="掲示板投稿のカテゴリ案を決める" data-author="管理" data-date="今日" data-detail="塾事業、社内運営、販売準備、保管庫など、掲示板投稿で使うカテゴリ案を整理します。"><input type="checkbox"><span class="todo-main"><strong class="todo-title">掲示板カテゴリ案</strong><small class="todo-author">投稿者：管理</small></span></li>
+          </ul>
+          <textarea placeholder="今日のメモ、確認したいこと、あとでやることを書けます。"></textarea>
+        </div>
+      </aside>
+    </div></div>
+  </section>
+
+  <section id="quick" class="section" data-section>
+    <div class="s-head"><h2>クイックアクセス・操作ログ</h2><div class="s-actions"><button class="pin" data-pin>☆</button><button class="collapse" data-collapse>▲</button></div></div>
+    <div class="s-body"><div class="quick-log-grid">
+      <div class="panel quick-height"><div class="p-head"><h3>最近使ったもの</h3><span class="upd">直近順</span></div><div class="quick-list">
+        <article class="quick-card"><div class="qthumb"><div class="mock-screen"><div class="mock-top"><span></span><span></span><span></span></div><div class="mock-body"><div class="mock-menu"><i></i><i></i><i></i></div><div class="mock-main"><b></b><p><i></i><i></i><i></i></p><em></em></div></div></div></div><div><h4>小テスト作成アプリ</h4><p>英検・漢字・語彙テストを作成</p></div><a class="mini-btn primary" href="apps/quiz-maker/index.html">開く</a></article>
+        <article class="quick-card"><div class="qthumb"><div class="mock-screen"><div class="mock-top"><span></span><span></span><span></span></div><div class="mock-main"><b></b><p><i></i><i></i><i></i></p><em></em></div></div></div><div><h4>入試問題アプリ</h4><p>入試問題・演習プリントを印刷</p></div><a class="mini-btn primary" href="apps/exam-print/index.html">開く</a></article>
+        <article class="quick-card"><div class="qthumb"><div class="mock-screen"><div class="mock-top"><span></span><span></span><span></span></div><div class="mock-main"><b></b><p><i></i><i></i><i></i></p><em></em></div></div></div><div><h4>PDF編集ツール</h4><p>結合・分割・並べ替え</p></div><a class="mini-btn primary" href="apps/pdf-tool/index.html">開く</a></article>
+      </div></div>
+      <aside class="panel quick-height"><div class="p-head"><h3>操作ログ</h3><span class="upd">最新順</span></div><div class="log-list" id="activityLog">
+        <article class="log-item"><span class="log-icon">📂</span><div><strong>体験授業_所見テンプレ.pdf を開きました</strong><span>教育事業 / 体験授業資料</span></div><time class="log-time">19:12</time></article>
+        <article class="log-item"><span class="log-icon">⬆</span><div><strong>PDF編集ツール_運用メモ.pdf を追加</strong><span>業務効率化</span></div><time class="log-time">18:58</time></article>
+        <article class="log-item"><span class="log-icon">⭐</span><div><strong>小テスト作成ツールをピン留め</strong><span>お気に入りアプリ</span></div><time class="log-time">18:22</time></article>
+      </div></aside>
+    </div></div>
+  </section>
+
+  <section id="favorites" class="section" data-section>
+    <div class="s-head"><h2>お気に入りアプリ</h2><div class="s-actions"><button class="pin" data-pin>☆</button><button class="collapse" data-collapse>▲</button></div></div>
+    <div class="s-body"><div class="scroll-wrap"><button class="scroll-arrow left" data-left="#favScroll">‹</button><div class="card-scroll" id="favScroll"></div><button class="scroll-arrow right" data-right="#favScroll">›</button></div></div>
+  </section>
+
+  <section id="contents" class="section" data-section>
+    <div class="s-head"><h2>購入済みコンテンツ</h2><div class="s-actions"><button class="pin" data-pin>☆</button><button class="collapse" data-collapse>▲</button></div></div>
+    <div class="s-body"><div class="scroll-wrap"><button class="scroll-arrow left" data-left="#contentsScroll">‹</button><div class="card-scroll" id="contentsScroll"></div><button class="scroll-arrow right" data-right="#contentsScroll">›</button></div></div>
+  </section>
+
+  <section id="files" class="section" data-section>
+    <div class="s-head"><h2>ファイル保管庫</h2><div class="s-actions"><button class="pin" data-pin>☆</button><button class="collapse" data-collapse>▲</button></div></div>
+    <div class="s-body">
+      <div class="file-layout">
+        <div class="tree-card">
+          <div class="tree-head"><h3>保管庫ツリー</h3><div class="tools"><button class="tbtn" data-tip="フォルダを追加" data-mock="フォルダ作成は後続フェーズで実装します。">
+<svg viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M10 5H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-8l-2-2z"/>
+  <path d="M12 14v-4"/>
+  <path d="M10 12h4"/>
+</svg>
+</button><button class="tbtn" id="saveTreeDefaultBtn" data-tip="今の開閉状態をデフォルトに設定" type="button">
+<svg viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M15.2 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.8a2 2 0 0 0-.6-1.4l-3.8-3.8a2 2 0 0 0-1.4-.6Z"/>
+  <path d="M17 21v-8H7v8"/>
+  <path d="M7 3v5h8"/>
+</svg>
+</button><button class="tbtn" data-tip="選択ファイルをダウンロード" data-mock="選択中のファイルをまとめてダウンロードする想定です。">
+<svg viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M12 3v12"/>
+  <path d="m7 10 5 5 5-5"/>
+  <path d="M5 21h14"/>
+</svg>
+</button></div></div>
+          <div class="tree-actions"><button class="mini-btn" id="openAllFolders">全て開く</button><button class="mini-btn" id="closeAllFolders">全て閉じる</button><button class="mini-btn" id="closeSelectedFolder">選択フォルダを閉じる</button></div>
+          <div class="tree-body"><ul class="tree">
+            <li class="node"><div class="row" data-folder-path="教育事業"><input class="check" type="checkbox"><button class="folder-btn" type="button"><span class="caret">▼</span><span>📁</span><span class="fname">教育事業</span><span class="ftype">12件</span><span class="fdate">6/26 18:40</span></button></div>
+              <ul>
+                <li class="node"><div class="row sel" data-folder-path="教育事業 / 体験授業資料"><input class="check" type="checkbox"><button class="folder-btn" type="button"><span class="caret">▼</span><span>📁</span><span class="fname">体験授業資料</span><span class="ftype">4件</span><span class="fdate">6/26 18:40</span></button></div>
+                  <ul>
+                    <li><div class="row" data-file-name="体験授業_中2英検対策_所見テンプレ.pdf" data-file-type="PDF" data-file-date="2026/06/26 18:40" data-file-path="教育事業 / 体験授業資料"><input class="check" type="checkbox"><span></span><span>📄</span><span class="fname">体験授業_中2英検対策_所見テンプレ.pdf</span><span class="ftype">PDF</span><span class="fdate">6/26 18:40</span></div></li>
+                    <li><div class="row" data-file-name="体験授業_見出しテンプレ.docx" data-file-type="Word" data-file-date="2026/06/25 21:10" data-file-path="教育事業 / 体験授業資料"><input class="check" type="checkbox"><span></span><span>📝</span><span class="fname">体験授業_見出しテンプレ.docx</span><span class="ftype">Word</span><span class="fdate">6/25 21:10</span></div></li>
+                    <li><div class="row" data-file-name="体験授業_説明スライド.pptx" data-file-type="PowerPoint" data-file-date="2026/06/25 19:30" data-file-path="教育事業 / 体験授業資料"><input class="check" type="checkbox"><span></span><span>📽️</span><span class="fname">体験授業_説明スライド.pptx</span><span class="ftype">PPT</span><span class="fdate">6/25 19:30</span></div></li>
+                  </ul>
+                </li>
+
+                <li class="node"><div class="row" data-folder-path="教育事業 / 英検資料"><input class="check" type="checkbox"><button class="folder-btn" type="button"><span class="caret">▼</span><span>📁</span><span class="fname">英検資料</span><span class="ftype">3件</span><span class="fdate">6/21 11:30</span></button></div>
+                  <ul>
+                    <li><div class="row" data-file-name="英検5級_語彙リスト.xlsx" data-file-type="Excel" data-file-date="2026/06/21 11:30" data-file-path="教育事業 / 英検資料"><input class="check" type="checkbox"><span></span><span>📊</span><span class="fname">英検5級_語彙リスト.xlsx</span><span class="ftype">Excel</span><span class="fdate">6/21 11:30</span></div></li>
+                    <li><div class="row" data-file-name="英検準2級_大問1確認.pdf" data-file-type="PDF" data-file-date="2026/06/20 14:05" data-file-path="教育事業 / 英検資料"><input class="check" type="checkbox"><span></span><span>📄</span><span class="fname">英検準2級_大問1確認.pdf</span><span class="ftype">PDF</span><span class="fdate">6/20 14:05</span></div></li>
+                  </ul>
+                </li>
+
+                <li class="node"><div class="row" data-folder-path="教育事業 / 参考リンク"><input class="check" type="checkbox"><button class="folder-btn" type="button"><span class="caret">▼</span><span>📁</span><span class="fname">参考リンク</span><span class="ftype">2件</span><span class="fdate">6/18 09:20</span></button></div>
+                  <ul>
+                    <li><div class="row" data-file-name="広島市小中英語語彙リンク" data-file-type="Link" data-file-url="https://www.city.hiroshima.lg.jp/" data-file-date="2026/06/18 09:20" data-file-path="教育事業 / 参考リンク"><input class="check" type="checkbox"><span></span><span>🔗</span><span class="fname"><a class="tree-file-link" href="https://www.city.hiroshima.lg.jp/" target="_blank" rel="noopener">広島市小中英語語彙リンク</a></span><span class="ftype">Link</span><span class="fdate">6/18 09:20</span></div></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+
+            <li class="node"><div class="row" data-folder-path="業務効率化"><input class="check" type="checkbox"><button class="folder-btn" type="button"><span class="caret">▼</span><span>📁</span><span class="fname">業務効率化</span><span class="ftype">9件</span><span class="fdate">6/25 16:12</span></button></div>
+              <ul>
+                <li class="node"><div class="row" data-folder-path="業務効率化 / 勤怠"><input class="check" type="checkbox"><button class="folder-btn" type="button"><span class="caret">▼</span><span>📁</span><span class="fname">勤怠</span><span class="ftype">3件</span><span class="fdate">6/25 16:12</span></button></div>
+                  <ul>
+                    <li><div class="row" data-file-name="勤怠管理アプリ_検証メモ.pdf" data-file-type="PDF" data-file-date="2026/06/25 16:12" data-file-path="業務効率化 / 勤怠"><input class="check" type="checkbox"><span></span><span>📄</span><span class="fname">勤怠管理アプリ_検証メモ.pdf</span><span class="ftype">PDF</span><span class="fdate">6/25 16:12</span></div></li>
+                    <li><div class="row" data-file-name="勤怠チェックリスト.xlsx" data-file-type="Excel" data-file-date="2026/06/24 10:20" data-file-path="業務効率化 / 勤怠"><input class="check" type="checkbox"><span></span><span>📊</span><span class="fname">勤怠チェックリスト.xlsx</span><span class="ftype">Excel</span><span class="fdate">6/24 10:20</span></div></li>
+                  </ul>
+                </li>
+
+                <li class="node"><div class="row" data-folder-path="業務効率化 / 座席管理"><input class="check" type="checkbox"><button class="folder-btn" type="button"><span class="caret">▼</span><span>📁</span><span class="fname">座席管理</span><span class="ftype">2件</span><span class="fdate">6/24 19:05</span></button></div>
+                  <ul>
+                    <li><div class="row" data-file-name="SeatFlow_運用メモ.pdf" data-file-type="PDF" data-file-date="2026/06/24 19:05" data-file-path="業務効率化 / 座席管理"><input class="check" type="checkbox"><span></span><span>📄</span><span class="fname">SeatFlow_運用メモ.pdf</span><span class="ftype">PDF</span><span class="fdate">6/24 19:05</span></div></li>
+                  </ul>
+                </li>
+
+                <li class="node"><div class="row" data-folder-path="業務効率化 / HTMLアプリ"><input class="check" type="checkbox"><button class="folder-btn" type="button"><span class="caret">▼</span><span>📁</span><span class="fname">HTMLアプリ</span><span class="ftype">6件</span><span class="fdate">6/26 19:10</span></button></div>
+                  <ul>
+                    <li><div class="row" data-file-name="小テスト作成アプリ" data-file-type="HTML" data-file-url="apps/quiz-maker/index.html" data-file-date="2026/06/26 19:10" data-file-path="業務効率化 / HTMLアプリ"><input class="check" type="checkbox"><span></span><span>🌐</span><span class="fname"><a class="tree-file-link" href="apps/quiz-maker/index.html">小テスト作成アプリ</a></span><span class="ftype">HTML</span><span class="fdate">6/26 19:10</span></div></li>
+                    <li><div class="row" data-file-name="入試問題アプリ" data-file-type="HTML" data-file-url="apps/exam-print/index.html" data-file-date="2026/06/26 19:10" data-file-path="業務効率化 / HTMLアプリ"><input class="check" type="checkbox"><span></span><span>🌐</span><span class="fname"><a class="tree-file-link" href="apps/exam-print/index.html">入試問題アプリ</a></span><span class="ftype">HTML</span><span class="fdate">6/26 19:10</span></div></li>
+                    <li><div class="row" data-file-name="PDF編集ツール" data-file-type="HTML" data-file-url="apps/pdf-tool/index.html" data-file-date="2026/06/25 20:14" data-file-path="業務効率化 / HTMLアプリ"><input class="check" type="checkbox"><span></span><span>🌐</span><span class="fname"><a class="tree-file-link" href="apps/pdf-tool/index.html">PDF編集ツール</a></span><span class="ftype">HTML</span><span class="fdate">6/25 20:14</span></div></li>
+                    <li><div class="row" data-file-name="SeatFlow / 座席管理" data-file-type="HTML" data-file-url="apps/seatflow/index.html" data-file-date="2026/06/24 19:05" data-file-path="業務効率化 / HTMLアプリ"><input class="check" type="checkbox"><span></span><span>🌐</span><span class="fname"><a class="tree-file-link" href="apps/seatflow/index.html">SeatFlow / 座席管理</a></span><span class="ftype">HTML</span><span class="fdate">6/24 19:05</span></div></li>
+                    <li><div class="row" data-file-name="勤怠管理アプリ" data-file-type="HTML" data-file-url="apps/dakokun/index.html" data-file-date="2026/06/25 16:12" data-file-path="業務効率化 / HTMLアプリ"><input class="check" type="checkbox"><span></span><span>🌐</span><span class="fname"><a class="tree-file-link" href="apps/dakokun/index.html">勤怠管理アプリ</a></span><span class="ftype">HTML</span><span class="fdate">6/25 16:12</span></div></li>
+                    <li><div class="row" data-file-name="面談支援ツール" data-file-type="HTML" data-file-url="contents/meeting-support/index.html" data-file-date="2026/06/24 12:18" data-file-path="業務効率化 / HTMLアプリ"><input class="check" type="checkbox"><span></span><span>🌐</span><span class="fname"><a class="tree-file-link" href="contents/meeting-support/index.html">面談支援ツール</a></span><span class="ftype">HTML</span><span class="fdate">6/24 12:18</span></div></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+
+            <li class="node"><div class="row" data-folder-path="コンサル"><input class="check" type="checkbox"><button class="folder-btn" type="button"><span class="caret">▼</span><span>📁</span><span class="fname">コンサル</span><span class="ftype">7件</span><span class="fdate">6/24 12:18</span></button></div>
+              <ul>
+                <li class="node"><div class="row" data-folder-path="コンサル / 採用"><input class="check" type="checkbox"><button class="folder-btn" type="button"><span class="caret">▼</span><span>📁</span><span class="fname">採用</span><span class="ftype">2件</span><span class="fdate">6/24 12:18</span></button></div>
+                  <ul>
+                    <li><div class="row" data-file-name="採用面談チェックリスト.docx" data-file-type="Word" data-file-date="2026/06/24 12:18" data-file-path="コンサル / 採用"><input class="check" type="checkbox"><span></span><span>📝</span><span class="fname">採用面談チェックリスト.docx</span><span class="ftype">Word</span><span class="fdate">6/24 12:18</span></div></li>
+                  </ul>
+                </li>
+                <li class="node"><div class="row" data-folder-path="コンサル / 1on1"><input class="check" type="checkbox"><button class="folder-btn" type="button"><span class="caret">▼</span><span>📁</span><span class="fname">1on1</span><span class="ftype">2件</span><span class="fdate">6/22 17:30</span></button></div>
+                  <ul>
+                    <li><div class="row" data-file-name="1on1進行台本.pdf" data-file-type="PDF" data-file-date="2026/06/22 17:30" data-file-path="コンサル / 1on1"><input class="check" type="checkbox"><span></span><span>📄</span><span class="fname">1on1進行台本.pdf</span><span class="ftype">PDF</span><span class="fdate">6/22 17:30</span></div></li>
+                  </ul>
+                </li>
+                <li class="node"><div class="row" data-folder-path="コンサル / 管理職代行"><input class="check" type="checkbox"><button class="folder-btn" type="button"><span class="caret">▼</span><span>📁</span><span class="fname">管理職代行</span><span class="ftype">1件</span><span class="fdate">6/20 10:00</span></button></div>
+                  <ul>
+                    <li><div class="row" data-file-name="管理職代行_提案資料.zip" data-file-type="ZIP" data-file-date="2026/06/20 10:00" data-file-path="コンサル / 管理職代行"><input class="check" type="checkbox"><span></span><span>🗜️</span><span class="fname">管理職代行_提案資料.zip</span><span class="ftype">ZIP</span><span class="fdate">6/20 10:00</span></div></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul></div>
+          <div class="legend"><span>📁 フォルダ</span><span>🔗 リンク</span><span>📄 PDF</span><span>📝 Word</span><span>📊 Excel</span><span>📽️ PPT</span><span>🌐 HTML</span><span>🖼️ 画像</span><span>🗜️ ZIP</span></div>
+        </div>
+        <aside class="preview">
+          <div class="preview-head"><h3>プレビュー</h3><span class="upd" id="previewUpdated">選択待ち</span></div>
+          <div class="preview-body">
+            <div class="viewer"><div class="viewer-toolbar"><span class="viewer-title" id="viewerTitle">ファイルを選択してください</span><div><button class="mini-btn" data-mock="実装時は別タブでファイルを開きます。">別タブ</button> <button class="mini-btn" id="printPreviewBtn" type="button">印刷</button> <button class="mini-btn" data-mock="編集は行わず、閲覧のみの想定です。">閲覧のみ</button></div></div><div class="viewer-stage" id="viewerStage"><div class="doc-preview"><div class="doc-line w70"></div><div class="doc-line w90"></div><div class="doc-line w90"></div><div class="doc-line w45"></div></div></div></div>
+            <div class="preview-note">PDF / 画像 / HTML / テキストはブラウザ内プレビュー、Word・Excel・PowerPointは閲覧プレビュー枠に接続する想定です。編集はできません。</div>
+            <div class="pmeta"><div><span>種類</span><span id="previewType">-</span></div><div><span>保存場所</span><span id="previewPath">-</span></div><div><span>最終更新</span><span id="previewDate">-</span></div><div><span>共有範囲</span><span>社内</span></div></div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="file-add">
+        <div class="file-add-top"><h3>ファイル追加設定</h3><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="add-link-btn" id="addLinkItem" type="button">リンクを追加</button><button class="btn" id="saveUploadSettings">選択ファイルをまとめて追加</button></div></div>
+        <div class="file-add-grid">
+          <div class="field"><label>ファイル選択</label><input id="fileInput" type="file" multiple webkitdirectory></div>
+          <div class="field"><label>ファイル名</label><input id="displayName" placeholder="表示するファイル名を入力"></div>
+          <div class="field"><label>種別</label><select id="fileType"><option>自動判定</option><option>リンク</option><option>PDF</option><option>Word</option><option>Excel</option><option>PowerPoint</option><option>HTML</option><option>画像</option><option>動画</option><option>音声</option><option>テキスト</option><option>CSV</option><option>ZIP</option><option>フォルダ</option><option>その他</option></select></div><div class="field link-url-field"><label>リンクURL</label><input id="linkUrlInput" placeholder="https://www.google.com/"></div>
+          <div class="field"><label>追加先</label><div class="dest"><span>選択中：<strong id="selectedFolderLabel">教育事業 / 体験授業資料</strong></span><button class="btn btn2" id="focusTreeBtn" type="button">ツリー参照</button><input id="folderSelect" type="hidden" value="教育事業 / 体験授業資料"></div></div>
+        </div>
+        <div class="upload-queue" id="uploadQueue"></div>
+        <div class="dropzone" id="dropzone"><div><strong>ここにファイル / フォルダをドラッグ＆ドロップ</strong><span>同時追加は最大10件、合計100MBまで。追加後、各ファイルごとに種別・追加先を指定できます。</span></div></div>
+      </div>
+    </div>
+  </section>
+</div></main>
+</div>
+
+<div class="todo-modal" id="todoModal" aria-hidden="true">
+  <div class="todo-modal-card">
+    <div class="todo-modal-head">
+      <h3 id="todoModalTitle">To Do詳細</h3>
+      <button class="todo-modal-close" id="todoModalClose" type="button">×</button>
+    </div>
+    <div class="todo-modal-body">
+      <div class="todo-modal-meta">
+        <span id="todoModalAuthor">投稿者：-</span>
+        <span id="todoModalDate">日付：-</span>
+      </div>
+      <p id="todoModalDetail">詳細が入ります。</p>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+</div>
+
+<script>
+(() => {
+  const toast=document.getElementById("toast");let timer;
+  const show=m=>{toast.textContent=m;toast.classList.add("show");clearTimeout(timer);timer=setTimeout(()=>toast.classList.remove("show"),2400)};
+
+  document.addEventListener("selectstart", e=>{
+    if(e.target.closest(".tree-body .row")){
+      e.preventDefault();
+    }
+  });
+
+  document.addEventListener("dragstart", e=>{
+    if(e.target.closest(".tree-body .row")){
+      e.preventDefault();
+    }
+  });
+
+  document.querySelectorAll("[data-mock]").forEach(el=>el.addEventListener("click",()=>show(el.dataset.mock)));
+
+  const posts=[
+    ["📌","体験授業資料の最新版を追加しました","中学生向けの所見テンプレートと説明資料を更新しました。","塾事業","川岡","6/26 18:40"],
+    ["🧰","勤怠管理アプリの検証メモ","打刻、修正申請、月末確認の導線を確認中です。","社内運営","管理","6/25 16:12"],
+    ["🧾","LPテンプレートの販売ページ確認","CTAと価格表、導入事例風の見せ方を確認します。","販売準備","LLLD","6/25 11:35"],
+    ["📁","ファイル保管庫の構成案","教育事業、業務効率化、コンサルで整理します。","保管庫","管理","6/24 19:05"],
+    ["💬","面談ヒアリングシートの文言調整","保護者向けに柔らかい表現へ調整しています。","塾事業","川岡","6/24 12:18"],
+    ["📄","PDF編集ツールの確認","結合・分割・並べ替えの導線を確認しました。","HTMLアプリ","管理","6/23 20:14"],
+    ["📊","英検語彙リスト更新","英検5級の語彙リストを追加しました。","教材","川岡","6/21 11:30"],
+    ["🔗","外部リンク整理","参考リンクを保管庫に追加しました。","保管庫","管理","6/18 09:20"]
+  ];
+  let postPage=1;
+  const pageSize=4;
+  function renderPosts(){
+    const start=(postPage-1)*pageSize;
+    document.getElementById("postList").innerHTML=posts.slice(start,start+pageSize).map(p=>`<article class="post"><span class="post-ico">${p[0]}</span><div><h4>${p[1]}</h4><p>${p[2]}</p><div class="meta"><span class="cat">${p[3]}</span><span>${p[4]}</span><span class="upd">${p[5]}</span></div></div><button class="pin" data-pin>☆</button></article>`).join("");
+    const pages=Math.ceil(posts.length/pageSize);
+    document.getElementById("postPager").innerHTML=`<button class="page-btn" data-post-prev>‹</button>`+Array.from({length:pages},(_,i)=>`<button class="page-btn ${postPage===i+1?"active":""}" data-post-page="${i+1}">${i+1}</button>`).join("")+`<button class="page-btn" data-post-next>›</button>`;
+  }
+  renderPosts();
+
+  const appData=[
+    ["小","小テスト作成アプリ","塾事業","英検・漢字・語彙などの小テストを作成できます。","apps/quiz-maker/index.html","教材 / 小テスト / 英検"],
+    ["入","入試問題アプリ","塾事業","入試問題や演習プリントの印刷・整理に使うアプリです。","apps/exam-print/index.html","入試 / 印刷 / 教材"],
+    ["P","PDF編集ツール","HTMLアプリ","PDFの結合、分割、並び替え、JPEG変換をブラウザ上で行えます。","apps/pdf-tool/index.html","PDF / 結合 / 分割"],
+    ["席","SeatFlow / 座席管理アプリ","塾事業","教室レイアウトや座席配置を見える化します。","apps/seatflow/index.html","座席 / 教室 / レイアウト"],
+    ["勤","だこくん / 勤怠管理アプリ","社内運営","QR・社員番号・名前から打刻できる勤怠管理ツールです。","apps/dakokun/index.html","勤怠 / QR / Excel出力"],
+    ["面","面談支援ツール","塾事業","体験前面談や継続面談の聞き取りを支援します。","contents/meeting-support/index.html","面談 / ヒアリング / 提案"]
+  ];
+  const contentsData=[
+    ["面","面談ヒアリングシート","塾事業","保護者面談、学習相談、初回ヒアリングで使う聞き取りテンプレートです。","面談 / 聞き取り"],
+    ["L","LPテンプレート","テンプレート","業種別LPの構成、画像カンプ、文章差し替えプロンプトをまとめます。","HTML / 画像LP"],
+    ["補","補助金テンプレート","資料","補助金申請前の整理、必要資料、文章たたき台をまとめるテンプレートです。","申請準備 / 資料"],
+    ["研","研修資料","社内運営","新人研修、1on1、管理職代行などで使う説明資料や進行台本です。","研修 / 1on1"],
+    ["採","採用面談チェック","コンサル","採用面談で確認する質問・評価項目をまとめた資料です。","採用 / 面談"],
+    ["英","英検資料セット","塾事業","英検対策で使う語彙・確認テスト・進行メモです。","英検 / 教材"]
+  ];
+  const thumb=()=>'<div class="mock-thumb"><div class="mock-screen"><div class="mock-top"><span></span><span></span><span></span></div><div class="mock-body"><div class="mock-menu"><i></i><i></i><i></i></div><div class="mock-main"><b></b><p><i></i><i></i><i></i></p><em></em></div></div></div></div>';
+  const card=(d,link=true)=>`<article class="content-card">${thumb()}<div class="card-main"><div class="card-top"><span class="type-icon">${d[0]}</span><div><h3>${d[1]}</h3><small>${d[2]}</small></div><button class="pin" data-pin>☆</button></div><p>${d[3]}</p><div class="card-foot"><div class="chips">${(d[5]||d[4]).split("/").map(x=>`<span>${x.trim()}</span>`).join("")}</div>${link?`<a class="btn" href="${d[4]}">開く</a>`:`<button class="btn" data-mock="閲覧画面へ接続予定です。">開く</button>`}</div></div></article>`;
+  document.getElementById("favScroll").innerHTML=appData.map(d=>card(d,true)).join("");
+  document.getElementById("contentsScroll").innerHTML=contentsData.map(d=>card(d,false)).join("");
+
+  document.body.addEventListener("click",e=>{
+    const pin=e.target.closest("[data-pin]");
+    if(pin){e.stopPropagation();const on=pin.classList.toggle("on");pin.textContent=on?"★":"☆";return;}
+    const collapse=e.target.closest("[data-collapse]");
+    if(collapse){const section=collapse.closest("[data-section]");const closed=section.classList.toggle("closed");collapse.textContent=closed?"▼":"▲";return;}
+    const page=e.target.closest("[data-post-page]");
+    if(page){postPage=Number(page.dataset.postPage);renderPosts();return;}
+    if(e.target.closest("[data-post-prev]")){postPage=Math.max(1,postPage-1);renderPosts();return;}
+    if(e.target.closest("[data-post-next]")){postPage=Math.min(Math.ceil(posts.length/pageSize),postPage+1);renderPosts();return;}
+  });
+
+  function scrollOneCard(selector, direction){
+    const target = document.querySelector(selector);
+    if(!target) return;
+    const firstCard = target.querySelector(".content-card");
+    if(!firstCard) return;
+    const gap = 14;
+    const distance = firstCard.getBoundingClientRect().width + gap;
+    target.scrollBy({left: distance * direction, behavior:"smooth"});
+  }
+
+  document.querySelectorAll("[data-left]").forEach(btn=>btn.addEventListener("click",()=>scrollOneCard(btn.dataset.left, -1)));
+  document.querySelectorAll("[data-right]").forEach(btn=>btn.addEventListener("click",()=>scrollOneCard(btn.dataset.right, 1)));
+
+  document.querySelectorAll(".card-scroll").forEach(scroller=>{
+    scroller.addEventListener("wheel", event=>{
+      // 横方向のホイール/トラックパッド操作だけ処理。縦方向はページ側へ逃がす。
+      if(Math.abs(event.deltaX) > Math.abs(event.deltaY)){
+        event.preventDefault();
+        scroller.scrollLeft += event.deltaX;
+      }
+    }, {passive:false});
+  });
+
+  const todoModal = document.getElementById("todoModal");
+  const todoModalTitle = document.getElementById("todoModalTitle");
+  const todoModalAuthor = document.getElementById("todoModalAuthor");
+  const todoModalDate = document.getElementById("todoModalDate");
+  const todoModalDetail = document.getElementById("todoModalDetail");
+  const todoModalClose = document.getElementById("todoModalClose");
+
+  document.querySelectorAll("#todoList li").forEach(item=>{
+    item.addEventListener("click", event=>{
+      if(event.target.tagName === "INPUT") return;
+      todoModalTitle.textContent = item.dataset.title || "To Do詳細";
+      todoModalAuthor.textContent = "投稿者：" + (item.dataset.author || "-");
+      todoModalDate.textContent = "日付：" + (item.dataset.date || "-");
+      todoModalDetail.textContent = item.dataset.detail || "";
+      todoModal.classList.add("show");
+      todoModal.setAttribute("aria-hidden","false");
+    });
+  });
+
+  todoModalClose?.addEventListener("click", ()=>{
+    todoModal.classList.remove("show");
+    todoModal.setAttribute("aria-hidden","true");
+  });
+  todoModal?.addEventListener("click", event=>{
+    if(event.target === todoModal){
+      todoModal.classList.remove("show");
+      todoModal.setAttribute("aria-hidden","true");
+    }
+  });
+
+  document.querySelectorAll("[data-day]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      document.querySelectorAll("[data-day]").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      show(btn.textContent.trim() + "のTo Doを表示する想定です。");
+    });
+  });
+
+  document.querySelectorAll("[data-export]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const type = btn.dataset.export === "excel" ? "Excel" : "CSV";
+      show("表示中のTo Doを" + type + "で出力する想定です。");
+    });
+  });
+
+
+  document.getElementById("printPreviewBtn")?.addEventListener("click", ()=>{
+    show("プレビューを印刷します。");
+    setTimeout(()=>window.print(), 120);
+  });
+
+  const selectedFolderLabel=document.getElementById("selectedFolderLabel"),folderSelect=document.getElementById("folderSelect");
+  const viewerTitle=document.getElementById("viewerTitle"),viewerStage=document.getElementById("viewerStage"),previewType=document.getElementById("previewType"),previewPath=document.getElementById("previewPath"),previewDate=document.getElementById("previewDate"),previewUpdated=document.getElementById("previewUpdated");
+  let selectedFolderRow=document.querySelector("[data-folder-path].sel");
+  const folderOptions=["教育事業 / 体験授業資料","教育事業 / 英検資料","教育事業 / 参考リンク","業務効率化 / 勤怠","業務効率化 / 座席管理","業務効率化 / HTMLアプリ","コンサル / 採用","コンサル / 1on1","コンサル / 管理職代行"];
+  function selectFolder(row){if(!row?.dataset.folderPath)return;document.querySelectorAll("[data-folder-path]").forEach(r=>r.classList.remove("sel"));row.classList.add("sel");selectedFolderRow=row;selectedFolderLabel.textContent=row.dataset.folderPath;folderSelect.value=row.dataset.folderPath}
+  function selectFile(row){document.querySelectorAll(".tree-body .row.file-selected").forEach(r=>r.classList.remove("file-selected"));if(row?.dataset.fileName){row.classList.add("file-selected")}}
+  function clearSelectedFile(){document.querySelectorAll(".tree-body .row.file-selected").forEach(r=>r.classList.remove("file-selected"))}
+  function addLog(icon,title,detail){const log=document.getElementById("activityLog");const now=new Date().toLocaleTimeString("ja-JP",{hour:"2-digit",minute:"2-digit"});const item=document.createElement("article");item.className="log-item";item.innerHTML=`<span class="log-icon">${icon}</span><div><strong>${title}</strong><span>${detail}</span></div><time class="log-time">${now}</time>`;log?.prepend(item)}
+  function preview(row){if(!row)return;const name=row.dataset.fileName||row.dataset.folderPath||row.querySelector(".fname")?.textContent.trim()||"選択中";const type=row.dataset.fileType||(row.dataset.folderPath?"Folder":"-");const path=row.dataset.filePath||row.dataset.folderPath||"-";const date=row.dataset.fileDate||row.querySelector(".fdate")?.textContent.replace("最終更新","").trim()||"-";viewerTitle.textContent=name;previewType.textContent=type;previewPath.textContent=path;previewDate.textContent=date;previewUpdated.textContent=date==="-"?"選択中":date;viewerStage.innerHTML='<div class="doc-preview"><div class="doc-line w70"></div><div class="doc-line w90"></div><div class="doc-line w90"></div><div class="doc-line w45"></div></div><span class="preview-fit-note">自動フィット</span>';if(type==="Link" && row.dataset.fileUrl){
+    viewerStage.innerHTML='<div class="doc-preview"><div style="font-size:2rem;margin-bottom:14px">🔗</div><strong>'+name+'</strong><p style="color:#6d7b92;word-break:break-all">'+row.dataset.fileUrl+'</p><p><a href="'+row.dataset.fileUrl+'" target="_blank" rel="noopener">リンクを開く</a></p></div><span class="preview-fit-note">自動フィット</span>';
+  }
+  if(row.dataset.fileName)addLog("📂",name+" を開きました",path)}
+  document.querySelectorAll(".folder-btn").forEach(btn=>btn.addEventListener("click",()=>{const row=btn.closest(".row");selectFolder(row);clearSelectedFile();preview(row);btn.closest(".node")?.classList.toggle("closed")}));
+  document.querySelectorAll(".tree .node").forEach(node=>node.classList.add("closed"));
+  document.querySelectorAll(".row").forEach(row=>{row.addEventListener("click",e=>{if(e.target.closest(".tree-file-link")){selectFile(row);preview(row);return;}if(e.target.closest(".check")||e.target.closest(".folder-btn"))return;if(row.dataset.folderPath){selectFolder(row);clearSelectedFile()}if(row.dataset.fileName){selectFile(row)}preview(row)});if(row.dataset.folderPath){row.addEventListener("dragover",e=>{e.preventDefault();row.classList.add("drop-target")});row.addEventListener("dragleave",()=>row.classList.remove("drop-target"));row.addEventListener("drop",e=>{e.preventDefault();row.classList.remove("drop-target");selectFolder(row);clearSelectedFile();const name=e.dataTransfer.getData("text/plain")||"追加ファイル";show(`「${name}」を「${row.dataset.folderPath}」へ追加する想定です。`);addLog("📁","ファイルをフォルダへ移動",name+" → "+row.dataset.folderPath)})}});
+  document.querySelectorAll(".check").forEach(ch=>{ch.addEventListener("click",e=>e.stopPropagation());ch.addEventListener("change",()=>{const node=ch.closest(".node");if(!node)return;node.querySelectorAll("ul .check").forEach(c=>c.checked=ch.checked)})});
+  document.getElementById("openAllFolders")?.addEventListener("click",()=>{document.querySelectorAll(".node").forEach(n=>n.classList.remove("closed"));show("全フォルダを開きました。")});
+  document.getElementById("closeAllFolders")?.addEventListener("click",()=>{document.querySelectorAll(".node").forEach(n=>n.classList.add("closed"));show("全フォルダを閉じました。")});
+  document.getElementById("closeSelectedFolder")?.addEventListener("click",()=>{selectedFolderRow?.closest(".node")?.classList.add("closed");show("選択中フォルダを閉じました。")});
+  document.getElementById("focusTreeBtn")?.addEventListener("click",()=>{document.querySelector(".tree-card")?.scrollIntoView({behavior:"smooth",block:"center"});show("保管庫ツリーから追加先フォルダを選択できます。")});
+
+  const queue=document.getElementById("uploadQueue"),fileInput=document.getElementById("fileInput"),displayName=document.getElementById("displayName"),fileType=document.getElementById("fileType"),dropzone=document.getElementById("dropzone"),filesBuffer=[];
+  const linkUrlInput=document.getElementById("linkUrlInput");
+  const fileAddBox=document.querySelector(".file-add");
+  function syncBaseLinkMode(){fileAddBox?.classList.toggle("is-link-mode", fileType?.value==="リンク");}
+  fileType?.addEventListener("change", syncBaseLinkMode);
+  syncBaseLinkMode();
+  const guess=file=>{const ext=(file.name||"").split(".").pop().toLowerCase();return {pdf:"PDF",doc:"Word",docx:"Word",xls:"Excel",xlsx:"Excel",ppt:"PowerPoint",pptx:"PowerPoint",html:"HTML",htm:"HTML",jpg:"画像",jpeg:"画像",png:"画像",gif:"画像",webp:"画像",mp4:"動画",mov:"動画",mp3:"音声",wav:"音声",txt:"テキスト",csv:"CSV",zip:"ZIP"}[ext]||(file.type?.startsWith("image/")?"画像":"その他")};
+  const icon=type=>({PDF:"📄",Word:"📝",Excel:"📊",CSV:"📊",PowerPoint:"📽️",HTML:"🌐",画像:"🖼️",ZIP:"🗜️",Link:"🔗",リンク:"🔗"}[type]||"🧩");
+  const typeOptions=["自動判定","リンク","PDF","Word","Excel","PowerPoint","HTML","画像","動画","音声","テキスト","CSV","ZIP","フォルダ","その他"];
+  function totalSize(files){return files.reduce((s,f)=>s+(f.size||0),0)}
+  function renderQueue(){queue.innerHTML="";filesBuffer.forEach((file,i)=>{const t=file.__link ? "リンク" : guess(file);const item=document.createElement("div");item.className="queue-item"+(t==="リンク"||t==="Link" ? " is-link" : "");item.draggable=true;item.innerHTML=`<span class="queue-icon" title="この周辺からドラッグできます">${icon(t)}</span><div class="queue-field"><label>ファイル名</label><input value="${file.name.replaceAll('"','&quot;')}" data-no-drag></div><div class="queue-field"><label>種別</label><select data-no-drag>${typeOptions.map(o=>`<option ${(o===t || (o==="リンク" && t==="Link"))?"selected":""}>${o}</option>`).join("")}</select></div><div class="queue-field"><label>追加先</label><select data-no-drag>${folderOptions.map(o=>`<option ${o===folderSelect.value?"selected":""}>${o}</option>`).join("")}</select></div><span class="drag-hint">余白からドラッグ</span><button class="mini-btn primary" data-add-one data-no-drag>追加</button><button class="mini-btn" data-delete-one data-no-drag>削除</button><div class="queue-url"><label>遷移先URL</label><input value="${file.url || ""}" placeholder="https://www.google.com/" data-no-drag></div>`;
+
+      const typeSelect = item.querySelectorAll("select")[0];
+      const syncLinkField = ()=>{
+        item.classList.toggle("is-link", typeSelect.value === "リンク" || typeSelect.value === "Link");
+      };
+      typeSelect.addEventListener("change", syncLinkField);
+      syncLinkField();
+
+      const isControl = target => Boolean(target.closest("input, select, button, [data-no-drag]"));
+
+      item.draggable = true;
+
+      item.addEventListener("pointerdown", e=>{
+        if(isControl(e.target)){
+          item.draggable = false;
+          item.classList.remove("is-drag-ready");
+          return;
+        }
+        item.draggable = true;
+        item.classList.add("is-drag-ready");
+      });
+
+      item.addEventListener("pointermove", e=>{
+        if(!isControl(e.target)){
+          item.draggable = true;
+        }
+      });
+
+      item.addEventListener("pointerup", ()=>{
+        item.classList.remove("is-drag-ready");
+        item.draggable = true;
+      });
+
+      item.addEventListener("mouseleave", ()=>{
+        item.classList.remove("is-drag-ready");
+        item.draggable = true;
+      });
+
+      item.addEventListener("dragstart", e=>{
+        if(isControl(e.target)){
+          e.preventDefault();
+          item.draggable = false;
+          return;
+        }
+        item.draggable = true;
+        e.dataTransfer.setData("text/plain",item.querySelector("input").value||file.name);
+        item.classList.add("is-drag-ready");
+      });
+
+      item.addEventListener("dragend", ()=>{
+        item.classList.remove("is-drag-ready");
+        item.draggable = true;
+      });
+
+      item.querySelectorAll("input, select, button, [data-no-drag]").forEach(interactive=>{
+        interactive.draggable = false;
+        interactive.addEventListener("dragstart", e=>e.preventDefault());
+        interactive.addEventListener("pointerdown", ()=>{
+          item.draggable = false;
+          item.classList.remove("is-drag-ready");
+        });
+        interactive.addEventListener("pointerup", ()=>{
+          item.draggable = true;
+        });
+        interactive.addEventListener("blur", ()=>{
+          item.draggable = true;
+        });
+      });
+
+      item.querySelector("[data-delete-one]").addEventListener("click",()=>{filesBuffer.splice(i,1);renderQueue()});
+      item.querySelector("[data-add-one]").addEventListener("click",()=>{const inputs=item.querySelectorAll("input");const selects=item.querySelectorAll("select");const name=inputs[0].value;const type=selects[0].value;const dest=selects[1].value;const url=inputs[1]?.value || "";if(type==="リンク" && !url){show("リンクのURLを入力してください。");return;}show(type==="リンク"?`「${name}」をリンクとして「${dest}」へ追加する想定です。`:`「${name}」を「${dest}」へ追加する想定です。`);addLog(type==="リンク"?"🔗":"⬆",type==="リンク"?"リンクを追加":"ファイルを追加",type==="リンク"?name+" → "+url:name+" → "+dest)});
+      queue.appendChild(item)})}
+  function addFiles(list){const arr=[...list],incoming=[],current=totalSize(filesBuffer);for(const file of arr){if(filesBuffer.length+incoming.length>=10)break;if(current+totalSize(incoming)+(file.size||0)>100*1024*1024)break;incoming.push(file)}if(filesBuffer.length+arr.length>10)show("同時追加は最大10件までです。");if(current+totalSize(arr)>100*1024*1024)show("合計100MBを超えるファイルは追加できません。");filesBuffer.push(...incoming);if(filesBuffer[0]){displayName.value=filesBuffer[0].name;const t=guess(filesBuffer[0]);[...fileType.options].forEach(o=>o.selected=o.textContent===t)}renderQueue();if(incoming.length)addLog("⬆",incoming.length+"件のファイルを追加候補に入れました","アップロード待ち / 古い順で表示")}
+
+  document.getElementById("addLinkItem")?.addEventListener("click", ()=>{
+    if(fileType){
+      fileType.value = "リンク";
+      syncBaseLinkMode();
+    }
+    if(displayName && !displayName.value) displayName.value = "googleホーム";
+    if(linkUrlInput && !linkUrlInput.value) linkUrlInput.value = "https://www.google.com/";
+    if(filesBuffer.length < 10){
+      filesBuffer.push({name:displayName?.value || "googleホーム", size:0, type:"text/uri-list", __link:true, url:linkUrlInput?.value || "https://www.google.com/"});
+      renderQueue();
+    }
+    addLog("🔗","リンク追加候補を作成","ファイル名とリンクURLを編集できます");
+  });
+
+  document.getElementById("saveTreeDefaultBtn")?.addEventListener("click", ()=>{
+    const closedCount = document.querySelectorAll(".tree .node.closed").length;
+    const openCount = document.querySelectorAll(".tree .node:not(.closed)").length;
+    show("現在の開閉状態をデフォルトに保存する想定です。開：" + openCount + " / 閉：" + closedCount);
+  });
+
+  fileInput?.addEventListener("change",()=>addFiles(fileInput.files||[]));dropzone?.addEventListener("dragover",e=>{e.preventDefault();dropzone.classList.add("dragover")});dropzone?.addEventListener("dragleave",()=>dropzone.classList.remove("dragover"));dropzone?.addEventListener("drop",e=>{e.preventDefault();dropzone.classList.remove("dragover");addFiles(e.dataTransfer.files||[])});
+  document.getElementById("saveUploadSettings")?.addEventListener("click",()=>{if(fileType?.value==="リンク" && linkUrlInput && !linkUrlInput.value){show("リンクURLを入力してください。");return;}show(filesBuffer.length?filesBuffer.length+"件をそれぞれの追加先へ登録する想定です。":"ファイルまたはリンクを追加してください。")});
+
+  const links=[...document.querySelectorAll(".side a[href^='#']")],targets=links.map(a=>document.querySelector(a.getAttribute("href"))).filter(Boolean);
+  const sync=()=>{let cur=targets[0];targets.forEach(t=>{if(t.getBoundingClientRect().top<=110)cur=t});links.forEach(a=>a.classList.toggle("active",a.getAttribute("href")==="#"+cur.id))};
+  window.addEventListener("scroll",sync,{passive:true});sync();
+})();
+</script>
+</body>
+</html>
