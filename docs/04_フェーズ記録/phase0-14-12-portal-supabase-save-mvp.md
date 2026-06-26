@@ -79,7 +79,7 @@ app_instance_id = works_portal の app_instances.id
 3. `app_instances` から `app_key = works_portal` を取得
 4. `app_data` から `data_type = portal_state` を取得
 5. データがあれば `portal.html` のDOMへ反映
-6. データがなければ既存の静的初期表示を維持し、初回保存で作成
+6. データがなければ既存の静的初期表示を維持し、次の編集操作で作成
 7. 未ログインまたはmock modeでは「ログインすると保存」と表示
 
 ## 保存フロー
@@ -118,6 +118,8 @@ llld_works_portal_state_last_key
 4. Supabase `updated_at` がキャッシュの `cloudUpdatedAt` より新しければクラウド内容で再描画
 5. Supabase取得成功後、localStorageも最新化
 6. Supabase取得失敗時はキャッシュ表示を維持し、`クラウド保存失敗` を表示
+7. ページ読み込み直後のキャッシュ表示だけではSupabaseへ保存しない
+8. Supabaseへの保存は、メモ追加、ToDo変更、保管庫変更などユーザーの編集操作後だけ行う
 
 ヘッダー右側の保存状態:
 
@@ -126,6 +128,13 @@ llld_works_portal_state_last_key
 - `クラウド保存済み`
 - `クラウド保存失敗`
 - 未ログイン時は `クラウド保存済み` と表示しない
+- 古いlocalStorageでSupabase上の新しい `portal_state` を自動上書きしない
+
+## 追加確認項目
+
+- ページ読み込み直後に古いlocalStorageでSupabaseを上書きしていない
+- Supabase側が新しい場合、Supabaseの内容が優先される
+- localStorage側が表示されても、クラウド確認後に正しい最新状態へ更新される
 
 ## migration適用
 
