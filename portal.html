@@ -3038,7 +3038,6 @@ body.tree-dragging{
       setPortalSaveStatus(cached?.ok?"前回保存データを表示中":"クラウド確認中","saving");
     }
     portalStateReady=true;
-    if(result.status==="empty")schedulePortalSave(1000);
   }
 
   const links=[...document.querySelectorAll(".side a[href^='#']")],targets=links.map(a=>document.querySelector(a.getAttribute("href"))).filter(Boolean);

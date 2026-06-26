@@ -199,7 +199,7 @@
           account: status.account,
           appInstance: status.appInstance,
           cacheKey: getCacheKey(status.account.id, status.appInstance.id),
-          message: 'クラウド保存されたポータル情報はまだありません。初回保存で作成します。'
+          message: 'クラウド保存されたポータル情報はまだありません。次の編集操作で作成します。'
         };
       }
 

@@ -103,7 +103,7 @@ sanitizePortalStorageTree(tree)
 4. `app_instances` から `app_key = works_portal` を取得
 5. `app_data` から `data_type = portal_state` を取得
 6. 取得できたJSONを `portal.html` に反映
-7. 取得できない場合は初期状態を表示し、保存時に作成する
+7. 取得できない場合は初期状態を表示し、ユーザーの次の編集操作後に保存作成する
 
 ## 高速表示キャッシュ
 
@@ -127,6 +127,8 @@ llld_works_portal_state_last_key
 5. Supabase取得成功後はlocalStorageも更新
 6. Supabase取得失敗時はキャッシュ表示を維持し、`クラウド保存失敗` と表示
 7. 未ログイン時は `クラウド保存済み` と表示しない
+8. ページ読み込み直後のlocalStorage表示だけではSupabaseへ保存しない
+9. 古いlocalStorageでSupabase上の新しい `portal_state` を自動上書きしない
 
 ## 保存フロー
 
@@ -171,4 +173,10 @@ llld_works_portal_state_last_key
 - 保存状態はヘッダー右側の小さなステータスで表示する。
 - mock / 未ログイン時は既存静的表示を維持する。
 - `works_portal` app_instanceがない場合は保存設定未完了として表示する。
-- `portal_state` が空の場合は初期表示を消さず、初回保存で現在表示を保存する。
+- `portal_state` が空の場合は初期表示を消さず、ページ読込だけでは保存しない。メモ追加、ToDo変更、保管庫変更など、ユーザー編集操作後に現在表示を保存する。
+
+## 追加確認項目
+
+- ページ読み込み直後に古いlocalStorageでSupabaseを上書きしていない
+- Supabase側が新しい場合、Supabaseの内容が優先される
+- localStorage側が表示されても、クラウド確認後に正しい最新状態へ更新される
