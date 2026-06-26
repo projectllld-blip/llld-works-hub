@@ -553,6 +553,62 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
   border:1px solid var(--line);
   background:#fff;
 }
+.modal-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
+.danger-btn,.delete-btn{
+  border:1px solid #ffd2d2;
+  background:#fff5f5;
+  color:#b42318;
+}
+.delete-btn{
+  width:28px;
+  height:28px;
+  border-radius:8px;
+  display:grid;
+  place-items:center;
+  padding:0;
+  font-size:1rem;
+}
+.post .delete-btn{
+  display:none;
+}
+.post:hover .delete-btn{
+  display:grid;
+}
+.tree-edit-status{
+  display:none;
+  align-items:center;
+  min-height:29px;
+  padding:0 9px;
+  border-radius:999px;
+  border:1px solid rgba(244,189,61,.55);
+  background:#fff8e6;
+  color:#8a610e;
+  font-size:.88rem;
+}
+.tree-card.edit-mode .tree-edit-status{
+  display:inline-flex;
+}
+.tree-card.edit-mode .row[data-file-name]{
+  cursor:grab;
+}
+.tree-card.edit-mode .row[data-file-name]:active{
+  cursor:grabbing;
+}
+.tree-card.edit-mode .row[data-folder-path].drop-target{
+  outline:2px solid rgba(18,184,171,.55);
+  outline-offset:1px;
+}
+.tbtn.is-on{
+  background:var(--yellowSoft);
+  border-color:rgba(244,189,61,.65);
+  color:#8a610e;
+}
 @media(max-width:900px){
   .card-scroll .content-card,
   .content-card{
@@ -1105,6 +1161,8 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
               <button class="todo-day-btn" data-day="calendar">📅</button>
             </div>
             <div class="todo-export">
+              <button class="export-btn" id="memoDetailBtn" type="button">メモ詳細</button>
+              <button class="export-btn danger-btn" id="memoDeleteBtn" type="button">メモ削除</button>
               <button class="export-btn" data-export="csv">CSV</button>
               <button class="export-btn" data-export="excel">Excel</button>
             </div>
@@ -1117,7 +1175,7 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
             <li data-title="社内テンプレートmockの表示名を整理" data-author="川岡" data-date="今日" data-detail="社内テンプレート欄のタイトル、カテゴリ、表示順が実際の利用シーンに合っているか確認します。"><input type="checkbox"><span class="todo-main"><strong class="todo-title">社内テンプレート表示名整理</strong><small class="todo-author">投稿者：川岡</small></span></li>
             <li data-title="掲示板投稿のカテゴリ案を決める" data-author="管理" data-date="今日" data-detail="塾事業、社内運営、販売準備、保管庫など、掲示板投稿で使うカテゴリ案を整理します。"><input type="checkbox"><span class="todo-main"><strong class="todo-title">掲示板カテゴリ案</strong><small class="todo-author">投稿者：管理</small></span></li>
           </ul>
-          <textarea placeholder="今日のメモ、確認したいこと、あとでやることを書けます。"></textarea>
+          <textarea id="dailyMemo" placeholder="今日のメモ、確認したいこと、あとでやることを書けます。"></textarea>
         </div>
       </aside>
     </div></div>
@@ -1154,7 +1212,7 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
     <div class="s-body">
       <div class="file-layout">
         <div class="tree-card">
-          <div class="tree-head"><h3>保管庫ツリー</h3><div class="tools"><button class="tbtn" data-tip="フォルダを追加" data-mock="フォルダ作成は後続フェーズで実装します。">
+          <div class="tree-head"><h3>保管庫ツリー</h3><div class="tools"><button class="tbtn" id="treeEditModeBtn" data-tip="編集モード" type="button">⚙</button><button class="tbtn" data-tip="フォルダを追加" data-mock="フォルダ作成は後続フェーズで実装します。">
 <svg viewBox="0 0 24 24" aria-hidden="true">
   <path d="M10 5H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-8l-2-2z"/>
   <path d="M12 14v-4"/>
@@ -1173,7 +1231,7 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
   <path d="M5 21h14"/>
 </svg>
 </button></div></div>
-          <div class="tree-actions"><button class="mini-btn" id="openAllFolders">全て開く</button><button class="mini-btn" id="closeAllFolders">全て閉じる</button><button class="mini-btn" id="closeSelectedFolder">選択フォルダを閉じる</button></div>
+          <div class="tree-actions"><span class="tree-edit-status" id="treeEditStatus">編集モード中</span><button class="mini-btn" id="openAllFolders">全て開く</button><button class="mini-btn" id="closeAllFolders">全て閉じる</button><button class="mini-btn" id="closeSelectedFolder">選択フォルダを閉じる</button><button class="mini-btn" id="replaceTreeItemBtn" type="button">差し替え</button><button class="mini-btn danger-btn" id="deleteTreeItemBtn" type="button">削除</button></div>
           <div class="tree-body"><ul class="tree">
             <li class="node"><div class="row" data-folder-path="教育事業"><input class="check" type="checkbox"><button class="folder-btn" type="button"><span class="caret">▼</span><span>📁</span><span class="fname">教育事業</span><span class="ftype">12件</span><span class="fdate">6/26 18:40</span></button></div>
               <ul>
@@ -1288,6 +1346,9 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
         <span id="todoModalDate">日付：-</span>
       </div>
       <p id="todoModalDetail">詳細が入ります。</p>
+      <div class="modal-actions">
+        <button class="mini-btn danger-btn" id="detailDeleteBtn" type="button">削除</button>
+      </div>
     </div>
   </div>
 </div>
@@ -1355,8 +1416,10 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
   const pageSize=4;
   function renderPosts(){
     const start=(postPage-1)*pageSize;
-    document.getElementById("postList").innerHTML=posts.slice(start,start+pageSize).map(p=>`<article class="post"><span class="post-ico">${p[0]}</span><div><h4>${p[1]}</h4><p>${p[2]}</p><div class="meta"><span class="cat">${p[3]}</span><span>${p[4]}</span><span class="upd">${p[5]}</span></div></div><button class="pin" data-pin>☆</button></article>`).join("");
-    const pages=Math.ceil(posts.length/pageSize);
+    if(start>=posts.length && postPage>1)postPage-=1;
+    const nextStart=(postPage-1)*pageSize;
+    document.getElementById("postList").innerHTML=posts.slice(nextStart,nextStart+pageSize).map((p,i)=>`<article class="post" data-post-index="${nextStart+i}"><span class="post-ico">${p[0]}</span><div><h4>${p[1]}</h4><p>${p[2]}</p><div class="meta"><span class="cat">${p[3]}</span><span>${p[4]}</span><span class="upd">${p[5]}</span></div></div><button class="delete-btn" data-delete-post type="button" aria-label="掲示板投稿を削除">×</button></article>`).join("")||'<div class="section-note">掲示板の投稿はありません。</div>';
+    const pages=Math.max(1,Math.ceil(posts.length/pageSize));
     document.getElementById("postPager").innerHTML=`<button class="page-btn" data-post-prev>‹</button>`+Array.from({length:pages},(_,i)=>`<button class="page-btn ${postPage===i+1?"active":""}" data-post-page="${i+1}">${i+1}</button>`).join("")+`<button class="page-btn" data-post-next>›</button>`;
   }
   renderPosts();
@@ -1435,27 +1498,96 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
   const todoModalDate = document.getElementById("todoModalDate");
   const todoModalDetail = document.getElementById("todoModalDetail");
   const todoModalClose = document.getElementById("todoModalClose");
+  const detailDeleteBtn = document.getElementById("detailDeleteBtn");
+  const dailyMemo = document.getElementById("dailyMemo");
+  let activeDetailContext=null;
+  function closeDetailModal(){
+    todoModal.classList.remove("show");
+    todoModal.setAttribute("aria-hidden","true");
+    activeDetailContext=null;
+  }
+  function openDetailModal({title,author,date,detail,type,index,element}){
+    todoModalTitle.textContent = title || "詳細";
+    todoModalAuthor.textContent = (type==="post"?"投稿者：":"担当：") + (author || "-");
+    todoModalDate.textContent = (type==="post"?"最終更新：":"日付：") + (date || "-");
+    todoModalDetail.textContent = detail || "";
+    activeDetailContext={type,index,element,title:title||""};
+    detailDeleteBtn.textContent = type==="post" ? "この投稿を削除" : (type==="memo" ? "メモを削除" : "このTo Doを削除");
+    todoModal.classList.add("show");
+    todoModal.setAttribute("aria-hidden","false");
+    todoModalClose?.focus();
+  }
 
-  document.querySelectorAll("#todoList li").forEach(item=>{
-    item.addEventListener("click", event=>{
-      if(event.target.tagName === "INPUT") return;
-      todoModalTitle.textContent = item.dataset.title || "To Do詳細";
-      todoModalAuthor.textContent = "投稿者：" + (item.dataset.author || "-");
-      todoModalDate.textContent = "日付：" + (item.dataset.date || "-");
-      todoModalDetail.textContent = item.dataset.detail || "";
-      todoModal.classList.add("show");
-      todoModal.setAttribute("aria-hidden","false");
+  document.getElementById("postList")?.addEventListener("click", event=>{
+    const post=event.target.closest(".post[data-post-index]");
+    if(!post)return;
+    const index=Number(post.dataset.postIndex);
+    if(event.target.closest("[data-delete-post]")){
+      const title=posts[index]?.[1]||"投稿";
+      if(confirm(`「${title}」を削除しますか？`)){
+        posts.splice(index,1);
+        renderPosts();
+        show("掲示板投稿を削除しました。");
+      }
+      return;
+    }
+    const data=posts[index];
+    if(!data)return;
+    openDetailModal({type:"post",index,title:data[1],detail:data[2],author:data[4],date:data[5]});
+  });
+
+  document.getElementById("todoList")?.addEventListener("click", event=>{
+    const item=event.target.closest("li");
+    if(!item)return;
+    if(event.target.tagName === "INPUT") return;
+    openDetailModal({
+      type:"todo",
+      element:item,
+      title:item.dataset.title || "To Do詳細",
+      author:item.dataset.author || "-",
+      date:item.dataset.date || "-",
+      detail:item.dataset.detail || ""
     });
   });
 
-  todoModalClose?.addEventListener("click", ()=>{
-    todoModal.classList.remove("show");
-    todoModal.setAttribute("aria-hidden","true");
+  detailDeleteBtn?.addEventListener("click", ()=>{
+    if(!activeDetailContext)return closeDetailModal();
+    if(!confirm(`「${activeDetailContext.title||"項目"}」を削除しますか？`))return;
+    if(activeDetailContext.type==="post" && Number.isInteger(activeDetailContext.index)){
+      posts.splice(activeDetailContext.index,1);
+      renderPosts();
+      show("掲示板投稿を削除しました。");
+    }else if(activeDetailContext.type==="todo" && activeDetailContext.element){
+      activeDetailContext.element.remove();
+      show("To Doを削除しました。");
+    }else if(activeDetailContext.type==="memo"){
+      dailyMemo.value="";
+      show("メモを削除しました。");
+    }
+    closeDetailModal();
   });
+
+  document.getElementById("memoDetailBtn")?.addEventListener("click", ()=>{
+    openDetailModal({
+      type:"memo",
+      title:"今日のメモ",
+      author:"メモ",
+      date:"今日",
+      detail:dailyMemo?.value.trim() || "メモはまだ入力されていません。"
+    });
+  });
+  document.getElementById("memoDeleteBtn")?.addEventListener("click", ()=>{
+    if(!dailyMemo?.value.trim()){show("削除するメモはありません。");return}
+    if(confirm("メモを削除しますか？")){
+      dailyMemo.value="";
+      show("メモを削除しました。");
+    }
+  });
+
+  todoModalClose?.addEventListener("click", closeDetailModal);
   todoModal?.addEventListener("click", event=>{
     if(event.target === todoModal){
-      todoModal.classList.remove("show");
-      todoModal.setAttribute("aria-hidden","true");
+      closeDetailModal();
     }
   });
 
@@ -1483,14 +1615,113 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
   const selectedFolderLabel=document.getElementById("selectedFolderLabel"),folderSelect=document.getElementById("folderSelect");
   const viewerTitle=document.getElementById("viewerTitle"),viewerStage=document.getElementById("viewerStage"),previewType=document.getElementById("previewType"),previewPath=document.getElementById("previewPath"),previewDate=document.getElementById("previewDate"),previewUpdated=document.getElementById("previewUpdated");
   let selectedFolderRow=document.querySelector("[data-folder-path].sel");
+  let selectedFileRow=null;
+  let treeEditMode=false;
+  let draggedTreeRow=null;
   const folderOptions=["教育事業 / 体験授業資料","教育事業 / 英検資料","教育事業 / 参考リンク","業務効率化 / 勤怠","業務効率化 / 座席管理","業務効率化 / HTMLアプリ","コンサル / 採用","コンサル / 1on1","コンサル / 管理職代行"];
   function selectFolder(row){if(!row?.dataset.folderPath)return;document.querySelectorAll("[data-folder-path]").forEach(r=>r.classList.remove("sel"));row.classList.add("sel");selectedFolderRow=row;selectedFolderLabel.textContent=row.dataset.folderPath;folderSelect.value=row.dataset.folderPath}
-  function selectFile(row){document.querySelectorAll(".tree-body .row.file-selected").forEach(r=>r.classList.remove("file-selected"));if(row?.dataset.fileName){row.classList.add("file-selected")}}
-  function clearSelectedFile(){document.querySelectorAll(".tree-body .row.file-selected").forEach(r=>r.classList.remove("file-selected"))}
+  function selectFile(row){document.querySelectorAll(".tree-body .row.file-selected").forEach(r=>r.classList.remove("file-selected"));selectedFileRow=null;if(row?.dataset.fileName){row.classList.add("file-selected");selectedFileRow=row}}
+  function clearSelectedFile(){document.querySelectorAll(".tree-body .row.file-selected").forEach(r=>r.classList.remove("file-selected"));selectedFileRow=null}
   function rowCheck(row){return Array.from(row?.children||[]).find(el=>el.classList?.contains("check"))||null}
   function toggleFileCheck(row){const check=rowCheck(row);if(check && row?.dataset.fileName){check.checked=!check.checked}}
   function isExternalUrl(url){return /^https?:\/\//i.test(url||"")}
   function safeAttr(value){return String(value||"").replaceAll("&","&amp;").replaceAll('"',"&quot;").replaceAll("<","&lt;")}
+  function treeFileRows(){return Array.from(document.querySelectorAll(".tree-body .row[data-file-name]"))}
+  function setTreeEditMode(active,quiet=false){
+    treeEditMode=active;
+    document.querySelector(".tree-card")?.classList.toggle("edit-mode",active);
+    document.getElementById("treeEditModeBtn")?.classList.toggle("is-on",active);
+    treeFileRows().forEach(row=>row.draggable=active);
+    if(!quiet)show(active?"保管庫ツリーの編集モードをONにしました。":"保管庫ツリーの編集モードをOFFにしました。");
+  }
+  function nearestFolderPath(row){
+    return row?.closest("ul")?.closest(".node")?.querySelector(":scope > .row[data-folder-path]")?.dataset.folderPath || "";
+  }
+  function updateRowPath(row,path){
+    if(!row?.dataset.fileName)return;
+    row.dataset.filePath=path;
+    if(row===selectedFileRow)preview(row);
+  }
+  function moveFileRowToFolder(fileRow,folderRow){
+    if(!fileRow?.dataset.fileName||!folderRow?.dataset.folderPath)return false;
+    const fileLi=fileRow.closest("li");
+    const folderNode=folderRow.closest(".node");
+    let targetList=folderNode?.querySelector(":scope > ul");
+    if(!targetList){
+      targetList=document.createElement("ul");
+      folderNode?.appendChild(targetList);
+    }
+    if(!fileLi||!targetList)return false;
+    targetList.appendChild(fileLi);
+    updateRowPath(fileRow,folderRow.dataset.folderPath);
+    selectFolder(folderRow);
+    selectFile(fileRow);
+    addLog("📁","保管庫内でファイルを移動",fileRow.dataset.fileName+" → "+folderRow.dataset.folderPath);
+    show(`「${fileRow.dataset.fileName}」を「${folderRow.dataset.folderPath}」へ移動しました。`);
+    return true;
+  }
+  function deleteSelectedTreeItem(){
+    if(!treeEditMode){show("削除するには歯車から編集モードをONにしてください。");return}
+    if(selectedFileRow?.dataset.fileName){
+      const name=selectedFileRow.dataset.fileName;
+      if(!confirm(`「${name}」を保管庫ツリーから削除しますか？`))return;
+      selectedFileRow.closest("li")?.remove();
+      clearSelectedFile();
+      show("ファイルを削除しました。");
+      addLog("🗑","保管庫ファイルを削除",name);
+      return;
+    }
+    if(selectedFolderRow?.dataset.folderPath){
+      const name=selectedFolderRow.dataset.folderPath;
+      if(!confirm(`「${name}」フォルダを削除しますか？中の表示項目も消えます。`))return;
+      const next=document.querySelector("[data-folder-path]");
+      selectedFolderRow.closest(".node")?.remove();
+      selectedFolderRow=next&&document.body.contains(next)?next:null;
+      if(selectedFolderRow)selectFolder(selectedFolderRow);
+      show("フォルダを削除しました。");
+      addLog("🗑","保管庫フォルダを削除",name);
+      return;
+    }
+    show("削除するファイルまたはフォルダを選択してください。");
+  }
+  function replaceSelectedTreeItem(){
+    if(!treeEditMode){show("差し替えには歯車から編集モードをONにしてください。");return}
+    const row=selectedFileRow;
+    if(!row?.dataset.fileName){show("差し替えるファイルまたはリンクを選択してください。");return}
+    const currentName=row.dataset.fileName||"";
+    const nextName=prompt("表示名を入力してください。",currentName);
+    if(nextName===null)return;
+    const currentType=row.dataset.fileType||"その他";
+    const nextType=prompt("種別を入力してください。（例：PDF / Word / HTML / Link）",currentType);
+    if(nextType===null)return;
+    const wantsUrl=/^(link|リンク|html)$/i.test(nextType);
+    let nextUrl=row.dataset.fileUrl||"";
+    if(wantsUrl){
+      const value=prompt("開く先URLまたは相対パスを入力してください。",nextUrl);
+      if(value===null)return;
+      nextUrl=value.trim();
+      if(!nextUrl){show("URLまたは相対パスを入力してください。");return}
+    }
+    row.dataset.fileName=nextName.trim()||currentName;
+    row.dataset.fileType=nextType.trim()||currentType;
+    if(nextUrl)row.dataset.fileUrl=nextUrl;else delete row.dataset.fileUrl;
+    const nameSlot=row.querySelector(".fname");
+    const typeSlot=row.querySelector(".ftype");
+    if(nextUrl){
+      nameSlot.textContent="";
+      const link=document.createElement("a");
+      link.className="tree-file-link";
+      link.href=nextUrl;
+      link.textContent=row.dataset.fileName;
+      nameSlot.appendChild(link);
+    }else{
+      nameSlot.textContent=row.dataset.fileName;
+    }
+    if(typeSlot)typeSlot.textContent=row.dataset.fileType;
+    preview(row);
+    addLog("✏️","保管庫ファイルを差し替え",row.dataset.fileName+" / "+(row.dataset.filePath||nearestFolderPath(row)));
+    show("ファイル情報を差し替えました。");
+  }
   function openLinkHtml(url,label,confirmLabel){if(!url)return "";const text=label||"開く";return '<p><button class="mini-btn primary" type="button" data-preview-open-url="'+safeAttr(url)+'" data-preview-open-label="'+safeAttr(confirmLabel||text)+'">'+text+'</button></p>'}
   function addLog(icon,title,detail){const log=document.getElementById("activityLog");const now=new Date().toLocaleTimeString("ja-JP",{hour:"2-digit",minute:"2-digit"});const item=document.createElement("article");item.className="log-item";item.innerHTML=`<span class="log-icon">${icon}</span><div><strong>${title}</strong><span>${detail}</span></div><time class="log-time">${now}</time>`;log?.prepend(item)}
   function preview(row){if(!row)return;const name=row.dataset.fileName||row.dataset.folderPath||row.querySelector(".fname")?.textContent.trim()||"選択中";const type=row.dataset.fileType||(row.dataset.folderPath?"Folder":"-");const path=row.dataset.filePath||row.dataset.folderPath||"-";const date=row.dataset.fileDate||row.querySelector(".fdate")?.textContent.replace("最終更新","").trim()||"-";const url=row.dataset.fileUrl;viewerTitle.textContent=name;previewType.textContent=type;previewPath.textContent=path;previewDate.textContent=date;previewUpdated.textContent=date==="-"?"選択中":date;viewerStage.innerHTML='<div class="doc-preview"><div class="doc-line w70"></div><div class="doc-line w90"></div><div class="doc-line w90"></div><div class="doc-line w45"></div></div><span class="preview-fit-note">自動フィット</span>';if(url){
@@ -1501,9 +1732,16 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
   if(row.dataset.fileName)addLog("📂",name+" を開きました",path)}
   document.querySelectorAll(".folder-btn").forEach(btn=>btn.addEventListener("click",()=>{const row=btn.closest(".row");selectFolder(row);clearSelectedFile();preview(row);btn.closest(".node")?.classList.toggle("closed")}));
   document.querySelectorAll(".tree .node").forEach(node=>node.classList.add("closed"));
-  document.querySelector(".tree-body")?.addEventListener("click",e=>{const row=e.target.closest(".row");if(!row)return;if(e.target.closest(".check")||e.target.closest(".folder-btn"))return;if(row.dataset.folderPath){selectFolder(row);clearSelectedFile();preview(row);return}if(row.dataset.fileName){if(e.target.closest(".tree-file-link")){e.preventDefault();e.stopPropagation();selectFile(row);preview(row);openFileLinkConfirm(row);return}toggleFileCheck(row);selectFile(row);preview(row);return}preview(row)});
-  document.querySelectorAll(".row[data-folder-path]").forEach(row=>{row.addEventListener("dragover",e=>{e.preventDefault();row.classList.add("drop-target")});row.addEventListener("dragleave",()=>row.classList.remove("drop-target"));row.addEventListener("drop",e=>{e.preventDefault();row.classList.remove("drop-target");selectFolder(row);clearSelectedFile();const name=e.dataTransfer.getData("text/plain")||"追加ファイル";show(`「${name}」を「${row.dataset.folderPath}」へ追加する想定です。`);addLog("📁","ファイルをフォルダへ移動",name+" → "+row.dataset.folderPath)})});
+  const treeBody=document.querySelector(".tree-body");
+  treeBody?.addEventListener("click",e=>{const row=e.target.closest(".row");if(!row)return;if(e.target.closest(".check")||e.target.closest(".folder-btn"))return;if(row.dataset.folderPath){selectFolder(row);clearSelectedFile();preview(row);return}if(row.dataset.fileName){if(e.target.closest(".tree-file-link")){e.preventDefault();e.stopPropagation();selectFile(row);preview(row);openFileLinkConfirm(row);return}toggleFileCheck(row);selectFile(row);preview(row);return}preview(row)});
+  treeBody?.addEventListener("dragstart",e=>{const row=e.target.closest(".row[data-file-name]");if(!treeEditMode||!row){e.preventDefault();return}draggedTreeRow=row;selectFile(row);e.dataTransfer.setData("text/plain",row.dataset.fileName||"保管庫ファイル");e.dataTransfer.effectAllowed="move"});
+  treeBody?.addEventListener("dragend",()=>{draggedTreeRow=null;document.querySelectorAll(".tree-body .drop-target").forEach(row=>row.classList.remove("drop-target"))});
+  document.querySelectorAll(".row[data-folder-path]").forEach(row=>{row.addEventListener("dragover",e=>{if(treeEditMode&&draggedTreeRow){e.preventDefault();e.dataTransfer.dropEffect="move"}else if(!treeEditMode){e.preventDefault()}row.classList.add("drop-target")});row.addEventListener("dragleave",()=>row.classList.remove("drop-target"));row.addEventListener("drop",e=>{e.preventDefault();row.classList.remove("drop-target");if(treeEditMode&&draggedTreeRow){moveFileRowToFolder(draggedTreeRow,row);draggedTreeRow=null;return}selectFolder(row);clearSelectedFile();const name=e.dataTransfer.getData("text/plain")||"追加ファイル";show(`「${name}」を「${row.dataset.folderPath}」へ追加する想定です。`);addLog("📁","ファイルをフォルダへ移動",name+" → "+row.dataset.folderPath)})});
+  document.getElementById("treeEditModeBtn")?.addEventListener("click",()=>setTreeEditMode(!treeEditMode));
+  document.getElementById("deleteTreeItemBtn")?.addEventListener("click",deleteSelectedTreeItem);
+  document.getElementById("replaceTreeItemBtn")?.addEventListener("click",replaceSelectedTreeItem);
   document.querySelectorAll(".check").forEach(ch=>{ch.addEventListener("click",e=>e.stopPropagation());ch.addEventListener("change",()=>{const row=ch.closest(".row");if(!row?.dataset.folderPath)return;const node=row.closest(".node");if(!node)return;node.querySelectorAll("ul .check").forEach(c=>c.checked=ch.checked)})});
+  setTreeEditMode(false,true);
   const logConfirmModal=document.getElementById("logConfirmModal");
   const logConfirmTitle=document.getElementById("logConfirmTitle");
   const logConfirmText=document.getElementById("logConfirmText");
