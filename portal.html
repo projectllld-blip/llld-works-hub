@@ -1675,12 +1675,7 @@ body.tree-dragging{
           <textarea id="todoAddDetail" placeholder="確認したいこと、あとでやることを書きます。"></textarea>
         </label>
         <label>投稿者
-          <select id="todoAddAuthor">
-            <option value="川岡">川岡</option>
-            <option value="管理">管理</option>
-            <option value="LLLD">LLLD</option>
-            <option value="メモ">メモ</option>
-          </select>
+          <input id="todoAddAuthor" type="text" autocomplete="off" placeholder="例：川岡">
         </label>
       </div>
       <div class="modal-actions">
@@ -1982,7 +1977,7 @@ body.tree-dragging{
   function saveTodoFromModal(){
     const title=todoAddTitle.value.trim();
     const detail=todoAddDetail.value.trim();
-    const author=todoAddAuthor.value;
+    const author=todoAddAuthor.value.trim()||"メモ";
     if(!title){show("題名を入力してください。");todoAddTitle.focus();return}
     const item=document.createElement("li");
     item.dataset.title=title;
@@ -2070,6 +2065,7 @@ body.tree-dragging{
     const tree=document.querySelector(".tree");
     if(!tree)return;
     tree.innerHTML=html;
+    document.querySelectorAll(".tree-body .node").forEach(sortFolderChildren);
     selectedFolderRow=document.querySelector("[data-folder-path].sel")||document.querySelector("[data-folder-path]");
     selectedFileRow=null;
     clearSelectedFile();
@@ -2125,6 +2121,15 @@ body.tree-dragging{
       }
     });
   }
+  function sortFolderChildren(folderNode){
+    const list=folderNode?.querySelector(":scope > ul");
+    if(!list)return;
+    const items=Array.from(list.children);
+    const folders=items.filter(li=>li.querySelector(":scope > .row[data-folder-path]"));
+    const files=items.filter(li=>li.querySelector(":scope > .row[data-file-name]")&&!li.querySelector(":scope > .row[data-folder-path]"));
+    const others=items.filter(li=>!folders.includes(li)&&!files.includes(li));
+    [...folders,...files,...others].forEach(li=>list.appendChild(li));
+  }
   function targetFolderFromPrompt(excludeRow=null){
     const rows=treeFolderRows().filter(row=>row!==excludeRow);
     const list=rows.map((row,i)=>`${i+1}. ${row.dataset.folderPath}`).join("\n");
@@ -2146,6 +2151,7 @@ body.tree-dragging{
     if(!fileLi||!targetList)return false;
     pushTreeHistory();
     targetList.appendChild(fileLi);
+    sortFolderChildren(folderNode);
     updateRowPath(fileRow,folderRow.dataset.folderPath);
     selectFolder(folderRow);
     selectFile(fileRow);
@@ -2169,6 +2175,7 @@ body.tree-dragging{
     const newPath=targetFolderRow.dataset.folderPath+" / "+folderName;
     pushTreeHistory();
     targetList.appendChild(sourceNode);
+    sortFolderChildren(targetNode);
     folderRow.dataset.folderPath=newPath;
     updateFolderChildrenPaths(sourceNode,oldPath,newPath);
     selectFolder(folderRow);
@@ -2420,6 +2427,7 @@ body.tree-dragging{
   }
   if(row.dataset.fileName)addLog("📂",name+" を開きました",path)}
   document.querySelectorAll(".tree .node").forEach(node=>node.classList.add("closed"));
+  document.querySelectorAll(".tree-body .node").forEach(sortFolderChildren);
   const treeBody=document.querySelector(".tree-body");
   treeBody?.addEventListener("click",e=>{if(Date.now()<suppressTreeClickUntil){e.preventDefault();e.stopPropagation();return}const row=e.target.closest(".row");if(!row)return;if(e.target.closest(".check"))return;if(e.target.closest(".folder-btn")){selectFolder(row);clearSelectedFile();preview(row);row.closest(".node")?.classList.toggle("closed");return}if(row.dataset.folderPath){selectFolder(row);clearSelectedFile();preview(row);return}if(row.dataset.fileName){if(e.target.closest(".tree-file-link")){e.preventDefault();e.stopPropagation();selectFile(row);preview(row);openFileLinkConfirm(row);return}toggleFileCheck(row);selectFile(row);preview(row);return}preview(row)});
   treeBody?.addEventListener("dblclick",e=>{if(!treeEditMode)return;const row=e.target.closest(".row[data-file-name], .row[data-folder-path]");if(!row)return;e.preventDefault();if(row.dataset.fileName)selectFile(row);else{selectFolder(row);clearSelectedFile()}openTreeEditModal(row)});
