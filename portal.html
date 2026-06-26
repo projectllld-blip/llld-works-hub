@@ -609,6 +609,99 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
   border-color:rgba(244,189,61,.65);
   color:#8a610e;
 }
+
+/* v18: memo/todo and explorer editing repair */
+.todo-panel{
+  height:360px;
+}
+.todo-body{
+  grid-template-rows:auto minmax(130px,1fr) 48px!important;
+  min-height:302px;
+  overflow:hidden;
+}
+.todo-toolbar{
+  align-items:flex-start;
+}
+.todo-days,.todo-export{
+  min-width:0;
+}
+.todo-export{
+  justify-content:flex-end;
+}
+.todo-list{
+  min-height:0!important;
+  overflow:auto!important;
+  padding-right:2px!important;
+}
+.todo-list li{
+  overflow:hidden;
+}
+.todo-body textarea{
+  width:100%!important;
+}
+.tree-edit-icon{
+  width:18px;
+  height:18px;
+  display:block;
+}
+.tree-edit-actions{
+  display:none;
+  gap:6px;
+  flex-wrap:wrap;
+}
+.tree-card.edit-mode .tree-edit-actions{
+  display:flex;
+}
+.tree-card.edit-mode .row[data-file-name],
+.tree-card.edit-mode .row[data-folder-path]{
+  cursor:grab;
+}
+.row.rename-flash{
+  background:#fff8e6!important;
+  border-color:rgba(244,189,61,.65)!important;
+}
+.queue-item{
+  grid-template-columns:28px minmax(150px,1.4fr) minmax(120px,.7fr) minmax(160px,1fr) minmax(120px,1.2fr) auto auto!important;
+  align-items:end!important;
+}
+.queue-url{
+  grid-column:auto!important;
+}
+.queue-item .mini-btn{
+  min-width:52px;
+  white-space:nowrap;
+}
+@media(max-width:900px){
+  .todo-panel{
+    height:auto;
+    min-height:360px;
+  }
+  .todo-toolbar{
+    display:grid;
+    grid-template-columns:1fr;
+  }
+  .todo-days,.todo-export{
+    justify-content:flex-start;
+  }
+}
+@media(max-width:640px){
+  .todo-list{
+    grid-template-columns:1fr!important;
+    max-height:170px;
+  }
+  .todo-body{
+    grid-template-rows:auto minmax(120px,1fr) 52px!important;
+  }
+  .tree-actions{
+    align-items:flex-start;
+  }
+  .tree-edit-actions{
+    width:100%;
+  }
+  .queue-item{
+    grid-template-columns:1fr!important;
+  }
+}
 @media(max-width:900px){
   .card-scroll .content-card,
   .content-card{
@@ -1150,8 +1243,8 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
         <div class="post-list" id="postList"></div>
         <div class="post-pager" id="postPager"></div>
       </div>
-      <aside class="panel board-height">
-        <div class="p-head"><h3>メモ / To Do</h3><button class="btn btn2" data-mock="メモ保存は後続フェーズで実装します。">保存</button></div>
+      <aside class="panel board-height todo-panel">
+        <div class="p-head"><h3>メモ / To Do</h3><button class="btn btn2" id="addMemoTodoBtn" type="button">追加</button></div>
         <div class="todo-body">
           <div class="todo-toolbar">
             <div class="todo-days">
@@ -1212,7 +1305,12 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
     <div class="s-body">
       <div class="file-layout">
         <div class="tree-card">
-          <div class="tree-head"><h3>保管庫ツリー</h3><div class="tools"><button class="tbtn" id="treeEditModeBtn" data-tip="編集モード" type="button">⚙</button><button class="tbtn" data-tip="フォルダを追加" data-mock="フォルダ作成は後続フェーズで実装します。">
+          <div class="tree-head"><h3>保管庫ツリー</h3><div class="tools"><button class="tbtn" id="treeEditModeBtn" data-tip="編集モード" type="button" aria-label="編集モード">
+<svg class="tree-edit-icon" viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M12 15.5A3.5 3.5 0 1 0 12 8a3.5 3.5 0 0 0 0 7.5Z"/>
+  <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 0 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 0 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1A2 2 0 0 1 4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 0 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1A2 2 0 1 1 7.1 4.2l.1.1a1.7 1.7 0 0 0 1.9.3h.1A1.7 1.7 0 0 0 10 3V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1A2 2 0 1 1 19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1A1.7 1.7 0 0 0 21 10h.1a2 2 0 0 1 0 4H21a1.7 1.7 0 0 0-1.6 1Z"/>
+</svg>
+</button><button class="tbtn" data-tip="フォルダを追加" data-mock="フォルダ作成は後続フェーズで実装します。">
 <svg viewBox="0 0 24 24" aria-hidden="true">
   <path d="M10 5H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-8l-2-2z"/>
   <path d="M12 14v-4"/>
@@ -1231,7 +1329,7 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
   <path d="M5 21h14"/>
 </svg>
 </button></div></div>
-          <div class="tree-actions"><span class="tree-edit-status" id="treeEditStatus">編集モード中</span><button class="mini-btn" id="openAllFolders">全て開く</button><button class="mini-btn" id="closeAllFolders">全て閉じる</button><button class="mini-btn" id="closeSelectedFolder">選択フォルダを閉じる</button><button class="mini-btn" id="replaceTreeItemBtn" type="button">差し替え</button><button class="mini-btn danger-btn" id="deleteTreeItemBtn" type="button">削除</button></div>
+          <div class="tree-actions"><span class="tree-edit-status" id="treeEditStatus">編集モード中</span><button class="mini-btn" id="openAllFolders">全て開く</button><button class="mini-btn" id="closeAllFolders">全て閉じる</button><button class="mini-btn" id="closeSelectedFolder">選択フォルダを閉じる</button><span class="tree-edit-actions"><button class="mini-btn" id="renameTreeItemBtn" type="button">名前変更</button><button class="mini-btn" id="moveTreeItemBtn" type="button">移動</button><button class="mini-btn" id="replaceTreeItemBtn" type="button">リンク/種別</button><button class="mini-btn danger-btn" id="deleteTreeItemBtn" type="button">削除</button></span></div>
           <div class="tree-body"><ul class="tree">
             <li class="node"><div class="row" data-folder-path="教育事業"><input class="check" type="checkbox"><button class="folder-btn" type="button"><span class="caret">▼</span><span>📁</span><span class="fname">教育事業</span><span class="ftype">12件</span><span class="fdate">6/26 18:40</span></button></div>
               <ul>
@@ -1583,6 +1681,20 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
       show("メモを削除しました。");
     }
   });
+  document.getElementById("addMemoTodoBtn")?.addEventListener("click", ()=>{
+    const text=dailyMemo?.value.trim();
+    if(!text){show("追加するメモを入力してください。");dailyMemo?.focus();return}
+    const item=document.createElement("li");
+    item.dataset.title=text.length>28?text.slice(0,28)+"…":text;
+    item.dataset.author="メモ";
+    item.dataset.date="今日";
+    item.dataset.detail=text;
+    item.innerHTML='<input type="checkbox"><span class="todo-main"><strong class="todo-title"></strong><small class="todo-author">投稿者：メモ</small></span>';
+    item.querySelector(".todo-title").textContent=item.dataset.title;
+    document.getElementById("todoList")?.prepend(item);
+    dailyMemo.value="";
+    show("To Doに追加しました。");
+  });
 
   todoModalClose?.addEventListener("click", closeDetailModal);
   todoModal?.addEventListener("click", event=>{
@@ -1627,13 +1739,17 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
   function isExternalUrl(url){return /^https?:\/\//i.test(url||"")}
   function safeAttr(value){return String(value||"").replaceAll("&","&amp;").replaceAll('"',"&quot;").replaceAll("<","&lt;")}
   function treeFileRows(){return Array.from(document.querySelectorAll(".tree-body .row[data-file-name]"))}
+  function treeFolderRows(){return Array.from(document.querySelectorAll(".tree-body .row[data-folder-path]"))}
+  function selectedTreeRow(){return selectedFileRow?.dataset.fileName ? selectedFileRow : selectedFolderRow}
   function setTreeEditMode(active,quiet=false){
     treeEditMode=active;
     document.querySelector(".tree-card")?.classList.toggle("edit-mode",active);
     document.getElementById("treeEditModeBtn")?.classList.toggle("is-on",active);
     treeFileRows().forEach(row=>row.draggable=active);
+    treeFolderRows().forEach(row=>row.draggable=active);
     if(!quiet)show(active?"保管庫ツリーの編集モードをONにしました。":"保管庫ツリーの編集モードをOFFにしました。");
   }
+  function rowNameSlot(row){return row?.querySelector(".fname")}
   function nearestFolderPath(row){
     return row?.closest("ul")?.closest(".node")?.querySelector(":scope > .row[data-folder-path]")?.dataset.folderPath || "";
   }
@@ -1641,6 +1757,28 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
     if(!row?.dataset.fileName)return;
     row.dataset.filePath=path;
     if(row===selectedFileRow)preview(row);
+  }
+  function updateFolderChildrenPaths(folderNode,oldPath,newPath){
+    folderNode?.querySelectorAll(".row[data-folder-path]").forEach(row=>{
+      if(row.dataset.folderPath===oldPath || row.dataset.folderPath.startsWith(oldPath+" / ")){
+        row.dataset.folderPath=newPath+row.dataset.folderPath.slice(oldPath.length);
+      }
+    });
+    folderNode?.querySelectorAll(".row[data-file-name]").forEach(row=>{
+      const path=row.dataset.filePath||"";
+      if(path===oldPath || path.startsWith(oldPath+" / ")){
+        row.dataset.filePath=newPath+path.slice(oldPath.length);
+      }
+    });
+  }
+  function targetFolderFromPrompt(excludeRow=null){
+    const rows=treeFolderRows().filter(row=>row!==excludeRow);
+    const list=rows.map((row,i)=>`${i+1}. ${row.dataset.folderPath}`).join("\n");
+    const answer=prompt("移動先フォルダ番号を入力してください。\n\n"+list,"");
+    if(answer===null)return null;
+    const index=Number(answer)-1;
+    if(!Number.isInteger(index)||index<0||index>=rows.length){show("移動先フォルダ番号が正しくありません。");return null}
+    return rows[index];
   }
   function moveFileRowToFolder(fileRow,folderRow){
     if(!fileRow?.dataset.fileName||!folderRow?.dataset.folderPath)return false;
@@ -1659,6 +1797,71 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
     addLog("📁","保管庫内でファイルを移動",fileRow.dataset.fileName+" → "+folderRow.dataset.folderPath);
     show(`「${fileRow.dataset.fileName}」を「${folderRow.dataset.folderPath}」へ移動しました。`);
     return true;
+  }
+  function moveFolderRowToFolder(folderRow,targetFolderRow){
+    if(!folderRow?.dataset.folderPath||!targetFolderRow?.dataset.folderPath)return false;
+    const sourceNode=folderRow.closest(".node");
+    const targetNode=targetFolderRow.closest(".node");
+    if(!sourceNode||!targetNode||sourceNode===targetNode)return false;
+    if(sourceNode.contains(targetNode)){show("自分の中へは移動できません。");return false}
+    let targetList=targetNode.querySelector(":scope > ul");
+    if(!targetList){
+      targetList=document.createElement("ul");
+      targetNode.appendChild(targetList);
+    }
+    const oldPath=folderRow.dataset.folderPath;
+    const folderName=oldPath.split(" / ").pop();
+    const newPath=targetFolderRow.dataset.folderPath+" / "+folderName;
+    targetList.appendChild(sourceNode);
+    folderRow.dataset.folderPath=newPath;
+    updateFolderChildrenPaths(sourceNode,oldPath,newPath);
+    selectFolder(folderRow);
+    clearSelectedFile();
+    preview(folderRow);
+    addLog("📁","保管庫フォルダを移動",oldPath+" → "+newPath);
+    show(`「${folderName}」を移動しました。`);
+    return true;
+  }
+  function renameSelectedTreeItem(){
+    if(!treeEditMode){show("名前変更には歯車から編集モードをONにしてください。");return}
+    const row=selectedTreeRow();
+    if(!row){show("名前変更するファイルまたはフォルダを選択してください。");return}
+    const isFolder=Boolean(row.dataset.folderPath);
+    const current=isFolder ? row.dataset.folderPath.split(" / ").pop() : row.dataset.fileName;
+    const next=prompt("新しい名前を入力してください。",current);
+    if(next===null)return;
+    const clean=next.trim();
+    if(!clean){show("名前を入力してください。");return}
+    if(isFolder){
+      const oldPath=row.dataset.folderPath;
+      const parent=oldPath.includes(" / ")?oldPath.split(" / ").slice(0,-1).join(" / "):"";
+      const newPath=parent?parent+" / "+clean:clean;
+      row.dataset.folderPath=newPath;
+      updateFolderChildrenPaths(row.closest(".node"),oldPath,newPath);
+      rowNameSlot(row).textContent=clean;
+      selectFolder(row);
+      preview(row);
+    }else{
+      row.dataset.fileName=clean;
+      const slot=rowNameSlot(row);
+      const link=slot.querySelector("a");
+      if(link)link.textContent=clean;else slot.textContent=clean;
+      selectFile(row);
+      preview(row);
+    }
+    row.classList.add("rename-flash");
+    setTimeout(()=>row.classList.remove("rename-flash"),900);
+    addLog("✏️","保管庫項目を名前変更",clean);
+    show("名前を変更しました。");
+  }
+  function moveSelectedTreeItem(){
+    if(!treeEditMode){show("移動には歯車から編集モードをONにしてください。");return}
+    const row=selectedTreeRow();
+    if(!row){show("移動するファイルまたはフォルダを選択してください。");return}
+    const target=targetFolderFromPrompt(row);
+    if(!target)return;
+    if(row.dataset.fileName)moveFileRowToFolder(row,target);
+    else moveFolderRowToFolder(row,target);
   }
   function deleteSelectedTreeItem(){
     if(!treeEditMode){show("削除するには歯車から編集モードをONにしてください。");return}
@@ -1687,10 +1890,7 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
   function replaceSelectedTreeItem(){
     if(!treeEditMode){show("差し替えには歯車から編集モードをONにしてください。");return}
     const row=selectedFileRow;
-    if(!row?.dataset.fileName){show("差し替えるファイルまたはリンクを選択してください。");return}
-    const currentName=row.dataset.fileName||"";
-    const nextName=prompt("表示名を入力してください。",currentName);
-    if(nextName===null)return;
+    if(!row?.dataset.fileName){show("リンク/種別を変更するファイルまたはリンクを選択してください。");return}
     const currentType=row.dataset.fileType||"その他";
     const nextType=prompt("種別を入力してください。（例：PDF / Word / HTML / Link）",currentType);
     if(nextType===null)return;
@@ -1702,7 +1902,6 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
       nextUrl=value.trim();
       if(!nextUrl){show("URLまたは相対パスを入力してください。");return}
     }
-    row.dataset.fileName=nextName.trim()||currentName;
     row.dataset.fileType=nextType.trim()||currentType;
     if(nextUrl)row.dataset.fileUrl=nextUrl;else delete row.dataset.fileUrl;
     const nameSlot=row.querySelector(".fname");
@@ -1734,10 +1933,12 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
   document.querySelectorAll(".tree .node").forEach(node=>node.classList.add("closed"));
   const treeBody=document.querySelector(".tree-body");
   treeBody?.addEventListener("click",e=>{const row=e.target.closest(".row");if(!row)return;if(e.target.closest(".check")||e.target.closest(".folder-btn"))return;if(row.dataset.folderPath){selectFolder(row);clearSelectedFile();preview(row);return}if(row.dataset.fileName){if(e.target.closest(".tree-file-link")){e.preventDefault();e.stopPropagation();selectFile(row);preview(row);openFileLinkConfirm(row);return}toggleFileCheck(row);selectFile(row);preview(row);return}preview(row)});
-  treeBody?.addEventListener("dragstart",e=>{const row=e.target.closest(".row[data-file-name]");if(!treeEditMode||!row){e.preventDefault();return}draggedTreeRow=row;selectFile(row);e.dataTransfer.setData("text/plain",row.dataset.fileName||"保管庫ファイル");e.dataTransfer.effectAllowed="move"});
+  treeBody?.addEventListener("dragstart",e=>{const row=e.target.closest(".row[data-file-name], .row[data-folder-path]");if(!treeEditMode||!row){e.preventDefault();return}draggedTreeRow=row;if(row.dataset.fileName)selectFile(row);else{selectFolder(row);clearSelectedFile()}e.dataTransfer.setData("text/plain",row.dataset.fileName||row.dataset.folderPath||"保管庫項目");e.dataTransfer.effectAllowed="move"});
   treeBody?.addEventListener("dragend",()=>{draggedTreeRow=null;document.querySelectorAll(".tree-body .drop-target").forEach(row=>row.classList.remove("drop-target"))});
-  document.querySelectorAll(".row[data-folder-path]").forEach(row=>{row.addEventListener("dragover",e=>{if(treeEditMode&&draggedTreeRow){e.preventDefault();e.dataTransfer.dropEffect="move"}else if(!treeEditMode){e.preventDefault()}row.classList.add("drop-target")});row.addEventListener("dragleave",()=>row.classList.remove("drop-target"));row.addEventListener("drop",e=>{e.preventDefault();row.classList.remove("drop-target");if(treeEditMode&&draggedTreeRow){moveFileRowToFolder(draggedTreeRow,row);draggedTreeRow=null;return}selectFolder(row);clearSelectedFile();const name=e.dataTransfer.getData("text/plain")||"追加ファイル";show(`「${name}」を「${row.dataset.folderPath}」へ追加する想定です。`);addLog("📁","ファイルをフォルダへ移動",name+" → "+row.dataset.folderPath)})});
+  document.querySelectorAll(".row[data-folder-path]").forEach(row=>{row.addEventListener("dragover",e=>{if(treeEditMode&&draggedTreeRow){e.preventDefault();e.dataTransfer.dropEffect="move"}else if(!treeEditMode){e.preventDefault()}row.classList.add("drop-target")});row.addEventListener("dragleave",()=>row.classList.remove("drop-target"));row.addEventListener("drop",e=>{e.preventDefault();row.classList.remove("drop-target");if(treeEditMode&&draggedTreeRow){if(draggedTreeRow.dataset.fileName)moveFileRowToFolder(draggedTreeRow,row);else moveFolderRowToFolder(draggedTreeRow,row);draggedTreeRow=null;return}selectFolder(row);clearSelectedFile();const name=e.dataTransfer.getData("text/plain")||"追加ファイル";show(`「${name}」を「${row.dataset.folderPath}」へ追加する想定です。`);addLog("📁","ファイルをフォルダへ移動",name+" → "+row.dataset.folderPath)})});
   document.getElementById("treeEditModeBtn")?.addEventListener("click",()=>setTreeEditMode(!treeEditMode));
+  document.getElementById("renameTreeItemBtn")?.addEventListener("click",renameSelectedTreeItem);
+  document.getElementById("moveTreeItemBtn")?.addEventListener("click",moveSelectedTreeItem);
   document.getElementById("deleteTreeItemBtn")?.addEventListener("click",deleteSelectedTreeItem);
   document.getElementById("replaceTreeItemBtn")?.addEventListener("click",replaceSelectedTreeItem);
   document.querySelectorAll(".check").forEach(ch=>{ch.addEventListener("click",e=>e.stopPropagation());ch.addEventListener("change",()=>{const row=ch.closest(".row");if(!row?.dataset.folderPath)return;const node=row.closest(".node");if(!node)return;node.querySelectorAll("ul .check").forEach(c=>c.checked=ch.checked)})});
@@ -1911,13 +2112,16 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
       fileType.value = "リンク";
       syncBaseLinkMode();
     }
-    if(displayName && !displayName.value) displayName.value = "googleホーム";
-    if(linkUrlInput && !linkUrlInput.value) linkUrlInput.value = "https://www.google.com/";
+    if(displayName) displayName.value = "";
+    if(linkUrlInput) linkUrlInput.value = "";
     if(filesBuffer.length < 10){
-      filesBuffer.push({name:displayName?.value || "googleホーム", size:0, type:"text/uri-list", __link:true, url:linkUrlInput?.value || "https://www.google.com/"});
+      filesBuffer.push({name:"", size:0, type:"text/uri-list", __link:true, url:""});
       renderQueue();
+    }else{
+      show("同時追加は最大10件までです。");
+      return;
     }
-    addLog("🔗","リンク追加候補を作成","ファイル名とリンクURLを編集できます");
+    addLog("🔗","リンク追加候補を作成","ファイル名とリンクURLを入力してください");
   });
 
   document.getElementById("saveTreeDefaultBtn")?.addEventListener("click", ()=>{
