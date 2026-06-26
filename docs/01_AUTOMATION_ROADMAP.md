@@ -46,7 +46,7 @@ Codexへの依頼をチャットではなくIssue単位にする。
 
 ## A0.3 QA自動チェック強化
 状態:
-進行中。
+完了。
 
 目的:
 人間が読む前に最低限のチェックを自動化する。
@@ -71,6 +71,9 @@ Codexへの依頼をチャットではなくIssue単位にする。
 - GitHub Actionsのリモート実行確認は人間作業として残している
 
 ## A0.4 Codex文脈圧縮・引き継ぎ運用
+状態:
+進行中。
+
 目的:
 Codex会話履歴を溜めず、圧縮された作業票だけで進行する。
 
@@ -79,6 +82,16 @@ Codex会話履歴を溜めず、圧縮された作業票だけで進行する。
 - DECISION_LOG更新ルール
 - TASK_QUEUE更新ルール
 - HANDOFF_TEMPLATE運用
+- NEXT_PROMPT_RULES改善
+
+完了条件:
+- `docs/13_CONTEXT_HANDOFF_RULES.md` がある
+- PROJECT_STATUS更新ルールが明確
+- DECISION_LOG更新ルールが明確
+- TASK_QUEUE更新ルールが明確
+- HANDOFF_TEMPLATEが短い作業票として改善されている
+- NEXT_PROMPT_RULESが長い会話ログに依存しない形に改善されている
+- 本体機能を変更していない
 
 ## A0.5 PRレビュー運用
 目的:
