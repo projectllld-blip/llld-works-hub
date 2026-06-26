@@ -1127,11 +1127,25 @@ function setSeatFlowCloudUi(result){
    mode.textContent=result?.mode==="supabase"?"supabase":"mock";
    mode.className=`pill ${result?.mode==="supabase"&&result?.ok?"cloudReady":result?.mode==="supabase"?"cloudWarn":"cloudMock"}`;
  }
- if(text)text.textContent=result?.message||"このフェーズでは、座席レイアウトのみ保存します。生徒名・利用状況・勤怠情報は保存しません。";
+ if(text){
+   const tips={
+     mock:"mock modeです。クラウド保存は行わず、既存のローカル保存を利用します。",
+     not_logged_in:"クラウド保存にはログインが必要です。login.htmlから企業アカウントでログインしてください。",
+     account_missing:"ログインは確認できましたが、企業アカウント情報が見つかりません。account.htmlを確認してください。",
+     app_instance_not_found:"この企業アカウントにはSeatFlowが登録されていません。account.htmlの利用アプリ一覧を確認してください。",
+     client_unavailable:"Supabase clientを確認できません。接続設定とネットワークを確認してください。",
+     not_found:"クラウド保存されたSeatFlowレイアウトはまだありません。先に「クラウド保存」を押してください。",
+     save_failed:"クラウド保存に失敗しました。ログイン状態、SeatFlow利用設定、RLS設定を確認して再試行してください。",
+     load_failed:"クラウド読込に失敗しました。ログイン状態、SeatFlow利用設定、RLS設定を確認して再試行してください。"
+   };
+   text.textContent=tips[result?.status]||result?.message||"このフェーズでは、座席レイアウトのみ保存します。生徒名・利用状況・勤怠情報は保存しません。";
+ }
  if(last&&result?.savedAt)last.textContent=`最終保存 ${formatCloudTime(result.savedAt)}`;
  if(last&&result?.status==="not_found")last.textContent="クラウド未保存";
  if(last&&result?.status==="save_failed")last.textContent="保存失敗";
  if(last&&result?.status==="load_failed")last.textContent="読込失敗";
+ if(last&&result?.status==="app_instance_not_found")last.textContent="SeatFlow未登録";
+ if(last&&result?.status==="not_logged_in")last.textContent="未ログイン";
 }
 function formatCloudTime(value){
  try{return new Date(value).toLocaleString("ja-JP",{month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"})}catch{return "保存済み"}

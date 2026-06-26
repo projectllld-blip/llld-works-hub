@@ -2,46 +2,101 @@
 
 ## 目的
 
-v0.14.5でSupabase実接続、企業アカウント、利用アプリ一覧、SeatFlow `app_data` 保存・読込まで確認できたため、次の段階として未ログイン、読み込み中、データなし、保存失敗、読込失敗の表示を整理する。
+Supabase接続、ログイン、企業アカウント取得、利用アプリ一覧、SeatFlowクラウド保存、Works Portalの `portal_state` 保存で失敗したときに、画面が無言で壊れず、次に何をすればよいか分かる状態にする。
 
-このフェーズでは大きなUI変更やDB構造変更は行わない。
+## 今回改善したファイル
 
-## 今回実装したこと
+- `portal.html`
+- `account.html`
+- `assets/js/accountPage.js`
+- `apps/seatflow/index.html`
+- `docs/04_フェーズ記録/phase0-15-error-empty-states.md`
 
-- `account.html` の説明文を現在の接続状況に合わせた。
-- `accountPage.js` にアカウント読み込み中の表示を追加した。
-- `authService.js` のログインエラー判定で、メール未確認を先に判定するよう整理した。
-- `authService.js` のアカウント同期文言を、SeatFlowレイアウトのみ `app_data` 保存検証中という表現に整理した。
-- `appInstanceService.js` の空状態・取得成功文言を、現場の人が次に確認すべき内容に寄せた。
-- `seatflowCloudService.js` の初回データなし文言を「先にクラウド保存」と分かる表現にした。
-- SeatFlow画面でクラウド保存・読込中にボタン文言を一時変更するようにした。
-- SeatFlow画面で未保存、保存失敗、読込失敗の状態が同期ラベルに出るようにした。
+## 改善したエラー状態
 
-## まだ大きく触っていないこと
+### Portal
 
-- Supabase RLSの他社データ混入テストはv0.16で行う。
-- バックアップ・復元導線はv0.17で行う。
-- SeatFlowの競合解決、自動同期、リアルタイム同期はまだ行わない。
-- UI/UXの細かい調整は人間の確認後に行う。
+- 未ログイン時に「ログインすると会社ごとのポータル状態をクラウド保存できます」と表示
+- localStorageキャッシュのみ表示中に「前回保存データを一時表示中」と表示
+- クラウド確認失敗時に「クラウド確認に失敗しました」と表示
+- `works_portal` app_instanceなしの場合に管理者確認が必要と分かる表示
+- `portal_state` なしの場合に、次の編集操作で保存作成されると表示
+- 保存失敗時に「保存を再試行」ボタンを表示
+- 読込失敗時に「再試行」ボタンを表示
+- 未保存変更があるまま閉じる場合、ブラウザ標準の確認を出す
+- ファイル追加欄に、ファイル本体ではなくファイル名 / 種別 / リンクURL / 表示情報のみ保存する旨を表示
 
-## mock mode
+### Account
 
-- mock modeは維持する。
-- Supabase未設定時でも画面が壊れない。
-- 本番登録、実ログイン、クラウド保存は行わない。
+- アカウント取得例外時に、画面を空白にせず取得エラーを表示
+- `account.html` に「再読込」ボタンを追加
+- 企業アカウントなし、未ログイン、利用アプリ0件は既存表示を維持
 
-## supabase mode
+### SeatFlow
 
-- 読み込み中、未ログイン、企業アカウントなし、利用アプリなし、クラウド未保存を画面上で分かるようにする。
-- エラー時はユーザー向けに「何が起きたか」「次に何を確認するか」を出す。
-- 開発者向けの詳細はdocsと検証ログで扱い、画面には出しすぎない。
+- 未ログイン、企業アカウントなし、SeatFlow app_instanceなし、Supabase client未準備、未保存、保存失敗、読込失敗の表示文言を整理
+- 既存の「クラウド保存」「クラウド読込」ボタンを再試行導線として維持
 
-## 残リスク
+## 改善した空状態
 
-- ブラウザ上の実ログイン状態を使った目視確認は人間側で必要。
-- Supabase DashboardでRLS policyの詳細確認は必要。
-- 別ブラウザ、シークレットウィンドウでのSeatFlow読込確認は手動確認が必要。
+- `portal_state` なし: 初期表示を維持し、編集操作後に作成
+- localStorageキャッシュあり / Supabase読込失敗: キャッシュ表示を維持し、クラウド確認失敗と表示
+- account利用アプリ0件: 「利用中アプリはまだ登録されていません」を表示
+- SeatFlow `seat_layout` なし: 「先にクラウド保存を押してください」と表示
+
+## localStorageキャッシュの扱い
+
+- localStorageは体感速度改善用の一時キャッシュ
+- 正本はSupabase `app_data.data_type = portal_state`
+- ページ読み込み直後のキャッシュ表示だけではSupabaseへ保存しない
+- 古いlocalStorageでSupabase上の新しい `portal_state` を自動上書きしない
+- Supabase取得成功後にlocalStorageを最新化する
+
+## ファイル本体保存の扱い
+
+v0.15ではSupabase Storageへ進まない。
+
+ファイル追加・差し替えで保存対象にするのは以下のみ。
+
+- ファイル名
+- 種別
+- リンクURL
+- 表示用メタデータ
+
+PDF / 画像 / Excelなどのファイル本体保存、添付ファイル権限管理、削除履歴は未実装。
+
+## 未対応のまま残したこと
+
+- Supabase Storage
+- ポータル専用テーブル
+- 詳細なRLS実地テスト
+- 他社データ混入テスト
+- SeatFlow保存失敗を人工的に発生させたブラウザ確認
+- login / signupの全エラーを実Supabaseで網羅確認
+- app_instances 0件を実DBで作っての表示確認
+
+## Supabase Dashboardで人間が確認すべきこと
+
+- `apps` に `works_portal` が存在する
+- 対象企業に `works_portal` app_instance がある
+- `app_data.data_type = portal_state` が保存される
+- 他社の `portal_state` が見えない
+- RLSが無効化されていない
+- SeatFlowの `seat_layout` 保存に影響がない
+
+## v0.16で確認すること
+
+- 自社 `company_accounts` だけ読める
+- 他社 `company_accounts` が読めない
+- 自社 `app_instances` だけ読める
+- 他社 `app_instances` が読めない
+- 自社 `app_data.portal_state` だけ読める / 更新できる
+- 他社 `app_data.portal_state` が読めない / 更新できない
+- 自社 `app_data.seat_layout` だけ読める / 更新できる
+- 他社 `app_data.seat_layout` が読めない / 更新できない
 
 ## 次に進む候補
 
 v0.16 RLS・他社データ混入テスト。
+
+ただし、人間のブラウザ確認で保存失敗、読込失敗、未ログイン、キャッシュのみ表示が意図どおり見えるか確認してから進める。
