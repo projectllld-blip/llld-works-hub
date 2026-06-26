@@ -636,6 +636,10 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
 .todo-list li{
   overflow:hidden;
 }
+.todo-list li.todo-active{
+  border-color:rgba(18,184,171,.55)!important;
+  background:var(--tealSoft)!important;
+}
 .todo-body textarea{
   width:100%!important;
   min-height:64px!important;
@@ -724,6 +728,115 @@ body.tree-dragging{
   border-radius:8px;
   background:#fff;
   color:var(--text);
+}
+.tree-edit-form textarea{
+  width:100%;
+  min-height:96px;
+  padding:10px 12px;
+  border:1px solid #cfd9e6;
+  border-radius:8px;
+  background:#fff;
+  color:var(--text);
+  line-height:1.55;
+  resize:vertical;
+}
+.download-menu-wrap{
+  position:relative;
+}
+.download-icon-btn{
+  width:38px;
+  min-width:38px;
+  padding:0!important;
+  font-size:1.05rem!important;
+}
+.download-menu{
+  position:absolute;
+  right:0;
+  top:calc(100% + 6px);
+  z-index:20;
+  display:none;
+  min-width:96px;
+  padding:6px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fff;
+  box-shadow:0 12px 32px rgba(6,24,41,.16);
+}
+.download-menu.show{
+  display:grid;
+  gap:4px;
+}
+.download-menu button{
+  min-height:30px;
+  border:0;
+  border-radius:7px;
+  background:#fff;
+  color:var(--text);
+  text-align:left;
+  padding:0 9px;
+}
+.download-menu button:hover{
+  background:#f3f7fb;
+}
+.tree-file-replace{
+  display:grid;
+  gap:7px;
+}
+.tree-file-drop{
+  min-height:58px;
+  display:grid;
+  place-items:center;
+  border:1.5px dashed rgba(18,184,171,.45);
+  border-radius:10px;
+  background:var(--tealSoft);
+  color:var(--muted);
+  text-align:center;
+  padding:10px;
+}
+.tree-file-drop.dragover{
+  background:#dbf8f4;
+  border-color:var(--teal);
+  color:var(--teal2);
+}
+.tree-file-replace small{
+  color:var(--muted);
+}
+.tree-card.edit-mode .node.drop-target-node > ul{
+  background:rgba(18,184,171,.07);
+  border-left-color:rgba(18,184,171,.65);
+}
+.tree-card.edit-mode .node.drop-target-node > .row .fname::after{
+  content:" この中へ移動";
+  margin-left:6px;
+  color:var(--teal2);
+  font-size:.82rem;
+  font-weight:500;
+}
+.tree-card.edit-mode .tree-edit-actions .mini-btn{
+  min-width:34px;
+}
+.todo-panel{
+  height:var(--panelH)!important;
+}
+.todo-body{
+  grid-template-rows:auto 1fr!important;
+  min-height:calc(var(--panelH) - 58px)!important;
+}
+.todo-toolbar{
+  display:grid!important;
+  grid-template-columns:minmax(0,auto) max-content!important;
+  align-items:center!important;
+  gap:8px!important;
+}
+.todo-days,.todo-export{
+  flex-wrap:nowrap!important;
+  align-items:center!important;
+}
+.todo-day-btn,.export-btn{
+  white-space:nowrap!important;
+}
+.todo-list{
+  max-height:none!important;
 }
 .queue-item{
   grid-template-columns:28px minmax(150px,1.4fr) minmax(120px,.7fr) minmax(160px,1fr) minmax(120px,1.2fr) auto auto!important;
@@ -1277,6 +1390,24 @@ body.tree-dragging{
 @media(max-width:1180px){.header{grid-template-columns:auto auto minmax(230px,1fr) auto}.header-spacer{display:none}.content-card{flex-basis:calc((100% - 14px)/2);max-width:calc((100% - 14px)/2)}.file-add-grid{grid-template-columns:1fr 1fr}.file-layout{grid-template-columns:1fr}.queue-item{grid-template-columns:28px 1fr 120px 150px auto}}
 @media(max-width:900px){:root{--head:auto;--side:1fr}html{font-size:86%}.header{position:static;grid-template-columns:1fr}.layout{grid-template-columns:1fr}.side{position:static;height:auto;padding:12px 10px}.side ul{grid-auto-flow:column;grid-auto-columns:max-content;overflow-x:auto}.pins{display:none}.main{padding:14px 12px 36px}.dashboard-grid,.quick-log-grid{grid-template-columns:1fr}.card-scroll .content-card,.content-card{flex-basis:280px!important;max-width:280px!important}.scroll-arrow{display:none}.panel.board-height,.panel.quick-height{height:330px}}
 @media(max-width:640px){.s-head,.file-add-top{grid-template-columns:1fr}.s-actions{justify-content:flex-start;flex-wrap:wrap}.file-add-grid,.queue-item{grid-template-columns:1fr}.quick-list{overflow:hidden!important}.quick-card{grid-template-columns:64px minmax(0,1fr) 58px!important;grid-template-rows:1fr!important;min-height:78px;height:78px!important;position:relative}.quick-card .mini-btn{grid-column:3!important;grid-row:1!important;justify-self:end;align-self:center;width:54px!important;min-width:54px!important;height:34px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;text-align:center!important;line-height:1!important}.quick-card h4,.quick-card p{overflow:hidden;text-overflow:ellipsis}.quick-card h4{white-space:nowrap}.quick-card p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}.qthumb{width:64px}.viewer-toolbar{align-items:flex-start;flex-wrap:wrap}.viewer-toolbar>div{display:flex;gap:6px;flex-wrap:wrap}.tree-body{overflow:auto}.row{grid-template-columns:22px 20px 18px minmax(150px,1fr) auto}.fdate{display:none}.fname{white-space:normal;line-height:1.3}.pmeta div{grid-template-columns:1fr}.card-scroll{overflow-x:auto!important;overflow-y:hidden!important;touch-action:pan-x pan-y!important;-webkit-overflow-scrolling:touch!important;scroll-snap-type:x proximity!important}.card-scroll .content-card,.content-card{flex:0 0 min(84vw,300px)!important;max-width:min(84vw,300px)!important;scroll-snap-align:start!important}#contentsScroll.card-scroll .content-card{flex-basis:min(84vw,300px)!important;max-width:min(84vw,300px)!important}}
+/* v19 final overrides */
+.todo-panel,.panel.board-height.todo-panel{height:330px!important;min-height:330px!important}
+.todo-body{height:calc(100% - 58px)!important;grid-template-rows:auto 1fr!important}
+.todo-toolbar{display:grid!important;grid-template-columns:minmax(0,1fr) max-content!important;align-items:center!important}
+.todo-days,.todo-export{flex-wrap:nowrap!important;min-width:0!important}
+.todo-days{overflow:hidden!important}
+.todo-export{justify-content:flex-end!important}
+.todo-day-btn,.export-btn{white-space:nowrap!important;padding-inline:9px!important}
+.todo-list{max-height:none!important;overflow:auto!important}
+@media(max-width:900px){
+  .todo-panel,.panel.board-height.todo-panel{height:330px!important;min-height:330px!important}
+  .todo-toolbar{grid-template-columns:1fr!important;gap:7px!important}
+  .todo-days,.todo-export{justify-content:flex-start!important}
+}
+@media(max-width:640px){
+  .todo-body{grid-template-rows:auto 1fr!important}
+  .todo-list{max-height:none!important}
+}
 </style>
 </head>
 <body>
@@ -1326,10 +1457,17 @@ body.tree-dragging{
               <button class="todo-day-btn" data-day="calendar">📅</button>
             </div>
             <div class="todo-export">
-              <button class="export-btn" id="memoDetailBtn" type="button">メモ詳細</button>
-              <button class="export-btn danger-btn" id="memoDeleteBtn" type="button">メモ削除</button>
-              <button class="export-btn" data-export="csv">CSV</button>
-              <button class="export-btn" data-export="excel">Excel</button>
+              <button class="export-btn" id="memoDetailBtn" type="button">詳細</button>
+              <button class="export-btn danger-btn" id="memoDeleteBtn" type="button">削除</button>
+              <div class="download-menu-wrap">
+                <button class="export-btn download-icon-btn" id="todoDownloadBtn" type="button" aria-label="ダウンロード形式を選ぶ">⬇</button>
+                <div class="download-menu" id="todoDownloadMenu" aria-hidden="true">
+                  <button type="button" data-export="csv">CSV</button>
+                  <button type="button" data-export="excel">Excel</button>
+                  <button type="button" data-export="pdf">PDF</button>
+                  <button type="button" data-export="jpg">JPG</button>
+                </div>
+              </div>
             </div>
           </div>
           <ul class="todo-list" id="todoList">
@@ -1340,7 +1478,6 @@ body.tree-dragging{
             <li data-title="社内テンプレートmockの表示名を整理" data-author="川岡" data-date="今日" data-detail="社内テンプレート欄のタイトル、カテゴリ、表示順が実際の利用シーンに合っているか確認します。"><input type="checkbox"><span class="todo-main"><strong class="todo-title">社内テンプレート表示名整理</strong><small class="todo-author">投稿者：川岡</small></span></li>
             <li data-title="掲示板投稿のカテゴリ案を決める" data-author="管理" data-date="今日" data-detail="塾事業、社内運営、販売準備、保管庫など、掲示板投稿で使うカテゴリ案を整理します。"><input type="checkbox"><span class="todo-main"><strong class="todo-title">掲示板カテゴリ案</strong><small class="todo-author">投稿者：管理</small></span></li>
           </ul>
-          <textarea id="dailyMemo" placeholder="今日のメモ、確認したいこと、あとでやることを書けます。"></textarea>
         </div>
       </aside>
     </div></div>
@@ -1401,7 +1538,7 @@ body.tree-dragging{
   <path d="M5 21h14"/>
 </svg>
 </button></div></div>
-          <div class="tree-actions"><span class="tree-edit-status" id="treeEditStatus">編集モード中</span><button class="mini-btn" id="openAllFolders">全て開く</button><button class="mini-btn" id="closeAllFolders">全て閉じる</button><button class="mini-btn" id="closeSelectedFolder">選択フォルダを閉じる</button><span class="tree-edit-actions"><button class="mini-btn" id="renameTreeItemBtn" type="button">名前変更</button><button class="mini-btn" id="moveTreeItemBtn" type="button">移動</button><button class="mini-btn" id="replaceTreeItemBtn" type="button">リンク/種別</button><button class="mini-btn danger-btn" id="deleteTreeItemBtn" type="button">削除</button></span></div>
+          <div class="tree-actions"><span class="tree-edit-status" id="treeEditStatus">編集モード中</span><button class="mini-btn" id="openAllFolders">全て開く</button><button class="mini-btn" id="closeAllFolders">全て閉じる</button><button class="mini-btn" id="closeSelectedFolder">選択フォルダを閉じる</button><span class="tree-edit-actions"><button class="mini-btn" id="treeUndoBtn" type="button">←</button><button class="mini-btn" id="treeRedoBtn" type="button">→</button><button class="mini-btn" id="renameTreeItemBtn" type="button">名前変更</button><button class="mini-btn" id="moveTreeItemBtn" type="button">移動</button><button class="mini-btn" id="replaceTreeItemBtn" type="button">リンク/種別</button><button class="mini-btn danger-btn" id="deleteTreeItemBtn" type="button">削除</button></span></div>
           <div class="tree-body"><ul class="tree">
             <li class="node"><div class="row" data-folder-path="教育事業"><input class="check" type="checkbox"><button class="folder-btn" type="button"><span class="caret">▼</span><span>📁</span><span class="fname">教育事業</span><span class="ftype">12件</span><span class="fdate">6/26 18:40</span></button></div>
               <ul>
@@ -1523,6 +1660,37 @@ body.tree-dragging{
   </div>
 </div>
 
+<div class="todo-modal" id="todoAddModal" aria-hidden="true">
+  <div class="todo-modal-card">
+    <div class="todo-modal-head">
+      <h3>メモ / To Doを追加</h3>
+      <button class="todo-modal-close" id="todoAddClose" type="button">×</button>
+    </div>
+    <div class="todo-modal-body">
+      <div class="tree-edit-form">
+        <label>題名
+          <input id="todoAddTitle" type="text" autocomplete="off" placeholder="例：保管庫の構成確認">
+        </label>
+        <label>詳細
+          <textarea id="todoAddDetail" placeholder="確認したいこと、あとでやることを書きます。"></textarea>
+        </label>
+        <label>投稿者
+          <select id="todoAddAuthor">
+            <option value="川岡">川岡</option>
+            <option value="管理">管理</option>
+            <option value="LLLD">LLLD</option>
+            <option value="メモ">メモ</option>
+          </select>
+        </label>
+      </div>
+      <div class="modal-actions">
+        <button class="mini-btn" id="todoAddCancel" type="button">キャンセル</button>
+        <button class="mini-btn primary" id="todoAddSave" type="button">追加</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="log-confirm-modal" id="logConfirmModal" aria-hidden="true">
   <div class="log-confirm-card" role="dialog" aria-modal="true" aria-labelledby="logConfirmTitle">
     <div class="log-confirm-head">
@@ -1556,12 +1724,21 @@ body.tree-dragging{
             <option value="PowerPoint">PowerPoint</option>
             <option value="HTML">HTML</option>
             <option value="Link">リンク</option>
+            <option value="画像">画像</option>
+            <option value="ZIP">ZIP</option>
             <option value="その他">その他</option>
           </select>
         </label>
         <label id="treeEditUrlField">リンクURL / 相対パス
           <input id="treeEditUrlInput" type="text" autocomplete="off" placeholder="apps/quiz-maker/index.html または https://...">
         </label>
+        <div class="tree-file-replace" id="treeEditFileField">
+          <label>ファイル差し替え
+            <input id="treeEditFileInput" type="file">
+          </label>
+          <div class="tree-file-drop" id="treeEditFileDrop">ここへファイルをドラッグ＆ドロップ</div>
+          <small id="treeEditFileName">選択中の差し替えファイルはありません。</small>
+        </div>
       </div>
       <div class="log-confirm-actions">
         <button class="mini-btn" id="treeEditCancel" type="button">キャンセル</button>
@@ -1702,7 +1879,15 @@ body.tree-dragging{
   const todoModalDetail = document.getElementById("todoModalDetail");
   const todoModalClose = document.getElementById("todoModalClose");
   const detailDeleteBtn = document.getElementById("detailDeleteBtn");
-  const dailyMemo = document.getElementById("dailyMemo");
+  const todoAddModal = document.getElementById("todoAddModal");
+  const todoAddClose = document.getElementById("todoAddClose");
+  const todoAddCancel = document.getElementById("todoAddCancel");
+  const todoAddSave = document.getElementById("todoAddSave");
+  const todoAddTitle = document.getElementById("todoAddTitle");
+  const todoAddDetail = document.getElementById("todoAddDetail");
+  const todoAddAuthor = document.getElementById("todoAddAuthor");
+  const todoDownloadBtn = document.getElementById("todoDownloadBtn");
+  const todoDownloadMenu = document.getElementById("todoDownloadMenu");
   let activeDetailContext=null;
   function closeDetailModal(){
     todoModal.classList.remove("show");
@@ -1743,6 +1928,8 @@ body.tree-dragging{
     const item=event.target.closest("li");
     if(!item)return;
     if(event.target.tagName === "INPUT") return;
+    document.querySelectorAll("#todoList li.todo-active").forEach(row=>row.classList.remove("todo-active"));
+    item.classList.add("todo-active");
     openDetailModal({
       type:"todo",
       element:item,
@@ -1763,43 +1950,58 @@ body.tree-dragging{
     }else if(activeDetailContext.type==="todo" && activeDetailContext.element){
       activeDetailContext.element.remove();
       show("To Doを削除しました。");
-    }else if(activeDetailContext.type==="memo"){
-      dailyMemo.value="";
-      show("メモを削除しました。");
     }
     closeDetailModal();
   });
 
   document.getElementById("memoDetailBtn")?.addEventListener("click", ()=>{
-    openDetailModal({
-      type:"memo",
-      title:"今日のメモ",
-      author:"メモ",
-      date:"今日",
-      detail:dailyMemo?.value.trim() || "メモはまだ入力されていません。"
-    });
+    const first=document.querySelector("#todoList li");
+    if(first)first.click();else show("表示できるメモ / To Doがありません。");
   });
   document.getElementById("memoDeleteBtn")?.addEventListener("click", ()=>{
-    if(!dailyMemo?.value.trim()){show("削除するメモはありません。");return}
-    if(confirm("メモを削除しますか？")){
-      dailyMemo.value="";
-      show("メモを削除しました。");
+    const selected=document.querySelector("#todoList li.todo-active")||document.querySelector("#todoList li");
+    if(!selected){show("削除するメモ / To Doがありません。");return}
+    const title=selected.dataset.title||"メモ / To Do";
+    if(confirm(`「${title}」を削除しますか？`)){
+      selected.remove();
+      show("メモ / To Doを削除しました。");
     }
   });
-  document.getElementById("addMemoTodoBtn")?.addEventListener("click", ()=>{
-    const text=dailyMemo?.value.trim();
-    if(!text){show("追加するメモを入力してください。");dailyMemo?.focus();return}
+  function closeTodoAddModal(){
+    todoAddModal?.classList.remove("show");
+    todoAddModal?.setAttribute("aria-hidden","true");
+  }
+  function openTodoAddModal(){
+    todoAddTitle.value="";
+    todoAddDetail.value="";
+    todoAddAuthor.value="川岡";
+    todoAddModal?.classList.add("show");
+    todoAddModal?.setAttribute("aria-hidden","false");
+    setTimeout(()=>todoAddTitle?.focus(),0);
+  }
+  function saveTodoFromModal(){
+    const title=todoAddTitle.value.trim();
+    const detail=todoAddDetail.value.trim();
+    const author=todoAddAuthor.value;
+    if(!title){show("題名を入力してください。");todoAddTitle.focus();return}
     const item=document.createElement("li");
-    item.dataset.title=text.length>28?text.slice(0,28)+"…":text;
-    item.dataset.author="メモ";
+    item.dataset.title=title;
+    item.dataset.author=author;
     item.dataset.date="今日";
-    item.dataset.detail=text;
-    item.innerHTML='<input type="checkbox"><span class="todo-main"><strong class="todo-title"></strong><small class="todo-author">投稿者：メモ</small></span>';
+    item.dataset.detail=detail||title;
+    item.innerHTML='<input type="checkbox"><span class="todo-main"><strong class="todo-title"></strong><small class="todo-author"></small></span>';
     item.querySelector(".todo-title").textContent=item.dataset.title;
+    item.querySelector(".todo-author").textContent="投稿者："+author;
     document.getElementById("todoList")?.prepend(item);
-    dailyMemo.value="";
-    show("To Doに追加しました。");
-  });
+    closeTodoAddModal();
+    show("メモ / To Doを追加しました。");
+  }
+  document.getElementById("addMemoTodoBtn")?.addEventListener("click", openTodoAddModal);
+  todoAddClose?.addEventListener("click", closeTodoAddModal);
+  todoAddCancel?.addEventListener("click", closeTodoAddModal);
+  todoAddSave?.addEventListener("click", saveTodoFromModal);
+  todoAddModal?.addEventListener("click", event=>{if(event.target===todoAddModal)closeTodoAddModal()});
+  todoAddModal?.addEventListener("keydown", event=>{if(event.key==="Escape")closeTodoAddModal();if(event.key==="Enter"&&!event.isComposing&&event.target!==todoAddDetail){event.preventDefault();saveTodoFromModal()}});
 
   todoModalClose?.addEventListener("click", closeDetailModal);
   todoModal?.addEventListener("click", event=>{
@@ -1816,11 +2018,24 @@ body.tree-dragging{
     });
   });
 
-  document.querySelectorAll("[data-export]").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      const type = btn.dataset.export === "excel" ? "Excel" : "CSV";
-      show("表示中のTo Doを" + type + "で出力する想定です。");
-    });
+  todoDownloadBtn?.addEventListener("click", event=>{
+    event.stopPropagation();
+    todoDownloadMenu?.classList.toggle("show");
+    todoDownloadMenu?.setAttribute("aria-hidden",todoDownloadMenu.classList.contains("show")?"false":"true");
+  });
+  todoDownloadMenu?.addEventListener("click", event=>{
+    const btn=event.target.closest("[data-export]");
+    if(!btn)return;
+    const labels={csv:"CSV",excel:"Excel",pdf:"PDF",jpg:"JPG"};
+    show("表示中のTo Doを"+(labels[btn.dataset.export]||"ファイル")+"で出力する想定です。");
+    todoDownloadMenu.classList.remove("show");
+    todoDownloadMenu.setAttribute("aria-hidden","true");
+  });
+  document.addEventListener("click", event=>{
+    if(!event.target.closest(".download-menu-wrap")){
+      todoDownloadMenu?.classList.remove("show");
+      todoDownloadMenu?.setAttribute("aria-hidden","true");
+    }
   });
 
 
@@ -1837,6 +2052,8 @@ body.tree-dragging{
   let draggedTreeRow=null;
   let pointerTreeDrag=null;
   let suppressTreeClickUntil=0;
+  const treeUndoStack=[];
+  const treeRedoStack=[];
   const folderOptions=["教育事業 / 体験授業資料","教育事業 / 英検資料","教育事業 / 参考リンク","業務効率化 / 勤怠","業務効率化 / 座席管理","業務効率化 / HTMLアプリ","コンサル / 採用","コンサル / 1on1","コンサル / 管理職代行"];
   function selectFolder(row){if(!row?.dataset.folderPath)return;document.querySelectorAll("[data-folder-path]").forEach(r=>r.classList.remove("sel"));row.classList.add("sel");selectedFolderRow=row;selectedFolderLabel.textContent=row.dataset.folderPath;folderSelect.value=row.dataset.folderPath}
   function selectFile(row){document.querySelectorAll(".tree-body .row.file-selected").forEach(r=>r.classList.remove("file-selected"));selectedFileRow=null;if(row?.dataset.fileName){row.classList.add("file-selected");selectedFileRow=row}}
@@ -1848,6 +2065,36 @@ body.tree-dragging{
   function treeFileRows(){return Array.from(document.querySelectorAll(".tree-body .row[data-file-name]"))}
   function treeFolderRows(){return Array.from(document.querySelectorAll(".tree-body .row[data-folder-path]"))}
   function selectedTreeRow(){return selectedFileRow?.dataset.fileName ? selectedFileRow : selectedFolderRow}
+  function serializeTreeState(){return document.querySelector(".tree")?.innerHTML||""}
+  function restoreTreeState(html){
+    const tree=document.querySelector(".tree");
+    if(!tree)return;
+    tree.innerHTML=html;
+    selectedFolderRow=document.querySelector("[data-folder-path].sel")||document.querySelector("[data-folder-path]");
+    selectedFileRow=null;
+    clearSelectedFile();
+    if(selectedFolderRow)selectFolder(selectedFolderRow);
+    setTreeEditMode(treeEditMode,true);
+  }
+  function pushTreeHistory(){
+    const state=serializeTreeState();
+    if(!state)return;
+    if(treeUndoStack[treeUndoStack.length-1]!==state)treeUndoStack.push(state);
+    if(treeUndoStack.length>50)treeUndoStack.shift();
+    treeRedoStack.length=0;
+  }
+  function undoTreeEdit(){
+    if(!treeUndoStack.length){show("戻せる操作はありません。");return}
+    treeRedoStack.push(serializeTreeState());
+    restoreTreeState(treeUndoStack.pop());
+    show("1つ前に戻しました。");
+  }
+  function redoTreeEdit(){
+    if(!treeRedoStack.length){show("進める操作はありません。");return}
+    treeUndoStack.push(serializeTreeState());
+    restoreTreeState(treeRedoStack.pop());
+    show("1つ進めました。");
+  }
   function setTreeEditMode(active,quiet=false){
     treeEditMode=active;
     document.querySelector(".tree-card")?.classList.toggle("edit-mode",active);
@@ -1897,6 +2144,7 @@ body.tree-dragging{
       folderNode?.appendChild(targetList);
     }
     if(!fileLi||!targetList)return false;
+    pushTreeHistory();
     targetList.appendChild(fileLi);
     updateRowPath(fileRow,folderRow.dataset.folderPath);
     selectFolder(folderRow);
@@ -1919,6 +2167,7 @@ body.tree-dragging{
     const oldPath=folderRow.dataset.folderPath;
     const folderName=oldPath.split(" / ").pop();
     const newPath=targetFolderRow.dataset.folderPath+" / "+folderName;
+    pushTreeHistory();
     targetList.appendChild(sourceNode);
     folderRow.dataset.folderPath=newPath;
     updateFolderChildrenPaths(sourceNode,oldPath,newPath);
@@ -1931,6 +2180,7 @@ body.tree-dragging{
   }
   function clearTreeDropHover(){
     document.querySelectorAll(".tree-body .tree-drop-hover,.tree-body .drop-target").forEach(row=>row.classList.remove("tree-drop-hover","drop-target"));
+    document.querySelectorAll(".tree-body .drop-target-node").forEach(node=>node.classList.remove("drop-target-node"));
   }
   function validTreeDropTarget(target,row){
     if(!target?.dataset.folderPath||!row||target===row)return false;
@@ -1941,7 +2191,11 @@ body.tree-dragging{
   }
   function folderRowFromPoint(x,y,row){
     const el=document.elementFromPoint(x,y);
-    const target=el?.closest?.(".tree-body .row[data-folder-path]");
+    let target=el?.closest?.(".tree-body .row[data-folder-path]");
+    if(!target){
+      const list=el?.closest?.(".tree-body ul");
+      target=list?.closest?.(".node")?.querySelector?.(":scope > .row[data-folder-path]")||null;
+    }
     return validTreeDropTarget(target,row)?target:null;
   }
   function startPointerTreeDrag(event,row){
@@ -1965,6 +2219,7 @@ body.tree-dragging{
     if(target){
       target.closest(".node")?.classList.remove("closed");
       target.classList.add("tree-drop-hover","drop-target");
+      target.closest(".node")?.classList.add("drop-target-node");
     }
     pointerTreeDrag.target=target;
   }
@@ -1997,29 +2252,64 @@ body.tree-dragging{
   const treeEditTypeInput=document.getElementById("treeEditTypeInput");
   const treeEditUrlField=document.getElementById("treeEditUrlField");
   const treeEditUrlInput=document.getElementById("treeEditUrlInput");
+  const treeEditFileField=document.getElementById("treeEditFileField");
+  const treeEditFileInput=document.getElementById("treeEditFileInput");
+  const treeEditFileDrop=document.getElementById("treeEditFileDrop");
+  const treeEditFileName=document.getElementById("treeEditFileName");
   const treeEditCancel=document.getElementById("treeEditCancel");
   const treeEditSave=document.getElementById("treeEditSave");
   let editingTreeRow=null;
+  let pendingTreeReplaceFile=null;
+  function fileTypeFromName(name){
+    const ext=(name.split(".").pop()||"").toLowerCase();
+    if(ext==="pdf")return "PDF";
+    if(["doc","docx"].includes(ext))return "Word";
+    if(["xls","xlsx"].includes(ext))return "Excel";
+    if(["ppt","pptx"].includes(ext))return "PowerPoint";
+    if(["html","htm"].includes(ext))return "HTML";
+    if(["jpg","jpeg","png","gif","webp"].includes(ext))return "画像";
+    if(ext==="zip")return "ZIP";
+    return "その他";
+  }
+  function updateTreeEditFields(){
+    const isFile=editingTreeRow?.dataset.fileName;
+    const type=treeEditTypeInput.value;
+    const linkLike=/^(Link|HTML)$/i.test(type);
+    treeEditUrlField.style.display=isFile&&linkLike?"grid":"none";
+    treeEditFileField.style.display=isFile&&!linkLike?"grid":"none";
+  }
+  function setTreeReplaceFile(file){
+    if(!file)return;
+    pendingTreeReplaceFile=file;
+    treeEditNameInput.value=file.name;
+    treeEditTypeInput.value=fileTypeFromName(file.name);
+    treeEditFileName.textContent="差し替え予定："+file.name;
+    updateTreeEditFields();
+  }
   function closeTreeEditModal(){
     treeEditModal?.classList.remove("show");
     treeEditModal?.setAttribute("aria-hidden","true");
     editingTreeRow=null;
+    pendingTreeReplaceFile=null;
   }
   function openTreeEditModal(row){
     if(!treeEditMode){show("名前変更には歯車から編集モードをONにしてください。");return}
     if(!row){show("名前変更するファイルまたはフォルダを選択してください。");return}
     const isFolder=Boolean(row.dataset.folderPath);
     editingTreeRow=row;
+    pendingTreeReplaceFile=null;
     if(row.dataset.fileName)selectFile(row);else{selectFolder(row);clearSelectedFile()}
     treeEditModalTitle.textContent=isFolder?"フォルダを編集":"ファイル / リンクを編集";
     treeEditNameInput.value=isFolder ? row.dataset.folderPath.split(" / ").pop() : row.dataset.fileName;
     treeEditTypeField.style.display=isFolder?"none":"grid";
-    treeEditUrlField.style.display=isFolder?"none":"grid";
     treeEditTypeInput.value=row.dataset.fileType||"その他";
     if(!Array.from(treeEditTypeInput.options).some(option=>option.value===treeEditTypeInput.value)){
       treeEditTypeInput.value="その他";
     }
     treeEditUrlInput.value=row.dataset.fileUrl||"";
+    treeEditFileInput.value="";
+    treeEditFileName.textContent="選択中の差し替えファイルはありません。";
+    updateTreeEditFields();
     treeEditModal?.classList.add("show");
     treeEditModal?.setAttribute("aria-hidden","false");
     setTimeout(()=>treeEditNameInput?.focus(),0);
@@ -2030,6 +2320,7 @@ body.tree-dragging{
     const isFolder=Boolean(row.dataset.folderPath);
     const clean=treeEditNameInput.value.trim();
     if(!clean){show("名前を入力してください。");return}
+    pushTreeHistory();
     if(isFolder){
       const oldPath=row.dataset.folderPath;
       const parent=oldPath.includes(" / ")?oldPath.split(" / ").slice(0,-1).join(" / "):"";
@@ -2046,11 +2337,16 @@ body.tree-dragging{
       if(link)link.textContent=clean;else slot.textContent=clean;
       const nextType=treeEditTypeInput.value.trim()||"その他";
       const nextUrl=treeEditUrlInput.value.trim();
+      const linkLike=/^(Link|HTML)$/i.test(nextType);
       row.dataset.fileType=nextType;
-      if(nextUrl)row.dataset.fileUrl=nextUrl;else delete row.dataset.fileUrl;
+      if(linkLike&&nextUrl)row.dataset.fileUrl=nextUrl;else delete row.dataset.fileUrl;
+      if(pendingTreeReplaceFile){
+        row.dataset.fileDate=new Date().toLocaleString("ja-JP",{year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"});
+      }
       const typeSlot=row.querySelector(".ftype");
+      const dateSlot=row.querySelector(".fdate");
       const nameSlot=row.querySelector(".fname");
-      if(nextUrl){
+      if(linkLike&&nextUrl){
         nameSlot.textContent="";
         const link=document.createElement("a");
         link.className="tree-file-link";
@@ -2061,6 +2357,7 @@ body.tree-dragging{
         nameSlot.textContent=clean;
       }
       if(typeSlot)typeSlot.textContent=nextType;
+      if(dateSlot&&pendingTreeReplaceFile)dateSlot.textContent="今";
       selectFile(row);
       preview(row);
     }
@@ -2087,6 +2384,7 @@ body.tree-dragging{
     if(selectedFileRow?.dataset.fileName){
       const name=selectedFileRow.dataset.fileName;
       if(!confirm(`「${name}」を保管庫ツリーから削除しますか？`))return;
+      pushTreeHistory();
       selectedFileRow.closest("li")?.remove();
       clearSelectedFile();
       show("ファイルを削除しました。");
@@ -2096,6 +2394,7 @@ body.tree-dragging{
     if(selectedFolderRow?.dataset.folderPath){
       const name=selectedFolderRow.dataset.folderPath;
       if(!confirm(`「${name}」フォルダを削除しますか？中の表示項目も消えます。`))return;
+      pushTreeHistory();
       const next=document.querySelector("[data-folder-path]");
       selectedFolderRow.closest(".node")?.remove();
       selectedFolderRow=next&&document.body.contains(next)?next:null;
@@ -2120,10 +2419,9 @@ body.tree-dragging{
     viewerStage.innerHTML='<div class="doc-preview"><div style="font-size:2rem;margin-bottom:14px">'+iconLabel+'</div><strong>'+name+'</strong><p style="color:#6d7b92;word-break:break-all">'+url+'</p>'+openLinkHtml(url,linkLabel,name)+'</div><span class="preview-fit-note">自動フィット</span>';
   }
   if(row.dataset.fileName)addLog("📂",name+" を開きました",path)}
-  document.querySelectorAll(".folder-btn").forEach(btn=>btn.addEventListener("click",event=>{if(Date.now()<suppressTreeClickUntil){event.preventDefault();event.stopPropagation();return}const row=btn.closest(".row");selectFolder(row);clearSelectedFile();preview(row);if(!treeEditMode)btn.closest(".node")?.classList.toggle("closed")}));
   document.querySelectorAll(".tree .node").forEach(node=>node.classList.add("closed"));
   const treeBody=document.querySelector(".tree-body");
-  treeBody?.addEventListener("click",e=>{if(Date.now()<suppressTreeClickUntil){e.preventDefault();e.stopPropagation();return}const row=e.target.closest(".row");if(!row)return;if(e.target.closest(".check")||e.target.closest(".folder-btn"))return;if(row.dataset.folderPath){selectFolder(row);clearSelectedFile();preview(row);return}if(row.dataset.fileName){if(e.target.closest(".tree-file-link")){e.preventDefault();e.stopPropagation();selectFile(row);preview(row);openFileLinkConfirm(row);return}toggleFileCheck(row);selectFile(row);preview(row);return}preview(row)});
+  treeBody?.addEventListener("click",e=>{if(Date.now()<suppressTreeClickUntil){e.preventDefault();e.stopPropagation();return}const row=e.target.closest(".row");if(!row)return;if(e.target.closest(".check"))return;if(e.target.closest(".folder-btn")){selectFolder(row);clearSelectedFile();preview(row);row.closest(".node")?.classList.toggle("closed");return}if(row.dataset.folderPath){selectFolder(row);clearSelectedFile();preview(row);return}if(row.dataset.fileName){if(e.target.closest(".tree-file-link")){e.preventDefault();e.stopPropagation();selectFile(row);preview(row);openFileLinkConfirm(row);return}toggleFileCheck(row);selectFile(row);preview(row);return}preview(row)});
   treeBody?.addEventListener("dblclick",e=>{if(!treeEditMode)return;const row=e.target.closest(".row[data-file-name], .row[data-folder-path]");if(!row)return;e.preventDefault();if(row.dataset.fileName)selectFile(row);else{selectFolder(row);clearSelectedFile()}openTreeEditModal(row)});
   treeBody?.addEventListener("pointerdown",e=>{
     if(!treeEditMode||e.pointerType==="touch"||e.button!==0||e.target.closest(".check"))return;
@@ -2148,15 +2446,48 @@ body.tree-dragging{
   treeBody?.addEventListener("dragend",()=>{draggedTreeRow?.classList.remove("drag-source");draggedTreeRow=null;document.querySelectorAll(".tree-body .drop-target").forEach(row=>row.classList.remove("drop-target"))});
   document.querySelectorAll(".row[data-folder-path]").forEach(row=>{row.addEventListener("dragover",e=>{if(treeEditMode&&draggedTreeRow){e.preventDefault();e.dataTransfer.dropEffect="move";row.closest(".node")?.classList.remove("closed")}else if(!treeEditMode){e.preventDefault()}row.classList.add("drop-target")});row.addEventListener("dragleave",()=>row.classList.remove("drop-target"));row.addEventListener("drop",e=>{e.preventDefault();row.classList.remove("drop-target");if(treeEditMode&&draggedTreeRow){if(draggedTreeRow.dataset.fileName)moveFileRowToFolder(draggedTreeRow,row);else moveFolderRowToFolder(draggedTreeRow,row);draggedTreeRow?.classList.remove("drag-source");draggedTreeRow=null;return}selectFolder(row);clearSelectedFile();const name=e.dataTransfer.getData("text/plain")||"追加ファイル";show(`「${name}」を「${row.dataset.folderPath}」へ追加する想定です。`);addLog("📁","ファイルをフォルダへ移動",name+" → "+row.dataset.folderPath)})});
   document.getElementById("treeEditModeBtn")?.addEventListener("click",()=>setTreeEditMode(!treeEditMode));
+  document.getElementById("treeUndoBtn")?.addEventListener("click",undoTreeEdit);
+  document.getElementById("treeRedoBtn")?.addEventListener("click",redoTreeEdit);
   document.getElementById("renameTreeItemBtn")?.addEventListener("click",renameSelectedTreeItem);
   document.getElementById("moveTreeItemBtn")?.addEventListener("click",moveSelectedTreeItem);
   document.getElementById("deleteTreeItemBtn")?.addEventListener("click",deleteSelectedTreeItem);
   document.getElementById("replaceTreeItemBtn")?.addEventListener("click",replaceSelectedTreeItem);
   treeEditCancel?.addEventListener("click",closeTreeEditModal);
   treeEditSave?.addEventListener("click",saveTreeEditModal);
+  treeEditTypeInput?.addEventListener("change",updateTreeEditFields);
+  treeEditFileInput?.addEventListener("change",()=>setTreeReplaceFile(treeEditFileInput.files?.[0]));
+  treeEditFileDrop?.addEventListener("dragover",event=>{event.preventDefault();treeEditFileDrop.classList.add("dragover")});
+  treeEditFileDrop?.addEventListener("dragleave",()=>treeEditFileDrop.classList.remove("dragover"));
+  treeEditFileDrop?.addEventListener("drop",event=>{
+    event.preventDefault();
+    treeEditFileDrop.classList.remove("dragover");
+    setTreeReplaceFile(event.dataTransfer?.files?.[0]);
+  });
   treeEditModal?.addEventListener("click",event=>{if(event.target===treeEditModal)closeTreeEditModal()});
   treeEditModal?.addEventListener("keydown",event=>{if(event.key==="Escape")closeTreeEditModal();if(event.key==="Enter"&&!event.isComposing){event.preventDefault();saveTreeEditModal()}});
+  document.addEventListener("keydown",event=>{
+    if(!treeEditMode)return;
+    const tag=event.target?.tagName;
+    if(["INPUT","TEXTAREA","SELECT"].includes(tag))return;
+    if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==="z"){
+      event.preventDefault();
+      undoTreeEdit();
+    }
+    if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==="y"){
+      event.preventDefault();
+      redoTreeEdit();
+    }
+  });
   document.querySelectorAll(".check").forEach(ch=>{ch.addEventListener("click",e=>e.stopPropagation());ch.addEventListener("change",()=>{const row=ch.closest(".row");if(!row?.dataset.folderPath)return;const node=row.closest(".node");if(!node)return;node.querySelectorAll("ul .check").forEach(c=>c.checked=ch.checked)})});
+  treeBody?.addEventListener("change",event=>{
+    const ch=event.target.closest(".check");
+    if(!ch)return;
+    const row=ch.closest(".row");
+    if(!row?.dataset.folderPath)return;
+    const node=row.closest(".node");
+    if(!node)return;
+    node.querySelectorAll("ul .check").forEach(c=>c.checked=ch.checked);
+  });
   setTreeEditMode(false,true);
   const logConfirmModal=document.getElementById("logConfirmModal");
   const logConfirmTitle=document.getElementById("logConfirmTitle");
