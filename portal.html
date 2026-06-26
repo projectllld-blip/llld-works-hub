@@ -1790,14 +1790,14 @@ body.tree-dragging{
   }
   async function savePortalStateNow(){
     if(portalApplyingState||!portalStateReady||!window.PortalStateService?.savePortalState)return;
-    setPortalSaveStatus("保存中...","saving");
+    setPortalSaveStatus("クラウド確認中","saving");
     const result=await window.PortalStateService.savePortalState(serializePortalState());
     if(result.ok){
-      setPortalSaveStatus("保存しました","saved");
+      setPortalSaveStatus("クラウド保存済み","saved");
     }else if(result.mode==="mock"){
-      setPortalSaveStatus("ログインすると保存","error");
+      setPortalSaveStatus("ログインすると保存","");
     }else{
-      setPortalSaveStatus("保存失敗","error");
+      setPortalSaveStatus("クラウド保存失敗","error");
       show(result.message||"ポータル情報の保存に失敗しました。");
     }
   }
@@ -3011,24 +3011,31 @@ body.tree-dragging{
       setPortalSaveStatus("保存機能未読込","error");
       return;
     }
-    setPortalSaveStatus("保存確認中","saving");
+    const cached=window.PortalStateService.loadLastCachedPortalState?.();
+    if(cached?.ok&&cached.state){
+      applyPortalState(cached.state);
+      setPortalSaveStatus("前回保存データを表示中","saving");
+    }
+    setPortalSaveStatus("クラウド確認中","saving");
     const result=await window.PortalStateService.loadPortalState();
     if(result.mode!=="supabase"){
       portalStateReady=false;
-      setPortalSaveStatus("ログインすると保存","error");
+      setPortalSaveStatus("ログインすると保存","");
       return;
     }
     if(!result.ok){
-      portalStateReady=false;
-      setPortalSaveStatus("保存設定未完了","error");
+      portalStateReady=Boolean(cached?.ok);
+      setPortalSaveStatus("クラウド保存失敗","error");
       show(result.message||"ポータル保存設定を確認してください。");
       return;
     }
     if(result.status==="loaded"){
-      applyPortalState(result.state);
-      setPortalSaveStatus("読込済み","saved");
+      const cacheUpdatedAt=cached?.cloudUpdatedAt||cached?.cachedAt||null;
+      const shouldApplyCloud=!cached?.ok||result.cacheKey!==cached.cacheKey||window.PortalStateService.isRemoteNewer?.(result.updatedAt,cacheUpdatedAt);
+      if(shouldApplyCloud)applyPortalState(result.state);
+      setPortalSaveStatus("クラウド保存済み","saved");
     }else{
-      setPortalSaveStatus("初回保存待ち","saving");
+      setPortalSaveStatus(cached?.ok?"前回保存データを表示中":"クラウド確認中","saving");
     }
     portalStateReady=true;
     if(result.status==="empty")schedulePortalSave(1000);
