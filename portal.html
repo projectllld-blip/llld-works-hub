@@ -32,7 +32,9 @@ a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}b
 .main{min-width:0;padding:20px 22px 46px}.wrap{max-width:1220px;margin:0 auto}
 .section{margin-top:19px;border:1px solid var(--line);border-radius:var(--r);background:#fff;box-shadow:var(--shadow);overflow:hidden;scroll-margin-top:86px}.section:first-child{margin-top:0}.s-head{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;padding:14px 17px;border-bottom:1px solid var(--line2);background:#fff}h2{margin:0;font-size:1.68rem;font-weight:550;letter-spacing:-.04em}.s-actions{display:flex;gap:7px;align-items:center}.s-body{padding:16px;background:#f8fafc}.section.closed .s-body{display:none}
 .btn{min-height:34px;border:1px solid transparent;border-radius:8px;background:var(--teal);color:#fff;padding:0 14px;font-weight:450;display:inline-flex;align-items:center;justify-content:center}.btn:hover{background:var(--teal2)}.btn2{background:#fff;color:#143250;border-color:var(--line)}
+.btn.mock-action{background:#fff;color:#526174;border-color:var(--line)}
 .pin,.collapse{width:34px;height:34px;border:1px solid #d7e0eb;border-radius:9px;background:#fff;color:#91a2b8;font-weight:450}.collapse{width:32px;height:32px;color:#143250}.pin.on{background:var(--yellowSoft);border-color:rgba(244,189,61,.65);color:#9a6c0f}
+.section-note{margin:0 0 12px;color:var(--muted);font-size:.95rem}.mock-label{display:inline-flex;align-items:center;min-height:22px;padding:2px 8px;border-radius:999px;background:#fff6dd;color:#8a610e;border:1px solid rgba(244,189,61,.5);font-size:.82rem;font-weight:500}
 
 /* Board + memo */
 .dashboard-grid,.quick-log-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:stretch}
@@ -60,6 +62,7 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
 .scroll-wrap{position:relative}.card-scroll{display:flex;gap:14px;overflow-x:auto;overflow-y:hidden;scroll-behavior:smooth;scroll-snap-type:x mandatory;padding:2px 2px 8px;scrollbar-width:thin;overscroll-behavior-x:contain;overscroll-behavior-y:auto;touch-action:pan-x}.content-card{flex:0 0 calc((100% - 42px)/4);max-width:calc((100% - 42px)/4);min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:var(--r);background:#fff;box-shadow:var(--shadow);scroll-snap-align:start}
 .scroll-arrow{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--navy2);box-shadow:var(--shadow);position:absolute;top:50%;transform:translateY(-50%);z-index:3}.scroll-arrow.left{left:-11px}.scroll-arrow.right{right:-11px}
 .card-main{padding:13px 14px 14px}.card-top{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:start;margin-bottom:9px}.type-icon{width:24px;height:24px;display:grid;place-items:center;border-radius:7px;background:var(--tealSoft);color:var(--teal2);font-weight:550}.content-card h3{margin:0;font-size:1.22rem;font-weight:550;line-height:1.33;letter-spacing:-.035em}.content-card small{display:inline-flex;margin-top:3px;padding:2px 7px;border-radius:6px;background:var(--blueSoft);color:#2360b6;font-size:.9rem}.content-card p{margin:8px 0 11px;min-height:42px;color:var(--muted);font-weight:350;font-size:.98rem}.card-foot{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}.chips{display:flex;gap:6px;flex-wrap:wrap}.chips span{padding:3px 8px;border-radius:999px;background:#edf2f7;color:#526174;font-size:.88rem}
+.content-card.is-mock{background:linear-gradient(180deg,#fff,#fffdf6)}
 
 /* File library */
 .file-layout{display:grid;grid-template-columns:minmax(420px,1fr) minmax(320px,.85fr);gap:14px}.tree-card,.preview{border:1px solid var(--line);border-radius:var(--r);background:#fff;box-shadow:var(--shadow);overflow:hidden}.tree-card{min-height:600px}.tree-head,.preview-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px;border-bottom:1px solid var(--line2)}.tree-head h3,.preview-head h3{margin:0;font-size:1.18rem;font-weight:550}.tools{display:flex;gap:6px}.tbtn{width:31px;height:31px;border:1px solid var(--line);border-radius:8px;background:#fff}.tbtn.primary{background:var(--teal);color:#fff;border-color:var(--teal)}.tree-actions{display:flex;gap:6px;flex-wrap:wrap;padding:10px 10px 0}.mini-btn{min-height:29px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--navy2);font-size:.92rem}.mini-btn.primary{background:var(--teal);border-color:var(--teal);color:#fff}
@@ -1006,7 +1009,7 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
 .toast{position:fixed;right:18px;bottom:18px;z-index:50;max-width:min(360px,calc(100vw - 36px));padding:12px 14px;border-radius:12px;background:rgba(6,24,41,.96);color:#fff;box-shadow:var(--shadow);opacity:0;transform:translateY(14px);pointer-events:none;transition:.18s}.toast.show{opacity:1;transform:translateY(0)}
 @media(max-width:1180px){.header{grid-template-columns:auto auto minmax(230px,1fr) auto}.header-spacer{display:none}.content-card{flex-basis:calc((100% - 14px)/2);max-width:calc((100% - 14px)/2)}.file-add-grid{grid-template-columns:1fr 1fr}.file-layout{grid-template-columns:1fr}.queue-item{grid-template-columns:28px 1fr 120px 150px auto}}
 @media(max-width:900px){:root{--head:auto;--side:1fr}html{font-size:86%}.header{position:static;grid-template-columns:1fr}.layout{grid-template-columns:1fr}.side{position:static;height:auto;padding:12px 10px}.side ul{grid-auto-flow:column;grid-auto-columns:max-content;overflow-x:auto}.pins{display:none}.main{padding:14px 12px 36px}.dashboard-grid,.quick-log-grid{grid-template-columns:1fr}.content-card{flex-basis:280px;max-width:280px}.scroll-arrow{display:none}.panel.board-height,.panel.quick-height{height:330px}}
-@media(max-width:640px){.s-head,.file-add-top{grid-template-columns:1fr}.s-actions{justify-content:flex-start;flex-wrap:wrap}.file-add-grid,.queue-item{grid-template-columns:1fr}.row{grid-template-columns:22px 20px 18px 1fr auto}.fdate{display:none}}
+@media(max-width:640px){.s-head,.file-add-top{grid-template-columns:1fr}.s-actions{justify-content:flex-start;flex-wrap:wrap}.file-add-grid,.queue-item{grid-template-columns:1fr}.quick-card{grid-template-columns:64px 1fr}.quick-card .mini-btn{grid-column:1 / -1}.qthumb{width:64px}.viewer-toolbar{align-items:flex-start;flex-wrap:wrap}.viewer-toolbar>div{display:flex;gap:6px;flex-wrap:wrap}.tree-body{overflow:auto}.row{grid-template-columns:22px 20px 18px minmax(150px,1fr) auto}.fdate{display:none}.fname{white-space:normal;line-height:1.3}.pmeta div{grid-template-columns:1fr}.content-card{flex-basis:min(84vw,300px);max-width:min(84vw,300px)}}
 </style>
 </head>
 <body>
@@ -1026,11 +1029,11 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
     <li><a class="active" href="#board"><span class="ico">ALL</span><span>すべて</span><span class="cnt">18</span></a></li>
     <li><a href="#quick"><span class="ico">★</span><span>クイック</span><span class="cnt">8</span></a></li>
     <li><a href="#favorites"><span class="ico">ツ</span><span>アプリ</span><span class="cnt">6</span></a></li>
-    <li><a href="#contents"><span class="ico">塾</span><span>購入済み</span><span class="cnt">6</span></a></li>
+    <li><a href="#contents"><span class="ico">塾</span><span>社内テンプレ</span><span class="cnt">6</span></a></li>
     <li><a href="#files"><span class="ico">書</span><span>保管庫</span><span class="cnt">24</span></a></li>
   </ul>
   <div class="pins"><p class="side-title">ピン留め</p><ul>
-    <li><a href="#favorites"><span class="star">★</span><span>小テスト作成ツール</span></a></li>
+    <li><a href="#favorites"><span class="star">★</span><span>小テスト作成アプリ</span></a></li>
     <li><a href="#favorites"><span class="star">★</span><span>入試問題アプリ</span></a></li>
     <li><a href="#favorites"><span class="star">★</span><span>PDF編集ツール</span></a></li>
   </ul></div>
@@ -1062,10 +1065,10 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
           </div>
           <ul class="todo-list" id="todoList">
             <li data-title="体験授業資料の更新確認" data-author="川岡" data-date="今日" data-detail="中学生向けの体験授業資料について、所見テンプレートと説明資料の最新版が反映されているか確認します。"><input type="checkbox"><span class="todo-main"><strong class="todo-title">体験授業資料の更新確認</strong><small class="todo-author">投稿者：川岡</small></span></li>
-            <li data-title="勤怠管理アプリの月末画面を確認" data-author="管理" data-date="今日" data-detail="月末確認画面で、未退勤・修正申請・打刻漏れの確認導線が分かりやすいか確認します。"><input type="checkbox"><span class="todo-main"><strong class="todo-title">勤怠管理アプリの月末画面</strong><small class="todo-author">投稿者：管理</small></span></li>
+            <li data-title="勤怠管理アプリ / だこくんの月末画面を確認" data-author="管理" data-date="今日" data-detail="月末確認画面で、未退勤・修正申請・打刻漏れの確認導線が分かりやすいか確認します。"><input type="checkbox"><span class="todo-main"><strong class="todo-title">勤怠管理アプリ / だこくんの月末画面</strong><small class="todo-author">投稿者：管理</small></span></li>
             <li data-title="LPテンプレートの販売ページを見直す" data-author="LLLD" data-date="今日" data-detail="CTA、価格表、導入事例風の見せ方を確認し、販売ページとして弱い箇所を洗い出します。"><input type="checkbox"><span class="todo-main"><strong class="todo-title">LP販売ページを見直す</strong><small class="todo-author">投稿者：LLLD</small></span></li>
             <li data-title="ファイル保管庫のフォルダ構成を確認" data-author="管理" data-date="今日" data-detail="教育事業、業務効率化、コンサルの3カテゴリで、資料が探しやすい構成になっているか確認します。"><input type="checkbox"><span class="todo-main"><strong class="todo-title">保管庫の構成確認</strong><small class="todo-author">投稿者：管理</small></span></li>
-            <li data-title="購入済みコンテンツの表示名を整理" data-author="川岡" data-date="今日" data-detail="購入済みコンテンツのタイトル、カテゴリ、表示順が実際の利用シーンに合っているか確認します。"><input type="checkbox"><span class="todo-main"><strong class="todo-title">購入済み表示名整理</strong><small class="todo-author">投稿者：川岡</small></span></li>
+            <li data-title="社内テンプレートmockの表示名を整理" data-author="川岡" data-date="今日" data-detail="社内テンプレート欄のタイトル、カテゴリ、表示順が実際の利用シーンに合っているか確認します。"><input type="checkbox"><span class="todo-main"><strong class="todo-title">社内テンプレート表示名整理</strong><small class="todo-author">投稿者：川岡</small></span></li>
             <li data-title="掲示板投稿のカテゴリ案を決める" data-author="管理" data-date="今日" data-detail="塾事業、社内運営、販売準備、保管庫など、掲示板投稿で使うカテゴリ案を整理します。"><input type="checkbox"><span class="todo-main"><strong class="todo-title">掲示板カテゴリ案</strong><small class="todo-author">投稿者：管理</small></span></li>
           </ul>
           <textarea placeholder="今日のメモ、確認したいこと、あとでやることを書けます。"></textarea>
@@ -1085,7 +1088,7 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
       <aside class="panel quick-height"><div class="p-head"><h3>操作ログ</h3><span class="upd">最新順</span></div><div class="log-list" id="activityLog">
         <article class="log-item"><span class="log-icon">📂</span><div><strong>体験授業_所見テンプレ.pdf を開きました</strong><span>教育事業 / 体験授業資料</span></div><time class="log-time">19:12</time></article>
         <article class="log-item"><span class="log-icon">⬆</span><div><strong>PDF編集ツール_運用メモ.pdf を追加</strong><span>業務効率化</span></div><time class="log-time">18:58</time></article>
-        <article class="log-item"><span class="log-icon">⭐</span><div><strong>小テスト作成ツールをピン留め</strong><span>お気に入りアプリ</span></div><time class="log-time">18:22</time></article>
+        <article class="log-item"><span class="log-icon">⭐</span><div><strong>小テスト作成アプリをピン留め</strong><span>お気に入りアプリ</span></div><time class="log-time">18:22</time></article>
       </div></aside>
     </div></div>
   </section>
@@ -1096,8 +1099,8 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
   </section>
 
   <section id="contents" class="section" data-section>
-    <div class="s-head"><h2>購入済みコンテンツ</h2><div class="s-actions"><button class="pin" data-pin>☆</button><button class="collapse" data-collapse>▲</button></div></div>
-    <div class="s-body"><div class="scroll-wrap"><button class="scroll-arrow left" data-left="#contentsScroll">‹</button><div class="card-scroll" id="contentsScroll"></div><button class="scroll-arrow right" data-right="#contentsScroll">›</button></div></div>
+    <div class="s-head"><h2>社内テンプレート・資料 <span class="mock-label">mock / 整理中</span></h2><div class="s-actions"><button class="pin" data-pin>☆</button><button class="collapse" data-collapse>▲</button></div></div>
+    <div class="s-body"><p class="section-note">ここは将来の購入済みコンテンツ表示を兼ねた検証枠です。社員が今すぐ使うHTMLアプリは「クイックアクセス」「お気に入りアプリ」「保管庫 / HTMLアプリ」から開きます。</p><div class="scroll-wrap"><button class="scroll-arrow left" data-left="#contentsScroll">‹</button><div class="card-scroll" id="contentsScroll"></div><button class="scroll-arrow right" data-right="#contentsScroll">›</button></div></div>
   </section>
 
   <section id="files" class="section" data-section>
@@ -1171,8 +1174,8 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
                     <li><div class="row" data-file-name="小テスト作成アプリ" data-file-type="HTML" data-file-url="apps/quiz-maker/index.html" data-file-date="2026/06/26 19:10" data-file-path="業務効率化 / HTMLアプリ"><input class="check" type="checkbox"><span></span><span>🌐</span><span class="fname"><a class="tree-file-link" href="apps/quiz-maker/index.html">小テスト作成アプリ</a></span><span class="ftype">HTML</span><span class="fdate">6/26 19:10</span></div></li>
                     <li><div class="row" data-file-name="入試問題アプリ" data-file-type="HTML" data-file-url="apps/exam-print/index.html" data-file-date="2026/06/26 19:10" data-file-path="業務効率化 / HTMLアプリ"><input class="check" type="checkbox"><span></span><span>🌐</span><span class="fname"><a class="tree-file-link" href="apps/exam-print/index.html">入試問題アプリ</a></span><span class="ftype">HTML</span><span class="fdate">6/26 19:10</span></div></li>
                     <li><div class="row" data-file-name="PDF編集ツール" data-file-type="HTML" data-file-url="apps/pdf-tool/index.html" data-file-date="2026/06/25 20:14" data-file-path="業務効率化 / HTMLアプリ"><input class="check" type="checkbox"><span></span><span>🌐</span><span class="fname"><a class="tree-file-link" href="apps/pdf-tool/index.html">PDF編集ツール</a></span><span class="ftype">HTML</span><span class="fdate">6/25 20:14</span></div></li>
-                    <li><div class="row" data-file-name="SeatFlow / 座席管理" data-file-type="HTML" data-file-url="apps/seatflow/index.html" data-file-date="2026/06/24 19:05" data-file-path="業務効率化 / HTMLアプリ"><input class="check" type="checkbox"><span></span><span>🌐</span><span class="fname"><a class="tree-file-link" href="apps/seatflow/index.html">SeatFlow / 座席管理</a></span><span class="ftype">HTML</span><span class="fdate">6/24 19:05</span></div></li>
-                    <li><div class="row" data-file-name="勤怠管理アプリ" data-file-type="HTML" data-file-url="apps/dakokun/index.html" data-file-date="2026/06/25 16:12" data-file-path="業務効率化 / HTMLアプリ"><input class="check" type="checkbox"><span></span><span>🌐</span><span class="fname"><a class="tree-file-link" href="apps/dakokun/index.html">勤怠管理アプリ</a></span><span class="ftype">HTML</span><span class="fdate">6/25 16:12</span></div></li>
+                    <li><div class="row" data-file-name="SeatFlow / 座席管理アプリ" data-file-type="HTML" data-file-url="apps/seatflow/index.html" data-file-date="2026/06/24 19:05" data-file-path="業務効率化 / HTMLアプリ"><input class="check" type="checkbox"><span></span><span>🌐</span><span class="fname"><a class="tree-file-link" href="apps/seatflow/index.html">SeatFlow / 座席管理アプリ</a></span><span class="ftype">HTML</span><span class="fdate">6/24 19:05</span></div></li>
+                    <li><div class="row" data-file-name="勤怠管理アプリ / だこくん" data-file-type="HTML" data-file-url="apps/dakokun/index.html" data-file-date="2026/06/25 16:12" data-file-path="業務効率化 / HTMLアプリ"><input class="check" type="checkbox"><span></span><span>🌐</span><span class="fname"><a class="tree-file-link" href="apps/dakokun/index.html">勤怠管理アプリ / だこくん</a></span><span class="ftype">HTML</span><span class="fdate">6/25 16:12</span></div></li>
                     <li><div class="row" data-file-name="面談支援ツール" data-file-type="HTML" data-file-url="contents/meeting-support/index.html" data-file-date="2026/06/24 12:18" data-file-path="業務効率化 / HTMLアプリ"><input class="check" type="checkbox"><span></span><span>🌐</span><span class="fname"><a class="tree-file-link" href="contents/meeting-support/index.html">面談支援ツール</a></span><span class="ftype">HTML</span><span class="fdate">6/24 12:18</span></div></li>
                   </ul>
                 </li>
@@ -1294,15 +1297,15 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
     ["面","面談支援ツール","塾事業","体験前面談や継続面談の聞き取りを支援します。","contents/meeting-support/index.html","面談 / ヒアリング / 提案"]
   ];
   const contentsData=[
-    ["面","面談ヒアリングシート","塾事業","保護者面談、学習相談、初回ヒアリングで使う聞き取りテンプレートです。","面談 / 聞き取り"],
-    ["L","LPテンプレート","テンプレート","業種別LPの構成、画像カンプ、文章差し替えプロンプトをまとめます。","HTML / 画像LP"],
-    ["補","補助金テンプレート","資料","補助金申請前の整理、必要資料、文章たたき台をまとめるテンプレートです。","申請準備 / 資料"],
-    ["研","研修資料","社内運営","新人研修、1on1、管理職代行などで使う説明資料や進行台本です。","研修 / 1on1"],
-    ["採","採用面談チェック","コンサル","採用面談で確認する質問・評価項目をまとめた資料です。","採用 / 面談"],
-    ["英","英検資料セット","塾事業","英検対策で使う語彙・確認テスト・進行メモです。","英検 / 教材"]
+    ["面","面談ヒアリングシート","社内テンプレート","保護者面談、学習相談、初回ヒアリングで使う聞き取りテンプレートです。","面談 / 聞き取り"],
+    ["L","LPテンプレート","販売準備mock","業種別LPの構成、画像カンプ、文章差し替えプロンプトをまとめる想定です。","HTML / 画像LP"],
+    ["補","補助金テンプレート","販売準備mock","補助金申請前の整理、必要資料、文章たたき台をまとめる想定です。","申請準備 / 資料"],
+    ["研","研修資料","社内テンプレート","新人研修、1on1、管理職代行などで使う説明資料や進行台本です。","研修 / 1on1"],
+    ["採","採用面談チェック","社内テンプレート","採用面談で確認する質問・評価項目をまとめた資料です。","採用 / 面談"],
+    ["英","英検資料セット","社内テンプレート","英検対策で使う語彙・確認テスト・進行メモです。","英検 / 教材"]
   ];
   const thumb=()=>'<div class="mock-thumb"><div class="mock-screen"><div class="mock-top"><span></span><span></span><span></span></div><div class="mock-body"><div class="mock-menu"><i></i><i></i><i></i></div><div class="mock-main"><b></b><p><i></i><i></i><i></i></p><em></em></div></div></div></div>';
-  const card=(d,link=true)=>`<article class="content-card">${thumb()}<div class="card-main"><div class="card-top"><span class="type-icon">${d[0]}</span><div><h3>${d[1]}</h3><small>${d[2]}</small></div><button class="pin" data-pin>☆</button></div><p>${d[3]}</p><div class="card-foot"><div class="chips">${(d[5]||d[4]).split("/").map(x=>`<span>${x.trim()}</span>`).join("")}</div>${link?`<a class="btn" href="${d[4]}">開く</a>`:`<button class="btn" data-mock="閲覧画面へ接続予定です。">開く</button>`}</div></div></article>`;
+  const card=(d,link=true)=>`<article class="content-card ${link?"":"is-mock"}">${thumb()}<div class="card-main"><div class="card-top"><span class="type-icon">${d[0]}</span><div><h3>${d[1]}</h3><small>${d[2]}</small>${link?"":'<br><span class="mock-label">準備中</span>'}</div><button class="pin" data-pin>☆</button></div><p>${d[3]}</p><div class="card-foot"><div class="chips">${(d[5]||d[4]).split("/").map(x=>`<span>${x.trim()}</span>`).join("")}</div>${link?`<a class="btn" href="${d[4]}">開く</a>`:`<button class="btn mock-action" data-mock="このカードは社内テンプレート・購入済みコンテンツ表示のmockです。実データ接続は後続フェーズで整理します。">準備中</button>`}</div></div></article>`;
   document.getElementById("favScroll").innerHTML=appData.map(d=>card(d,true)).join("");
   document.getElementById("contentsScroll").innerHTML=contentsData.map(d=>card(d,false)).join("");
 
