@@ -815,6 +815,18 @@ body.tree-dragging{
 .tree-card.edit-mode .tree-edit-actions .mini-btn{
   min-width:34px;
 }
+.tree-history-actions{
+  display:none;
+  gap:6px;
+  margin-right:12px;
+}
+.tree-card.edit-mode .tree-history-actions{
+  display:inline-flex;
+}
+.tree-history-actions .tbtn{
+  font-size:1rem!important;
+  color:var(--navy2);
+}
 .todo-panel{
   height:var(--panelH)!important;
 }
@@ -1514,7 +1526,7 @@ body.tree-dragging{
     <div class="s-body">
       <div class="file-layout">
         <div class="tree-card">
-          <div class="tree-head"><h3>保管庫ツリー</h3><div class="tools"><button class="tbtn" id="treeEditModeBtn" data-tip="編集モード" type="button" aria-label="編集モード">
+          <div class="tree-head"><h3>保管庫ツリー</h3><div class="tools"><span class="tree-history-actions"><button class="tbtn" id="treeUndoBtn" type="button" aria-label="1つ前に戻る">←</button><button class="tbtn" id="treeRedoBtn" type="button" aria-label="1つ進む">→</button></span><button class="tbtn" id="treeEditModeBtn" data-tip="編集モード" type="button" aria-label="編集モード">
 <svg class="tree-edit-icon" viewBox="0 0 24 24" aria-hidden="true">
   <path d="M12 15.5A3.5 3.5 0 1 0 12 8a3.5 3.5 0 0 0 0 7.5Z"/>
   <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 0 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 0 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1A2 2 0 0 1 4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 0 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1A2 2 0 1 1 7.1 4.2l.1.1a1.7 1.7 0 0 0 1.9.3h.1A1.7 1.7 0 0 0 10 3V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1A2 2 0 1 1 19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1A1.7 1.7 0 0 0 21 10h.1a2 2 0 0 1 0 4H21a1.7 1.7 0 0 0-1.6 1Z"/>
@@ -1538,7 +1550,7 @@ body.tree-dragging{
   <path d="M5 21h14"/>
 </svg>
 </button></div></div>
-          <div class="tree-actions"><span class="tree-edit-status" id="treeEditStatus">編集モード中</span><button class="mini-btn" id="openAllFolders">全て開く</button><button class="mini-btn" id="closeAllFolders">全て閉じる</button><button class="mini-btn" id="closeSelectedFolder">選択フォルダを閉じる</button><span class="tree-edit-actions"><button class="mini-btn" id="treeUndoBtn" type="button">←</button><button class="mini-btn" id="treeRedoBtn" type="button">→</button><button class="mini-btn" id="renameTreeItemBtn" type="button">名前変更</button><button class="mini-btn" id="moveTreeItemBtn" type="button">移動</button><button class="mini-btn" id="replaceTreeItemBtn" type="button">リンク/種別</button><button class="mini-btn danger-btn" id="deleteTreeItemBtn" type="button">削除</button></span></div>
+          <div class="tree-actions"><span class="tree-edit-status" id="treeEditStatus">編集モード中</span><button class="mini-btn" id="openAllFolders">全て開く</button><button class="mini-btn" id="closeAllFolders">全て閉じる</button><button class="mini-btn" id="closeSelectedFolder">選択フォルダを閉じる</button><span class="tree-edit-actions"><button class="mini-btn" id="renameTreeItemBtn" type="button">名前変更</button><button class="mini-btn" id="moveTreeItemBtn" type="button">移動</button><button class="mini-btn" id="replaceTreeItemBtn" type="button">リンク/種別</button><button class="mini-btn danger-btn" id="deleteTreeItemBtn" type="button">削除</button></span></div>
           <div class="tree-body"><ul class="tree">
             <li class="node"><div class="row" data-folder-path="教育事業"><input class="check" type="checkbox"><button class="folder-btn" type="button"><span class="caret">▼</span><span>📁</span><span class="fname">教育事業</span><span class="ftype">12件</span><span class="fdate">6/26 18:40</span></button></div>
               <ul>
