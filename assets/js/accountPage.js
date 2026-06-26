@@ -96,10 +96,34 @@
   }
 
   async function initAccount(status) {
-    renderAccountLoading(status);
-    const result = await window.AuthService.getCurrentAccount();
-    renderModeStatus(result.status || status);
-    await renderAccountState(result, result.status || status);
+    const loadAccount = async () => {
+      renderAccountLoading(status);
+      try {
+        const result = await window.AuthService.getCurrentAccount();
+        renderModeStatus(result.status || status);
+        await renderAccountState(result, result.status || status);
+      } catch {
+        clearAccount();
+        renderAppCards('#accountApps', []);
+        setText('#accountStatus', '取得エラー');
+        setText('#accountSyncStatus', 'アカウント情報を取得できませんでした。接続状態を確認して再読込してください。');
+        setText('#accountAppsStatus', '利用アプリ一覧を取得できませんでした。');
+        renderStatus('アカウント情報の取得に失敗しました。再読込を押してください。', false);
+      }
+    };
+
+    await loadAccount();
+
+    const retryButton = $('#retryAccountButton');
+    if (retryButton) {
+      retryButton.addEventListener('click', async () => {
+        retryButton.disabled = true;
+        retryButton.textContent = '再読込中...';
+        await loadAccount();
+        retryButton.disabled = false;
+        retryButton.textContent = '再読込';
+      });
+    }
 
     const logoutButton = $('#logoutButton');
     if (logoutButton) {

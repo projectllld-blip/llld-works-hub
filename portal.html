@@ -28,6 +28,14 @@ a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}b
 .portal-save-status.is-saving{background:rgba(244,189,61,.18);border-color:rgba(244,189,61,.45);color:#fff6dd}
 .portal-save-status.is-saved{background:rgba(18,184,171,.18);border-color:rgba(18,184,171,.5);color:#d8fffb}
 .portal-save-status.is-error{background:rgba(239,68,68,.18);border-color:rgba(239,68,68,.5);color:#ffe4e6}
+.portal-cloud-notice{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 22px;border-bottom:1px solid var(--line);background:#fff;color:var(--text);font-size:1rem}
+.portal-cloud-notice[hidden]{display:none}
+.portal-cloud-notice.is-info{background:#eff6ff;color:#1e3a8a;border-color:#bfdbfe}
+.portal-cloud-notice.is-warn{background:#fff8e6;color:#8a610e;border-color:rgba(244,189,61,.45)}
+.portal-cloud-notice.is-error{background:#fff1f2;color:#991b1b;border-color:#fecdd3}
+.portal-cloud-notice p{margin:0;line-height:1.45}
+.portal-cloud-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.portal-cloud-action{min-height:30px;padding:0 10px;border:1px solid currentColor;border-radius:8px;background:#fff;color:inherit;font-weight:500}
 .layout{display:grid;grid-template-columns:var(--side) minmax(0,1fr)}.side{position:sticky;top:var(--head);height:calc(100vh - var(--head));overflow:auto;background:var(--navy2);color:#fff;padding:26px 10px 20px}.side-title{margin:0 10px 9px;color:rgba(255,255,255,.58);font-size:.95rem;font-weight:450;letter-spacing:.08em}
 .side ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}.side a{display:grid;grid-template-columns:30px 1fr auto;align-items:center;gap:8px;min-height:40px;padding:6px 10px;border-radius:10px;color:rgba(255,255,255,.86);font-size:1.16rem;font-weight:450}.side a.active,.side a:hover{background:linear-gradient(90deg,rgba(18,184,171,.92),rgba(18,184,171,.42));color:#fff}
 .ico{width:24px;height:24px;border-radius:7px;border:1px solid rgba(255,255,255,.18);display:grid;place-items:center;font-size:.9rem}.cnt{min-width:28px;border-radius:999px;background:rgba(255,255,255,.12);text-align:center;padding:3px 7px;font-size:.92rem}.pins{margin-top:24px}.pins a{grid-template-columns:24px 1fr;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.055);font-size:1rem}.star{width:22px;height:22px;display:grid;place-items:center;border-radius:6px;background:var(--yellowSoft);color:#8a610e}
@@ -71,6 +79,7 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
 /* File library */
 .file-layout{display:grid;grid-template-columns:minmax(420px,1fr) minmax(320px,.85fr);gap:14px}.tree-card,.preview{border:1px solid var(--line);border-radius:var(--r);background:#fff;box-shadow:var(--shadow);overflow:hidden}.tree-card{min-height:600px}.tree-head,.preview-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px;border-bottom:1px solid var(--line2)}.tree-head h3,.preview-head h3{margin:0;font-size:1.18rem;font-weight:550}.tools{display:flex;gap:6px}.tbtn{width:31px;height:31px;border:1px solid var(--line);border-radius:8px;background:#fff}.tbtn.primary{background:var(--teal);color:#fff;border-color:var(--teal)}.tree-actions{display:flex;gap:6px;flex-wrap:wrap;padding:10px 10px 0}.mini-btn{min-height:29px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--navy2);font-size:.92rem;display:inline-flex;align-items:center;justify-content:center;text-align:center;line-height:1}.mini-btn.primary{background:var(--teal);border-color:var(--teal);color:#fff}
 .tree-body{height:520px;overflow:auto;padding:10px}.tree,.tree ul{margin:0;padding:0;list-style:none}.tree ul{margin-left:19px;padding-left:8px;border-left:1px dashed #cbd6e3}.node{margin:3px 0}.row{display:grid;grid-template-columns:24px 22px 20px 1fr auto auto;gap:5px;align-items:center;min-height:34px;padding:5px 7px;border:1px solid transparent;border-radius:9px;color:var(--text)}.row:hover{background:#f3f7fb;border-color:#e4ebf3}.row.sel,.row.drop-target{background:var(--tealSoft);border-color:rgba(18,184,171,.55)}.folder-btn{display:contents;border:0;background:transparent}.check{width:16px;height:16px;accent-color:var(--teal)}.caret{color:#92a0b4;transition:.14s}.node.closed>.row .caret{transform:rotate(-90deg)}.node.closed>ul{display:none}.fname{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-weight:400}.ftype{padding:2px 6px;border-radius:999px;background:#edf2f7;color:#536276;font-size:.84rem}.fdate{display:inline-flex;gap:4px;padding:2px 6px;border-radius:999px;background:#edf6ff;color:#2c5f99;border:1px solid #d4e9ff;font-size:.84rem}.fdate:before{content:"最終更新";color:#6a7c94}.legend{display:flex;gap:6px;flex-wrap:wrap;padding:0 10px 11px;color:var(--muted);font-size:.9rem}
+.tree-empty{padding:14px;border:1px dashed var(--line);border-radius:10px;background:#f8fafc;color:var(--muted)}
 .viewer{height:360px;border:1px solid var(--line);border-radius:13px;background:#fff;overflow:hidden}.viewer-toolbar{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 10px;border-bottom:1px solid var(--line2);background:#f8fafc}.viewer-title{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500}.viewer-stage{height:calc(100% - 44px);background:#f3f6fa;display:grid;place-items:center;overflow:auto}.doc-preview{width:min(88%,420px);min-height:250px;padding:24px;background:#fff;border:1px solid #dfe7f0;box-shadow:0 12px 26px rgba(6,24,41,.08)}.doc-line{height:10px;border-radius:999px;background:#d9e2ee;margin-bottom:12px}.w70{width:70%}.w45{width:45%}.w90{width:90%}.preview-body{padding:14px}.preview-note{margin-top:10px;padding:9px 10px;border-radius:10px;background:#f8fafc;border:1px solid var(--line);color:var(--muted);font-size:.95rem}.pmeta{display:grid;gap:7px;margin-top:10px}.pmeta div{display:grid;grid-template-columns:86px 1fr;gap:8px;padding:8px 9px;border-radius:9px;background:#fff;border:1px solid var(--line2)}.pmeta span:first-child{color:#92a0b4}.pmeta span:last-child{overflow-wrap:anywhere;font-weight:450}
 .file-add{margin-top:14px;border:1px solid var(--line);border-radius:var(--r);background:#fff;box-shadow:var(--shadow);padding:14px}.file-add.dragover{border-color:rgba(18,184,171,.75);background:linear-gradient(135deg,#f2fffc,#fff)}.file-add-top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:10px}.file-add h3{margin:0;font-size:1.22rem;font-weight:550}.file-add-grid{display:grid;grid-template-columns:1.2fr 1.2fr .8fr 1.4fr;gap:9px;align-items:end}.field{display:grid;gap:5px;min-width:0}.field label{font-size:.94rem;color:var(--text)}.field input,.field select{width:100%;min-height:34px;padding:8px 10px;border:1px solid #cfd9e6;border-radius:8px;background:#fff;font-weight:350}.dest{display:grid;grid-template-columns:1fr auto;gap:7px;align-items:center;min-height:34px;padding:4px 5px 4px 9px;border:1px solid #cfd9e6;border-radius:8px;background:var(--tealSoft)}.dest strong{color:var(--teal2);font-weight:550}
 .upload-queue{display:grid;gap:8px;margin-top:10px}.queue-item{display:grid;grid-template-columns:28px minmax(140px,1fr) 128px 170px auto auto auto;align-items:end;gap:8px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:#fff}.queue-item[draggable=true]{cursor:grab}.queue-icon{width:28px;height:28px;display:grid;place-items:center;border-radius:8px;background:var(--tealSoft);color:var(--teal2);align-self:center}.queue-field{display:grid;gap:4px}.queue-field label{font-size:.78rem;color:var(--muted)}.queue-field input,.queue-field select{min-height:30px;border:1px solid #dce3ed;border-radius:7px;padding:5px 7px;background:#f8fafc}.dropzone{margin-top:12px;min-height:96px;display:grid;place-items:center;padding:14px;border:2px dashed rgba(18,184,171,.42);border-radius:13px;background:linear-gradient(135deg,var(--tealSoft),#fff);color:var(--muted);text-align:center}.dropzone.dragover{background:#dbf8f4;border-color:var(--teal)}.dropzone strong{display:block;color:var(--ink);font-weight:550;font-size:1.12rem}.dropzone span{display:block;margin-top:4px;font-size:.96rem}
@@ -1436,6 +1445,10 @@ body.tree-dragging{
   <nav class="h-actions"><a class="hbtn" href="login.html" target="_blank" rel="noopener">ログイン</a><a class="hbtn" href="account.html" target="_blank" rel="noopener">アカウント</a></nav>
   <span class="portal-save-status" id="portalSaveStatus">保存確認中</span>
 </header>
+<div class="portal-cloud-notice is-info" id="portalCloudNotice" hidden>
+  <p id="portalCloudNoticeText">ポータル保存状態を確認しています。</p>
+  <div class="portal-cloud-actions" id="portalCloudNoticeActions"></div>
+</div>
 
 <div class="layout">
 <aside class="side">
@@ -1651,7 +1664,7 @@ body.tree-dragging{
           <div class="field"><label>追加先</label><div class="dest"><span>選択中：<strong id="selectedFolderLabel">教育事業 / 体験授業資料</strong></span><button class="btn btn2" id="focusTreeBtn" type="button">ツリー参照</button><input id="folderSelect" type="hidden" value="教育事業 / 体験授業資料"></div></div>
         </div>
         <div class="upload-queue" id="uploadQueue"></div>
-        <div class="dropzone" id="dropzone"><div><strong>ここにファイル / フォルダをドラッグ＆ドロップ</strong><span>同時追加は最大10件、合計100MBまで。追加後、各ファイルごとに種別・追加先を指定できます。</span></div></div>
+        <div class="dropzone" id="dropzone"><div><strong>ここにファイル / フォルダをドラッグ＆ドロップ</strong><span>このフェーズではファイル本体は保存されません。ファイル名・種別・リンクURL・表示情報のみクラウド保存します。</span></div></div>
       </div>
     </div>
   </section>
@@ -1773,31 +1786,74 @@ body.tree-dragging{
   const toast=document.getElementById("toast");let timer;
   const show=m=>{toast.textContent=m;toast.classList.add("show");clearTimeout(timer);timer=setTimeout(()=>toast.classList.remove("show"),2400)};
   const portalSaveStatus=document.getElementById("portalSaveStatus");
+  const portalCloudNotice=document.getElementById("portalCloudNotice");
+  const portalCloudNoticeText=document.getElementById("portalCloudNoticeText");
+  const portalCloudNoticeActions=document.getElementById("portalCloudNoticeActions");
   let portalStateReady=false;
   let portalApplyingState=false;
   let portalSaveTimer=null;
+  let portalHasUnsavedChanges=false;
   function setPortalSaveStatus(message,type=""){
     if(!portalSaveStatus)return;
     portalSaveStatus.textContent=message;
     portalSaveStatus.classList.remove("is-saving","is-saved","is-error");
     if(type)portalSaveStatus.classList.add("is-"+type);
   }
+  function setPortalNotice(message="",type="info",actions=[]){
+    if(!portalCloudNotice||!portalCloudNoticeText||!portalCloudNoticeActions)return;
+    if(!message){
+      portalCloudNotice.hidden=true;
+      portalCloudNoticeActions.innerHTML="";
+      return;
+    }
+    portalCloudNotice.hidden=false;
+    portalCloudNotice.classList.remove("is-info","is-warn","is-error");
+    portalCloudNotice.classList.add(`is-${type}`);
+    portalCloudNoticeText.textContent=message;
+    portalCloudNoticeActions.innerHTML=actions.map(action=>`
+      <button class="portal-cloud-action" type="button" data-portal-notice-action="${action.action}">${action.label}</button>
+    `).join("");
+  }
+  if(portalCloudNoticeActions){
+    portalCloudNoticeActions.addEventListener("click",event=>{
+      const button=event.target.closest("[data-portal-notice-action]");
+      if(!button)return;
+      const action=button.dataset.portalNoticeAction;
+      if(action==="login")window.open("login.html","_blank","noopener");
+      if(action==="account")window.open("account.html","_blank","noopener");
+      if(action==="reload")bootstrapPortalState();
+      if(action==="save")savePortalStateNow();
+    });
+  }
+  window.addEventListener("beforeunload",event=>{
+    if(!portalHasUnsavedChanges)return;
+    event.preventDefault();
+    event.returnValue="";
+  });
   function schedulePortalSave(delay=700){
     if(portalApplyingState||!portalStateReady)return;
     clearTimeout(portalSaveTimer);
+    portalHasUnsavedChanges=true;
     setPortalSaveStatus("未保存の変更あり","saving");
+    setPortalNotice("未保存の変更があります。クラウド保存が終わるまで、このタブを閉じないでください。","warn");
     portalSaveTimer=setTimeout(savePortalStateNow,delay);
   }
   async function savePortalStateNow(){
     if(portalApplyingState||!portalStateReady||!window.PortalStateService?.savePortalState)return;
     setPortalSaveStatus("クラウド確認中","saving");
+    setPortalNotice("クラウドへ保存しています。","info");
     const result=await window.PortalStateService.savePortalState(serializePortalState());
     if(result.ok){
+      portalHasUnsavedChanges=false;
       setPortalSaveStatus("クラウド保存済み","saved");
+      setPortalNotice("", "info");
     }else if(result.mode==="mock"){
       setPortalSaveStatus("ログインすると保存","");
+      setPortalNotice("ログインすると会社ごとのポータル状態をクラウド保存できます。","info",[{action:"login",label:"ログイン"}]);
     }else{
+      portalHasUnsavedChanges=true;
       setPortalSaveStatus("クラウド保存失敗","error");
+      setPortalNotice("保存に失敗しました。未保存の変更があります。接続状態を確認して、再試行してください。","error",[{action:"save",label:"保存を再試行"}]);
       show(result.message||"ポータル情報の保存に失敗しました。");
     }
   }
@@ -1974,6 +2030,7 @@ body.tree-dragging{
   document.getElementById("todoList")?.addEventListener("click", event=>{
     const item=event.target.closest("li");
     if(!item)return;
+    if(item.classList.contains("portal-empty"))return;
     if(event.target.tagName === "INPUT") return;
     document.querySelectorAll("#todoList li.todo-active").forEach(row=>row.classList.remove("todo-active"));
     item.classList.add("todo-active");
@@ -2042,7 +2099,9 @@ body.tree-dragging{
     item.innerHTML='<input type="checkbox"><span class="todo-main"><strong class="todo-title"></strong><small class="todo-author"></small></span>';
     item.querySelector(".todo-title").textContent=item.dataset.title;
     item.querySelector(".todo-author").textContent="投稿者："+author;
-    document.getElementById("todoList")?.prepend(item);
+    const todoList=document.getElementById("todoList");
+    todoList?.querySelectorAll(".portal-empty").forEach(row=>row.remove());
+    todoList?.prepend(item);
     closeTodoAddModal();
     show("メモ / To Doを追加しました。");
     schedulePortalSave(120);
@@ -2846,7 +2905,7 @@ body.tree-dragging{
     };
   }
   function serializeTodos(){
-    return Array.from(document.querySelectorAll("#todoList li")).map((item,index)=>({
+    return Array.from(document.querySelectorAll("#todoList li:not(.portal-empty)")).map((item,index)=>({
       id:item.dataset.portalId||portalId("todo",item.dataset.title,index),
       title:item.dataset.title||item.querySelector(".todo-title")?.textContent.trim()||"",
       detail:item.dataset.detail||"",
@@ -2930,9 +2989,9 @@ body.tree-dragging{
   function applyPortalState(state={}){
     portalApplyingState=true;
     try{
-      if(Array.isArray(state.todos)&&state.todos.length)applyTodos(state.todos);
-      if(Array.isArray(state.boardPosts)&&state.boardPosts.length)applyBoardPosts(state.boardPosts);
-      if(Array.isArray(state.storageTree)&&state.storageTree.length)applyStorageTree(state.storageTree);
+      if(Array.isArray(state.todos))applyTodos(state.todos);
+      if(Array.isArray(state.boardPosts))applyBoardPosts(state.boardPosts);
+      if(Array.isArray(state.storageTree))applyStorageTree(state.storageTree);
       applyPortalSettings(state.portalSettings||{});
       if(Array.isArray(state.favorites)&&state.favorites.length)applyFavoritePins(state.favorites);
     }finally{
@@ -2942,6 +3001,10 @@ body.tree-dragging{
   function applyTodos(items=[]){
     const list=document.getElementById("todoList");
     if(!list)return;
+    if(!items.length){
+      list.innerHTML='<li class="todo-empty portal-empty"><span></span><span class="todo-main"><strong class="todo-title">メモ / To Doはまだありません</strong><small class="todo-author">追加ボタンから登録できます。</small></span></li>';
+      return;
+    }
     list.innerHTML=items.map((item,index)=>'<li data-portal-id="'+safeAttr(item.id||portalId("todo",item.title,index))+'" data-title="'+safeAttr(item.title)+'" data-author="'+safeAttr(item.author||"")+'" data-date="'+safeAttr(item.date||"今日")+'" data-detail="'+safeAttr(item.detail||"")+'" data-created-at="'+safeAttr(item.createdAt||"")+'"><input type="checkbox" '+(item.done?"checked":"")+'><span class="todo-main"><strong class="todo-title">'+safeAttr(item.title)+'</strong><small class="todo-author">投稿者：'+safeAttr(item.author||"メモ")+'</small></span></li>').join("");
   }
   function applyBoardPosts(items=[]){
@@ -2958,6 +3021,13 @@ body.tree-dragging{
   function applyStorageTree(tree=[]){
     const root=document.querySelector(".tree");
     if(!root)return;
+    if(!tree.length){
+      root.innerHTML='<li class="portal-empty tree-empty">保管庫はまだありません。ファイル追加設定からリンク情報を追加できます。</li>';
+      selectedFolderRow=null;
+      selectedFileRow=null;
+      clearSelectedFile();
+      return;
+    }
     root.innerHTML=tree.map(renderStorageNode).join("");
     document.querySelectorAll(".tree-body .node").forEach(sortFolderChildren);
     selectedFolderRow=document.querySelector("[data-folder-path]")||null;
@@ -3015,17 +3085,23 @@ body.tree-dragging{
     if(cached?.ok&&cached.state){
       applyPortalState(cached.state);
       setPortalSaveStatus("前回保存データを表示中","saving");
+      setPortalNotice("前回保存データを一時表示中です。クラウドの最新状態を確認しています。","warn");
     }
     setPortalSaveStatus("クラウド確認中","saving");
     const result=await window.PortalStateService.loadPortalState();
     if(result.mode!=="supabase"){
       portalStateReady=false;
       setPortalSaveStatus("ログインすると保存","");
+      setPortalNotice("ログインすると会社ごとのポータル状態をクラウド保存できます。現在の表示はこの端末の一時表示です。","info",[{action:"login",label:"ログイン"}]);
       return;
     }
     if(!result.ok){
       portalStateReady=Boolean(cached?.ok);
       setPortalSaveStatus("クラウド保存失敗","error");
+      const message=cached?.ok
+        ?"クラウド確認に失敗しました。前回保存データを一時表示しています。"
+        :(result.status==="app_instance_not_found"?"このアカウントではポータル保存がまだ有効化されていません。管理者に確認してください。":"ポータルデータを読み込めませんでした。接続設定やRLSを確認してください。");
+      setPortalNotice(message,"error",[{action:"reload",label:"再試行"},{action:"account",label:"アカウント確認"}]);
       show(result.message||"ポータル保存設定を確認してください。");
       return;
     }
@@ -3034,8 +3110,12 @@ body.tree-dragging{
       const shouldApplyCloud=!cached?.ok||result.cacheKey!==cached.cacheKey||window.PortalStateService.isRemoteNewer?.(result.updatedAt,cacheUpdatedAt);
       if(shouldApplyCloud)applyPortalState(result.state);
       setPortalSaveStatus("クラウド保存済み","saved");
+      setPortalNotice("", "info");
     }else{
       setPortalSaveStatus(cached?.ok?"前回保存データを表示中":"クラウド確認中","saving");
+      setPortalNotice(cached?.ok
+        ?"クラウド上にはまだポータルデータがありません。前回保存データを一時表示中です。編集すると、その内容をクラウド保存します。"
+        :"まだポータルデータはありません。メモ追加や保管庫変更など、次の編集操作でクラウド保存を作成します。","info");
     }
     portalStateReady=true;
   }
