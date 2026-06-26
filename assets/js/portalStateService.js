@@ -3,6 +3,8 @@
 (() => {
   const APP_KEY = 'works_portal';
   const DATA_TYPE = 'portal_state';
+  const CACHE_PREFIX = 'llld_works_portal_state';
+  const LAST_CACHE_KEY = `${CACHE_PREFIX}_last_key`;
 
   function createInitialPortalState() {
     return {
@@ -196,16 +198,27 @@
           state: createInitialPortalState(),
           account: status.account,
           appInstance: status.appInstance,
+          cacheKey: getCacheKey(status.account.id, status.appInstance.id),
           message: 'クラウド保存されたポータル情報はまだありません。初回保存で作成します。'
         };
       }
+
+      const state = normalizePortalState(data.data_json);
+      const cache = writeCachedPortalState(
+        state,
+        status.account.id,
+        status.appInstance.id,
+        data.updated_at
+      );
 
       return {
         ok: true,
         mode: 'supabase',
         status: 'loaded',
-        state: normalizePortalState(data.data_json),
+        state,
         updatedAt: data.updated_at,
+        cache,
+        cacheKey: getCacheKey(status.account.id, status.appInstance.id),
         account: status.account,
         appInstance: status.appInstance,
         message: 'ポータル情報を読み込みました。'
@@ -278,12 +291,21 @@
         };
       }
 
+      const cache = writeCachedPortalState(
+        payloadState,
+        status.account.id,
+        status.appInstance.id,
+        data?.updated_at || payloadState.updatedAt
+      );
+
       return {
         ok: true,
         mode: 'supabase',
         status: 'saved',
         savedAt: data?.updated_at || payloadState.updatedAt,
         state: payloadState,
+        cache,
+        cacheKey: getCacheKey(status.account.id, status.appInstance.id),
         message: 'ポータル情報を保存しました。'
       };
     } catch {
@@ -319,6 +341,173 @@
     return Array.isArray(items) ? items.filter(item => item && typeof item === 'object') : [];
   }
 
+  function getCacheKey(companyAccountId, appInstanceId = '') {
+    const accountPart = sanitizeKeyPart(companyAccountId || 'unknown_company');
+    const instancePart = sanitizeKeyPart(appInstanceId || 'unknown_instance');
+    return `${CACHE_PREFIX}_${accountPart}_${instancePart}`;
+  }
+
+  function sanitizeKeyPart(value) {
+    return String(value || '')
+      .trim()
+      .replace(/[^a-zA-Z0-9_-]/g, '_')
+      .slice(0, 96) || 'blank';
+  }
+
+  function readCacheByKey(cacheKey) {
+    if (!cacheKey || typeof window.localStorage === 'undefined') {
+      return {
+        ok: false,
+        status: 'cache_unavailable',
+        state: null,
+        cacheKey: cacheKey || '',
+        message: 'ローカルキャッシュを確認できません。'
+      };
+    }
+
+    try {
+      const raw = window.localStorage.getItem(cacheKey);
+      if (!raw) {
+        return {
+          ok: false,
+          status: 'cache_empty',
+          state: null,
+          cacheKey,
+          message: '前回保存データはありません。'
+        };
+      }
+
+      const parsed = JSON.parse(raw);
+      const state = normalizePortalState(parsed.state || parsed);
+      return {
+        ok: true,
+        status: 'cache_loaded',
+        state,
+        cacheKey,
+        cachedAt: parsed.cachedAt || null,
+        cloudUpdatedAt: parsed.cloudUpdatedAt || state.updatedAt || null,
+        companyAccountId: parsed.companyAccountId || null,
+        appInstanceId: parsed.appInstanceId || null,
+        message: '前回保存データを読み込みました。'
+      };
+    } catch {
+      return {
+        ok: false,
+        status: 'cache_parse_failed',
+        state: null,
+        cacheKey,
+        message: '前回保存データの読込に失敗しました。'
+      };
+    }
+  }
+
+  function loadLastCachedPortalState() {
+    if (typeof window.localStorage === 'undefined') {
+      return {
+        ok: false,
+        status: 'cache_unavailable',
+        state: null,
+        message: 'ローカルキャッシュを確認できません。'
+      };
+    }
+
+    try {
+      const cacheKey = window.localStorage.getItem(LAST_CACHE_KEY);
+      if (!cacheKey) {
+        return {
+          ok: false,
+          status: 'cache_empty',
+          state: null,
+          message: '前回保存データはありません。'
+        };
+      }
+      return readCacheByKey(cacheKey);
+    } catch {
+      return {
+        ok: false,
+        status: 'cache_unavailable',
+        state: null,
+        message: '前回保存データを確認できません。'
+      };
+    }
+  }
+
+  async function loadCachedPortalState() {
+    const status = await getPortalCloudStatus();
+    if (status.mode !== 'supabase' || !status.ok || !status.account?.id || !status.appInstance?.id) {
+      return {
+        ok: false,
+        mode: status.mode || 'mock',
+        status: status.status || 'cache_unavailable',
+        state: null,
+        message: status.message || 'ログイン後に会社別キャッシュを確認できます。'
+      };
+    }
+
+    const cacheKey = getCacheKey(status.account.id, status.appInstance.id);
+    return {
+      ...readCacheByKey(cacheKey),
+      mode: 'supabase',
+      account: status.account,
+      appInstance: status.appInstance
+    };
+  }
+
+  function writeCachedPortalState(state, companyAccountId, appInstanceId, cloudUpdatedAt = null) {
+    if (typeof window.localStorage === 'undefined') {
+      return {
+        ok: false,
+        status: 'cache_unavailable',
+        cacheKey: '',
+        message: 'ローカルキャッシュを保存できません。'
+      };
+    }
+
+    const cacheKey = getCacheKey(companyAccountId, appInstanceId);
+    const normalizedState = normalizePortalState(state);
+    const cachedAt = new Date().toISOString();
+    const payload = {
+      schemaVersion: 1,
+      companyAccountId,
+      appInstanceId,
+      appKey: APP_KEY,
+      dataType: DATA_TYPE,
+      cachedAt,
+      cloudUpdatedAt: cloudUpdatedAt || normalizedState.updatedAt || cachedAt,
+      state: normalizedState
+    };
+
+    try {
+      window.localStorage.setItem(cacheKey, JSON.stringify(payload));
+      window.localStorage.setItem(LAST_CACHE_KEY, cacheKey);
+      return {
+        ok: true,
+        status: 'cache_saved',
+        cacheKey,
+        cachedAt: payload.cachedAt,
+        cloudUpdatedAt: payload.cloudUpdatedAt,
+        message: '前回保存データを更新しました。'
+      };
+    } catch {
+      return {
+        ok: false,
+        status: 'cache_save_failed',
+        cacheKey,
+        message: '前回保存データの更新に失敗しました。'
+      };
+    }
+  }
+
+  function isRemoteNewer(remoteUpdatedAt, cachedUpdatedAt) {
+    if (!remoteUpdatedAt) return false;
+    if (!cachedUpdatedAt) return true;
+    const remoteTime = Date.parse(remoteUpdatedAt);
+    const cachedTime = Date.parse(cachedUpdatedAt);
+    if (Number.isNaN(remoteTime)) return false;
+    if (Number.isNaN(cachedTime)) return true;
+    return remoteTime > cachedTime;
+  }
+
   function normalizeAppInstance(row = {}) {
     return {
       id: row.id || '',
@@ -335,9 +524,15 @@
   window.PortalStateService = {
     APP_KEY,
     DATA_TYPE,
+    CACHE_PREFIX,
     createInitialPortalState,
     getPortalCloudStatus,
     getPortalAppInstance,
+    getCacheKey,
+    loadLastCachedPortalState,
+    loadCachedPortalState,
+    writeCachedPortalState,
+    isRemoteNewer,
     loadPortalState,
     savePortalState,
     normalizePortalState

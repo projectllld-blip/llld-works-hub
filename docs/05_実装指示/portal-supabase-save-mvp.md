@@ -105,13 +105,37 @@ sanitizePortalStorageTree(tree)
 6. 取得できたJSONを `portal.html` に反映
 7. 取得できない場合は初期状態を表示し、保存時に作成する
 
+## 高速表示キャッシュ
+
+リロード直後の体感速度改善として、Supabase保存成功時の `portal_state` をlocalStorageにも保存する。
+
+localStorageは一時キャッシュであり、正式保存先ではない。別端末同期の正本は必ずSupabase `app_data` とする。
+
+キー:
+
+```text
+llld_works_portal_state_{company_account_id}_{app_instance_id}
+llld_works_portal_state_last_key
+```
+
+起動時:
+
+1. まず `llld_works_portal_state_last_key` から前回キャッシュを読込
+2. キャッシュがあれば即時描画し、`前回保存データを表示中` と表示
+3. 続けてSupabaseを確認し、`クラウド確認中` と表示
+4. Supabase `updated_at` がキャッシュより新しければSupabaseの内容で上書き描画
+5. Supabase取得成功後はlocalStorageも更新
+6. Supabase取得失敗時はキャッシュ表示を維持し、`クラウド保存失敗` と表示
+7. 未ログイン時は `クラウド保存済み` と表示しない
+
 ## 保存フロー
 
 1. 画面状態を `serializePortalState()` でJSON化
 2. ファイル本体、危険なメタデータ、不要な一時状態を除外
 3. `app_data` へupsert
 4. `onConflict: app_instance_id,data_type` を使う
-5. 保存成功 / 保存失敗を画面上に表示
+5. 保存成功時、同じ内容をlocalStorageキャッシュにも保存
+6. 保存成功 / 保存失敗を画面上に表示
 
 ## エラー表示
 

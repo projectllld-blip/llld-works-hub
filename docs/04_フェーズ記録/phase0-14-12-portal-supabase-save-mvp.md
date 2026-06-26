@@ -89,7 +89,43 @@ app_instance_id = works_portal の app_instances.id
 3. `serializePortalState()` で現在のDOM状態をJSON化
 4. `PortalStateService.savePortalState()` で `app_data` にupsert
 5. `onConflict: app_instance_id,data_type` を使う
-6. 保存中 / 保存済み / 保存失敗をヘッダー右側に表示
+6. 保存成功時に同じ `portal_state` をlocalStorageの一時キャッシュへ保存する
+7. 保存中 / 保存済み / 保存失敗をヘッダー右側に表示
+
+## 高速表示用localStorageキャッシュ
+
+v0.14.12追加対応として、`portal.html` のリロード直後にメモ / ToDo / 保管庫が一瞬空に見える問題を避けるため、localStorageへ前回保存済み `portal_state` をキャッシュする。
+
+localStorageは正式保存先ではない。別端末同期・正本・RLS確認の対象は引き続きSupabase `app_data.data_type = portal_state` とする。
+
+キャッシュキー:
+
+```text
+llld_works_portal_state_{company_account_id}_{app_instance_id}
+```
+
+直近キャッシュ参照用:
+
+```text
+llld_works_portal_state_last_key
+```
+
+起動時の流れ:
+
+1. `loadLastCachedPortalState()` で前回キャッシュを即時読込
+2. キャッシュがあれば `前回保存データを表示中` として先に描画
+3. その後、Supabaseから `portal_state` を取得
+4. Supabase `updated_at` がキャッシュの `cloudUpdatedAt` より新しければクラウド内容で再描画
+5. Supabase取得成功後、localStorageも最新化
+6. Supabase取得失敗時はキャッシュ表示を維持し、`クラウド保存失敗` を表示
+
+ヘッダー右側の保存状態:
+
+- `前回保存データを表示中`
+- `クラウド確認中`
+- `クラウド保存済み`
+- `クラウド保存失敗`
+- 未ログイン時は `クラウド保存済み` と表示しない
 
 ## migration適用
 
