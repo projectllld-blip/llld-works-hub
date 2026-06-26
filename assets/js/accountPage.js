@@ -142,6 +142,9 @@
     setText('#accountSyncStatus', result?.message || 'ログインが必要です。企業アカウントでログインしてください。');
     renderAppCards('#accountApps', []);
     setText('#accountAppsStatus', 'ログイン後に利用アプリ一覧を表示します。');
+    setText('#accountDemoAppsStatus', 'ログイン後に検証用アプリ追加を表示します。');
+    const demoApps = $('#accountDemoApps');
+    if (demoApps) demoApps.innerHTML = '<p class="account-demo-empty">ログイン後に表示します。</p>';
     renderList('#accountRecentApps', ['最近使ったアプリのクラウド同期はまだ未接続です。']);
     renderStatus(`${result?.message || 'ログインが必要です。'} login.html または signup.html へ進んでください。`, false);
 
@@ -177,12 +180,73 @@
     const result = await window.AppInstanceService.getMyAppInstances(account.id);
     setText('#accountAppsStatus', result.message || '利用アプリ一覧を表示しています。');
     renderAppCards('#accountApps', result.apps || []);
+    await renderDemoAppAddPanel(account, status);
 
     if (status.mode === 'supabase' && result.appStatus === 'empty') {
       renderStatus(result.message, true);
     } else if (result.ok === false) {
       renderStatus(result.message, false);
     }
+  }
+
+  async function renderDemoAppAddPanel(account, status) {
+    const root = $('#accountDemoApps');
+    if (!root) return;
+
+    if (status.mode !== 'supabase') {
+      setText('#accountDemoAppsStatus', 'mock modeでは検証用アプリ追加は実行しません。');
+      root.innerHTML = '<p class="account-demo-empty">Supabase接続時に、検証用アプリ追加を確認できます。</p>';
+      return;
+    }
+
+    if (!window.AppInstanceService?.getAvailableDemoApps) {
+      setText('#accountDemoAppsStatus', '検証用アプリ追加サービスを確認できません。');
+      root.innerHTML = '<p class="account-demo-empty">設定を確認してください。</p>';
+      return;
+    }
+
+    const result = await window.AppInstanceService.getAvailableDemoApps(account.id);
+    setText('#accountDemoAppsStatus', result.message || '検証用に追加できるアプリを確認しています。');
+
+    if (!result.ok) {
+      root.innerHTML = `<p class="account-demo-empty">${escapeHtml(result.message || '検証用アプリ候補の取得に失敗しました。')}</p>`;
+      return;
+    }
+
+    if (!result.apps?.length) {
+      root.innerHTML = '<p class="account-demo-empty">追加できる検証用アプリはありません。</p>';
+      return;
+    }
+
+    root.innerHTML = result.apps.map(app => `
+      <div class="account-demo-app">
+        <div>
+          <span>${escapeHtml(app.appKey)}</span>
+          <strong>${escapeHtml(app.name)}</strong>
+          <p>${escapeHtml(app.description || '検証用に追加できます。')}</p>
+        </div>
+        <button class="btn secondary account-demo-add" type="button" data-demo-app-key="${escapeHtml(app.appKey)}">デモ追加</button>
+      </div>
+    `).join('');
+
+    root.querySelectorAll('[data-demo-app-key]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const appKey = button.dataset.demoAppKey;
+        button.disabled = true;
+        button.textContent = '追加中...';
+        setText('#accountDemoAppsStatus', '検証用アプリを追加しています。');
+
+        const addResult = await window.AppInstanceService.addDemoAppInstance(account.id, appKey);
+        renderStatus(addResult.message, addResult.ok);
+
+        const latest = await window.AuthService.getCurrentAccount();
+        if (latest?.account) {
+          await renderAppsForAccount(latest.account, latest.status || status);
+        } else {
+          setText('#accountDemoAppsStatus', addResult.message || '検証用アプリ追加後の再読込に失敗しました。');
+        }
+      });
+    });
   }
 
   function clearAccount() {
@@ -332,6 +396,7 @@
   }
 
   function signupResultLabel(result = {}) {
+    if (result.signupStatus === 'already_registered') return '登録済み / ログインしてください';
     if (!result.ok) return '未登録 / エラー';
     if (result.mode === 'mock') return 'mock確認のみ';
     if (result.needsEmailConfirmation) return '確認メール待ち';

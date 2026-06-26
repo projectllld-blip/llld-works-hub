@@ -12,13 +12,15 @@
   };
 
   const APP_LINKS = {
-    seatflow: './contents/seatflow/index.html',
-    pdf_tool: './contents/pdf-tool/index.html',
-    quiz_maker: './contents/quiz-maker/index.html',
-    attendance: './contents/dakokun/index.html',
+    seatflow: './apps/seatflow/index.html',
+    pdf_tool: './apps/pdf-tool/index.html',
+    quiz_maker: './apps/quiz-maker/index.html',
+    attendance: './apps/dakokun/index.html',
     meeting_support: './contents/meeting-support/index.html',
     sales_talk_support: './contents/sales-talk-support/index.html'
   };
+
+  const DEMO_APP_KEYS = ['seatflow', 'pdf_tool', 'quiz_maker', 'attendance', 'meeting_support'];
 
   const MOCK_APPS = [
     {
@@ -171,6 +173,188 @@
     }
   }
 
+  async function getAvailableDemoApps(companyAccountId) {
+    const status = await window.AuthService?.getAuthStatus?.();
+    if (!status || status.mode !== 'supabase') {
+      return {
+        ok: true,
+        mode: 'mock',
+        apps: [],
+        message: 'mock modeでは検証用アプリ追加は実行しません。'
+      };
+    }
+
+    if (!companyAccountId) {
+      return {
+        ok: false,
+        mode: status.mode,
+        apps: [],
+        message: '企業アカウント情報が未取得のため、検証用アプリを追加できません。'
+      };
+    }
+
+    const client = await window.SupabaseClientService?.getSupabaseClient?.();
+    if (!client?.from) {
+      return {
+        ok: false,
+        mode: status.mode,
+        apps: [],
+        message: 'Supabase clientを確認できません。接続設定を確認してください。'
+      };
+    }
+
+    try {
+      const [{ data: catalog, error: catalogError }, { data: instances, error: instanceError }] = await Promise.all([
+        client
+          .from('apps')
+          .select('app_key,name,description,status')
+          .in('app_key', DEMO_APP_KEYS),
+        client
+          .from('app_instances')
+          .select('app_key')
+          .eq('company_account_id', companyAccountId)
+      ]);
+
+      if (catalogError || instanceError) {
+        return {
+          ok: false,
+          mode: status.mode,
+          apps: [],
+          message: '検証用アプリ候補の取得に失敗しました。apps / app_instances / RLS設定を確認してください。'
+        };
+      }
+
+      const owned = new Set((instances || []).map(row => row.app_key));
+      const apps = (catalog || [])
+        .filter(app => DEMO_APP_KEYS.includes(app.app_key))
+        .filter(app => !owned.has(app.app_key))
+        .map(app => ({
+          appKey: app.app_key,
+          name: app.name || app.app_key,
+          description: app.description || descriptionForApp(app.app_key),
+          appStatus: app.status || ''
+        }));
+
+      return {
+        ok: true,
+        mode: status.mode,
+        apps,
+        message: apps.length
+          ? '検証用に追加できるアプリがあります。本番購入ではありません。'
+          : '追加できる検証用アプリはありません。'
+      };
+    } catch {
+      return {
+        ok: false,
+        mode: status.mode,
+        apps: [],
+        message: '検証用アプリ候補の取得に失敗しました。接続設定を確認してください。'
+      };
+    }
+  }
+
+  async function addDemoAppInstance(companyAccountId, appKey) {
+    const status = await window.AuthService?.getAuthStatus?.();
+    if (!status || status.mode !== 'supabase') {
+      return {
+        ok: false,
+        mode: 'mock',
+        message: 'mock modeのため、検証用アプリ追加は実行していません。'
+      };
+    }
+
+    if (!companyAccountId || !DEMO_APP_KEYS.includes(appKey)) {
+      return {
+        ok: false,
+        mode: status.mode,
+        message: '追加対象のアプリまたは企業アカウントを確認できません。'
+      };
+    }
+
+    const client = await window.SupabaseClientService?.getSupabaseClient?.();
+    if (!client?.from) {
+      return {
+        ok: false,
+        mode: status.mode,
+        message: 'Supabase clientを確認できません。接続設定を確認してください。'
+      };
+    }
+
+    try {
+      const { data: existing, error: existingError } = await client
+        .from('app_instances')
+        .select('id,app_key')
+        .eq('company_account_id', companyAccountId)
+        .eq('app_key', appKey)
+        .maybeSingle();
+
+      if (existingError) {
+        return {
+          ok: false,
+          mode: status.mode,
+          message: '既存の利用アプリ確認に失敗しました。RLS設定を確認してください。'
+        };
+      }
+
+      if (existing) {
+        return {
+          ok: true,
+          mode: status.mode,
+          alreadyExists: true,
+          message: 'このアプリはすでに利用中アプリに登録されています。'
+        };
+      }
+
+      const { data: app, error: appError } = await client
+        .from('apps')
+        .select('app_key,name,description,status')
+        .eq('app_key', appKey)
+        .maybeSingle();
+
+      if (appError || !app) {
+        return {
+          ok: false,
+          mode: status.mode,
+          message: 'アプリカタログに対象アプリが見つかりません。seed.sqlの適用状況を確認してください。'
+        };
+      }
+
+      const { error: insertError } = await client
+        .from('app_instances')
+        .insert({
+          company_account_id: companyAccountId,
+          app_key: app.app_key,
+          display_name: app.name || app.app_key,
+          status: 'trial',
+          settings_json: {}
+        });
+
+      if (insertError) {
+        const duplicate = /duplicate|unique|conflict/i.test(String(insertError.message || ''));
+        return {
+          ok: duplicate,
+          mode: status.mode,
+          alreadyExists: duplicate,
+          message: duplicate
+            ? 'このアプリはすでに利用中アプリに登録されています。'
+            : '検証用アプリの追加に失敗しました。RLS設定とapp_instancesを確認してください。'
+        };
+      }
+
+      return {
+        ok: true,
+        mode: status.mode,
+        message: `${app.name || app.app_key} を検証用に追加しました。本番購入ではありません。`
+      };
+    } catch {
+      return {
+        ok: false,
+        mode: status.mode,
+        message: '検証用アプリの追加に失敗しました。接続設定を確認してください。'
+      };
+    }
+  }
+
   function normalizeAppInstance(row = {}, app = {}) {
     const appKey = row.app_key || app.app_key || '';
     const name = app.name || row.display_name || appKey || '未設定アプリ';
@@ -221,6 +405,8 @@
     getMyAppInstances,
     getMockAppInstances,
     getSupabaseAppInstances,
+    getAvailableDemoApps,
+    addDemoAppInstance,
     normalizeAppInstance,
     getAppStatusLabel,
     getAppLink

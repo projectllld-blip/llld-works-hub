@@ -17,6 +17,7 @@
         <a href="./login.html">ログイン準備中</a>
         <a href="./account.html">アカウント</a>
       </nav>
+      <span class="account-session-pill" data-account-badge>確認中</span>
     </header>
 
     <section class="market-hero account-hero">
@@ -60,6 +61,12 @@
       </article>
 
       <article class="detail-panel">
+        <h2>検証用アプリ追加</h2>
+        <p class="account-note" id="accountDemoAppsStatus">本番購入ではなく、クラウド保存検証用に利用アプリを追加します。</p>
+        <div class="account-demo-apps" id="accountDemoApps"></div>
+      </article>
+
+      <article class="detail-panel">
         <h2>最近使ったアプリ</h2>
         <ul class="account-list" id="accountRecentApps"></ul>
       </article>
@@ -82,6 +89,7 @@
   <script src="./assets/js/supabaseClientService.js"></script>
   <script src="./assets/js/authService.js"></script>
   <script src="./assets/js/appInstanceService.js"></script>
+  <script src="./assets/js/accountHeader.js"></script>
   <script src="./assets/js/accountPage.js"></script>
 </body>
 </html>
