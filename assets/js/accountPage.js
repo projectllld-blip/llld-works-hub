@@ -49,7 +49,7 @@
 
         if (result.ok && result.mode === 'supabase') {
           window.setTimeout(() => {
-            window.location.href = './account.html';
+            window.location.href = loginRedirectTarget();
           }, 900);
         }
       } catch {
@@ -464,6 +464,22 @@
     const label = status?.mode === 'supabase' ? '登録リクエストを送信' : '登録UIを確認する';
     button.dataset.idleLabel = label;
     if (!button.disabled) button.textContent = label;
+  }
+
+  function loginRedirectTarget() {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const redirect = String(params.get('redirect') || '').replace(/^\.\//, '');
+      const allowed = {
+        account: './account.html',
+        'account.html': './account.html',
+        portal: './portal.html',
+        'portal.html': './portal.html'
+      };
+      return allowed[redirect] || './account.html';
+    } catch {
+      return './account.html';
+    }
   }
 
   function setText(selector, value) {

@@ -1793,6 +1793,8 @@ body.tree-dragging{
   let portalApplyingState=false;
   let portalSaveTimer=null;
   let portalHasUnsavedChanges=false;
+  let portalLoginRedirectTimer=null;
+  const portalLoginUrl=()=>`login.html?redirect=${encodeURIComponent("portal.html")}`;
   function setPortalSaveStatus(message,type=""){
     if(!portalSaveStatus)return;
     portalSaveStatus.textContent=message;
@@ -1819,7 +1821,7 @@ body.tree-dragging{
       const button=event.target.closest("[data-portal-notice-action]");
       if(!button)return;
       const action=button.dataset.portalNoticeAction;
-      if(action==="login")window.open("login.html","_blank","noopener");
+      if(action==="login")window.location.href=portalLoginUrl();
       if(action==="account")window.open("account.html","_blank","noopener");
       if(action==="reload")bootstrapPortalState();
       if(action==="save")savePortalStateNow();
@@ -1838,6 +1840,10 @@ body.tree-dragging{
     setPortalNotice("未保存の変更があります。クラウド保存が終わるまで、このタブを閉じないでください。","warn");
     portalSaveTimer=setTimeout(savePortalStateNow,delay);
   }
+  function schedulePortalLoginRedirect(){
+    clearTimeout(portalLoginRedirectTimer);
+    portalLoginRedirectTimer=setTimeout(()=>{window.location.href=portalLoginUrl();},1600);
+  }
   async function savePortalStateNow(){
     if(portalApplyingState||!portalStateReady||!window.PortalStateService?.savePortalState)return;
     setPortalSaveStatus("クラウド確認中","saving");
@@ -1849,7 +1855,7 @@ body.tree-dragging{
       setPortalNotice("", "info");
     }else if(result.mode==="mock"){
       setPortalSaveStatus("ログインすると保存","");
-      setPortalNotice("ログインすると会社ごとのポータル状態をクラウド保存できます。","info",[{action:"login",label:"ログイン"}]);
+      setPortalNotice("ログインすると会社ごとのポータル状態をクラウド保存できます。","info",[{action:"login",label:"ログイン画面へ"}]);
     }else{
       portalHasUnsavedChanges=true;
       setPortalSaveStatus("クラウド保存失敗","error");
@@ -3092,10 +3098,17 @@ body.tree-dragging{
     if(result.mode!=="supabase"){
       portalStateReady=false;
       setPortalSaveStatus("ログインすると保存","");
-      setPortalNotice("ログインすると会社ごとのポータル状態をクラウド保存できます。現在の表示はこの端末の一時表示です。","info",[{action:"login",label:"ログイン"}]);
+      setPortalNotice("ログインすると会社ごとのポータル状態をクラウド保存できます。現在の表示はこの端末の一時表示です。","info",[{action:"login",label:"ログイン画面へ"}]);
       return;
     }
     if(!result.ok){
+      if(result.status==="not_logged_in"){
+        portalStateReady=false;
+        setPortalSaveStatus("ログインが必要","saving");
+        setPortalNotice("このページを利用するにはログインが必要です。ログイン画面へ移動します。","warn",[{action:"login",label:"ログイン画面へ"}]);
+        schedulePortalLoginRedirect();
+        return;
+      }
       portalStateReady=Boolean(cached?.ok);
       setPortalSaveStatus("クラウド保存失敗","error");
       const message=cached?.ok

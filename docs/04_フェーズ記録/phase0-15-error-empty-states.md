@@ -17,6 +17,9 @@ Supabase接続、ログイン、企業アカウント取得、利用アプリ一
 ### Portal
 
 - 未ログイン時に「ログインすると会社ごとのポータル状態をクラウド保存できます」と表示
+- 未ログイン時は `portal_state` 読込失敗ではなくログイン必須状態として扱う
+- 未ログイン時は `login.html?redirect=portal.html` へ自動遷移する
+- ログイン成功後、redirect指定が `portal.html` の場合は `portal.html` へ戻る
 - localStorageキャッシュのみ表示中に「前回保存データを一時表示中」と表示
 - クラウド確認失敗時に「クラウド確認に失敗しました」と表示
 - `works_portal` app_instanceなしの場合に管理者確認が必要と分かる表示
