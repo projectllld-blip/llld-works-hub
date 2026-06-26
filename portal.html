@@ -1062,10 +1062,10 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
 <div class="portal-shell">
 <header class="header">
   <a class="brand" href="#board"><i class="mark"></i><strong>LLLD Works Hub</strong><span>社内ポータル</span></a>
-  <a class="market" href="marketplace.html">LLLD Works Market β</a>
+  <a class="market" href="marketplace.html" target="_blank" rel="noopener">LLLD Works Market β</a>
   <div class="search"><span>🔍</span><input placeholder="コンテンツ名・カテゴリ・タグで検索"></div>
   <div class="header-spacer"></div>
-  <nav class="h-actions"><a class="hbtn" href="login.html">ログイン</a><a class="hbtn" href="account.html">アカウント</a></nav>
+  <nav class="h-actions"><a class="hbtn" href="login.html" target="_blank" rel="noopener">ログイン</a><a class="hbtn" href="account.html" target="_blank" rel="noopener">アカウント</a></nav>
 </header>
 
 <div class="layout">
@@ -1127,9 +1127,9 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
     <div class="s-head"><h2>クイックアクセス・操作ログ</h2><div class="s-actions"><button class="pin" data-pin>☆</button><button class="collapse" data-collapse>▲</button></div></div>
     <div class="s-body"><div class="quick-log-grid">
       <div class="panel quick-height"><div class="p-head"><h3>最近使ったもの</h3><span class="upd">直近順</span></div><div class="quick-list">
-        <article class="quick-card"><div class="qthumb"><div class="mock-screen"><div class="mock-top"><span></span><span></span><span></span></div><div class="mock-body"><div class="mock-menu"><i></i><i></i><i></i></div><div class="mock-main"><b></b><p><i></i><i></i><i></i></p><em></em></div></div></div></div><div><h4>小テスト作成アプリ</h4><p>英検・漢字・語彙テストを作成</p></div><a class="mini-btn primary" href="apps/quiz-maker/index.html">開く</a></article>
-        <article class="quick-card"><div class="qthumb"><div class="mock-screen"><div class="mock-top"><span></span><span></span><span></span></div><div class="mock-main"><b></b><p><i></i><i></i><i></i></p><em></em></div></div></div><div><h4>入試問題アプリ</h4><p>入試問題・演習プリントを印刷</p></div><a class="mini-btn primary" href="apps/exam-print/index.html">開く</a></article>
-        <article class="quick-card"><div class="qthumb"><div class="mock-screen"><div class="mock-top"><span></span><span></span><span></span></div><div class="mock-main"><b></b><p><i></i><i></i><i></i></p><em></em></div></div></div><div><h4>PDF編集ツール</h4><p>結合・分割・並べ替え</p></div><a class="mini-btn primary" href="apps/pdf-tool/index.html">開く</a></article>
+        <article class="quick-card"><div class="qthumb"><div class="mock-screen"><div class="mock-top"><span></span><span></span><span></span></div><div class="mock-body"><div class="mock-menu"><i></i><i></i><i></i></div><div class="mock-main"><b></b><p><i></i><i></i><i></i></p><em></em></div></div></div></div><div><h4>小テスト作成アプリ</h4><p>英検・漢字・語彙テストを作成</p></div><a class="mini-btn primary" href="apps/quiz-maker/index.html" target="_blank" rel="noopener">開く</a></article>
+        <article class="quick-card"><div class="qthumb"><div class="mock-screen"><div class="mock-top"><span></span><span></span><span></span></div><div class="mock-main"><b></b><p><i></i><i></i><i></i></p><em></em></div></div></div><div><h4>入試問題アプリ</h4><p>入試問題・演習プリントを印刷</p></div><a class="mini-btn primary" href="apps/exam-print/index.html" target="_blank" rel="noopener">開く</a></article>
+        <article class="quick-card"><div class="qthumb"><div class="mock-screen"><div class="mock-top"><span></span><span></span><span></span></div><div class="mock-main"><b></b><p><i></i><i></i><i></i></p><em></em></div></div></div><div><h4>PDF編集ツール</h4><p>結合・分割・並べ替え</p></div><a class="mini-btn primary" href="apps/pdf-tool/index.html" target="_blank" rel="noopener">開く</a></article>
       </div></div>
       <aside class="panel quick-height"><div class="p-head"><h3>操作ログ</h3><span class="upd">最新順</span></div><div class="log-list" id="activityLog">
         <article class="log-item" data-log-target="#files" data-log-file-name="体験授業_中2英検対策_所見テンプレ.pdf"><span class="log-icon">📂</span><div><strong>体験授業_所見テンプレ.pdf を開きました</strong><span>教育事業 / 体験授業資料</span></div><time class="log-time">19:12</time></article>
@@ -1322,6 +1322,10 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
   };
   const markPortalOutboundLinks = root=>root?.querySelectorAll?.("a[href]")?.forEach(markOutboundLink);
   markPortalOutboundLinks(document);
+  const shouldOpenInNewTab = link=>{
+    const href=link?.getAttribute("href")||"";
+    return Boolean(href && !href.startsWith("#") && !href.startsWith("mailto:") && !href.startsWith("tel:"));
+  };
 
   document.addEventListener("selectstart", e=>{
     if(e.target.closest(".tree-body .row")){
@@ -1380,6 +1384,18 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
   markPortalOutboundLinks(document);
 
   document.body.addEventListener("click",e=>{
+    const previewOpen=e.target.closest("[data-preview-open-url]");
+    if(previewOpen){
+      e.preventDefault();
+      openLinkConfirm(previewOpen.dataset.previewOpenUrl, previewOpen.dataset.previewOpenLabel||previewOpen.textContent.trim()||"リンク");
+      return;
+    }
+    const outbound=e.target.closest("a[href]");
+    if(outbound && shouldOpenInNewTab(outbound) && !outbound.closest(".tree-body")){
+      e.preventDefault();
+      window.open(outbound.href,"_blank","noopener");
+      return;
+    }
     const pin=e.target.closest("[data-pin]");
     if(pin){e.stopPropagation();const on=pin.classList.toggle("on");pin.textContent=on?"★":"☆";return;}
     const collapse=e.target.closest("[data-collapse]");
@@ -1474,34 +1490,54 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
   function rowCheck(row){return Array.from(row?.children||[]).find(el=>el.classList?.contains("check"))||null}
   function toggleFileCheck(row){const check=rowCheck(row);if(check && row?.dataset.fileName){check.checked=!check.checked}}
   function isExternalUrl(url){return /^https?:\/\//i.test(url||"")}
-  function openLinkHtml(url,label){if(!url)return "";const text=label||"開く";return '<p><a class="mini-btn primary" href="'+url+'" target="_blank" rel="noopener">'+text+'</a></p>'}
+  function safeAttr(value){return String(value||"").replaceAll("&","&amp;").replaceAll('"',"&quot;").replaceAll("<","&lt;")}
+  function openLinkHtml(url,label,confirmLabel){if(!url)return "";const text=label||"開く";return '<p><button class="mini-btn primary" type="button" data-preview-open-url="'+safeAttr(url)+'" data-preview-open-label="'+safeAttr(confirmLabel||text)+'">'+text+'</button></p>'}
   function addLog(icon,title,detail){const log=document.getElementById("activityLog");const now=new Date().toLocaleTimeString("ja-JP",{hour:"2-digit",minute:"2-digit"});const item=document.createElement("article");item.className="log-item";item.innerHTML=`<span class="log-icon">${icon}</span><div><strong>${title}</strong><span>${detail}</span></div><time class="log-time">${now}</time>`;log?.prepend(item)}
   function preview(row){if(!row)return;const name=row.dataset.fileName||row.dataset.folderPath||row.querySelector(".fname")?.textContent.trim()||"選択中";const type=row.dataset.fileType||(row.dataset.folderPath?"Folder":"-");const path=row.dataset.filePath||row.dataset.folderPath||"-";const date=row.dataset.fileDate||row.querySelector(".fdate")?.textContent.replace("最終更新","").trim()||"-";const url=row.dataset.fileUrl;viewerTitle.textContent=name;previewType.textContent=type;previewPath.textContent=path;previewDate.textContent=date;previewUpdated.textContent=date==="-"?"選択中":date;viewerStage.innerHTML='<div class="doc-preview"><div class="doc-line w70"></div><div class="doc-line w90"></div><div class="doc-line w90"></div><div class="doc-line w45"></div></div><span class="preview-fit-note">自動フィット</span>';if(url){
     const iconLabel=type==="Link"?"🔗":(type==="HTML"?"🌐":"📄");
     const linkLabel=type==="Link"?"リンクを開く":"開く";
-    viewerStage.innerHTML='<div class="doc-preview"><div style="font-size:2rem;margin-bottom:14px">'+iconLabel+'</div><strong>'+name+'</strong><p style="color:#6d7b92;word-break:break-all">'+url+'</p>'+openLinkHtml(url,linkLabel)+'</div><span class="preview-fit-note">自動フィット</span>';
+    viewerStage.innerHTML='<div class="doc-preview"><div style="font-size:2rem;margin-bottom:14px">'+iconLabel+'</div><strong>'+name+'</strong><p style="color:#6d7b92;word-break:break-all">'+url+'</p>'+openLinkHtml(url,linkLabel,name)+'</div><span class="preview-fit-note">自動フィット</span>';
   }
   if(row.dataset.fileName)addLog("📂",name+" を開きました",path)}
   document.querySelectorAll(".folder-btn").forEach(btn=>btn.addEventListener("click",()=>{const row=btn.closest(".row");selectFolder(row);clearSelectedFile();preview(row);btn.closest(".node")?.classList.toggle("closed")}));
   document.querySelectorAll(".tree .node").forEach(node=>node.classList.add("closed"));
-  document.querySelector(".tree-body")?.addEventListener("click",e=>{const row=e.target.closest(".row");if(!row)return;if(e.target.closest(".check")||e.target.closest(".folder-btn"))return;if(row.dataset.folderPath){selectFolder(row);clearSelectedFile();preview(row);return}if(row.dataset.fileName){if(e.target.closest(".tree-file-link"))e.preventDefault();toggleFileCheck(row);selectFile(row);preview(row);return}preview(row)});
+  document.querySelector(".tree-body")?.addEventListener("click",e=>{const row=e.target.closest(".row");if(!row)return;if(e.target.closest(".check")||e.target.closest(".folder-btn"))return;if(row.dataset.folderPath){selectFolder(row);clearSelectedFile();preview(row);return}if(row.dataset.fileName){if(e.target.closest(".tree-file-link")){e.preventDefault();e.stopPropagation();selectFile(row);preview(row);openFileLinkConfirm(row);return}toggleFileCheck(row);selectFile(row);preview(row);return}preview(row)});
   document.querySelectorAll(".row[data-folder-path]").forEach(row=>{row.addEventListener("dragover",e=>{e.preventDefault();row.classList.add("drop-target")});row.addEventListener("dragleave",()=>row.classList.remove("drop-target"));row.addEventListener("drop",e=>{e.preventDefault();row.classList.remove("drop-target");selectFolder(row);clearSelectedFile();const name=e.dataTransfer.getData("text/plain")||"追加ファイル";show(`「${name}」を「${row.dataset.folderPath}」へ追加する想定です。`);addLog("📁","ファイルをフォルダへ移動",name+" → "+row.dataset.folderPath)})});
   document.querySelectorAll(".check").forEach(ch=>{ch.addEventListener("click",e=>e.stopPropagation());ch.addEventListener("change",()=>{const row=ch.closest(".row");if(!row?.dataset.folderPath)return;const node=row.closest(".node");if(!node)return;node.querySelectorAll("ul .check").forEach(c=>c.checked=ch.checked)})});
   const logConfirmModal=document.getElementById("logConfirmModal");
+  const logConfirmTitle=document.getElementById("logConfirmTitle");
   const logConfirmText=document.getElementById("logConfirmText");
   const logConfirmCancel=document.getElementById("logConfirmCancel");
   const logConfirmGo=document.getElementById("logConfirmGo");
   let pendingLogTarget=null;
-  function closeLogConfirm(){logConfirmModal?.classList.remove("show");logConfirmModal?.setAttribute("aria-hidden","true");pendingLogTarget=null}
+  let pendingLinkTarget=null;
+  function closeLogConfirm(){logConfirmModal?.classList.remove("show");logConfirmModal?.setAttribute("aria-hidden","true");pendingLogTarget=null;pendingLinkTarget=null}
   function openLogConfirm(item){
     const target=item.dataset.logTarget;
     if(!target)return;
     pendingLogTarget={target,fileName:item.dataset.logFileName||""};
+    pendingLinkTarget=null;
     const label=item.querySelector("strong")?.textContent.trim()||"操作ログ";
+    logConfirmTitle.textContent="該当箇所へ移動しますか？";
     logConfirmText.textContent=`「${label}」に関連する場所へ移動しますか？`;
+    logConfirmGo.textContent="移動する";
     logConfirmModal?.classList.add("show");
     logConfirmModal?.setAttribute("aria-hidden","false");
     logConfirmGo?.focus();
+  }
+  function openLinkConfirm(url,label){
+    if(!url)return;
+    pendingLinkTarget={url,label:label||"リンク"};
+    pendingLogTarget=null;
+    logConfirmTitle.textContent="ページを別タブで開きますか？";
+    logConfirmText.textContent=`「${pendingLinkTarget.label}」を別タブで開きますか？`;
+    logConfirmGo.textContent="別タブで開く";
+    logConfirmModal?.classList.add("show");
+    logConfirmModal?.setAttribute("aria-hidden","false");
+    logConfirmGo?.focus();
+  }
+  function openFileLinkConfirm(row){
+    openLinkConfirm(row?.dataset.fileUrl, row?.dataset.fileName||"リンク");
   }
   function revealFileByName(fileName){
     if(!fileName)return false;
@@ -1528,6 +1564,12 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
   logConfirmCancel?.addEventListener("click",closeLogConfirm);
   logConfirmModal?.addEventListener("click",event=>{if(event.target===logConfirmModal)closeLogConfirm()});
   logConfirmGo?.addEventListener("click",()=>{
+    if(pendingLinkTarget){
+      const nextLink=pendingLinkTarget;
+      closeLogConfirm();
+      window.open(nextLink.url,"_blank","noopener");
+      return;
+    }
     if(!pendingLogTarget)return closeLogConfirm();
     const nextTarget=pendingLogTarget;
     const target=document.querySelector(nextTarget.target);
