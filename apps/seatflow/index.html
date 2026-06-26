@@ -1129,6 +1129,9 @@ function setSeatFlowCloudUi(result){
  }
  if(text)text.textContent=result?.message||"このフェーズでは、座席レイアウトのみ保存します。生徒名・利用状況・勤怠情報は保存しません。";
  if(last&&result?.savedAt)last.textContent=`最終保存 ${formatCloudTime(result.savedAt)}`;
+ if(last&&result?.status==="not_found")last.textContent="クラウド未保存";
+ if(last&&result?.status==="save_failed")last.textContent="保存失敗";
+ if(last&&result?.status==="load_failed")last.textContent="読込失敗";
 }
 function formatCloudTime(value){
  try{return new Date(value).toLocaleString("ja-JP",{month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"})}catch{return "保存済み"}
@@ -1146,16 +1149,18 @@ function bindSeatFlowCloudControls(){
  if(saveBtn)saveBtn.onclick=async()=>{
    if(!window.SeatFlowCloudService?.saveSeatLayoutToCloud)return toast("クラウド保存サービスを確認できません");
    saveBtn.disabled=true;
+   saveBtn.textContent="保存中...";
    try{
      const result=await window.SeatFlowCloudService.saveSeatLayoutToCloud(buildSeatFlowCloudLayout());
      setSeatFlowCloudUi(result);
      toast(result.message,2600);
    }catch(err){toast("クラウド保存を実行できませんでした")}
-   finally{saveBtn.disabled=false;}
+   finally{saveBtn.disabled=false;saveBtn.textContent="クラウド保存";}
  };
  if(loadBtn)loadBtn.onclick=async()=>{
    if(!window.SeatFlowCloudService?.loadSeatLayoutFromCloud)return toast("クラウド読込サービスを確認できません");
    loadBtn.disabled=true;
+   loadBtn.textContent="読込中...";
    try{
      const result=await window.SeatFlowCloudService.loadSeatLayoutFromCloud();
      setSeatFlowCloudUi(result);
@@ -1166,7 +1171,7 @@ function bindSeatFlowCloudControls(){
        }
      }else toast(result.message,2600);
    }catch(err){toast("クラウド読込を実行できませんでした")}
-   finally{loadBtn.disabled=false;}
+   finally{loadBtn.disabled=false;loadBtn.textContent="クラウド読込";}
  };
 }
 function normalizeLoaded(){

@@ -96,6 +96,7 @@
   }
 
   async function initAccount(status) {
+    renderAccountLoading(status);
     const result = await window.AuthService.getCurrentAccount();
     renderModeStatus(result.status || status);
     await renderAccountState(result, result.status || status);
@@ -118,6 +119,14 @@
         logoutButton.disabled = false;
       });
     }
+  }
+
+  function renderAccountLoading(status) {
+    setText('#accountStatus', `${modeLabel(status)} / 読み込み中`);
+    setText('#accountSyncStatus', '企業アカウント情報を確認しています。');
+    setText('#accountAppsStatus', '利用アプリ一覧を確認しています。');
+    renderAppCards('#accountApps', []);
+    renderStatus('読み込み中です。少しお待ちください。', true);
   }
 
   async function renderAccountState(result, status) {

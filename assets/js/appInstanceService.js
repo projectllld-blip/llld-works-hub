@@ -129,7 +129,7 @@
           status,
           appStatus: 'empty',
           apps: [],
-          message: '利用中アプリはまだ登録されていません。signup時のselected_app_keys、app_instances作成SQL、またはv0.13 migrationの適用状況を確認してください。'
+          message: '利用中アプリはまだ登録されていません。登録時に選んだアプリ、またはSupabaseのapp_instances設定を確認してください。'
         };
       }
 
@@ -157,7 +157,7 @@
         status,
         appStatus: 'loaded',
         apps: instances.map(row => normalizeAppInstance(row, appMap.get(row.app_key))),
-        message: '利用アプリ一覧を取得しました。app_data保存はまだ行っていません。'
+        message: '利用アプリ一覧を取得しました。SeatFlowレイアウトのみクラウド保存を検証中です。'
       };
     } catch {
       return {
