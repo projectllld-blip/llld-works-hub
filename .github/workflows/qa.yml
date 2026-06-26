@@ -1,0 +1,75 @@
+name: QA
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  static-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Whitespace check
+        run: git diff --check HEAD^ HEAD || git diff --check
+
+      - name: Required HTML files
+        run: |
+          set -eu
+          for file in index.html portal.html marketplace.html login.html signup.html account.html; do
+            test -f "$file"
+          done
+
+      - name: JSON parse
+        run: |
+          set -eu
+          find . -path './.git' -prune -o -name '*.json' -print | while IFS= read -r file; do
+            node -e "JSON.parse(require('fs').readFileSync(process.argv[1], 'utf8'))" "$file"
+          done
+
+      - name: JS syntax
+        run: |
+          set -eu
+          find . -path './.git' -prune -o -name '*.js' -print | while IFS= read -r file; do
+            node --check "$file"
+          done
+
+      - name: Secret pattern scan
+        run: |
+          set -eu
+          patterns='service_role|sb_secret_|SUPABASE_SERVICE_ROLE|DATABASE_URL|PRIVATE KEY|OPENAI_API_KEY|STRIPE_SECRET|GITHUB_TOKEN'
+          files="$(find . \
+            -path './.git' -prune -o \
+            -path './docs' -prune -o \
+            -path './.github' -prune -o \
+            -type f \( -name '*.html' -o -name '*.js' -o -name '*.css' -o -name '*.json' -o -name '*.yml' -o -name '*.yaml' \) -print)"
+          if [ -n "$files" ]; then
+            printf '%s\n' "$files" | xargs grep -InE "$patterns" && exit 1 || true
+          fi
+
+      - name: Main link targets
+        run: |
+          set -eu
+          node <<'NODE'
+          const fs = require('fs');
+          const path = require('path');
+          const files = ['index.html', 'portal.html', 'marketplace.html', 'login.html', 'signup.html', 'account.html'];
+          const missing = [];
+          for (const file of files) {
+            const html = fs.readFileSync(file, 'utf8');
+            const re = /\b(?:href|src)=["']([^"']+)["']/g;
+            for (const match of html.matchAll(re)) {
+              const raw = match[1];
+              if (!raw || raw.startsWith('#') || raw.includes('${') || /^[a-z]+:/i.test(raw) || raw.startsWith('mailto:') || raw.startsWith('tel:')) continue;
+              const clean = raw.split('#')[0].split('?')[0];
+              if (!clean || clean.endsWith('/')) continue;
+              const target = path.normalize(path.join(path.dirname(file), clean));
+              if (!fs.existsSync(target)) missing.push(`${file} -> ${raw}`);
+            }
+          }
+          if (missing.length) {
+            console.error(missing.join('\n'));
+            process.exit(1);
+          }
+          NODE
