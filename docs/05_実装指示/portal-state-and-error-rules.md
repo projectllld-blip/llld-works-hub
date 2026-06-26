@@ -8,7 +8,9 @@
 
 - 社員が「保存された」と誤解するUIにしない
 - リロードで消える操作は、画面上またはトーストで一時状態だと分かるようにする
-- Supabase保存対象は、設計とRLSが整ったものだけに限定する
+- ポータル編集データは最終的にSupabase保存対象にする
+- MVPでは `app_data.data_type = portal_state` にポータル用JSONとして保存する
+- 保存単位は企業アカウント単位とし、`company_account_id` で分離する
 - 個人情報、顧客情報、教材PDF本体、契約書、見積書、秘密情報はポータル内mockやlocalStorageに保存しない
 - GitHub Pages単体で完結する範囲と、将来Supabaseへ接続する範囲を分ける
 
@@ -24,9 +26,28 @@
 - ページ遷移確認モーダル後に別タブで開く方針を維持する
 - 存在しないHTMLへリンクしない
 
+### Supabase保存予定の画面状態
+
+v0.14.12以降、以下は `works_portal` の `app_data.portal_state` へ保存する方針にする。
+
+- メモ / ToDo
+- 掲示板投稿
+- 保管庫ツリー構造
+- 保管庫リンク情報
+- お気に入り
+- 最近使ったもの
+- ポータル表示設定
+
+ルール:
+
+- 保存中 / 保存済み / 保存失敗を画面に出す
+- 未ログイン時は「ログインすると会社ごとのポータル状態を保存できます」と案内する
+- Supabase未設定時はmock表示として扱う
+- ファイル本体は保存せず、リンクURLとメタデータだけを保存する
+
 ### 一時状態
 
-メモ / ToDo追加、掲示板削除、保管庫の名前変更、リンク変更、ドラッグ移動、Undo / Redoなど、現在DOM上だけで動くもの。
+Undo / Redo履歴、ドラッグ中状態、モーダル開閉状態、一時選択状態、ダウンロード形式選択など、保存しないもの。
 
 ルール:
 
@@ -47,18 +68,20 @@
 
 ### Supabase保存
 
-現時点では以下に限定する。
+v0.14.12以降の保存対象は以下。
 
 - `company_accounts`
 - `app_instances`
 - SeatFlowの `app_data.data_type = seat_layout`
+- Works Portalの `app_data.data_type = portal_state`
 
 ルール:
 
 - service role keyをフロントに置かない
 - RLS未確認のテーブルを本番運用しない
 - 企業アカウント単位の `company_account_id` 分離を守る
-- ポータル編集データをSupabaseへ入れる場合は、先にDB設計とRLS方針を追加する
+- ポータル編集データは `app_key = works_portal` / `data_type = portal_state` で扱う
+- 専用テーブル化はPhase 2以降の拡張候補とし、MVPではJSONB保存を優先する
 
 ## v0.15で扱うエラー・空状態
 
@@ -83,6 +106,9 @@
 
 - メモ / ToDoが空
 - 掲示板投稿が空
+- portal_state読込失敗
+- portal_state保存失敗
+- works_portal app_instanceなし
 - 削除対象が未選択
 - 保管庫の移動先が不正
 - Undo / Redoできる履歴がない
@@ -100,8 +126,7 @@
 
 ## v0.14.11で決めること
 
-- メモ / ToDoをlocalStorageで一時保存するか、完全mockのままにするか
-- 掲示板をlocalStorage、Supabase、mockのどれで扱うか
-- 保管庫ツリー構造を保存するか
-- ファイル本体はGoogle Drive / Supabase Storage / 外部URLのどれを想定するか
-- 社内ポータル編集機能をv1.0までにどこまで本実装するか
+- メモ / ToDo、掲示板、保管庫ツリー、お気に入り、最近使ったものはSupabase `app_data.portal_state` に保存する
+- ファイル本体はv1.0までは急がず、リンクURL・ファイル名・メタデータ保存を優先する
+- Supabase Storageは別フェーズで設計する
+- v0.14.12で `portalStateService.js` を追加し、読込 / 保存MVPに進む
