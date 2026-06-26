@@ -1,6 +1,9 @@
 # 01 AUTOMATION ROADMAP
 
 ## A0.1 Codex半自動運用基盤
+状態:
+完了。
+
 目的:
 Codexが安全に作業し、人間確認が必要なときだけ止まる基盤を作る。
 
@@ -16,6 +19,9 @@ Codexが安全に作業し、人間確認が必要なときだけ止まる基盤
 - HUMAN_REVIEW_GUIDE がある
 
 ## A0.2 GitHub Issue運用化
+状態:
+進行中。
+
 目的:
 Codexへの依頼をチャットではなくIssue単位にする。
 
@@ -29,6 +35,14 @@ Codexへの依頼をチャットではなくIssue単位にする。
 - `needs-supabase-check`
 - `needs-uiux-check`
 - `safe-to-continue`
+
+完了条件:
+- Issue運用ルールがある
+- ラベル運用ルールがある
+- Codex作業Issueテンプレートが改善されている
+- HUMAN_REQUIRED用Issueテンプレートがある
+- TASK_QUEUEとPROJECT_STATUSが更新されている
+- GitHub上のラベル作成は人間作業として残している
 
 ## A0.3 QA自動チェック強化
 目的:
