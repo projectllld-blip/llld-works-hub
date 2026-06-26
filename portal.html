@@ -615,7 +615,7 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
   height:360px;
 }
 .todo-body{
-  grid-template-rows:auto minmax(130px,1fr) 48px!important;
+  grid-template-rows:auto minmax(130px,1fr) 64px!important;
   min-height:302px;
   overflow:hidden;
 }
@@ -638,6 +638,11 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
 }
 .todo-body textarea{
   width:100%!important;
+  min-height:64px!important;
+  height:64px!important;
+  line-height:1.55!important;
+  padding:11px 13px!important;
+  font-size:1rem!important;
 }
 .tree-edit-icon{
   width:18px;
@@ -659,6 +664,18 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
 .row.rename-flash{
   background:#fff8e6!important;
   border-color:rgba(244,189,61,.65)!important;
+}
+.row.drag-source{
+  opacity:.55;
+  background:#eef8ff!important;
+  border-color:#9ec5fe!important;
+}
+.tree-card.edit-mode .row[data-folder-path].drop-target .fname::after{
+  content:" ここへ移動";
+  margin-left:6px;
+  color:var(--teal2);
+  font-size:.82rem;
+  font-weight:500;
 }
 .queue-item{
   grid-template-columns:28px minmax(150px,1.4fr) minmax(120px,.7fr) minmax(160px,1fr) minmax(120px,1.2fr) auto auto!important;
@@ -690,7 +707,14 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
     max-height:170px;
   }
   .todo-body{
-    grid-template-rows:auto minmax(120px,1fr) 52px!important;
+    grid-template-rows:auto minmax(120px,1fr) 76px!important;
+  }
+  .todo-body textarea{
+    min-height:76px!important;
+    height:76px!important;
+    padding:12px 14px!important;
+    font-size:.98rem!important;
+    line-height:1.6!important;
   }
   .tree-actions{
     align-items:flex-start;
@@ -1933,9 +1957,10 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
   document.querySelectorAll(".tree .node").forEach(node=>node.classList.add("closed"));
   const treeBody=document.querySelector(".tree-body");
   treeBody?.addEventListener("click",e=>{const row=e.target.closest(".row");if(!row)return;if(e.target.closest(".check")||e.target.closest(".folder-btn"))return;if(row.dataset.folderPath){selectFolder(row);clearSelectedFile();preview(row);return}if(row.dataset.fileName){if(e.target.closest(".tree-file-link")){e.preventDefault();e.stopPropagation();selectFile(row);preview(row);openFileLinkConfirm(row);return}toggleFileCheck(row);selectFile(row);preview(row);return}preview(row)});
-  treeBody?.addEventListener("dragstart",e=>{const row=e.target.closest(".row[data-file-name], .row[data-folder-path]");if(!treeEditMode||!row){e.preventDefault();return}draggedTreeRow=row;if(row.dataset.fileName)selectFile(row);else{selectFolder(row);clearSelectedFile()}e.dataTransfer.setData("text/plain",row.dataset.fileName||row.dataset.folderPath||"保管庫項目");e.dataTransfer.effectAllowed="move"});
-  treeBody?.addEventListener("dragend",()=>{draggedTreeRow=null;document.querySelectorAll(".tree-body .drop-target").forEach(row=>row.classList.remove("drop-target"))});
-  document.querySelectorAll(".row[data-folder-path]").forEach(row=>{row.addEventListener("dragover",e=>{if(treeEditMode&&draggedTreeRow){e.preventDefault();e.dataTransfer.dropEffect="move"}else if(!treeEditMode){e.preventDefault()}row.classList.add("drop-target")});row.addEventListener("dragleave",()=>row.classList.remove("drop-target"));row.addEventListener("drop",e=>{e.preventDefault();row.classList.remove("drop-target");if(treeEditMode&&draggedTreeRow){if(draggedTreeRow.dataset.fileName)moveFileRowToFolder(draggedTreeRow,row);else moveFolderRowToFolder(draggedTreeRow,row);draggedTreeRow=null;return}selectFolder(row);clearSelectedFile();const name=e.dataTransfer.getData("text/plain")||"追加ファイル";show(`「${name}」を「${row.dataset.folderPath}」へ追加する想定です。`);addLog("📁","ファイルをフォルダへ移動",name+" → "+row.dataset.folderPath)})});
+  treeBody?.addEventListener("dblclick",e=>{if(!treeEditMode)return;const row=e.target.closest(".row[data-file-name], .row[data-folder-path]");if(!row)return;e.preventDefault();if(row.dataset.fileName)selectFile(row);else{selectFolder(row);clearSelectedFile()}renameSelectedTreeItem()});
+  treeBody?.addEventListener("dragstart",e=>{const row=e.target.closest(".row[data-file-name], .row[data-folder-path]");if(!treeEditMode||!row){e.preventDefault();return}draggedTreeRow=row;row.classList.add("drag-source");if(row.dataset.fileName)selectFile(row);else{selectFolder(row);clearSelectedFile()}e.dataTransfer.setData("text/plain",row.dataset.fileName||row.dataset.folderPath||"保管庫項目");e.dataTransfer.effectAllowed="move"});
+  treeBody?.addEventListener("dragend",()=>{draggedTreeRow?.classList.remove("drag-source");draggedTreeRow=null;document.querySelectorAll(".tree-body .drop-target").forEach(row=>row.classList.remove("drop-target"))});
+  document.querySelectorAll(".row[data-folder-path]").forEach(row=>{row.addEventListener("dragover",e=>{if(treeEditMode&&draggedTreeRow){e.preventDefault();e.dataTransfer.dropEffect="move";row.closest(".node")?.classList.remove("closed")}else if(!treeEditMode){e.preventDefault()}row.classList.add("drop-target")});row.addEventListener("dragleave",()=>row.classList.remove("drop-target"));row.addEventListener("drop",e=>{e.preventDefault();row.classList.remove("drop-target");if(treeEditMode&&draggedTreeRow){if(draggedTreeRow.dataset.fileName)moveFileRowToFolder(draggedTreeRow,row);else moveFolderRowToFolder(draggedTreeRow,row);draggedTreeRow?.classList.remove("drag-source");draggedTreeRow=null;return}selectFolder(row);clearSelectedFile();const name=e.dataTransfer.getData("text/plain")||"追加ファイル";show(`「${name}」を「${row.dataset.folderPath}」へ追加する想定です。`);addLog("📁","ファイルをフォルダへ移動",name+" → "+row.dataset.folderPath)})});
   document.getElementById("treeEditModeBtn")?.addEventListener("click",()=>setTreeEditMode(!treeEditMode));
   document.getElementById("renameTreeItemBtn")?.addEventListener("click",renameSelectedTreeItem);
   document.getElementById("moveTreeItemBtn")?.addEventListener("click",moveSelectedTreeItem);
