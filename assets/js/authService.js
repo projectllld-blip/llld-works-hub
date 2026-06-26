@@ -561,9 +561,9 @@
       planStatus: row.plan_status || '',
       createdAt: row.created_at || '',
       updatedAt: row.updated_at || '',
-      apps: ['利用アプリ一覧は v0.13 で接続予定です。'],
-      recentApps: ['最近使ったアプリのクラウド同期は v0.13 以降で検討します。'],
-      syncStatus: 'company_accounts から取得しています。app_data保存はまだ行っていません。'
+      apps: ['利用アプリ一覧はapp_instancesから取得します。'],
+      recentApps: ['最近使ったアプリのクラウド同期は後続フェーズで検討します。'],
+      syncStatus: 'company_accounts から取得しています。SeatFlowレイアウトのみapp_data保存を検証中です。'
     };
   }
 
@@ -591,11 +591,11 @@
 
   function readableLoginError(error) {
     const message = String(error?.message || '');
-    if (/email|password|credentials|invalid/i.test(message)) {
-      return 'ログインに失敗しました。メールアドレスまたはパスワードを確認してください。';
-    }
     if (/confirm|verified/i.test(message)) {
       return 'ログインに失敗しました。確認メールの完了状況を確認してください。';
+    }
+    if (/email|password|credentials|invalid/i.test(message)) {
+      return 'ログインに失敗しました。メールアドレスまたはパスワードを確認してください。';
     }
     return 'ログインに失敗しました。メールアドレスまたはパスワードを確認してください。';
   }

@@ -280,7 +280,7 @@
           ok: false,
           mode: 'supabase',
           status: 'not_found',
-          message: 'クラウド保存されたSeatFlowレイアウトはまだありません。'
+          message: 'クラウド保存されたSeatFlowレイアウトはまだありません。先に「クラウド保存」を押してください。'
         };
       }
 
