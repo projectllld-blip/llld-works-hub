@@ -72,6 +72,22 @@ insert / update / select は、ログイン中ユーザーが所有する `compa
 
 SeatFlow画面から保存する場合も、`app_instance_id` と `data_type` の一意制約を使い、同じSeatFlowインスタンスの `seat_layout` を上書きする。
 
+v0.14.12のWorks Portal保存では以下を扱う想定。
+
+```text
+app_key = works_portal
+data_type = portal_state
+```
+
+`portal_state` も `company_account_id` で分離し、ログイン中ユーザーが所有する企業アカウントの行だけselect / insert / updateできるようにする。既存の `app_data_*_own_company` policyを使うため、原則としてRLS追加は不要。
+
+ただし、v0.16では以下を必ず確認する。
+
+- 他社の `works_portal` app_instance が読めない
+- 他社の `portal_state` app_data が読めない
+- 他社の `portal_state` app_data を更新できない
+- anon / logged out相当では `portal_state` を読めない
+
 フロントにservice role keyは置かない。RLSを迂回しない。
 
 ## audit_logs
