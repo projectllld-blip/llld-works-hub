@@ -4,14 +4,14 @@
 - A0.1 Codex半自動運用基盤
 - A0.2 GitHub Issue運用化
 - A0.3 QA自動チェック強化
-
-## 進行中
 - A0.4 Codex文脈圧縮・引き継ぎ運用
 
-## 次の自動化キュー
+## 進行中
 - A0.5 PRレビュー運用
-- A0.6 Codex GitHub Action連携検討
-- A0.7 HUMAN_REQUIREDダッシュボード化
+
+## 次の自動化キュー
+- A0.6 Codex GitHub Action連携検討: 人間確認後に進める候補
+- A0.7 HUMAN_REQUIREDダッシュボード化: 人間確認後に進める候補
 
 ## 本線再開候補
 - v0.15 エラー処理・空状態
@@ -42,3 +42,4 @@
 - v0.x / v1.x はLLLD Works Hub / Works Market本線。
 - A0.x中は本線を勝手に進めない。
 - 本線へ戻るにはPROJECT_STATUSで再開条件を確認する。
+- A0.6 / A0.7 はGitHub Secretsや外部連携に踏み込む可能性があるため、人間確認後に進める。

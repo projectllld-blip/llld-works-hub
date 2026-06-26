@@ -28,3 +28,21 @@
 ## HUMAN_REQUIREDがNOの場合
 - 変更ファイルと確認結果を見て問題なければ次のCodex指示へ進む。
 - ただし、GitHub Actions失敗、secret疑い、UIUX未確認があれば止める。
+
+## PRレビュー時に見る順番
+1. `HUMAN_REQUIRED` を見る。
+2. `YES` なら `STOP_REASON` と `人間が次にやること` を見る。
+3. GitHub Actions / QA結果を見る。
+4. 追加・更新したファイルを見る。
+5. 本体UIを意図せず触っていないか見る。
+6. Supabase / ブラウザ / UIUX確認が必要か見る。
+7. 問題なければマージ候補にする。
+8. 怪しければChatGPTに貼って相談する。
+
+## PRをマージ候補にする前の確認
+- `HUMAN_REQUIRED: NO` になっている。
+- GitHub Actions / QAが通っている。
+- secretやservice_roleの混入がない。
+- `portal.html` / `marketplace.html` など本体UIを意図せず変更していない。
+- Supabase / ブラウザ / UIUX / GitHub Settings確認が不要、または確認済み。
+- PROJECT_STATUS / TASK_QUEUE が必要に応じて更新されている。
