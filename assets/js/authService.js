@@ -237,7 +237,21 @@
           mode: status.mode,
           status,
           signupInput: sanitizeSignupInput(input),
+          signupStatus: signupErrorStatus(error),
           message: readableSignupError(error)
+        };
+      }
+
+      if (isExistingSignupResponse(data)) {
+        return {
+          ok: false,
+          mode: status.mode,
+          status,
+          signupInput: sanitizeSignupInput(input),
+          signupStatus: 'already_registered',
+          userId: null,
+          needsEmailConfirmation: false,
+          message: 'このメールアドレスは既に登録されています。ログインしてください。'
         };
       }
 
@@ -578,7 +592,7 @@
   function readableSignupError(error) {
     const message = String(error?.message || '');
     if (/already|registered|exists/i.test(message)) {
-      return '登録に失敗しました。メールアドレスの状態を確認してください。';
+      return 'このメールアドレスは既に登録されています。ログインしてください。';
     }
     if (/password/i.test(message)) {
       return '登録に失敗しました。パスワードの条件を確認してください。';
@@ -587,6 +601,17 @@
       return '登録に失敗しました。メールアドレスを確認してください。';
     }
     return '登録に失敗しました。メールアドレス・パスワード・接続設定を確認してください。';
+  }
+
+  function signupErrorStatus(error) {
+    const message = String(error?.message || '');
+    if (/already|registered|exists/i.test(message)) return 'already_registered';
+    return 'signup_failed';
+  }
+
+  function isExistingSignupResponse(data = {}) {
+    const identities = data?.user?.identities;
+    return Array.isArray(identities) && identities.length === 0;
   }
 
   function readableLoginError(error) {
