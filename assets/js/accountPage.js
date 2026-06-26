@@ -30,7 +30,10 @@
 
     form.addEventListener('submit', async event => {
       event.preventDefault();
-      if (!form.reportValidity()) return;
+      if (!form.reportValidity()) {
+        renderStatus('入力不足があります。メールアドレスとパスワードを確認してください。', false);
+        return;
+      }
 
       const input = {
         email: $('#loginEmail').value.trim(),
@@ -67,7 +70,10 @@
 
     form.addEventListener('submit', async event => {
       event.preventDefault();
-      if (!form.reportValidity()) return;
+      if (!form.reportValidity()) {
+        renderStatus('入力不足があります。会社名、担当者名、メールアドレス、パスワード、業種を確認してください。', false);
+        return;
+      }
 
       const input = {
         companyName: $('#signupCompany').value.trim(),

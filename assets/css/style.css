@@ -276,6 +276,25 @@ button{cursor:pointer}
 .btn.primary{background:linear-gradient(135deg,var(--teal),#007f73);border-color:transparent;color:#fff}
 .btn.secondary{background:#f8fafc}
 .more-button{width:34px;padding:0;font-size:18px}
+.status-message,.empty-state,.loading-state{
+  grid-column:1/-1;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+  padding:16px 18px;
+  color:#475569;
+  font-weight:800;
+  line-height:1.65;
+}
+.status-message strong,.empty-state strong,.loading-state strong{
+  display:block;
+  color:#122033;
+  font-size:15px;
+  margin-bottom:3px;
+}
+.status-message.info,.loading-state{border-color:#bfdbfe;background:#eff6ff;color:#1e3a8a}
+.status-message.warning,.empty-state{border-color:#fed7aa;background:#fff7ed;color:#9a3412}
+.status-message.error{border-color:#fecdd3;background:#fff1f2;color:#991b1b}
 .empty{grid-column:1/-1;border:1px dashed var(--line-strong);border-radius:12px;background:#fff;padding:24px;text-align:center;color:#64748b;font-weight:750}
 .toast{position:fixed;right:20px;bottom:20px;z-index:60;background:#061b32;color:#fff;border-radius:9px;padding:12px 14px;font-size:13px;font-weight:850;box-shadow:var(--shadow);opacity:0;transform:translateY(10px);pointer-events:none;transition:.16s var(--ease)}
 .toast.show{opacity:1;transform:translateY(0)}

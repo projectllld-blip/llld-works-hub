@@ -67,6 +67,7 @@
 
   async function init() {
     if (!window.ContentService) return;
+    renderInitialLoading();
     try {
       [state.contents, state.authors, state.categories] = await Promise.all([
         window.ContentService.getContents(),
@@ -78,7 +79,25 @@
       if (page === 'detail') renderDetail();
       if (page === 'author') renderAuthor();
     } catch (error) {
-      renderError('データを読み込めませんでした。ローカルサーバーで開いているか確認してください。');
+      renderLoadError();
+    }
+  }
+
+  function renderInitialLoading() {
+    const page = document.body.dataset.marketPage;
+    if (page === 'marketplace') {
+      setText('#marketResultMeta', '商品情報を読み込んでいます。');
+      renderCards('#marketGrid', [], {
+        title: '読み込み中です',
+        message: '商品情報を確認しています。少しお待ちください。',
+        type: 'loading'
+      });
+    }
+    if (page === 'detail') {
+      const root = $('#contentDetail');
+      if (root) {
+        root.innerHTML = statusBlock('読み込み中です', '商品情報を確認しています。少しお待ちください。', 'loading');
+      }
     }
   }
 
@@ -157,13 +176,48 @@
     const filtered = filteredContents();
     const marketContents = visibleMarketContents(state.contents);
     setText('#marketResultMeta', `${filtered.length}件表示中 / 全${marketContents.length}件`);
-    renderCards('#marketGrid', filtered);
-    renderCards('#freeToolsGrid', filtered.filter(content => ['free', 'free-beta'].includes(content.priceType)).slice(0, 6));
-    renderCards('#paidTemplatesGrid', filtered.filter(content => content.priceType === 'paid' && ['on-sale', 'inquiry-only'].includes(content.saleStatus)).slice(0, 6));
-    renderCards('#comingSoonGrid', filtered.filter(content => content.priceType === 'coming-soon' || content.saleStatus === 'preparing').slice(0, 6));
-    renderCards('#consultationGrid', filtered.filter(content => content.priceType === 'consultation').slice(0, 6));
-    renderCards('#schoolGrid', filtered.filter(content => includesAny(content.targetUsers, ['塾', '教室長', '教室スタッフ', '講師'])).slice(0, 6));
-    renderCards('#smallBusinessGrid', filtered.filter(content => includesAny(content.targetUsers, ['小規模事業者', '店舗', '事務'])).slice(0, 6));
+    const empty = marketContents.length === 0
+      ? {
+          title: '表示できる商品がありません',
+          message: '公開できる商品データがまだありません。data/contents.json の公開範囲を確認してください。',
+          type: 'empty'
+        }
+      : {
+          title: '条件に合う商品がありません',
+          message: '検索条件やカテゴリを変えて、もう一度探してください。',
+          type: 'empty'
+        };
+    renderCards('#marketGrid', filtered, empty);
+    renderCards('#freeToolsGrid', filtered.filter(content => ['free', 'free-beta'].includes(content.priceType)).slice(0, 6), {
+      title: '無料ツールはまだありません',
+      message: '公開できる無料ツールが追加されるとここに表示されます。',
+      type: 'empty'
+    });
+    renderCards('#paidTemplatesGrid', filtered.filter(content => content.priceType === 'paid' && ['on-sale', 'inquiry-only'].includes(content.saleStatus)).slice(0, 6), {
+      title: '販売中テンプレートはまだありません',
+      message: '有料販売または問い合わせ受付の商品が追加されるとここに表示されます。',
+      type: 'empty'
+    });
+    renderCards('#comingSoonGrid', filtered.filter(content => content.priceType === 'coming-soon' || content.saleStatus === 'preparing').slice(0, 6), {
+      title: '有料予定コンテンツはまだありません',
+      message: '準備中の商品が追加されるとここに表示されます。',
+      type: 'empty'
+    });
+    renderCards('#consultationGrid', filtered.filter(content => content.priceType === 'consultation').slice(0, 6), {
+      title: '開発相談できる商品はまだありません',
+      message: '個別相談の対象商品が追加されるとここに表示されます。',
+      type: 'empty'
+    });
+    renderCards('#schoolGrid', filtered.filter(content => includesAny(content.targetUsers, ['塾', '教室長', '教室スタッフ', '講師'])).slice(0, 6), {
+      title: '塾・教室向けの商品はまだありません',
+      message: '対象者に塾・教室が含まれる商品が追加されるとここに表示されます。',
+      type: 'empty'
+    });
+    renderCards('#smallBusinessGrid', filtered.filter(content => includesAny(content.targetUsers, ['小規模事業者', '店舗', '事務'])).slice(0, 6), {
+      title: '小規模事業者向けの商品はまだありません',
+      message: '対象者に店舗・事務・小規模事業者が含まれる商品が追加されるとここに表示されます。',
+      type: 'empty'
+    });
   }
 
   function filteredContents() {
@@ -197,12 +251,16 @@
     );
   }
 
-  function renderCards(selector, contents) {
+  function renderCards(selector, contents, emptyState = null) {
     const wrap = $(selector);
     if (!wrap) return;
     wrap.innerHTML = contents.length
       ? contents.map(contentCard).join('')
-      : '<div class="empty market-empty">条件に合うコンテンツがありません。</div>';
+      : statusBlock(
+          emptyState?.title || '条件に合う商品がありません',
+          emptyState?.message || '検索条件やカテゴリを変えて、もう一度探してください。',
+          emptyState?.type || 'empty'
+        );
   }
 
   function contentCard(content) {
@@ -242,11 +300,11 @@
 
   function renderDetail() {
     const slug = new URLSearchParams(location.search).get('slug') || '';
-    const content = state.contents.find(item => item.slug === slug);
+    const content = visibleMarketContents(state.contents).find(item => item.slug === slug);
     const root = $('#contentDetail');
     if (!root) return;
     if (!content) {
-      root.innerHTML = notFound('コンテンツが見つかりません', 'マーケット一覧から開き直してください。');
+      root.innerHTML = notFound('該当する商品が見つかりません', '公開中の商品ではないか、URLが変わった可能性があります。マーケット一覧から開き直してください。');
       return;
     }
 
@@ -257,8 +315,8 @@
     const secondaryButton = secondaryAction
       ? `<a class="btn secondary" href="${escapeAttr(secondaryAction.href)}">${escapeHtml(secondaryAction.label)}</a>`
       : '';
-    const related = state.contents
-      .filter(item => item.id !== content.id && item.priceType !== 'internal' && (item.categoryId === content.categoryId || hasOverlap(item.tags, content.tags)))
+    const related = visibleMarketContents(state.contents)
+      .filter(item => item.id !== content.id && (item.categoryId === content.categoryId || hasOverlap(item.tags, content.tags)))
       .slice(0, 3);
 
     root.innerHTML = `
@@ -432,9 +490,31 @@
     </section>`;
   }
 
-  function renderError(message) {
-    const root = $('#marketGrid') || $('#contentDetail') || $('#authorDetail');
-    if (root) root.innerHTML = `<div class="empty">${escapeHtml(message)}</div>`;
+  function renderLoadError() {
+    const page = document.body.dataset.marketPage;
+    const title = '商品情報の読み込みに失敗しました';
+    const message = 'data/contents.json などの商品データを確認できませんでした。再読み込みするか、ローカルサーバーで開いているか確認してください。';
+    if (page === 'marketplace') {
+      setText('#marketResultMeta', '読み込みに失敗しました。');
+      ['#marketGrid', '#freeToolsGrid', '#paidTemplatesGrid', '#comingSoonGrid', '#consultationGrid', '#schoolGrid', '#smallBusinessGrid']
+        .forEach(selector => {
+          const root = $(selector);
+          if (root) root.innerHTML = statusBlock(title, message, 'error', true);
+        });
+      return;
+    }
+    const root = $('#contentDetail') || $('#authorDetail');
+    if (root) root.innerHTML = statusBlock(title, message, 'error', true);
+  }
+
+  function statusBlock(title, message, type = 'info', retry = false) {
+    const className = type === 'loading' ? 'loading-state' : type === 'empty' ? 'empty-state' : `status-message ${type}`;
+    const retryButton = retry ? '<button class="btn secondary" type="button" onclick="window.location.reload()">再読み込み</button>' : '';
+    return `<div class="${className}">
+      <strong>${escapeHtml(title)}</strong>
+      <span>${escapeHtml(message)}</span>
+      ${retryButton}
+    </div>`;
   }
 
   function getAuthor(authorId) {

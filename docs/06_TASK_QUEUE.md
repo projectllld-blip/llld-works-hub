@@ -8,21 +8,20 @@
 - A0.5 PRレビュー運用
 
 ## IN_PROGRESS
-- なし
+- v0.15 エラー処理・空状態
 
 ## NEXT
-- v0.15 エラー処理・空状態
+- v0.16 RLS・他社データ混入テスト
 
 ## PARKED
 - A0.6 Codex GitHub Action連携検討
 - A0.7 HUMAN_REQUIREDダッシュボード化
 
 ## 運用ルール
-- 先頭の作業から順に進める。
 - STOP条件に該当した作業は、完了扱いにせず `HUMAN_REQUIRED` として残す。
 - A0.1〜A0.5はCodex半自動運用の初期実用ラインとして扱う。
 - A0.6 / A0.7 はGitHub Secrets、GitHub Settings、外部連携に踏み込む可能性があるため、人間確認後に進める。
-- 本線へ戻るにはPROJECT_STATUSで再開条件を確認する。
+- 本線作業ではSupabase実DB適用、GitHub Settings、Secrets、Pages設定をCodex単独で行わない。
 
 ## ステータス分類
 - `DONE`: 完了済み。
@@ -31,9 +30,3 @@
 - `BLOCKED`: 技術的・設定的に止まっている。
 - `HUMAN_REQUIRED`: 人間確認が必要。
 - `PARKED`: 今はやらないが後で戻る。
-
-## 自動化プロジェクトと本線の分離
-- A0.x はCodex半自動運用プロジェクト。
-- v0.x / v1.x はLLLD Works Hub / Works Market本線。
-- A0.x中は本線を勝手に進めない。
-- 本線へ戻る場合も、Issueまたは短い作業票で触ってよいファイルと触ってはいけないファイルを明確にする。
