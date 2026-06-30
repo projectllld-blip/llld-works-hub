@@ -169,6 +169,8 @@
       updatedAt: safeText(input.updatedAt || now, 40),
       updatedByClientId: safeText(input.updatedByClientId || '', 80),
       activeLayoutId,
+      layoutCount: sanitizedLayouts.length,
+      itemCount: sanitizedLayouts.reduce((sum, layout) => sum + (Array.isArray(layout.items) ? layout.items.length : 0), 0),
       layouts: sanitizedLayouts,
       uiSettings: {
         mode: safeText(ui.mode || 'edit', 20),

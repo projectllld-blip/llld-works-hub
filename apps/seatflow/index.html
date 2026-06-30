@@ -951,7 +951,7 @@ body.operateOnly #userProcessBox > .hint{display:none!important;}
 <script src="../../assets/js/siteConfigService.js"></script>
 <script src="../../assets/js/supabaseClientService.js"></script>
 <script src="../../assets/js/authService.js"></script>
-<script src="../../assets/js/seatflowCloudService.js"></script>
+<script src="../../assets/js/seatflowCloudService.js?v=20260701-seatflow-full-state"></script>
 <script>
 if (typeof window.structuredClone !== "function") {
   window.structuredClone = value => JSON.parse(JSON.stringify(value));
@@ -1102,6 +1102,7 @@ function sanitizeCloudLayout(l={}){
  };
 }
 function buildSeatFlowCloudLayout(){
+ const layouts=(state.layouts||[]).map(sanitizeCloudLayout);
  return {
    schemaVersion:1,
    saveScope:"seatflow_state",
@@ -1110,7 +1111,9 @@ function buildSeatFlowCloudLayout(){
    updatedAt:new Date().toISOString(),
    updatedByClientId:getSeatFlowCloudClientId(),
    activeLayoutId:state.activeLayoutId,
-   layouts:(state.layouts||[]).map(sanitizeCloudLayout),
+   layoutCount:layouts.length,
+   itemCount:layouts.reduce((sum,l)=>sum+(Array.isArray(l.items)?l.items.length:0),0),
+   layouts,
    uiSettings:{
      mode:state.mode,
      zoom:Number(state.zoom)||.8,
@@ -1261,7 +1264,7 @@ function setSeatFlowCloudUi(result){
    };
    const base=tips[result?.status]||result?.message||"このフェーズでは、座席レイアウトのみ保存します。生徒名・利用状況・勤怠情報は保存しません。";
    text.textContent=["loaded","saved","auto_saved"].includes(result?.status)&&Number.isFinite(Number(result?.itemCount))
-     ? `${base} レイアウト数: ${Number(result.layoutCount)||0} / パーツ数: ${Number(result.itemCount)}`
+     ? `${base} クラウド: ${Number(result.layoutCount)||0}レイアウト / ${Number(result.itemCount)}パーツ（画面内: ${(state.layouts||[]).length}レイアウト）`
      : base;
  }
  const forceBtn=$("cloudForceSaveBtn");
