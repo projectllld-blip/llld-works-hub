@@ -244,3 +244,5 @@ data_type = portal_state
 MVPでは専用テーブルを増やさず、既存 `app_data` のJSONB保存を使う。将来スタッフ個別ログインや投稿者管理が必要になった段階で、`portal_memos` や `portal_storage_nodes` などの専用テーブル化を検討する。
 
 `works_portal` はユーザーが選ぶ個別アプリではなく、企業アカウントごとに必要なポータル基盤として扱う。新規登録時は `selected_app_keys` に明示選択がなくても `works_portal` の `app_instances` が作成される必要がある。
+
+この保証はフロントのsignup metadataだけに依存しない。`supabase/migrations/20260627_v016_ensure_works_portal_app_instance.sql` で、既存企業への一括付与と `handle_new_company_account()` 内の必須付与を行う。
