@@ -290,6 +290,7 @@
         status: 'loaded',
         message: 'クラウド保存されたSeatFlowレイアウトを読み込みました。',
         layout: normalizeSeatLayoutData(data),
+        savedAt: data.updated_at,
         updatedAt: data.updated_at
       };
     } catch {

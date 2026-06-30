@@ -1118,8 +1118,15 @@ function applySeatFlowCloudLayout(cloudLayout){
  state.zoom=Number(cloudLayout.canvas?.zoom)||state.zoom||1;
  clearSelection();
  normalizeLoaded();
- dirty();
+ pushHistory();
+ save(false);
  render();
+ updateUndoRedo();
+}
+function applySeatFlowCloudLayoutFromStartup(cloudLayout){
+ if(!cloudLayout||!Array.isArray(cloudLayout.items))return false;
+ applySeatFlowCloudLayout(cloudLayout);
+ return true;
 }
 function setSeatFlowCloudUi(result){
  const mode=$("cloudModePill"), last=$("cloudLastSavedPill"), text=$("cloudStatusText");
@@ -1134,6 +1141,8 @@ function setSeatFlowCloudUi(result){
      account_missing:"ログインは確認できましたが、企業アカウント情報が見つかりません。account.htmlを確認してください。",
      app_instance_not_found:"この企業アカウントにはSeatFlowが登録されていません。account.htmlの利用アプリ一覧を確認してください。",
      client_unavailable:"Supabase clientを確認できません。接続設定とネットワークを確認してください。",
+     loading:"クラウド保存されたSeatFlowレイアウトを確認しています。",
+     loaded:"クラウド保存されたSeatFlowレイアウトを読み込みました。Supabaseを正本として表示しています。",
      not_found:"クラウド保存されたSeatFlowレイアウトはまだありません。先に「クラウド保存」を押してください。",
      save_failed:"クラウド保存に失敗しました。ログイン状態、SeatFlow利用設定、RLS設定を確認して再試行してください。",
      load_failed:"クラウド読込に失敗しました。ログイン状態、SeatFlow利用設定、RLS設定を確認して再試行してください。"
@@ -1146,17 +1155,35 @@ function setSeatFlowCloudUi(result){
  if(last&&result?.status==="load_failed")last.textContent="読込失敗";
  if(last&&result?.status==="app_instance_not_found")last.textContent="SeatFlow未登録";
  if(last&&result?.status==="not_logged_in")last.textContent="未ログイン";
+ if(last&&result?.status==="loaded"&&!result?.savedAt)last.textContent="クラウド読込済み";
 }
 function formatCloudTime(value){
  try{return new Date(value).toLocaleString("ja-JP",{month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"})}catch{return "保存済み"}
 }
 async function refreshSeatFlowCloudStatus(){
  if(!window.SeatFlowCloudService?.getSeatFlowCloudStatus){
-   setSeatFlowCloudUi({mode:"mock",message:"クラウド保存サービスを確認できません。ローカル保存を利用してください。"});
-   return;
+   const result={mode:"mock",message:"クラウド保存サービスを確認できません。ローカル保存を利用してください。"};
+   setSeatFlowCloudUi(result);
+   return result;
  }
  const result=await window.SeatFlowCloudService.getSeatFlowCloudStatus();
  setSeatFlowCloudUi(result);
+ return result;
+}
+async function autoLoadSeatFlowCloudLayout(statusResult){
+ if(statusResult?.mode!=="supabase"||!statusResult?.ok)return;
+ if(!window.SeatFlowCloudService?.loadSeatLayoutFromCloud)return;
+ setSeatFlowCloudUi({mode:"supabase",status:"loading",message:"クラウド保存されたSeatFlowレイアウトを確認しています。"});
+ try{
+   const result=await window.SeatFlowCloudService.loadSeatLayoutFromCloud();
+   setSeatFlowCloudUi(result);
+   if(result.ok&&result.layout){
+     applySeatFlowCloudLayoutFromStartup(result.layout);
+     setSeatFlowCloudUi(result);
+   }
+ }catch(err){
+   setSeatFlowCloudUi({mode:"supabase",status:"load_failed",message:"クラウド読込に失敗しました。ログイン状態、SeatFlow利用設定、RLS設定を確認してください。"});
+ }
 }
 function bindSeatFlowCloudControls(){
  const saveBtn=$("cloudSaveBtn"), loadBtn=$("cloudLoadBtn");
@@ -1220,7 +1247,7 @@ function init(){
  bind();
  render();
  bindSeatFlowCloudControls();
- refreshSeatFlowCloudStatus();
+ refreshSeatFlowCloudStatus().then(autoLoadSeatFlowCloudLayout);
  if(!state.history.length)pushHistory();
  setInterval(()=>$("clock").textContent=new Date().toLocaleTimeString("ja-JP",{hour:"2-digit",minute:"2-digit"}),1000);
 }
