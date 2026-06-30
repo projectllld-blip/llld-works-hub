@@ -10,10 +10,12 @@
 - v0.15追加修正 / v0.15.1相当
 
 ## IN_PROGRESS
-- なし
+- v0.16 RLS・他社データ混入テスト
+  - `portal_state`: 甲乙分離を確認済み
+  - `seat_layout`: 甲乙分離のブラウザ確認待ち
 
 ## NEXT
-- v0.16 RLS・他社データ混入テスト
+- v0.17 バックアップ・復元
 
 ## PARKED
 - A0.6 Codex GitHub Action連携検討
