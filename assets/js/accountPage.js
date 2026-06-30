@@ -143,6 +143,8 @@
         logoutButton.disabled = false;
       });
     }
+
+    bindBackupExport();
   }
 
   function renderAccountLoading(status) {
@@ -150,6 +152,7 @@
     setText('#accountSyncStatus', '企業アカウント情報を確認しています。');
     setText('#accountAppsStatus', '利用アプリ一覧を確認しています。');
     renderAppCards('#accountApps', []);
+    renderBackupExportState(null, status);
     renderStatus('読み込み中です。少しお待ちください。', true);
   }
 
@@ -157,6 +160,7 @@
     if (result?.account) {
       renderAccount(result.account, status, result);
       await renderAppsForAccount(result.account, status);
+      renderBackupExportState(result.account, status);
       renderStatus(result.message || 'アカウント情報を表示しています。', result.ok !== false);
       return;
     }
@@ -169,6 +173,7 @@
     setText('#accountDemoAppsStatus', 'ログイン後に検証用アプリ追加を表示します。');
     const demoApps = $('#accountDemoApps');
     if (demoApps) demoApps.innerHTML = '<p class="account-demo-empty">ログイン後に表示します。</p>';
+    renderBackupExportState(null, status);
     renderList('#accountRecentApps', ['最近使ったアプリのクラウド同期はまだ未接続です。']);
     renderStatus(`${result?.message || 'ログインが必要です。'} login.html または signup.html へ進んでください。`, false);
 
@@ -177,6 +182,64 @@
         window.location.href = './login.html?redirect=account';
       }, 1200);
     }
+  }
+
+  function bindBackupExport() {
+    const button = $('#backupExportButton');
+    if (!button || button.dataset.bound === '1') return;
+    button.dataset.bound = '1';
+    button.addEventListener('click', async () => {
+      if (!window.BackupExportService?.exportCompanyBackup) {
+        setText('#backupExportStatus', 'バックアップ書き出しサービスを確認できません。');
+        renderStatus('バックアップ書き出しサービスを確認できません。', false);
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = '書き出し中...';
+      setText('#backupExportStatus', '自社クラウドデータをJSONにまとめています。');
+
+      try {
+        const result = await window.BackupExportService.exportCompanyBackup();
+        if (result.ok) {
+          const counts = result.counts || {};
+          setText(
+            '#backupExportStatus',
+            `書き出しました。app_instances: ${counts.appInstances || 0}件 / app_data: ${counts.appData || 0}件。復元はまだ未対応です。`
+          );
+          renderStatus(result.message, true);
+        } else {
+          setText('#backupExportStatus', result.message || 'バックアップ書き出しに失敗しました。');
+          renderStatus(result.message || 'バックアップ書き出しに失敗しました。', false);
+        }
+      } catch {
+        setText('#backupExportStatus', 'バックアップ書き出しに失敗しました。接続状態を確認してください。');
+        renderStatus('バックアップ書き出しに失敗しました。', false);
+      } finally {
+        button.disabled = false;
+        button.textContent = 'バックアップを書き出す';
+      }
+    });
+  }
+
+  function renderBackupExportState(account, status) {
+    const button = $('#backupExportButton');
+    if (!button) return;
+
+    if (status?.mode !== 'supabase') {
+      button.disabled = true;
+      setText('#backupExportStatus', 'Supabaseログイン後に、自社クラウドデータをJSONで書き出せます。復元はまだ未対応です。');
+      return;
+    }
+
+    if (!account?.id) {
+      button.disabled = true;
+      setText('#backupExportStatus', 'バックアップを書き出すには企業アカウントでログインしてください。');
+      return;
+    }
+
+    button.disabled = false;
+    setText('#backupExportStatus', 'ログイン中企業アカウントの自社クラウドデータをJSONで書き出します。復元はまだ未対応です。');
   }
 
   function renderAccount(account, status) {

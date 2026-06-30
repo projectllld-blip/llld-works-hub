@@ -62,6 +62,14 @@
       </article>
 
       <article class="detail-panel">
+        <h2>バックアップ</h2>
+        <p class="account-note" id="backupExportStatus">ログイン中企業アカウントの自社クラウドデータをJSONで書き出します。復元はまだ未対応です。</p>
+        <div class="detail-cta-row">
+          <button class="btn secondary" id="backupExportButton" type="button">バックアップを書き出す</button>
+        </div>
+      </article>
+
+      <article class="detail-panel">
         <h2>検証用アプリ追加</h2>
         <p class="account-note" id="accountDemoAppsStatus">本番購入ではなく、クラウド保存検証用に利用アプリを追加します。</p>
         <div class="account-demo-apps" id="accountDemoApps"></div>
@@ -90,6 +98,7 @@
   <script src="./assets/js/supabaseClientService.js"></script>
   <script src="./assets/js/authService.js"></script>
   <script src="./assets/js/appInstanceService.js"></script>
+  <script src="./assets/js/backupExportService.js"></script>
   <script src="./assets/js/accountHeader.js"></script>
   <script src="./assets/js/accountPage.js"></script>
 </body>

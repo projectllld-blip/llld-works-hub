@@ -6,6 +6,16 @@
 
 初回MVPでは、復元よりバックアップを優先する。
 
+## v0.17b 実装結果
+
+`account.html` からバックアップJSONを書き出すMVPを追加した。
+
+- 処理本体: `assets/js/backupExportService.js`
+- 呼び出し: `assets/js/accountPage.js`
+- UI: `account.html`
+
+復元は未実装。
+
 ## 対象範囲
 
 ### v0.17bで実装してよい候補
@@ -36,13 +46,14 @@
   "source": "llld-works-hub",
   "exportedAt": "2026-07-01T00:00:00.000Z",
   "company": {
-    "id": "<export_source_company_account_id>",
+    "sourceCompanyAccountId": "<export_source_company_account_id>",
     "companyName": "Company Name",
-    "email": "account@example.com"
+    "createdAt": "2026-07-01T00:00:00.000Z",
+    "updatedAt": "2026-07-01T00:00:00.000Z"
   },
   "appInstances": [
     {
-      "id": "<app_instance_id>",
+      "sourceAppInstanceId": "<app_instance_id>",
       "appKey": "works_portal",
       "displayName": "LLLD Works Portal",
       "status": "active"
@@ -50,8 +61,8 @@
   ],
   "appData": [
     {
-      "id": "<app_data_id>",
-      "appInstanceId": "<app_instance_id>",
+      "sourceAppDataId": "<app_data_id>",
+      "sourceAppInstanceId": "<app_instance_id>",
       "appKey": "works_portal",
       "dataType": "portal_state",
       "updatedAt": "2026-07-01T00:00:00.000Z",
@@ -60,6 +71,14 @@
   ]
 }
 ```
+
+実装では、復元時に信用しないIDであることを明確にするため、`company.id` / `appInstances[].id` ではなく以下の名前を使う。
+
+- `sourceCompanyAccountId`
+- `sourceAppInstanceId`
+- `sourceAppDataId`
+
+また、個人情報を減らすため `owner_user_id` とメールアドレスは含めない。
 
 ## RLS前提
 

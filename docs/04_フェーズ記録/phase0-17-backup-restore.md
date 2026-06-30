@@ -234,3 +234,61 @@ v0.17では、復元の実装は急がない。
 次に進む場合は、`docs/05_実装指示/backup-restore-mvp.md` を正として、まずバックアップJSONエクスポートだけを実装する。
 
 復元は、バックアップJSONの検証・プレビューまでに留めるか、`portal_state` 限定の確認付き上書き復元にするかを人間が判断してから進める。
+
+## 2026-07-01 v0.17b バックアップJSONエクスポートMVP
+
+実装範囲:
+
+- `account.html` に「バックアップを書き出す」導線を追加。
+- `assets/js/backupExportService.js` を追加。
+- 通常ログイン中企業アカウントの自社データだけをJSONとしてダウンロードする。
+- `company_accounts` の最低限メタ情報を含める。
+- `app_instances` の最低限メタ情報を含める。
+- `app_data` のJSONを含める。
+- `backupVersion` / `exportedAt` / `source` / `scope` / `restorePolicy` を含める。
+
+含めないもの:
+
+- `owner_user_id`
+- メールアドレス
+- Supabase Authユーザー
+- Supabase Storage
+- ファイル本体
+- 決済履歴
+- service_roleでなければ取得できないデータ
+
+復元未実装の扱い:
+
+- 復元ボタンは作らない。
+- バックアップJSON内の `sourceCompanyAccountId` / `sourceAppInstanceId` / `sourceAppDataId` は参考IDであり、将来復元時にそのまま信用しない。
+- 将来復元する場合は、ログイン中企業アカウントの `company_account_id` と `app_key` から再紐づけする。
+
+バックアップJSONの形:
+
+```json
+{
+  "backupVersion": 1,
+  "exportedAt": "2026-07-01T00:00:00.000Z",
+  "source": "llld-works-hub",
+  "scope": "company_account",
+  "restorePolicy": {
+    "doNotTrustSourceIds": true,
+    "restoreRequiresLoggedInCompany": true,
+    "sourceIdsAreReferenceOnly": true,
+    "restoreNotImplemented": true
+  },
+  "company": {
+    "companyName": "会社名",
+    "sourceCompanyAccountId": "参考ID",
+    "createdAt": "...",
+    "updatedAt": "..."
+  },
+  "appInstances": [],
+  "appData": []
+}
+```
+
+次の候補:
+
+- v0.17c バックアップJSON読込・検証・プレビュー。
+- `portal_state` 限定復元を行うかは、人間判断後に決める。
