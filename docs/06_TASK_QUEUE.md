@@ -8,16 +8,23 @@
 - A0.5 PRレビュー運用
 - v0.15 エラー処理・空状態
 - v0.15追加修正 / v0.15.1相当
+- v0.16 RLS・他社データ混入テスト
 
 ## IN_PROGRESS
 - なし
 
 ## NEXT
-- v0.16 RLS・他社データ混入テスト
+- v0.17 バックアップ・復元
 
 ## PARKED
 - A0.6 Codex GitHub Action連携検討
 - A0.7 HUMAN_REQUIREDダッシュボード化
+- SeatFlow完全クラウド同期
+- SeatFlow複数レイアウト同期
+- SeatFlow名簿 / QR / NFC / メモのクラウド保存
+- SeatFlow全体状態の完全バックアップ・復元
+- SeatFlow複数タブ競合解決
+- SeatFlow正式商品化に必要な保存対象整理
 
 ## 運用ルール
 - 先頭の作業から順に進める。

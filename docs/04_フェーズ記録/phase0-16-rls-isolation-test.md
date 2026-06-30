@@ -14,11 +14,11 @@
 
 ## 現在の状況
 
-状態: `seat_layout` のクラウド保存・読込再確認中。
+状態: v0.16は限定範囲で完了扱い。
 
-`portal_state` は、works_portal app_instance自動付与migration適用後に保存・復元できる状態まで確認済み。
+`portal_state` は、works_portal app_instance自動付与migration適用後に保存・復元できる状態まで確認済み。甲乙の検証アカウント間で、他社 `portal_state` が混ざる問題は確認されていない。
 
-`seat_layout` は、同一アカウントの別ブラウザでレイアウトが復元されない問題が見つかったため、v0.16完了前に修正・再確認する。
+`seat_layout` は、SeatFlowの表示中レイアウトについて限定的なクラウド保存・読込確認までをv0.16の対象とする。複数レイアウト、名簿、QR、NFC、メモ、履歴、競合解決、同時編集などを含むSeatFlow完全クラウド同期は、v0.16内では完了させずPARKED扱いにする。
 
 ## app_key / data_type
 
@@ -59,9 +59,9 @@ localStorage = 未ログイン時の保存先 / 端末内キャッシュ
 
 古いlocalStorageを理由にSupabase読込をスキップしない。
 
-## 未確認のRLSテスト項目
+## v0.16当初のRLSテスト項目
 
-以下はブラウザで人間確認が必要。
+以下はv0.16開始時点でブラウザ確認対象としていた項目。
 
 - 甲アカウントでSeatFlowレイアウトをクラウド保存できる。
 - 別Chrome / 別ブラウザで同じ甲アカウントにログインし、甲のSeatFlowレイアウトが復元される。
@@ -156,7 +156,7 @@ on conflict (company_account_id, app_key) do nothing;
 
 コード上は、同一企業アカウントで別ブラウザからSupabase正本を読みに行く状態へ修正した。
 
-ただし、SeatFlow app_instance確認待ちのためv0.16は未完了。v0.16完了判断には、甲乙それぞれの `seatflow` app_instance確認と、上記のブラウザ確認が必要。
+この時点では、SeatFlow app_instance確認待ちのためv0.16は未完了としていた。最終整理では、SeatFlow完全クラウド同期をv0.16完了条件から外し、表示中レイアウトの限定確認までをv0.16範囲とする。
 
 ## 2026-07-01 app_instances整合性・初期付与ルール確認
 
@@ -272,7 +272,7 @@ values
 on conflict (company_account_id, app_key) do nothing;
 ```
 
-## v0.16再開条件
+## v0.16再開条件履歴
 
 `seat_layout` のRLS確認を再開する前に、以下を人間が確認する。
 
@@ -285,7 +285,7 @@ on conflict (company_account_id, app_key) do nothing;
 - RLSは無効化していない。
 - service role keyは使っていない。
 
-上記が確認できるまで、v0.16は `seatflow app_instance確認待ち` として未完了扱いにする。
+上記は、SeatFlowの表示中レイアウト確認へ進む前の再開条件として記録する。最終的にはSeatFlow完全クラウド同期をv0.16の完了条件から外し、PARKEDへ移す。
 
 ## 2026-07-01 SeatFlow起動時クラウド読込失敗の再調査
 
@@ -331,7 +331,7 @@ on conflict (company_account_id, app_key) do nothing;
 - Supabase Dashboardで、甲の `app_data.data_type = seat_layout` が作成・更新されていること。
 - `app_instance_id` が甲の `seatflow` app_instance と一致していること。
 
-v0.16は、上記のブラウザ確認と甲乙相互不可視確認が終わるまで未完了。
+この時点では、上記のブラウザ確認と甲乙相互不可視確認が終わるまで未完了としていた。最終整理では、SeatFlow完全クラウド同期をv0.16外の将来タスクとしてPARKEDへ移す。
 
 ## 2026-07-01 SeatFlow全体状態のクラウド同期対応
 
@@ -368,3 +368,32 @@ v0.16は、上記のブラウザ確認と甲乙相互不可視確認が終わる
 - レイアウト切替ができる。
 - 乙アカウントでは甲のレイアウト一覧が見えない。
 - 乙で保存したレイアウト一覧が甲に見えない。
+
+## 2026-07-01 v0.16完了整理
+
+SeatFlowクラウド同期の深掘りは、本線ロードマップ復帰のためv0.16内では一旦停止する。
+
+v0.16で確認済みとして扱う範囲:
+
+- `portal_state` の甲乙分離。
+- `works_portal` app_instance自動付与方針。
+- `works_portal` は全企業アカウント必須の基盤アプリであること。
+- `seatflow` は利用アプリであり、全企業標準配布ではないこと。
+- v0.16検証用にのみ甲乙へ `seatflow` app_instanceを付与する方針。
+- SeatFlowの表示中レイアウトについての限定的なクラウド保存・読込確認。
+- 上記確認済み範囲では、他社データ混入は確認されていない。
+
+PARKEDにする範囲:
+
+- SeatFlow複数レイアウトの完全クラウド同期。
+- SeatFlow名簿 / QR / NFC / メモのクラウド保存。
+- SeatFlow全体状態の完全バックアップ・復元。
+- SeatFlow複数タブ競合解決。
+- SeatFlow正式商品化に必要な保存対象整理。
+- 本格的な同時編集対応。
+
+判断:
+
+- v0.16 RLS・他社データ混入テストは、`portal_state` を中心とした確認済み範囲に限定して完了扱いにする。
+- SeatFlowは表示中レイアウトの限定確認までとし、完全クラウド化ではないことを明記する。
+- 次の本線候補は v0.17 バックアップ・復元。
