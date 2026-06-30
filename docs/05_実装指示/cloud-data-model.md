@@ -247,28 +247,24 @@ MVPでは専用テーブルを増やさず、既存 `app_data` のJSONB保存を
 
 この保証はフロントのsignup metadataだけに依存しない。`supabase/migrations/20260627_v016_ensure_works_portal_app_instance.sql` で、既存企業への一括付与と `handle_new_company_account()` 内の必須付与を行う。
 
-## v0.x 初期配布アプリ
+## app_instances 付与方針
 
 v0.xではMarket購入画面、アプリ追加申請、管理者付与、決済・購入履歴がまだ未実装。
 
-そのため、検証と社内運用に必要な最小限のアプリは、購入済みアプリではなく「初期配布アプリ」として扱う。
+そのため、検証と社内運用に必要なアプリは、目的を分けて扱う。
 
-初期配布として確定:
+全企業アカウント必須:
 
 - `works_portal`: 全企業アカウント必須の基盤アプリ。
-- `seatflow`: v0.16 RLS検証で `seat_layout` の企業分離を確認するために必要な検証用初期配布アプリ。
 
-初期配布候補:
+利用アプリ:
 
+- `seatflow`
 - `pdf_tool`
 - `quiz_maker`
 
-`pdf_tool` / `quiz_maker` は現行MVPの候補だが、v0.16のmigration案では自動付与しない。付与範囲は、v1.3 アプリ追加申請 / v1.4 購入ページ以降で購入・申請・管理者付与のルールに移す。
+`seatflow` は全企業必須ではない。業種や利用形態によって不要な企業もあるため、既存全企業や新規signupへ自動付与するmigrationは作らない。
 
-v0.16のSeatFlow初期配布案:
+v0.16 RLS検証では、`seat_layout` の企業分離を確認するために甲・乙など検証対象アカウントへだけ `seatflow` app_instanceを用意する。この付与は検証用であり、全社標準配布ではない。
 
-```text
-supabase/migrations/20260627_v016_ensure_default_app_instances.sql
-```
-
-このmigration案は、既存企業アカウントと新規signupの両方に `seatflow` app_instanceを用意する。実DBへの適用は人間がSupabase Dashboard / SQL Editorで確認して行う。
+将来的には、`v1.3 アプリ追加申請` / `v1.4 購入ページ` / 管理者画面で、購入・申請・管理者付与により `app_instances` を制御する。

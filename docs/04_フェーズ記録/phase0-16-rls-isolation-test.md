@@ -215,36 +215,70 @@ app_key名の確認結果:
 - 管理者付与画面
 - 決済・購入履歴に基づく正式付与
 
-したがって、v0.xのRLS検証では、人間が検証アカウントごとに手動追加する運用ではなく、管理されたmigration案で `seatflow` app_instanceを初期配布するのが安全。
+したがって、v0.16のRLS検証では、甲・乙など検証対象アカウントにだけ人間が確認して `seatflow` app_instanceを付与する。
 
-### v0.x初期配布の扱い
+### seatflow付与方針の見直し
 
 `works_portal` は全企業アカウント必須の基盤アプリ。
 
-`seatflow` は本来は利用アプリ・購入アプリだが、v0.16のRLS検証では `seat_layout` の分離確認に必須のため、v0.x検証用の初期配布アプリとして扱う。
+`seatflow` は利用アプリであり、全企業アカウント必須ではない。業種や利用形態によって不要な企業もあるため、全企業への標準配布・自動付与はしない。
 
-`pdf_tool` / `quiz_maker` は現行MVPの初期配布候補だが、今回のmigration案では自動付与しない。v1.3 アプリ追加申請 / v1.4 購入ページ以降で、購入・申請・管理者付与により `app_instances` を制御する。
+v0.16 RLS検証では `seat_layout` の企業分離確認に必要なため、甲・乙の検証アカウントにだけ `seatflow` app_instanceを用意する。この付与は全社標準配布ではなく、検証用付与として扱う。
 
-追加したmigration案:
+不採用にしたmigration案:
 
 ```text
 supabase/migrations/20260627_v016_ensure_default_app_instances.sql
 ```
 
-このmigration案は以下を行う。
+このmigration案は、既存の全 `company_accounts` と新規signupに `seatflow` を付与する内容だったため、本番向けmigrationとしては残さない。誤適用を防ぐため、PR差分から削除した。
 
-- `apps.app_key = seatflow` を保証する。
-- 既存の全 `company_accounts` に `seatflow` app_instanceを追加する。
-- 新規signup時、`selected_app_keys` に依存せず `works_portal` と `seatflow` を付与する。
-- `app_instances(company_account_id, app_key)` のunique indexと `on conflict do nothing` で重複を防ぐ。
+将来的には、`v1.3 アプリ追加申請` / `v1.4 購入ページ` / 管理者画面で `app_instances` を付与する。
 
-Codexはこのmigrationを実DBへ適用しない。Supabase Dashboard / SQL Editorでの適用は人間確認が必要。
+### v0.16検証用SQL案
+
+Codexは実DBへ適用しない。Supabase Dashboard / SQL Editorで人間が対象企業IDを確認してから実行する。
+
+```sql
+-- v0.16 RLS検証用
+-- 全企業ではなく、甲・乙など検証対象アカウントだけに付与する。
+-- <甲_COMPANY_ACCOUNT_ID> / <乙_COMPANY_ACCOUNT_ID> を実際の company_account_id に置き換えること。
+-- 実行前に、対象が検証用アカウントであることを必ず確認すること。
+
+insert into public.apps (app_key, name, description, status)
+values (
+  'seatflow',
+  '座席管理 SeatFlow',
+  '教室や店舗の座席配置を管理するアプリ。クラウド保存の初回候補です。',
+  'active'
+)
+on conflict (app_key) do update
+set
+  name = excluded.name,
+  description = excluded.description,
+  status = excluded.status,
+  updated_at = now();
+
+insert into public.app_instances (
+  company_account_id,
+  app_key,
+  display_name,
+  status,
+  settings_json
+)
+values
+  ('<甲_COMPANY_ACCOUNT_ID>', 'seatflow', '座席管理 SeatFlow', 'active', '{}'::jsonb),
+  ('<乙_COMPANY_ACCOUNT_ID>', 'seatflow', '座席管理 SeatFlow', 'active', '{}'::jsonb)
+on conflict (company_account_id, app_key) do nothing;
+```
 
 ## v0.16再開条件
 
 `seat_layout` のRLS確認を再開する前に、以下を人間が確認する。
 
-- Supabase上で `20260627_v016_ensure_default_app_instances.sql` を確認・適用する。
+- `seatflow` 全社自動付与migrationを適用しない。
+- Supabase Dashboardで甲・乙など検証対象アカウントの `company_account_id` を確認する。
+- 上記のv0.16検証用SQL案を、検証対象アカウントだけに適用する。
 - 甲・乙それぞれの `company_accounts` に `app_instances.app_key = seatflow` が存在する。
 - account.htmlがsupabase modeで、甲・乙それぞれにSeatFlowを表示する。
 - 甲・乙それぞれでSeatFlow本体のクラウド状態が未登録ではなくready相当になる。

@@ -61,19 +61,19 @@ supabase/migrations/20260625_v013_app_instances_from_signup_metadata.sql
 
 `raw_user_meta_data.selected_app_keys` に含まれるapp_keyをもとに、`apps` に存在するものだけ `app_instances` を作成する。
 
-v0.16では、この方針に例外を追加する。
+v0.16では、この方針に例外と検証運用を分けて扱う。
 
 - `works_portal` は全企業アカウント必須の基盤アプリとして、選択アプリに含まれなくても付与する。
-- `seatflow` はv0.xのRLS検証用初期配布アプリとして、`seat_layout` 検証に必要な企業アカウントへ付与する。
+- `seatflow` は利用アプリであり、全企業アカウントへ自動付与しない。
+- v0.16 RLS検証では、甲・乙など検証対象アカウントにだけ人間確認のうえで `seatflow` app_instanceを付与する。
 
-対応migration案:
+対応migration:
 
 ```text
 supabase/migrations/20260627_v016_ensure_works_portal_app_instance.sql
-supabase/migrations/20260627_v016_ensure_default_app_instances.sql
 ```
 
-`pdf_tool` / `quiz_maker` は初期配布候補だが、v0.16の自動付与対象には含めない。購入・申請・管理者付与の正式ルールは後続フェーズで決める。
+`seatflow` / `pdf_tool` / `quiz_maker` の購入・申請・管理者付与の正式ルールは後続フェーズで決める。`seatflow` の全社自動付与migrationは適用しない。
 
 ## 空状態
 

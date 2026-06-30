@@ -76,13 +76,9 @@ v0.16で `seat_layout` のRLS確認を行う前提として、甲・乙それぞ
 
 `seatflow` app_instanceがない場合、SeatFlow本体はクラウド保存・読込を行わず、未登録として停止する。この状態では他社データ混入テストではなく、app_instances付与待ちとして扱う。
 
-v0.16の初期配布migration案:
+ただし、`seatflow` は全企業必須の基盤アプリではない。v0.16では、全社自動付与migrationを適用せず、Supabase Dashboardで甲・乙など検証対象アカウントだけに人間が確認して付与する。
 
-```text
-supabase/migrations/20260627_v016_ensure_default_app_instances.sql
-```
-
-このmigration案はRLSを変更しない。既存企業アカウントと新規signupに `seatflow` app_instanceを用意するための案であり、実DBへの適用は人間が確認して行う。
+将来的には、`v1.3 アプリ追加申請` / `v1.4 購入ページ` / 管理者画面で `app_instances` を付与する。
 
 v0.14.12のWorks Portal保存では以下を扱う想定。
 
