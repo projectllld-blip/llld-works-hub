@@ -214,6 +214,9 @@
         status: 'saved',
         message: 'SeatFlowレイアウトをクラウド保存しました。',
         savedAt: data?.updated_at || sanitizedLayout.savedAt,
+        itemCount: sanitizedLayout.items.length,
+        accountId: status.account.id,
+        appInstanceId: status.appInstance.id,
         data
       };
     } catch {
@@ -257,14 +260,7 @@
     }
 
     try {
-      const { data, error } = await client
-        .from('app_data')
-        .select('id,data_json,updated_at')
-        .eq('company_account_id', status.account.id)
-        .eq('app_instance_id', status.appInstance.id)
-        .eq('app_key', APP_KEY)
-        .eq('data_type', DATA_TYPE)
-        .maybeSingle();
+      const { data, error } = await fetchSeatLayoutRow(client, status);
 
       if (error) {
         return {
@@ -291,7 +287,11 @@
         message: 'クラウド保存されたSeatFlowレイアウトを読み込みました。',
         layout: normalizeSeatLayoutData(data),
         savedAt: data.updated_at,
-        updatedAt: data.updated_at
+        updatedAt: data.updated_at,
+        rowId: data.id,
+        itemCount: Array.isArray(data.data_json?.items) ? data.data_json.items.length : 0,
+        accountId: status.account.id,
+        appInstanceId: status.appInstance.id
       };
     } catch {
       return {
@@ -305,6 +305,19 @@
 
   function normalizeSeatLayoutData(row = {}) {
     return sanitizeSeatLayout(row.data_json || {});
+  }
+
+  function fetchSeatLayoutRow(client, status) {
+    return client
+      .from('app_data')
+      .select('id,data_json,updated_at,app_instance_id,company_account_id')
+      .eq('company_account_id', status.account.id)
+      .eq('app_instance_id', status.appInstance.id)
+      .eq('app_key', APP_KEY)
+      .eq('data_type', DATA_TYPE)
+      .order('updated_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
   }
 
   function normalizeAppInstance(row = {}) {

@@ -1152,7 +1152,10 @@ function setSeatFlowCloudUi(result){
      save_failed:"クラウド保存に失敗しました。ログイン状態、SeatFlow利用設定、RLS設定を確認して再試行してください。",
      load_failed:"クラウド読込に失敗しました。ログイン状態、SeatFlow利用設定、RLS設定を確認して再試行してください。"
    };
-   text.textContent=tips[result?.status]||result?.message||"このフェーズでは、座席レイアウトのみ保存します。生徒名・利用状況・勤怠情報は保存しません。";
+   const base=tips[result?.status]||result?.message||"このフェーズでは、座席レイアウトのみ保存します。生徒名・利用状況・勤怠情報は保存しません。";
+   text.textContent=["loaded","saved"].includes(result?.status)&&Number.isFinite(Number(result?.itemCount))
+     ? `${base} ${result.status==="saved"?"保存":"読込"}パーツ数: ${Number(result.itemCount)}`
+     : base;
  }
  if(last&&result?.savedAt)last.textContent=`最終保存 ${formatCloudTime(result.savedAt)}`;
  if(last&&result?.status==="not_found")last.textContent="クラウド未保存";
@@ -1262,9 +1265,9 @@ function init(){
  render();
  bindSeatFlowCloudControls();
  refreshSeatFlowCloudStatus().then(autoLoadSeatFlowCloudLayout);
- window.addEventListener("load",()=>setTimeout(()=>{
+ window.addEventListener("load",()=>[1200,3500].forEach(delay=>setTimeout(()=>{
    if(!window.__seatflowCloudLoaded)refreshSeatFlowCloudStatus().then(autoLoadSeatFlowCloudLayout);
- },1200),{once:true});
+ },delay)),{once:true});
  if(!state.history.length)pushHistory();
  setInterval(()=>$("clock").textContent=new Date().toLocaleTimeString("ja-JP",{hour:"2-digit",minute:"2-digit"}),1000);
 }
