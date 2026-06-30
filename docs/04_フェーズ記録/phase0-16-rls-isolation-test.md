@@ -286,3 +286,42 @@ on conflict (company_account_id, app_key) do nothing;
 - service role keyは使っていない。
 
 上記が確認できるまで、v0.16は `seatflow app_instance確認待ち` として未完了扱いにする。
+
+## 2026-07-01 SeatFlow起動時クラウド読込失敗の再調査
+
+状況:
+
+- 甲アカウントでSeatFlowはSupabase modeになる。
+- クラウド保存は成功しているように見える。
+- 別ブラウザで同じ甲アカウントにログインしても、保存したSeatFlowレイアウトが復元されない。
+
+コード上の確認:
+
+- 保存処理は `app_data` に `app_key = seatflow` / `data_type = seat_layout` でupsertする。
+- 保存対象はログイン中企業アカウントの `seatflow` app_instance。
+- 起動時は `refreshSeatFlowCloudStatus().then(autoLoadSeatFlowCloudLayout)` でSupabase mode確認後に自動読込する。
+- `cloudLoadBtn` はHTML上に存在するが、画面幅や表示位置によって見落とされる可能性があるため、ステータス行にも `クラウド再読込` を追加した。
+
+原因候補:
+
+- Auth session / company account / app_instance の復元が初回表示直後に間に合わず、自動読込が早すぎる。
+- 読込導線が上部ボタンだけだと、見つけられない場合に復旧できない。
+- 保存時の座席ラベルサニタイズが厳しく、検証用ラベルが読込後に消えて「復元されていない」ように見える可能性がある。
+
+修正:
+
+- 起動時自動読込と手動読込を `runSeatFlowCloudLoad()` に共通化した。
+- ページload後に、まだクラウド読込済みでなければ一度だけ自動読込を再試行する。
+- ステータス行に `クラウド再読込` ボタンを追加した。
+- クラウド保存時に `fontSize` / `textVertical` を保持する。
+- 座席ラベルのサニタイズを、連絡先らしい文字列や明示的な個人情報プレフィックスだけを除外する形に調整した。
+
+再確認が必要:
+
+- 甲アカウントでSeatFlowレイアウトをクラウド保存する。
+- 別Chrome / 別ブラウザで同じ甲アカウントにログインし、起動時に自動復元されること。
+- 自動復元されない場合、ステータス行の `クラウド再読込` で復元できること。
+- Supabase Dashboardで、甲の `app_data.data_type = seat_layout` が作成・更新されていること。
+- `app_instance_id` が甲の `seatflow` app_instance と一致していること。
+
+v0.16は、上記のブラウザ確認と甲乙相互不可視確認が終わるまで未完了。

@@ -335,7 +335,9 @@
       groupId: safeText(item.groupId || '', 64),
       assignable: Boolean(item.assignable),
       noBorder: Boolean(item.noBorder),
-      color: safeColor(item.color)
+      color: safeColor(item.color),
+      fontSize: safeNumber(item.fontSize, 0),
+      textVertical: Boolean(item.textVertical)
     };
 
     Object.keys(item).forEach(key => {
@@ -349,10 +351,8 @@
     const text = safeText(label || '', 24).replace(/[\r\n\t]/g, ' ');
     if (!text) return '';
     if (looksLikeContact(text)) return '';
-    if (type === 'seat') {
-      return /^[A-Za-z0-9０-９一二三四五六七八九十百#\-ー号席座 ]{1,16}$/.test(text) ? text : '';
-    }
-    return text.length <= 16 ? text : safeText(type, 16);
+    if (/^\s*(生徒|講師|先生|保護者|お客様|顧客|利用者)\s*[:：]/.test(text)) return '';
+    return text;
   }
 
   function safeText(value, max = 80) {

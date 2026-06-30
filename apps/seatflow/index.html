@@ -616,7 +616,10 @@ body.operateOnly #userProcessBox > .hint{display:none!important;}
     <span id="savePill" class="pill green">保存済み</span>
     <span id="clock" class="pill">--:--</span>
   </div>
-  <div id="cloudStatusText" class="cloud-note" style="padding:0 14px 8px">このフェーズでは、座席レイアウトのみクラウド保存します。生徒名・利用状況・勤怠情報は保存しません。</div>
+  <div id="cloudStatusText" class="cloud-note" style="padding:0 14px 8px">
+    <span id="cloudStatusMessage">このフェーズでは、座席レイアウトのみクラウド保存します。生徒名・利用状況・勤怠情報は保存しません。</span>
+    <button id="cloudRetryInlineBtn" class="small" type="button" style="margin-left:8px">クラウド再読込</button>
+  </div>
 
   <div id="mainGrid" class="main">
     <div class="panel left">
@@ -1074,7 +1077,9 @@ function buildSeatFlowCloudLayout(){
      groupId:i.groupId||"",
      assignable:i.type==="seat"||!!i.assignable,
      noBorder:!!i.noBorder,
-     color:i.color||""
+     color:i.color||"",
+     fontSize:Number(i.fontSize)||0,
+     textVertical:!!i.textVertical
    })),
    settings:{
      showGrid:!!state.grid,
@@ -1111,8 +1116,8 @@ function applySeatFlowCloudLayout(cloudLayout){
    assignableLocked:item.type==="seat",
    noBorder:!!item.noBorder,
    color:item.color||"",
-   fontSize:isTextItem(item)?18:13,
-   textVertical:item.type==="textV"
+   fontSize:Number(item.fontSize)||(isTextItem(item)?18:13),
+   textVertical:item.type==="textV"||!!item.textVertical
  }));
  state.grid=cloudLayout.settings?.showGrid!==false;
  state.zoom=Number(cloudLayout.canvas?.zoom)||state.zoom||1;
@@ -1129,7 +1134,7 @@ function applySeatFlowCloudLayoutFromStartup(cloudLayout){
  return true;
 }
 function setSeatFlowCloudUi(result){
- const mode=$("cloudModePill"), last=$("cloudLastSavedPill"), text=$("cloudStatusText");
+ const mode=$("cloudModePill"), last=$("cloudLastSavedPill"), text=$("cloudStatusMessage")||$("cloudStatusText");
  if(mode){
    mode.textContent=result?.mode==="supabase"?"supabase":"mock";
    mode.className=`pill ${result?.mode==="supabase"&&result?.ok?"cloudReady":result?.mode==="supabase"?"cloudWarn":"cloudMock"}`;
@@ -1172,21 +1177,44 @@ async function refreshSeatFlowCloudStatus(){
 }
 async function autoLoadSeatFlowCloudLayout(statusResult){
  if(statusResult?.mode!=="supabase"||!statusResult?.ok)return;
- if(!window.SeatFlowCloudService?.loadSeatLayoutFromCloud)return;
+ return runSeatFlowCloudLoad({confirmReplace:false,source:"startup"});
+}
+async function runSeatFlowCloudLoad(options={}){
+ const confirmReplace=options.confirmReplace!==false;
+ const source=options.source||"manual";
+ if(!window.SeatFlowCloudService?.loadSeatLayoutFromCloud){
+   if(source!=="startup")toast("クラウド読込サービスを確認できません");
+   return;
+ }
+ if(window.__seatflowCloudLoading)return;
+ window.__seatflowCloudLoading=true;
+ const loadBtn=$("cloudLoadBtn"), retryBtn=$("cloudRetryInlineBtn");
+ if(loadBtn){loadBtn.disabled=true;loadBtn.textContent="読込中...";}
+ if(retryBtn)retryBtn.disabled=true;
  setSeatFlowCloudUi({mode:"supabase",status:"loading",message:"クラウド保存されたSeatFlowレイアウトを確認しています。"});
  try{
    const result=await window.SeatFlowCloudService.loadSeatLayoutFromCloud();
    setSeatFlowCloudUi(result);
    if(result.ok&&result.layout){
-     applySeatFlowCloudLayoutFromStartup(result.layout);
+     if(!confirmReplace||confirm("現在のレイアウトをクラウド保存されたレイアウトで置き換えます。よろしいですか？")){
+       applySeatFlowCloudLayoutFromStartup(result.layout);
+       window.__seatflowCloudLoaded=true;
+       if(source!=="startup")toast(result.message,2600);
+     }
      setSeatFlowCloudUi(result);
-   }
+   }else if(source!=="startup")toast(result.message,2600);
+   return result;
  }catch(err){
    setSeatFlowCloudUi({mode:"supabase",status:"load_failed",message:"クラウド読込に失敗しました。ログイン状態、SeatFlow利用設定、RLS設定を確認してください。"});
+   if(source!=="startup")toast("クラウド読込を実行できませんでした",2600);
+ }finally{
+   window.__seatflowCloudLoading=false;
+   if(loadBtn){loadBtn.disabled=false;loadBtn.textContent="クラウド読込";}
+   if(retryBtn)retryBtn.disabled=false;
  }
 }
 function bindSeatFlowCloudControls(){
- const saveBtn=$("cloudSaveBtn"), loadBtn=$("cloudLoadBtn");
+ const saveBtn=$("cloudSaveBtn"), loadBtn=$("cloudLoadBtn"), retryBtn=$("cloudRetryInlineBtn");
  if(saveBtn)saveBtn.onclick=async()=>{
    if(!window.SeatFlowCloudService?.saveSeatLayoutToCloud)return toast("クラウド保存サービスを確認できません");
    saveBtn.disabled=true;
@@ -1198,22 +1226,8 @@ function bindSeatFlowCloudControls(){
    }catch(err){toast("クラウド保存を実行できませんでした")}
    finally{saveBtn.disabled=false;saveBtn.textContent="クラウド保存";}
  };
- if(loadBtn)loadBtn.onclick=async()=>{
-   if(!window.SeatFlowCloudService?.loadSeatLayoutFromCloud)return toast("クラウド読込サービスを確認できません");
-   loadBtn.disabled=true;
-   loadBtn.textContent="読込中...";
-   try{
-     const result=await window.SeatFlowCloudService.loadSeatLayoutFromCloud();
-     setSeatFlowCloudUi(result);
-     if(result.ok&&result.layout){
-       if(confirm("現在のレイアウトをクラウド保存されたレイアウトで置き換えます。よろしいですか？")){
-         applySeatFlowCloudLayout(result.layout);
-         toast(result.message,2600);
-       }
-     }else toast(result.message,2600);
-   }catch(err){toast("クラウド読込を実行できませんでした")}
-   finally{loadBtn.disabled=false;loadBtn.textContent="クラウド読込";}
- };
+ if(loadBtn)loadBtn.onclick=()=>runSeatFlowCloudLoad({confirmReplace:true,source:"manual"});
+ if(retryBtn)retryBtn.onclick=()=>runSeatFlowCloudLoad({confirmReplace:true,source:"manual"});
 }
 function normalizeLoaded(){
  state.dashboardWidth=clamp(Number(state.dashboardWidth)||390,280,720);
@@ -1248,6 +1262,9 @@ function init(){
  render();
  bindSeatFlowCloudControls();
  refreshSeatFlowCloudStatus().then(autoLoadSeatFlowCloudLayout);
+ window.addEventListener("load",()=>setTimeout(()=>{
+   if(!window.__seatflowCloudLoaded)refreshSeatFlowCloudStatus().then(autoLoadSeatFlowCloudLayout);
+ },1200),{once:true});
  if(!state.history.length)pushHistory();
  setInterval(()=>$("clock").textContent=new Date().toLocaleTimeString("ja-JP",{hour:"2-digit",minute:"2-digit"}),1000);
 }
