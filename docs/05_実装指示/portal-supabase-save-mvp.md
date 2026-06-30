@@ -15,6 +15,8 @@ company_account_id: ログイン中企業アカウントID
 app_instance_id: works_portal の app_instances.id
 ```
 
+`works_portal` はポータル保存の基盤であり、signup画面でユーザーが選ぶ個別アプリではない。新規企業アカウントには、選択アプリとは別に `works_portal` の `app_instances` を必ず作成する。
+
 ## JSON構造案
 
 ```json
@@ -149,6 +151,8 @@ llld_works_portal_state_last_key
 - 保存失敗: ポータル情報の保存に失敗しました
 - Supabase未設定: mock modeで表示しています
 - ファイル本体: このフェーズではファイル本体は保存しません
+
+`works_portal` 未登録が出た場合は、`app_key` の名前揺れよりも、対象企業の `app_instances` に `works_portal` が作られていない可能性を優先して確認する。
 
 ## RLS前提
 
