@@ -157,3 +157,98 @@ on conflict (company_account_id, app_key) do nothing;
 コード上は、同一企業アカウントで別ブラウザからSupabase正本を読みに行く状態へ修正した。
 
 ただし、SeatFlow app_instance確認待ちのためv0.16は未完了。v0.16完了判断には、甲乙それぞれの `seatflow` app_instance確認と、上記のブラウザ確認が必要。
+
+## 2026-07-01 app_instances整合性・初期付与ルール確認
+
+今回の確認では、RLSテストを進める前に `account.html` の利用アプリ一覧とSeatFlow本体の登録判定を比較した。
+
+### account.htmlの利用アプリ一覧
+
+`account.html` は `assets/js/accountPage.js` から `AppInstanceService.getMyAppInstances(account.id)` を呼び出す。
+
+mock mode:
+
+- `AppInstanceService.getMockAppInstances()` の固定データを表示する。
+- mockの固定データには `seatflow` / `pdf_tool` / `quiz_maker` が含まれる。
+- mock表示は実DBの `app_instances` が存在することを意味しない。
+
+supabase mode:
+
+- `app_instances.company_account_id = ログイン中企業アカウントID` の行を取得する。
+- 取得した `app_key` をもとに `apps` カタログを参照し、フロント側で表示情報を補う。
+- SeatFlowが表示される条件は、対象企業に `app_instances.app_key = seatflow` の行が見えること。
+
+### SeatFlow本体の登録判定
+
+SeatFlow本体は `assets/js/seatflowCloudService.js` で以下を条件にする。
+
+```text
+company_account_id = ログイン中企業アカウントID
+app_key = seatflow
+```
+
+`status` / `enabled` / `is_active` / `deleted_at` などの追加条件は使っていない。
+
+そのため、supabase modeで同一ログイン・同一企業アカウントを見ている場合、`account.html` でSeatFlowが表示されるのにSeatFlow本体で未登録になる主な原因は以下に絞られる。
+
+- `account.html` がmock mode表示で、実DB由来ではない。
+- `account.html` とSeatFlowを別origin、別ブラウザプロファイル、別ログイン状態で見ている。
+- RLSによりSeatFlow側から自社 `app_instances` が読めていない。
+- 実DBの `app_instances` に `seatflow` がない。
+
+app_key名の確認結果:
+
+- 実装上のSeatFlow app_keyは `seatflow` で統一されている。
+- `seat_flow` / `seatFlow` をapp_keyとして使う本体実装は見当たらない。
+
+### 甲アカウントのSeatFlow付与導線
+
+現時点で存在する導線:
+
+- signup画面でSeatFlowを選択した場合、`selected_app_keys` 経由で `app_instances` が作られる。
+- account画面に、RLS検証用の「検証用アプリ追加」導線がある。
+
+まだ存在しない導線:
+
+- Market購入画面
+- アプリ追加申請
+- 管理者付与画面
+- 決済・購入履歴に基づく正式付与
+
+したがって、v0.xのRLS検証では、人間が検証アカウントごとに手動追加する運用ではなく、管理されたmigration案で `seatflow` app_instanceを初期配布するのが安全。
+
+### v0.x初期配布の扱い
+
+`works_portal` は全企業アカウント必須の基盤アプリ。
+
+`seatflow` は本来は利用アプリ・購入アプリだが、v0.16のRLS検証では `seat_layout` の分離確認に必須のため、v0.x検証用の初期配布アプリとして扱う。
+
+`pdf_tool` / `quiz_maker` は現行MVPの初期配布候補だが、今回のmigration案では自動付与しない。v1.3 アプリ追加申請 / v1.4 購入ページ以降で、購入・申請・管理者付与により `app_instances` を制御する。
+
+追加したmigration案:
+
+```text
+supabase/migrations/20260627_v016_ensure_default_app_instances.sql
+```
+
+このmigration案は以下を行う。
+
+- `apps.app_key = seatflow` を保証する。
+- 既存の全 `company_accounts` に `seatflow` app_instanceを追加する。
+- 新規signup時、`selected_app_keys` に依存せず `works_portal` と `seatflow` を付与する。
+- `app_instances(company_account_id, app_key)` のunique indexと `on conflict do nothing` で重複を防ぐ。
+
+Codexはこのmigrationを実DBへ適用しない。Supabase Dashboard / SQL Editorでの適用は人間確認が必要。
+
+## v0.16再開条件
+
+`seat_layout` のRLS確認を再開する前に、以下を人間が確認する。
+
+- Supabase上で `20260627_v016_ensure_default_app_instances.sql` を確認・適用する。
+- 甲・乙それぞれの `company_accounts` に `app_instances.app_key = seatflow` が存在する。
+- account.htmlがsupabase modeで、甲・乙それぞれにSeatFlowを表示する。
+- 甲・乙それぞれでSeatFlow本体のクラウド状態が未登録ではなくready相当になる。
+- RLSは無効化していない。
+- service role keyは使っていない。
+
+上記が確認できるまで、v0.16は `seatflow app_instance確認待ち` として未完了扱いにする。

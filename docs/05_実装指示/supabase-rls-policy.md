@@ -72,6 +72,18 @@ insert / update / select は、ログイン中ユーザーが所有する `compa
 
 SeatFlow画面から保存する場合も、`app_instance_id` と `data_type` の一意制約を使い、同じSeatFlowインスタンスの `seat_layout` を上書きする。
 
+v0.16で `seat_layout` のRLS確認を行う前提として、甲・乙それぞれの検証企業アカウントに `app_instances.app_key = seatflow` が必要。
+
+`seatflow` app_instanceがない場合、SeatFlow本体はクラウド保存・読込を行わず、未登録として停止する。この状態では他社データ混入テストではなく、app_instances付与待ちとして扱う。
+
+v0.16の初期配布migration案:
+
+```text
+supabase/migrations/20260627_v016_ensure_default_app_instances.sql
+```
+
+このmigration案はRLSを変更しない。既存企業アカウントと新規signupに `seatflow` app_instanceを用意するための案であり、実DBへの適用は人間が確認して行う。
+
 v0.14.12のWorks Portal保存では以下を扱う想定。
 
 ```text

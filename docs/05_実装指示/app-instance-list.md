@@ -61,6 +61,20 @@ supabase/migrations/20260625_v013_app_instances_from_signup_metadata.sql
 
 `raw_user_meta_data.selected_app_keys` に含まれるapp_keyをもとに、`apps` に存在するものだけ `app_instances` を作成する。
 
+v0.16では、この方針に例外を追加する。
+
+- `works_portal` は全企業アカウント必須の基盤アプリとして、選択アプリに含まれなくても付与する。
+- `seatflow` はv0.xのRLS検証用初期配布アプリとして、`seat_layout` 検証に必要な企業アカウントへ付与する。
+
+対応migration案:
+
+```text
+supabase/migrations/20260627_v016_ensure_works_portal_app_instance.sql
+supabase/migrations/20260627_v016_ensure_default_app_instances.sql
+```
+
+`pdf_tool` / `quiz_maker` は初期配布候補だが、v0.16の自動付与対象には含めない。購入・申請・管理者付与の正式ルールは後続フェーズで決める。
+
 ## 空状態
 
 app_instancesが0件の場合は、以下を案内する。
@@ -93,6 +107,10 @@ SeatFlowクラウド保存では、ログイン中の企業アカウントに紐
 取得できない場合は保存・読込を行わない。
 
 この状態でフロントから勝手に `app_instances` を作らない。重複作成や権限混在を避けるため、作成はsignup triggerまたは管理されたSQLで行う。
+
+account.htmlがmock modeの場合、固定のサンプル利用アプリとしてSeatFlowが表示されることがある。この表示は実DBの `app_instances.app_key = seatflow` が存在することを意味しない。
+
+supabase modeでaccount.htmlにSeatFlowが表示される条件は、ログイン中企業アカウントの `app_instances.app_key = seatflow` が読めること。SeatFlow本体も同じ `company_account_id` と `app_key = seatflow` を使う。
 
 SeatFlow保存時は以下の関係を守る。
 
