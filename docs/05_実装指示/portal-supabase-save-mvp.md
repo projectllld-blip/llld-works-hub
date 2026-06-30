@@ -17,6 +17,8 @@ app_instance_id: works_portal の app_instances.id
 
 `works_portal` はポータル保存の基盤であり、signup画面でユーザーが選ぶ個別アプリではない。新規企業アカウントには、選択アプリとは別に `works_portal` の `app_instances` を必ず作成する。
 
+この必須付与はフロント側の `selected_app_keys` だけに依存しない。v0.16 migration案 `supabase/migrations/20260627_v016_ensure_works_portal_app_instance.sql` で、既存企業への一括付与と新規signup trigger側の自動付与を保証する。
+
 ## JSON構造案
 
 ```json
