@@ -11,10 +11,10 @@
 - v0.16 RLS・他社データ混入テスト
 
 ## IN_PROGRESS
-- なし
+- v0.17 バックアップ・復元 方針整理
 
 ## NEXT
-- v0.17 バックアップ・復元
+- v0.17b バックアップJSONエクスポートMVP
 
 ## PARKED
 - A0.6 Codex GitHub Action連携検討

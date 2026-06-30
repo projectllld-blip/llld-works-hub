@@ -156,3 +156,24 @@ supabase/migrations/20260625_v014_seatflow_app_data_constraints.sql
 ```
 
 このSQLでは、SeatFlowの `seat_layout` をupsertしやすくするために `app_data(app_instance_id, data_type)` のunique indexを追加する。
+
+## v0.17 バックアップ・復元とRLS
+
+v0.17の初回バックアップMVPは、service_roleを使わず、通常ログイン中ユーザーの権限で実行する。
+
+バックアップで取得してよい範囲:
+
+- ログイン中ユーザーが所有する `company_accounts`。
+- その `company_account_id` に紐づく `app_instances`。
+- その `company_account_id` に紐づく `app_data`。
+
+RLSを迂回しない。Supabase Dashboard / SQL Editorによる全体バックアップは通常機能ではなく、人間作業・緊急対応の領域とする。
+
+復元時のRLS方針:
+
+- バックアップJSON内の `company_account_id` をそのまま使わない。
+- ログイン中企業アカウントの `company_account_id` に紐づけ直す。
+- バックアップJSON内の `app_instance_id` をそのまま使わない。
+- `app_key` からログイン中企業の `app_instances.id` を引き直す。
+- 他社データが混ざる可能性があるJSONは復元しない。
+- 既存データを上書きする復元は、復元前バックアップと明示確認を必須にする。
