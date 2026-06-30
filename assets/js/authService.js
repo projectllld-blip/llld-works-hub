@@ -17,6 +17,7 @@
 
   const VALID_BUSINESS_TYPES = ['school', 'store', 'restaurant', 'small_business', 'consulting', 'demo'];
   const APP_LABELS = {
+    works_portal: 'LLLD Works Hub ポータル',
     attendance: '勤怠管理',
     seatflow: '座席管理',
     pdf_tool: 'PDF編集',
@@ -24,6 +25,7 @@
     meeting_support: '面談支援',
     sales_talk_support: '営業トーク支援'
   };
+  const REQUIRED_APP_KEYS = ['works_portal'];
 
   async function getAuthMode() {
     const status = await getAuthStatus();
@@ -512,13 +514,18 @@
         ? input.apps
         : [];
 
+    const appKeys = [...new Set([
+      ...REQUIRED_APP_KEYS,
+      ...selectedApps.map(value => String(value).trim()).filter(Boolean)
+    ])];
+
     return {
       companyName: String(input.companyName || '').trim(),
       contactName: String(input.contactName || '').trim(),
       email: String(input.email || '').trim(),
       password: String(input.password || ''),
       businessType: VALID_BUSINESS_TYPES.includes(input.businessType) ? input.businessType : '',
-      selectedApps: selectedApps.map(value => String(value).trim()).filter(Boolean)
+      selectedApps: appKeys
     };
   }
 
