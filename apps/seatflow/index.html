@@ -1101,8 +1101,26 @@ function sanitizeCloudLayout(l={}){
    updatedAt:new Date().toISOString()
  };
 }
+function readCachedSeatFlowLayouts(){
+ try{
+   const cached=JSON.parse(localStorage.getItem(KEY)||"{}");
+   return Array.isArray(cached.layouts)?cached.layouts:[];
+ }catch{
+   return [];
+ }
+}
+function collectSeatFlowCloudLayouts(){
+ const byId=new Map();
+ [...readCachedSeatFlowLayouts(),...(Array.isArray(state.layouts)?state.layouts:[])].forEach(l=>{
+   if(!l)return;
+   const id=l.id||uid("layout");
+   byId.set(id,{...l,id});
+ });
+ return [...byId.values()].map(sanitizeCloudLayout);
+}
 function buildSeatFlowCloudLayout(){
- const layouts=(state.layouts||[]).map(sanitizeCloudLayout);
+ const layouts=collectSeatFlowCloudLayouts();
+ localStorage.setItem(KEY,JSON.stringify(state));
  return {
    schemaVersion:1,
    saveScope:"seatflow_state",
@@ -1110,7 +1128,7 @@ function buildSeatFlowCloudLayout(){
    baseRevision:cloudLastLoadedRevision,
    updatedAt:new Date().toISOString(),
    updatedByClientId:getSeatFlowCloudClientId(),
-   activeLayoutId:state.activeLayoutId,
+   activeLayoutId:layouts.some(l=>l.id===state.activeLayoutId)?state.activeLayoutId:(layouts[0]?.id||""),
    layoutCount:layouts.length,
    itemCount:layouts.reduce((sum,l)=>sum+(Array.isArray(l.items)?l.items.length:0),0),
    layouts,
@@ -1263,9 +1281,14 @@ function setSeatFlowCloudUi(result){
      load_failed:"クラウド読込に失敗しました。ログイン状態、SeatFlow利用設定、RLS設定を確認して再試行してください。"
    };
    const base=tips[result?.status]||result?.message||"このフェーズでは、座席レイアウトのみ保存します。生徒名・利用状況・勤怠情報は保存しません。";
-   text.textContent=["loaded","saved","auto_saved"].includes(result?.status)&&Number.isFinite(Number(result?.itemCount))
-     ? `${base} クラウド: ${Number(result.layoutCount)||0}レイアウト / ${Number(result.itemCount)}パーツ（画面内: ${(state.layouts||[]).length}レイアウト）`
-     : base;
+   if(["loaded","saved","auto_saved"].includes(result?.status)&&Number.isFinite(Number(result?.itemCount))){
+     const cloudLayouts=Number(result.layoutCount)||0;
+     const screenLayouts=(state.layouts||[]).length;
+     const mismatch=cloudLayouts&&screenLayouts&&cloudLayouts!==screenLayouts?" レイアウト数が一致していません。クラウド保存をもう一度実行してください。":"";
+     text.textContent=`${base} クラウド: ${cloudLayouts}レイアウト / ${Number(result.itemCount)}パーツ（画面内: ${screenLayouts}レイアウト）${mismatch}`;
+   }else{
+     text.textContent=base;
+   }
  }
  const forceBtn=$("cloudForceSaveBtn");
  if(forceBtn)forceBtn.style.display=result?.status==="conflict"?"inline-flex":"none";
