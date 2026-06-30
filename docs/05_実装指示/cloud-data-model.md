@@ -212,6 +212,34 @@ v0.10ではテーブル、RLS、seedのみを用意する。
 
 v0.14ではSeatFlowの座席レイアウトのみ `app_data` に保存する。生徒名、利用状態、勤怠データは保存対象外。
 
+v0.16では、SeatFlowの `seat_layout` を現在表示中の1レイアウトだけでなく、複数レイアウトを含むSeatFlow全体状態として扱う。
+
+```json
+{
+  "schemaVersion": 1,
+  "saveScope": "seatflow_state",
+  "revision": 1,
+  "updatedAt": "2026-07-01T00:00:00.000Z",
+  "updatedByClientId": "client_xxx",
+  "activeLayoutId": "layout_xxx",
+  "layouts": [],
+  "uiSettings": {}
+}
+```
+
+`layouts[]` には、各レイアウトの `id` / `name` / `facilityType` / `floor` / `outline` / `items` を保存する。
+
+保存しないもの:
+
+- 名簿データ
+- QR / バーコード / NFC
+- メモ
+- 操作履歴
+- Undo / Redo履歴
+- 一時選択状態
+
+自動保存はクラウド読込完了後のみ行う。複数タブ・複数ブラウザの古い状態で新しいクラウドデータを上書きしないよう、保存前に `revision` を確認する。
+
 ## v0.14.12 Works Portal portal_state
 
 v0.14.12では、`portal.html` の編集データを企業アカウント単位で `app_data` に保存するMVPを追加する想定。

@@ -332,3 +332,39 @@ on conflict (company_account_id, app_key) do nothing;
 - `app_instance_id` が甲の `seatflow` app_instance と一致していること。
 
 v0.16は、上記のブラウザ確認と甲乙相互不可視確認が終わるまで未完了。
+
+## 2026-07-01 SeatFlow全体状態のクラウド同期対応
+
+追加で、SeatFlow内の複数レイアウト一覧が別ブラウザで復元されない問題が見つかった。
+
+原因:
+
+- これまでの `seat_layout` JSONは、現在表示中の1レイアウトだけを保存する構造だった。
+- localStorage上のSeatFlow全体構造には `layouts[]` と `activeLayoutId` があるが、クラウド保存JSONには含めていなかった。
+
+修正:
+
+- `app_data.data_type = seat_layout` の `data_json` をSeatFlow全体状態へ拡張した。
+- `layouts[]` / `activeLayoutId` / `uiSettings` / `schemaVersion` / `revision` / `updatedAt` / `updatedByClientId` を保存する。
+- 既存の単一レイアウト形式も読める互換を残した。
+- Supabase読込成功時は、複数レイアウト一覧と選択中レイアウトを画面へ反映し、localStorageにもキャッシュする。
+- クラウド読込完了前は自動保存しない。
+- ユーザー操作後はlocalStorage保存に続けてdebounce付きでクラウド自動保存する。
+- 保存前にクラウド側の `revision` を確認し、別タブ/別端末で新しいrevisionがある場合は自動上書きしない。
+- 衝突時は `クラウド再読込` と `この内容で上書き保存` を表示する。
+
+クラウド保存対象外:
+
+- `people` 名簿データ
+- QR / バーコード / NFC
+- メモ
+- Undo / Redo履歴
+- 一時選択状態
+
+確認が必要:
+
+- 甲アカウントで複数レイアウトを作成し、自動保存または手動クラウド保存する。
+- 別Chrome / 別ブラウザの同じ甲アカウントで、起動時に複数レイアウト一覧が復元される。
+- レイアウト切替ができる。
+- 乙アカウントでは甲のレイアウト一覧が見えない。
+- 乙で保存したレイアウト一覧が甲に見えない。

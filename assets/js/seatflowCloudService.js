@@ -130,6 +130,8 @@
   }
 
   function sanitizeSeatLayout(layout = {}) {
+    if (Array.isArray(layout.layouts)) return sanitizeSeatFlowState(layout);
+
     const canvas = layout.canvas || {};
     const settings = layout.settings || {};
     const items = Array.isArray(layout.items) ? layout.items : [];
@@ -153,7 +155,62 @@
     };
   }
 
-  async function saveSeatLayoutToCloud(layout = {}) {
+  function sanitizeSeatFlowState(input = {}) {
+    const now = new Date().toISOString();
+    const layouts = Array.isArray(input.layouts) ? input.layouts : [];
+    const ui = input.uiSettings || {};
+    const sanitizedLayouts = layouts.map(sanitizeLayout).filter(Boolean);
+    const activeLayoutId = safeText(input.activeLayoutId || sanitizedLayouts[0]?.id || '', 80);
+
+    return {
+      schemaVersion: 1,
+      saveScope: 'seatflow_state',
+      revision: Math.max(0, Math.floor(safeNumber(input.revision, 0))),
+      updatedAt: safeText(input.updatedAt || now, 40),
+      updatedByClientId: safeText(input.updatedByClientId || '', 80),
+      activeLayoutId,
+      layouts: sanitizedLayouts,
+      uiSettings: {
+        mode: safeText(ui.mode || 'edit', 20),
+        zoom: safeNumber(ui.zoom, 0.8),
+        grid: ui.grid !== false,
+        rightCollapsed: Boolean(ui.rightCollapsed),
+        dashboardWidth: safeNumber(ui.dashboardWidth, 390)
+      }
+    };
+  }
+
+  function sanitizeLayout(layout = {}) {
+    const floor = layout.floor || {};
+    const items = Array.isArray(layout.items) ? layout.items : [];
+    const outline = Array.isArray(layout.outline) ? layout.outline : [];
+    const id = safeText(layout.id || '', 80);
+    if (!id) return null;
+
+    return {
+      id,
+      name: safeText(layout.name || 'SeatFlowレイアウト', 60),
+      facilityType: safeText(layout.facilityType || 'custom', 40),
+      floor: {
+        w: safeNumber(floor.w ?? floor.width, DEFAULT_CANVAS.width),
+        h: safeNumber(floor.h ?? floor.height, DEFAULT_CANVAS.height),
+        grid: safeNumber(floor.grid ?? floor.gridSize, DEFAULT_CANVAS.gridSize)
+      },
+      outline: outline.map(sanitizePoint).filter(Boolean),
+      draftOutline: [],
+      items: items.map(sanitizeItem).filter(Boolean),
+      updatedAt: safeText(layout.updatedAt || '', 40)
+    };
+  }
+
+  function sanitizePoint(point = {}) {
+    const x = safeNumber(point.x, NaN);
+    const y = safeNumber(point.y, NaN);
+    if (!Number.isFinite(x) || !Number.isFinite(y)) return null;
+    return { x, y };
+  }
+
+  async function saveSeatLayoutToCloud(layout = {}, options = {}) {
     const status = await getSeatFlowCloudStatus();
     if (status.mode !== 'supabase') {
       return {
@@ -183,7 +240,39 @@
       };
     }
 
-    const sanitizedLayout = sanitizeSeatLayout(layout);
+    const { data: currentRow, error: currentError } = await fetchSeatLayoutRow(client, status);
+    if (currentError) {
+      return {
+        ok: false,
+        mode: 'supabase',
+        status: 'save_failed',
+        message: 'クラウド保存前の状態確認に失敗しました。ログイン状態、SeatFlow利用設定、RLS設定を確認してください。'
+      };
+    }
+
+    const currentState = currentRow?.data_json || {};
+    const currentRevision = Math.max(0, Math.floor(safeNumber(currentState.revision, 0)));
+    const expectedRevision = Math.max(0, Math.floor(safeNumber(options.expectedRevision ?? layout.baseRevision, 0)));
+    const currentClientId = safeText(currentState.updatedByClientId || '', 80);
+    const incomingClientId = safeText(layout.updatedByClientId || '', 80);
+
+    if (!options.force && currentRow && currentRevision > expectedRevision && currentClientId !== incomingClientId) {
+      return {
+        ok: false,
+        mode: 'supabase',
+        status: 'conflict',
+        message: '別タブまたは別端末でSeatFlowが更新されています。クラウドを再読込するか、この内容で上書き保存してください。',
+        revision: currentRevision,
+        updatedAt: currentState.updatedAt || currentRow.updated_at,
+        updatedByClientId: currentClientId
+      };
+    }
+
+    const sanitizedLayout = sanitizeSeatLayout({
+      ...layout,
+      revision: Math.max(currentRevision, expectedRevision) + 1,
+      updatedAt: new Date().toISOString()
+    });
     const payload = {
       company_account_id: status.account.id,
       app_instance_id: status.appInstance.id,
@@ -214,7 +303,11 @@
         status: 'saved',
         message: 'SeatFlowレイアウトをクラウド保存しました。',
         savedAt: data?.updated_at || sanitizedLayout.savedAt,
-        itemCount: sanitizedLayout.items.length,
+        revision: sanitizedLayout.revision || 0,
+        updatedAt: sanitizedLayout.updatedAt || data?.updated_at || sanitizedLayout.savedAt,
+        updatedByClientId: sanitizedLayout.updatedByClientId || '',
+        itemCount: countItems(sanitizedLayout),
+        layoutCount: countLayouts(sanitizedLayout),
         accountId: status.account.id,
         appInstanceId: status.appInstance.id,
         data
@@ -288,8 +381,11 @@
         layout: normalizeSeatLayoutData(data),
         savedAt: data.updated_at,
         updatedAt: data.updated_at,
+        revision: Math.max(0, Math.floor(safeNumber(data.data_json?.revision, 0))),
+        updatedByClientId: safeText(data.data_json?.updatedByClientId || '', 80),
         rowId: data.id,
-        itemCount: Array.isArray(data.data_json?.items) ? data.data_json.items.length : 0,
+        itemCount: countItems(data.data_json || {}),
+        layoutCount: countLayouts(data.data_json || {}),
         accountId: status.account.id,
         appInstanceId: status.appInstance.id
       };
@@ -305,6 +401,18 @@
 
   function normalizeSeatLayoutData(row = {}) {
     return sanitizeSeatLayout(row.data_json || {});
+  }
+
+  function countLayouts(payload = {}) {
+    if (Array.isArray(payload.layouts)) return payload.layouts.length;
+    return Array.isArray(payload.items) ? 1 : 0;
+  }
+
+  function countItems(payload = {}) {
+    if (Array.isArray(payload.layouts)) {
+      return payload.layouts.reduce((sum, layout) => sum + (Array.isArray(layout.items) ? layout.items.length : 0), 0);
+    }
+    return Array.isArray(payload.items) ? payload.items.length : 0;
   }
 
   function fetchSeatLayoutRow(client, status) {

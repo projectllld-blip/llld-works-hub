@@ -619,6 +619,7 @@ body.operateOnly #userProcessBox > .hint{display:none!important;}
   <div id="cloudStatusText" class="cloud-note" style="padding:0 14px 8px">
     <span id="cloudStatusMessage">このフェーズでは、座席レイアウトのみクラウド保存します。生徒名・利用状況・勤怠情報は保存しません。</span>
     <button id="cloudRetryInlineBtn" class="small" type="button" style="margin-left:8px">クラウド再読込</button>
+    <button id="cloudForceSaveBtn" class="small warning" type="button" style="display:none;margin-left:8px">この内容で上書き保存</button>
   </div>
 
   <div id="mainGrid" class="main">
@@ -992,6 +993,14 @@ let timer=null;
 let guides=[];
 let pasteNudge=0;
 let pinch=null;
+const CLOUD_AUTOSAVE_DELAY=1600;
+const CLOUD_CLIENT_KEY="seatflow-cloud-client-id";
+let cloudAutoSaveTimer=null;
+let cloudReadyForAutoSave=false;
+let cloudApplying=false;
+let cloudConflict=false;
+let cloudLastLoadedRevision=0;
+let cloudLastLoadedUpdatedAt="";
 
 function uid(prefix="id"){return prefix+"-"+Math.random().toString(36).slice(2,10)}
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
@@ -1049,45 +1058,70 @@ function undo(){if(state.history.length<2)return toast("これ以上戻せませ
 function redo(){if(!state.future.length)return toast("これ以上やり直せません");const s=state.future.pop();state.history.push(s);restoreSnapshot(s);toast("やり直しました")}
 function markUnsaved(){ $("savePill").textContent="編集中";$("savePill").className="pill amber";clearTimeout(timer);timer=setTimeout(()=>save(false),700)}
 function dirty(){pushHistory();markUnsaved()}
-function save(show=true){localStorage.setItem(KEY,JSON.stringify(state));$("savePill").textContent="保存済み";$("savePill").className="pill green";if(show)toast("保存しました")}
+function save(show=true){localStorage.setItem(KEY,JSON.stringify(state));$("savePill").textContent="保存済み";$("savePill").className="pill green";if(show)toast("保存しました");scheduleSeatFlowCloudAutoSave()}
 function load(){try{return {...structuredClone(template),...JSON.parse(localStorage.getItem(KEY)||"{}")}}catch(e){return structuredClone(template)}}
 
-function buildSeatFlowCloudLayout(){
- const l=layout();
+function getSeatFlowCloudClientId(){
+ let id=localStorage.getItem(CLOUD_CLIENT_KEY);
+ if(!id){id=`client_${Date.now().toString(36)}_${Math.random().toString(36).slice(2,8)}`;localStorage.setItem(CLOUD_CLIENT_KEY,id)}
+ return id;
+}
+function sanitizeCloudItem(i={}){
  return {
-   version:1,
-   layoutName:l?.name||"SeatFlowレイアウト",
-   source:"seatflow",
-   canvas:{
-     width:Number(l?.floor?.w)||1200,
-     height:Number(l?.floor?.h)||760,
-     gridSize:Number(l?.floor?.grid)||20,
-     zoom:Number(state.zoom)||1
+   id:i.id,
+   type:i.type,
+   label:i.label,
+   x:i.x,
+   y:i.y,
+   width:i.w,
+   height:i.h,
+   rotation:i.r||0,
+   z:i.z||1,
+   groupId:i.groupId||"",
+   assignable:i.type==="seat"||!!i.assignable,
+   noBorder:!!i.noBorder,
+   color:i.color||"",
+   fontSize:Number(i.fontSize)||0,
+   textVertical:!!i.textVertical
+ };
+}
+function sanitizeCloudLayout(l={}){
+ return {
+   id:l.id||uid("layout"),
+   name:l.name||"SeatFlowレイアウト",
+   facilityType:l.facilityType||"custom",
+   floor:{
+     w:Number(l.floor?.w)||1200,
+     h:Number(l.floor?.h)||760,
+     grid:Number(l.floor?.grid)||20
    },
-   items:(l?.items||[]).map(i=>({
-     id:i.id,
-     type:i.type,
-     label:i.label,
-     x:i.x,
-     y:i.y,
-     width:i.w,
-     height:i.h,
-     rotation:i.r||0,
-     z:i.z||1,
-     groupId:i.groupId||"",
-     assignable:i.type==="seat"||!!i.assignable,
-     noBorder:!!i.noBorder,
-     color:i.color||"",
-     fontSize:Number(i.fontSize)||0,
-     textVertical:!!i.textVertical
-   })),
-   settings:{
-     showGrid:!!state.grid,
-     snapToGrid:true
+   outline:Array.isArray(l.outline)?l.outline.map(p=>({x:Number(p.x)||0,y:Number(p.y)||0})):[],
+   draftOutline:[],
+   items:(l.items||[]).map(sanitizeCloudItem),
+   updatedAt:new Date().toISOString()
+ };
+}
+function buildSeatFlowCloudLayout(){
+ return {
+   schemaVersion:1,
+   saveScope:"seatflow_state",
+   revision:cloudLastLoadedRevision+1,
+   baseRevision:cloudLastLoadedRevision,
+   updatedAt:new Date().toISOString(),
+   updatedByClientId:getSeatFlowCloudClientId(),
+   activeLayoutId:state.activeLayoutId,
+   layouts:(state.layouts||[]).map(sanitizeCloudLayout),
+   uiSettings:{
+     mode:state.mode,
+     zoom:Number(state.zoom)||.8,
+     grid:!!state.grid,
+     rightCollapsed:!!state.rightCollapsed,
+     dashboardWidth:Number(state.dashboardWidth)||390
    }
  };
 }
 function applySeatFlowCloudLayout(cloudLayout){
+ if(cloudLayout?.saveScope==="seatflow_state"&&Array.isArray(cloudLayout.layouts))return applySeatFlowCloudState(cloudLayout);
  if(!cloudLayout||!Array.isArray(cloudLayout.items))return toast("クラウドレイアウトを読み込めませんでした");
  const l=layout();
  l.name=cloudLayout.layoutName||l.name||"SeatFlowレイアウト";
@@ -1128,8 +1162,77 @@ function applySeatFlowCloudLayout(cloudLayout){
  render();
  updateUndoRedo();
 }
+function normalizeCloudItemToLocal(item={},idx=0){
+ return normalizeItem({
+   id:item.id||uid("item"),
+   type:item.type||"seat",
+   label:item.label||"",
+   x:Number(item.x)||0,
+   y:Number(item.y)||0,
+   w:Number(item.width)||80,
+   h:Number(item.height)||60,
+   r:Number(item.rotation)||0,
+   z:Number(item.z)||idx+1,
+   groupId:item.groupId||null,
+   status:"free",
+   assignedName:"",
+   personId:"",
+   note:"",
+   locked:false,
+   assignable:item.type==="seat"||!!item.assignable,
+   assignableLocked:item.type==="seat",
+   noBorder:!!item.noBorder,
+   color:item.color||"",
+   fontSize:Number(item.fontSize)||(isTextItem(item)?18:13),
+   textVertical:item.type==="textV"||!!item.textVertical
+ });
+}
+function normalizeCloudLayoutToLocal(layoutData={},idx=0){
+ const floor=layoutData.floor||{};
+ return {
+   id:layoutData.id||uid("layout"),
+   name:layoutData.name||`クラウドレイアウト ${idx+1}`,
+   facilityType:layoutData.facilityType||"custom",
+   floor:{
+     w:Number(floor.w)||1200,
+     h:Number(floor.h)||760,
+     grid:Number(floor.grid)||20
+   },
+   outline:Array.isArray(layoutData.outline)?layoutData.outline.map(p=>({x:Number(p.x)||0,y:Number(p.y)||0})):[],
+   draftOutline:[],
+   items:(layoutData.items||[]).map(normalizeCloudItemToLocal)
+ };
+}
+function applySeatFlowCloudState(cloudState){
+ const layouts=(cloudState.layouts||[]).map(normalizeCloudLayoutToLocal).filter(l=>l.items);
+ if(!layouts.length)return toast("クラウドのSeatFlow状態にレイアウトがありません");
+ cloudApplying=true;
+ const cachedPeople=Array.isArray(state.people)?state.people:[];
+ state={
+   ...structuredClone(template),
+   ...state,
+   mode:cloudState.uiSettings?.mode==="operate"?"operate":"edit",
+   zoom:Number(cloudState.uiSettings?.zoom)||state.zoom||.8,
+   grid:cloudState.uiSettings?.grid!==false,
+   rightCollapsed:!!cloudState.uiSettings?.rightCollapsed,
+   dashboardWidth:Number(cloudState.uiSettings?.dashboardWidth)||state.dashboardWidth||390,
+   activeLayoutId:layouts.some(l=>l.id===cloudState.activeLayoutId)?cloudState.activeLayoutId:layouts[0].id,
+   selectedIds:[],
+   selectedItemId:null,
+   history:[],
+   future:[],
+   people:cachedPeople,
+   layouts
+ };
+ clearSelection();
+ normalizeLoaded();
+ save(false);
+ render();
+ updateUndoRedo();
+ cloudApplying=false;
+}
 function applySeatFlowCloudLayoutFromStartup(cloudLayout){
- if(!cloudLayout||!Array.isArray(cloudLayout.items))return false;
+ if(!cloudLayout||(!Array.isArray(cloudLayout.items)&&!Array.isArray(cloudLayout.layouts)))return false;
  applySeatFlowCloudLayout(cloudLayout);
  return true;
 }
@@ -1149,24 +1252,90 @@ function setSeatFlowCloudUi(result){
      loading:"クラウド保存されたSeatFlowレイアウトを確認しています。",
      loaded:"クラウド保存されたSeatFlowレイアウトを読み込みました。Supabaseを正本として表示しています。",
      not_found:"クラウド保存されたSeatFlowレイアウトはまだありません。先に「クラウド保存」を押してください。",
+     autosaving:"SeatFlow状態を自動保存しています。",
+     saved:"SeatFlow状態をクラウド保存しました。",
+     auto_saved:"SeatFlow状態を自動保存しました。",
+     conflict:"別タブまたは別端末で更新されています。クラウドを再読込するか、この内容で上書き保存してください。",
      save_failed:"クラウド保存に失敗しました。ログイン状態、SeatFlow利用設定、RLS設定を確認して再試行してください。",
      load_failed:"クラウド読込に失敗しました。ログイン状態、SeatFlow利用設定、RLS設定を確認して再試行してください。"
    };
    const base=tips[result?.status]||result?.message||"このフェーズでは、座席レイアウトのみ保存します。生徒名・利用状況・勤怠情報は保存しません。";
-   text.textContent=["loaded","saved"].includes(result?.status)&&Number.isFinite(Number(result?.itemCount))
-     ? `${base} ${result.status==="saved"?"保存":"読込"}パーツ数: ${Number(result.itemCount)}`
+   text.textContent=["loaded","saved","auto_saved"].includes(result?.status)&&Number.isFinite(Number(result?.itemCount))
+     ? `${base} レイアウト数: ${Number(result.layoutCount)||0} / パーツ数: ${Number(result.itemCount)}`
      : base;
  }
+ const forceBtn=$("cloudForceSaveBtn");
+ if(forceBtn)forceBtn.style.display=result?.status==="conflict"?"inline-flex":"none";
  if(last&&result?.savedAt)last.textContent=`最終保存 ${formatCloudTime(result.savedAt)}`;
  if(last&&result?.status==="not_found")last.textContent="クラウド未保存";
  if(last&&result?.status==="save_failed")last.textContent="保存失敗";
  if(last&&result?.status==="load_failed")last.textContent="読込失敗";
+ if(last&&result?.status==="autosaving")last.textContent="自動保存中";
+ if(last&&result?.status==="conflict")last.textContent="競合あり";
  if(last&&result?.status==="app_instance_not_found")last.textContent="SeatFlow未登録";
  if(last&&result?.status==="not_logged_in")last.textContent="未ログイン";
  if(last&&result?.status==="loaded"&&!result?.savedAt)last.textContent="クラウド読込済み";
 }
 function formatCloudTime(value){
  try{return new Date(value).toLocaleString("ja-JP",{month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"})}catch{return "保存済み"}
+}
+function updateSeatFlowCloudMeta(result){
+ if(!result)return;
+ cloudLastLoadedRevision=Number(result.revision)||cloudLastLoadedRevision||0;
+ cloudLastLoadedUpdatedAt=result.updatedAt||result.savedAt||cloudLastLoadedUpdatedAt||"";
+}
+function scheduleSeatFlowCloudAutoSave(){
+ if(cloudApplying||!cloudReadyForAutoSave||cloudConflict)return;
+ if(!window.SeatFlowCloudService?.saveSeatLayoutToCloud)return;
+ clearTimeout(cloudAutoSaveTimer);
+ cloudAutoSaveTimer=setTimeout(()=>performSeatFlowCloudSave({source:"auto"}),CLOUD_AUTOSAVE_DELAY);
+}
+async function performSeatFlowCloudSave(options={}){
+ const source=options.source||"manual";
+ const force=!!options.force;
+ if(!window.SeatFlowCloudService?.saveSeatLayoutToCloud){
+   if(source!=="auto")toast("クラウド保存サービスを確認できません");
+   return;
+ }
+ if(!force&&cloudConflict){
+   setSeatFlowCloudUi({mode:"supabase",status:"conflict"});
+   return;
+ }
+ const saveBtn=$("cloudSaveBtn"), forceBtn=$("cloudForceSaveBtn");
+ if(source!=="auto"&&saveBtn){saveBtn.disabled=true;saveBtn.textContent="保存中...";}
+ if(forceBtn)forceBtn.disabled=true;
+ setSeatFlowCloudUi({mode:"supabase",status:source==="auto"?"autosaving":"loading",message:"SeatFlow状態をクラウド保存しています。"});
+ try{
+   const result=await window.SeatFlowCloudService.saveSeatLayoutToCloud(buildSeatFlowCloudLayout(),{
+     expectedRevision:cloudLastLoadedRevision,
+     force
+   });
+   if(result?.status==="conflict"){
+     cloudConflict=true;
+     setSeatFlowCloudUi(result);
+     if(source!=="auto")toast(result.message,3200);
+     return result;
+   }
+   if(result?.ok){
+     cloudConflict=false;
+     cloudReadyForAutoSave=true;
+     updateSeatFlowCloudMeta(result);
+     const normalized={...result,status:source==="auto"?"auto_saved":"saved"};
+     setSeatFlowCloudUi(normalized);
+     if(source!=="auto")toast(result.message,2600);
+     return result;
+   }
+   setSeatFlowCloudUi(result);
+   if(source!=="auto")toast(result?.message||"クラウド保存に失敗しました",2600);
+   return result;
+ }catch(err){
+   const failed={mode:"supabase",status:"save_failed",message:"クラウド保存に失敗しました。接続設定を確認してください。"};
+   setSeatFlowCloudUi(failed);
+   if(source!=="auto")toast(failed.message,2600);
+ }finally{
+   if(source!=="auto"&&saveBtn){saveBtn.disabled=false;saveBtn.textContent="クラウド保存";}
+   if(forceBtn)forceBtn.disabled=false;
+ }
 }
 async function refreshSeatFlowCloudStatus(){
  if(!window.SeatFlowCloudService?.getSeatFlowCloudStatus){
@@ -1200,12 +1369,23 @@ async function runSeatFlowCloudLoad(options={}){
    setSeatFlowCloudUi(result);
    if(result.ok&&result.layout){
      if(!confirmReplace||confirm("現在のレイアウトをクラウド保存されたレイアウトで置き換えます。よろしいですか？")){
+       updateSeatFlowCloudMeta(result);
        applySeatFlowCloudLayoutFromStartup(result.layout);
        window.__seatflowCloudLoaded=true;
+       cloudReadyForAutoSave=true;
+       cloudConflict=false;
        if(source!=="startup")toast(result.message,2600);
      }
      setSeatFlowCloudUi(result);
-   }else if(source!=="startup")toast(result.message,2600);
+   }else{
+     if(result?.status==="not_found"){
+       cloudLastLoadedRevision=0;
+       cloudLastLoadedUpdatedAt="";
+       cloudReadyForAutoSave=true;
+       cloudConflict=false;
+     }
+     if(source!=="startup")toast(result.message,2600);
+   }
    return result;
  }catch(err){
    setSeatFlowCloudUi({mode:"supabase",status:"load_failed",message:"クラウド読込に失敗しました。ログイン状態、SeatFlow利用設定、RLS設定を確認してください。"});
@@ -1217,20 +1397,11 @@ async function runSeatFlowCloudLoad(options={}){
  }
 }
 function bindSeatFlowCloudControls(){
- const saveBtn=$("cloudSaveBtn"), loadBtn=$("cloudLoadBtn"), retryBtn=$("cloudRetryInlineBtn");
- if(saveBtn)saveBtn.onclick=async()=>{
-   if(!window.SeatFlowCloudService?.saveSeatLayoutToCloud)return toast("クラウド保存サービスを確認できません");
-   saveBtn.disabled=true;
-   saveBtn.textContent="保存中...";
-   try{
-     const result=await window.SeatFlowCloudService.saveSeatLayoutToCloud(buildSeatFlowCloudLayout());
-     setSeatFlowCloudUi(result);
-     toast(result.message,2600);
-   }catch(err){toast("クラウド保存を実行できませんでした")}
-   finally{saveBtn.disabled=false;saveBtn.textContent="クラウド保存";}
- };
+ const saveBtn=$("cloudSaveBtn"), loadBtn=$("cloudLoadBtn"), retryBtn=$("cloudRetryInlineBtn"), forceBtn=$("cloudForceSaveBtn");
+ if(saveBtn)saveBtn.onclick=()=>performSeatFlowCloudSave({source:"manual"});
  if(loadBtn)loadBtn.onclick=()=>runSeatFlowCloudLoad({confirmReplace:true,source:"manual"});
  if(retryBtn)retryBtn.onclick=()=>runSeatFlowCloudLoad({confirmReplace:true,source:"manual"});
+ if(forceBtn)forceBtn.onclick=()=>performSeatFlowCloudSave({source:"manual",force:true});
 }
 function normalizeLoaded(){
  state.dashboardWidth=clamp(Number(state.dashboardWidth)||390,280,720);
