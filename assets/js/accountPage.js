@@ -440,7 +440,6 @@
     if (account) currentRequestAccount = account;
     if (status) currentRequestStatus = status;
     const candidates = buildAppRequestCandidates(ownedApps);
-    const mode = status?.mode || 'mock';
 
     if (!account) {
       setText('#accountAppRequestsStatus', 'ログイン後に未利用アプリの申請mockを表示します。');
@@ -451,9 +450,7 @@
 
     setText(
       '#accountAppRequestsStatus',
-      mode === 'supabase'
-        ? '未利用アプリの追加申請を画面上で確認できます。DB保存・自動追加はまだ行いません。'
-        : 'mock modeの申請確認です。実DB保存は行いません。'
+      'まだ利用していないアプリについて、追加利用や相談を申請できます。'
     );
 
     if (!candidates.length) {

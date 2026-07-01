@@ -25,6 +25,9 @@
         <span class="market-kicker">企業アカウント</span>
         <h1>企業アカウントのマイページ確認画面です。</h1>
         <p>Supabase設定済みの場合はログイン中の企業アカウント情報と利用中アプリ一覧を表示します。アプリ内データ保存はSeatFlowレイアウトのみ検証中です。</p>
+        <div class="detail-cta-row account-hero-actions">
+          <a class="btn secondary" href="#appRequestPanel">アプリ追加申請を見る</a>
+        </div>
       </div>
       <div class="account-mode-card">
         <span>現在の認証状態</span>
@@ -102,12 +105,13 @@
         <ul class="account-list" id="accountApps"></ul>
       </article>
 
-      <article class="detail-panel">
+      <article class="detail-panel account-request-panel" id="appRequestPanel">
         <h2>アプリ追加申請</h2>
-        <p class="account-note" id="accountAppRequestsStatus">未利用アプリを確認しています。</p>
+        <p class="account-note" id="accountAppRequestsStatus">まだ利用していないアプリについて、追加利用や相談を申請できます。</p>
+        <p class="account-request-note">これはaccount.html内のUI mockです。DB保存、自動契約、アプリの即時追加は行いません。</p>
         <div class="account-request-apps" id="accountAppRequests"></div>
         <form class="account-form account-request-form" id="appRequestForm" hidden novalidate>
-          <h3>追加申請の内容</h3>
+          <h3>アプリ追加申請フォーム</h3>
           <p class="account-form-help" id="appRequestSelectedApp">申請したいアプリを選んでください。</p>
           <label>
             申請したいアプリ
