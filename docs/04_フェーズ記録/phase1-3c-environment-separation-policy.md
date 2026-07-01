@@ -46,16 +46,18 @@ docs上では現在のSupabase projectを「検証用」と呼んできたが、
 
 本番DBを新しく作れる一方、既存データ移行、Auth設定、RLS確認、`data/site-config.json` 切替、GitHub Pages公開版の再確認が必要になる。
 
-## 推奨案
+## 確定方針
 
-現時点ではA案を推奨候補とする。
+2026-07-01の人間判断により、A案を採用する。
 
 ```text
 現在のSupabase project = 本番相当DB
 新規作成する別Supabase project = 検証用DB
 ```
 
-ただし、最終判断は人間が行う。
+今後、現在GitHub Pages公開版が参照しているSupabase projectへのmigration / RLS / schema変更 / `app_data` / `app_instances` / Auth関連変更は、本番相当DBへの変更として扱う。
+
+現在のSupabase projectに対するSQL適用は、必ず `HUMAN_REQUIRED: YES` とする。
 
 ## v1.3c migration停止理由
 
@@ -63,20 +65,23 @@ docs上では現在のSupabase projectを「検証用」と呼んできたが、
 
 それでも、現在のSupabase projectがGitHub Pages公開版から参照されている以上、適用すると公開環境DBのschema変更になる。
 
-環境方針が確定するまで、実DB適用は停止する。
+現行Supabase projectへ適用する場合は、本番相当DBへのschema変更として扱う。
+
+SQL全文確認とSQL Editorでの手動適用は人間が行う。Codexは実DBへ適用しない。
 
 ## v1.3c再開条件
 
-v1.3cを再開するには、以下を満たすこと。
+v1.3cを現行Supabase projectへ適用して再開するには、以下を満たすこと。
 
-1. 現在のSupabase projectを本番相当DBとして扱うと人間が判断した。
-2. または、検証用Supabase projectを別途作成し、そちらに適用する方針が決まった。
-3. 適用先project名を人間が明示した。
-4. migration SQLを人間が全文確認した。
-5. `drop`、`truncate`、`delete`、`disable row level security` がないことを確認した。
-6. 既存テーブルや既存データへ破壊的影響がないことを確認した。
-7. SQL Editorでの実行は人間が行う。
-8. 適用後、RLSが有効なままか確認する。
+1. 現在のSupabase projectを本番相当DBとして扱う前提を確認した。
+2. 適用先project名を人間が明示した。
+3. migration SQLを人間が全文確認した。
+4. `drop`、`truncate`、`delete`、`disable row level security` がないことを確認した。
+5. 既存テーブルや既存データへ破壊的影響がないことを確認した。
+6. SQL Editorでの実行は人間が行う。
+7. 適用後、RLSが有効なままか確認する。
+
+検証用Supabase project作成後に検証DBへ適用する場合も、適用先project名を人間が明示し、SQL Editorでの実行は人間が行う。
 
 ## STOP条件
 
@@ -89,3 +94,4 @@ v1.3cを再開するには、以下を満たすこと。
 - Supabase URL / anon key差し替えが必要。
 - GitHub Pages設定変更が必要。
 - v1.3c適用先projectの人間判断が未完了。
+- 既存データ削除、RLS無効化、Auth破壊につながる変更が必要。
