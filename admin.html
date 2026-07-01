@@ -3,156 +3,347 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>管理モック | LLLD Works Market β</title>
-  <meta name="description" content="LLLD Works Marketの管理画面モック。ローカル検証専用で本番操作はできません。">
+  <title>LLLD Works Admin mock | LLLD Works Hub</title>
+  <meta name="description" content="LLLD Works Hubの簡易管理者画面mock。実データや企業横断データは取得しません。">
   <link rel="stylesheet" href="./assets/css/style.css">
+  <style>
+    .admin-mock-page {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 56px;
+    }
+
+    .admin-mock-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .admin-mock-brand {
+      font-weight: 700;
+      color: #1f2937;
+      text-decoration: none;
+    }
+
+    .admin-mock-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+      font-size: 0.92rem;
+    }
+
+    .admin-mock-nav a {
+      color: #374151;
+      text-decoration: none;
+    }
+
+    .admin-mock-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.6fr);
+      gap: 20px;
+      align-items: stretch;
+      margin-bottom: 22px;
+    }
+
+    .admin-mock-panel {
+      border: 1px solid rgba(17, 24, 39, 0.12);
+      border-radius: 8px;
+      background: #fff;
+      padding: 18px;
+      box-shadow: 0 12px 28px rgba(17, 24, 39, 0.06);
+    }
+
+    .admin-mock-kicker {
+      display: inline-block;
+      margin-bottom: 8px;
+      color: #6b7280;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .admin-mock-hero h1,
+    .admin-mock-panel h2,
+    .admin-mock-panel h3 {
+      margin-top: 0;
+      color: #111827;
+    }
+
+    .admin-mock-hero h1 {
+      margin-bottom: 10px;
+      font-size: clamp(1.7rem, 4vw, 2.7rem);
+      line-height: 1.15;
+    }
+
+    .admin-mock-note {
+      color: #4b5563;
+      line-height: 1.75;
+    }
+
+    .admin-mock-alert {
+      border-color: rgba(180, 83, 9, 0.28);
+      background: #fffbeb;
+    }
+
+    .admin-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .admin-summary-card {
+      min-height: 112px;
+    }
+
+    .admin-summary-card span {
+      display: block;
+      color: #6b7280;
+      font-size: 0.86rem;
+    }
+
+    .admin-summary-card strong {
+      display: block;
+      margin-top: 8px;
+      color: #111827;
+      font-size: 1.9rem;
+      line-height: 1;
+    }
+
+    .admin-mock-layout {
+      display: grid;
+      grid-template-columns: minmax(300px, 0.95fr) minmax(0, 1.35fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .admin-company-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .admin-company-button {
+      width: 100%;
+      border: 1px solid rgba(17, 24, 39, 0.12);
+      border-radius: 8px;
+      background: #fff;
+      padding: 14px;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .admin-company-button[aria-pressed="true"] {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .admin-company-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+      color: #111827;
+      font-weight: 700;
+    }
+
+    .admin-company-meta {
+      display: grid;
+      gap: 4px;
+      color: #4b5563;
+      font-size: 0.88rem;
+    }
+
+    .admin-status-pill {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      min-height: 24px;
+      padding: 2px 9px;
+      border-radius: 999px;
+      background: #ecfdf5;
+      color: #047857;
+      font-size: 0.78rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .admin-status-pill.warn {
+      background: #fff7ed;
+      color: #c2410c;
+    }
+
+    .admin-status-pill.check {
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    .admin-detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .admin-detail-item {
+      border: 1px solid rgba(17, 24, 39, 0.1);
+      border-radius: 8px;
+      padding: 12px;
+      background: #f9fafb;
+    }
+
+    .admin-detail-item span {
+      display: block;
+      color: #6b7280;
+      font-size: 0.82rem;
+    }
+
+    .admin-detail-item strong {
+      display: block;
+      margin-top: 4px;
+      color: #111827;
+    }
+
+    .admin-app-list,
+    .admin-issue-list,
+    .admin-stop-list {
+      display: grid;
+      gap: 8px;
+      margin: 12px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .admin-app-list li,
+    .admin-issue-list li,
+    .admin-stop-list li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border: 1px solid rgba(17, 24, 39, 0.1);
+      border-radius: 8px;
+      padding: 10px 12px;
+      background: #fff;
+    }
+
+    .admin-section-stack {
+      display: grid;
+      gap: 18px;
+    }
+
+    @media (max-width: 900px) {
+      .admin-mock-hero,
+      .admin-mock-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 560px) {
+      .admin-mock-page {
+        width: min(100% - 20px, 1180px);
+        padding-top: 16px;
+      }
+
+      .admin-mock-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .admin-mock-nav {
+        justify-content: flex-start;
+      }
+
+      .admin-summary-grid,
+      .admin-detail-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
-<body data-market-page="admin">
-  <main class="market-page">
-    <header class="market-header">
-      <a class="market-brand" href="./index.html">LLLD Works Hub</a>
-      <nav aria-label="管理画面導線">
-        <a href="./index.html">社内Hub</a>
-        <a href="./marketplace.html">Market β</a>
-        <a href="./request.html">開発相談</a>
-        <a href="./login.html">ログイン準備中</a>
-        <a href="./account.html">アカウント</a>
-        <a href="./admin.html">管理モック</a>
+<body data-page="admin-mock">
+  <main class="admin-mock-page">
+    <header class="admin-mock-header">
+      <a class="admin-mock-brand" href="./index.html">LLLD Works Hub</a>
+      <nav class="admin-mock-nav" aria-label="管理mock導線">
+        <a href="./index.html">Hub</a>
+        <a href="./portal.html">Portal</a>
+        <a href="./account.html">Account</a>
+        <a href="./marketplace.html">Market</a>
       </nav>
     </header>
 
-    <section class="market-hero">
-      <div>
-        <span class="market-kicker">Phase 6 Skeleton</span>
-        <h1>管理画面モック</h1>
-        <p>投稿管理、審査、販売管理、アカウント制へ進むための骨組みです。現在はローカル検証専用で、公開・削除・決済などの本番操作はできません。</p>
+    <section class="admin-mock-hero">
+      <div class="admin-mock-panel">
+        <span class="admin-mock-kicker">v1.1b mock</span>
+        <h1>LLLD Works Admin</h1>
+        <p class="admin-mock-note">簡易管理者画面 mock。将来の管理画面で確認したい項目を、実データなしで見るための画面です。</p>
       </div>
-      <div class="hero-preview" aria-label="管理モック概要">
-        <span>投稿管理</span>
-        <span>審査制</span>
-        <span>販売管理</span>
-        <span>DB準備</span>
-      </div>
+      <aside class="admin-mock-panel admin-mock-alert">
+        <h2>これは実データではありません</h2>
+        <p class="admin-mock-note">企業横断データ取得は未実装です。Supabase、Auth、RLS、管理用秘密キー、実DBには接続していません。</p>
+      </aside>
     </section>
 
-    <section class="detail-panel admin-warning">
-      <h2>本番操作不可</h2>
-      <p>この管理画面はローカル検証用のモックです。データは `data/*.json` を読むだけで、本番DBへの書き込み、公開状態の変更、決済処理、購入履歴管理、保存・公開・削除・権限変更は行いません。</p>
-    </section>
-
-    <section class="market-section">
-      <div class="market-section-head">
-        <div>
-          <h2>確認ロール</h2>
-          <p>表示確認用のモックロールです。本番権限ではありません。</p>
-        </div>
-        <div class="market-filter-line">
-          <select id="mockRoleSelect" class="market-select" aria-label="表示確認用ロール"></select>
-        </div>
-      </div>
-      <div id="adminRoleNote" class="admin-note"></div>
-    </section>
-
-    <section class="admin-summary-grid" aria-label="管理サマリー">
-      <article class="detail-panel">
-        <span>登録コンテンツ</span>
-        <strong id="adminTotalContents">-</strong>
+    <section class="admin-summary-grid" aria-label="概要">
+      <article class="admin-mock-panel admin-summary-card">
+        <span>登録企業数</span>
+        <strong id="adminCompanyCount">-</strong>
       </article>
-      <article class="detail-panel">
-        <span>Market表示対象</span>
-        <strong id="adminMarketContents">-</strong>
+      <article class="admin-mock-panel admin-summary-card">
+        <span>利用アプリ数</span>
+        <strong id="adminAppCount">-</strong>
       </article>
-      <article class="detail-panel">
-        <span>販売中</span>
-        <strong id="adminOnSaleContents">-</strong>
+      <article class="admin-mock-panel admin-summary-card">
+        <span>app_data件数</span>
+        <strong id="adminDataCount">-</strong>
       </article>
-      <article class="detail-panel">
-        <span>審査・準備中</span>
-        <strong id="adminPendingContents">-</strong>
+      <article class="admin-mock-panel admin-summary-card">
+        <span>異常状態件数</span>
+        <strong id="adminIssueCount">-</strong>
+      </article>
+      <article class="admin-mock-panel admin-summary-card">
+        <span>最終更新日時</span>
+        <strong id="adminUpdatedAt">-</strong>
       </article>
     </section>
 
-    <section class="market-section">
-      <div class="market-section-head">
-        <div>
-          <h2>コンテンツ管理モック</h2>
-          <p>公開状態、販売状態、カテゴリ、投稿者の確認用一覧です。</p>
-        </div>
-        <div class="market-filter-line">
-          <input id="adminSearch" class="market-search" type="search" placeholder="タイトル・タグで検索">
-          <select id="adminStatusFilter" class="market-select" aria-label="状態で絞り込み"></select>
-        </div>
+    <section class="admin-mock-layout">
+      <div class="admin-mock-panel">
+        <h2>企業一覧 mock</h2>
+        <p class="admin-mock-note">実メールアドレスや個人情報は表示しません。</p>
+        <div id="adminCompanyList" class="admin-company-list"></div>
       </div>
-      <div id="adminContentList" class="admin-table"></div>
-    </section>
 
-    <section class="market-section">
-      <div class="market-section-head">
-        <div>
-          <h2>審査・公開判断パネル</h2>
-          <p>一覧のボタンを押すと、ここに確認内容を表示します。すべて画面上だけのモックです。</p>
-        </div>
-      </div>
-      <div id="adminInspectorPanel" class="detail-panel admin-inspector">
-        <h3>コンテンツを選択してください</h3>
-        <p class="admin-note">詳細、審査、編集モック、公開判定のいずれも実データは変更しません。</p>
-      </div>
-    </section>
+      <div class="admin-section-stack">
+        <section class="admin-mock-panel" aria-live="polite">
+          <h2>企業詳細 mock</h2>
+          <div id="adminCompanyDetail"></div>
+        </section>
 
-    <section class="market-section">
-      <div class="market-section-head">
-        <div>
-          <h2>投稿申請一覧モック</h2>
-          <p>外部投稿型へ進める前の確認用サンプルです。実データ保存はありません。</p>
-        </div>
-      </div>
-      <div id="submissionMockList" class="admin-table"></div>
-    </section>
+        <section class="admin-mock-panel">
+          <h2>異常状態 mock</h2>
+          <ul id="adminIssueList" class="admin-issue-list"></ul>
+        </section>
 
-    <section class="market-section">
-      <div class="market-section-head">
-        <h2>今後つなぐ管理機能</h2>
-      </div>
-      <div class="detail-lp-grid">
-        <article class="detail-panel">
-          <h3>投稿申請</h3>
-          <ul>
-            <li>投稿内容の受け取り</li>
-            <li>著作権・個人情報チェック</li>
-            <li>公開可否の判断</li>
+        <section class="admin-mock-panel">
+          <h2>本物管理画面へ進む前の判断事項</h2>
+          <ul class="admin-stop-list">
+            <li><span>管理者認証をどこで判定するか</span><strong>人間判断</strong></li>
+            <li><span>企業横断取得を許可するか</span><strong>人間判断</strong></li>
+            <li><span>RLS / 管理者API / Edge Functionsが必要か</span><strong>要設計</strong></li>
+            <li><span>app_data本文を見せるか</span><strong>v1.1b対象外</strong></li>
           </ul>
-        </article>
-        <article class="detail-panel">
-          <h3>販売管理</h3>
-          <ul>
-            <li>購入相談の確認</li>
-            <li>手動請求・手動納品の記録</li>
-            <li>決済連携前の運用整理</li>
-          </ul>
-        </article>
-        <article class="detail-panel">
-          <h3>アカウント制</h3>
-          <ul>
-            <li>ゲスト、会員、投稿者、管理者</li>
-            <li>本番権限はDB側で管理</li>
-            <li>localStorageには保存しない</li>
-          </ul>
-        </article>
-        <article class="detail-panel">
-          <h3>Supabase移行</h3>
-          <ul>
-            <li>まずService層を差し替える</li>
-            <li>RLSと公開範囲を分離</li>
-            <li>秘密キーはフロントに置かない</li>
-          </ul>
-        </article>
+        </section>
       </div>
     </section>
   </main>
 
-  <script src="./assets/js/storagePolicy.js"></script>
-  <script src="./assets/js/authMockService.js"></script>
-  <script src="./assets/js/contentService.js"></script>
   <script src="./assets/js/adminMockPage.js"></script>
 </body>
 </html>
