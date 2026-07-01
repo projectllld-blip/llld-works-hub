@@ -8,6 +8,8 @@ migration / RLS案を作成。実DBには未適用。
 
 今回作成したSQLは、Supabase SQL Editorで人間が確認してから適用する前提のmigration案。
 
+ただし、環境分離状況確認により、GitHub Pages公開版も現在のSupabase projectを参照していることが分かった。現在のSupabase projectは運用上本番相当DBとして扱うため、環境方針と適用先projectが人間判断で確定するまで、このmigrationは実DBへ適用しない。
+
 ## 作成したmigration案
 
 ```text
@@ -136,14 +138,17 @@ CodexはSupabase Dashboardを操作しない。
 人間確認手順:
 
 1. Supabase Dashboardを開く。
-2. 対象projectが検証DBか本番DBか確認する。
-3. Table Editorで `company_accounts.id` が `uuid` であることを確認する。
-4. Table Editorで `apps.id` が `uuid` であることを確認する。
-5. SQL Editorで `supabase/migrations/20260701_v13c_app_add_requests.sql` の内容を貼り付ける前に読む。
-6. `app_add_requests` が新規追加のみで、既存テーブルdropや既存データ削除がないことを確認する。
-7. RLS policyが自社申請のselect / insertだけを許可する内容か確認する。
-8. 問題なければ人間判断でSQL Editorから適用する。
-9. 適用後、RLSが有効なままか確認する。
+2. 対象projectが検証DBか本番相当DBか確認する。
+3. `docs/16_ENVIRONMENT_SEPARATION_POLICY.md` を読み、現在のSupabase projectを本番相当DBとして扱うか、別検証projectへ適用するか判断する。
+4. 適用先project名を明示する。
+5. Table Editorで `company_accounts.id` が `uuid` であることを確認する。
+6. Table Editorで `apps.id` が `uuid` であることを確認する。
+7. SQL Editorで `supabase/migrations/20260701_v13c_app_add_requests.sql` の内容を貼り付ける前に読む。
+8. `app_add_requests` が新規追加のみで、既存テーブルdropや既存データ削除がないことを確認する。
+9. `drop`、`truncate`、`delete`、`disable row level security` がないことを確認する。
+10. RLS policyが自社申請のselect / insertだけを許可する内容か確認する。
+11. 問題なければ人間判断でSQL Editorから適用する。
+12. 適用後、RLSが有効なままか確認する。
 
 ## ブラウザで人間が確認すべきこと
 
@@ -169,6 +174,8 @@ account.html 申請DB保存
 v1.3dへ進む前提:
 
 - 人間がv1.3c migrationをSupabaseへ適用済みであること。
+- 適用先project名が人間により明示されていること。
+- 環境方針が確定していること。
 - `app_add_requests` が存在すること。
 - RLS policyが有効であること。
 - 自社insert / selectができ、他社申請が見えないことを確認できること。
@@ -178,6 +185,8 @@ v1.3dへ進む前提:
 - SQL Editor適用が必要。
 - Supabase Dashboard確認が必要。
 - 実DB適用が必要。
+- 適用先projectの人間判断が必要。
+- 本番相当DBへ変更してよいか人間判断が必要。
 - RLS方針の人間判断が必要。
 - 運営者横断policyが必要。
 - 管理者権限設計が必要。
