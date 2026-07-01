@@ -39,6 +39,12 @@
 - `automerge-candidate`: 自動マージ候補。ただし運用開始までは人間確認が必要。
 - `do-not-automerge`: 自動マージ禁止。
 
+## A0.7 安全PR自動マージラベル
+- `safe-docs-automerge`: docs-onlyで安全条件を満たし、GitHub auto-merge候補にできるPR。
+- `human-required`: 人間確認・判断・操作が必要なPR。
+- `auto-merge-blocked`: 自動マージ候補ではない、または危険条件により自動マージしないPR。
+- `auto-merge-setup-required`: GitHub auto-merge、branch protection、required checksなどの設定確認が必要なPR。
+
 ## ラベル運用ルール
 - `human-required` が付いたIssue / PRは、Codexが勝手に次へ進まない。
 - `blocked` が付いたIssue / PRは、解除理由が明確になるまで進めない。
@@ -49,6 +55,10 @@
 - `do-not-automerge` が付いたPRは、自動マージしない。
 - `blocked/secret-risk`、`blocked/supabase-risk`、`blocked/rls-risk` は必ず人間確認に回す。
 - `automerge-candidate` は自動マージ候補であり、GitHub Settingsやbranch protectionの確認なしに実mergeを自動化しない。
+- `human-required` が付いたPRは自動マージしない。
+- `auto-merge-blocked` が付いたPRは自動マージしない。
+- `auto-merge-setup-required` が付いたPRは、GitHub Settings、branch protection、required checks、auto-merge設定を人間が確認する。
+- `safe-docs-automerge` が付いたPRでも、GitHub auto-merge設定に失敗した場合は `human-required` に戻す。
 
 ## GitHub上でのラベル作成
 このdocsはラベル設計であり、GitHub上のラベル作成・変更は行わない。

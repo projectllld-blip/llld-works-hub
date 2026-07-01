@@ -20,6 +20,9 @@
 - GitHub Actions実装、workflow permissions変更、auto-merge有効化が必要。
 - docs-only自動マージ対象外ファイルに触れている。
 - GitHub Actionsまたは必須QAが失敗している。
+- GitHub auto-merge設定に失敗した。
+- branch protection / required checks / auto-merge設定が不明。
+- PR作成、PRレビュー、mainマージ、branch削除を人間が行う必要がある。
 
 ## 外部サービス関連
 - Stripe。
@@ -46,6 +49,13 @@
 - service_role / sb_secret_ / private key / access_token / refresh_token などの混入疑い。
 - RLSを無効化するSQLや `disable row level security` の追加。
 - Supabase設定、Auth / login / signup / account、migration、`app_data`、`app_instances` に関わる変更。
+
+## HUMAN_REQUIRED判定関連
+- `HUMAN_REQUIRED` は「作業が残っているか」ではなく、「人間が実務として確認・判断・操作する必要が残っているか」で判定する。
+- 人間が何か1つでも確認・判断・操作する必要がある場合は `HUMAN_REQUIRED: YES` とする。
+- 人間が何もしなくてよい場合だけ `HUMAN_REQUIRED: NO` とする。
+- mainマージが必要でも、GitHub auto-mergeが安全に設定済みで人間操作が残っていなければ `HUMAN_REQUIRED: NO` にできる。
+- GitHub auto-merge設定不足、branch protection確認、required checks確認が必要な場合は `HUMAN_REQUIRED: YES` とする。
 
 ## git状態関連
 - 作業開始時に `git status` がcleanでない。
