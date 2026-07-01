@@ -26,6 +26,14 @@
 
 検証とプレビューのみ。DB更新と復元実行は未実装。
 
+## v0.17d 設計結果
+
+限定復元の初回対象は `portal_state` とする。
+
+詳細設計は `docs/05_実装指示/portal-state-restore-mvp.md` を正とする。
+
+v0.17dではDB更新、復元実行、upsert、migration変更は行わない。
+
 ## 対象範囲
 
 ### v0.17bで実装してよい候補
@@ -106,9 +114,9 @@
 
 次段階で検討する場合:
 
-- バックアップJSON内の `company.id` は信用しない。
+- バックアップJSON内の `sourceCompanyAccountId` は信用しない。
 - 復元先はログイン中企業アカウントに固定する。
-- `appInstanceId` は信用せず、`appKey` からログイン中企業の `app_instances.id` を引き直す。
+- `sourceAppInstanceId` / `sourceAppDataId` は信用せず、`appKey` からログイン中企業の `app_instances.id` を引き直す。
 - `backupVersion` を確認する。
 - 復元前に現在データを自動バックアップする。
 - まず `portal_state` 限定の上書き復元だけを検討する。

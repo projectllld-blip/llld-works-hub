@@ -336,3 +336,62 @@ v0.17では、復元の実装は急がない。
 
 - v0.17d 限定復元設計。
 - `portal_state` 限定復元を行う場合も、まず設計と人間確認を挟む。
+
+## 2026-07-01 v0.17d 限定復元設計
+
+今回は設計のみ。DB更新、復元実行、upsert、migration変更は行わない。
+
+復元対象:
+
+- 最初の候補は `app_data.data_type = portal_state` に限定する。
+
+復元対象外:
+
+- `seat_layout`
+- SeatFlow完全クラウド同期関連
+- `app_instances`
+- `company_accounts`
+- Supabase Auth users
+- Supabase Storage
+- ファイル本体
+- 決済履歴
+- 複数アプリ一括復元
+
+推奨方式:
+
+- v0.17e以降で、案Aの `portal_state限定の確認付き上書き復元` を検討する。
+- 実装へ進む前に、人間が上書き復元の運用可否を判断する。
+
+安全策:
+
+- 復元前に現在ログイン中企業の `portal_state` を自動バックアップする。
+- 復元前バックアップに失敗したら復元を停止する。
+- バックアップJSON内の `sourceCompanyAccountId` / `sourceAppInstanceId` / `sourceAppDataId` は信用しない。
+- 復元先は、現在ログイン中企業アカウントと、その企業の `works_portal` app_instanceへ再紐づけする。
+
+復元前バリデーション:
+
+- JSONとしてparse済み。
+- `backupVersion` が対応範囲。
+- `restorePolicy.doNotTrustSourceIds = true`。
+- `appData` に `appKey = works_portal` / `dataType = portal_state` がある。
+- `portal_state.schemaVersion` が対応範囲。
+- 復元先のログイン中企業に `works_portal` app_instanceが存在する。
+- 未ログインでは復元不可。
+
+確認UI方針:
+
+- 復元対象、バックアップ元企業名、エクスポート日時、現在ログイン中企業名を表示する。
+- 現在のポータル状態を上書きすることを明記する。
+- 復元前バックアップを作成することを明記する。
+- 復元後に戻すには復元前バックアップが必要であることを明記する。
+- 最終確認チェックボックスまたは確認入力を必須にする。
+
+詳細設計:
+
+- `docs/05_実装指示/portal-state-restore-mvp.md` を参照。
+
+次の候補:
+
+- `v0.17e portal_state限定復元MVP`
+- 実装へ進むかどうかは人間判断を挟む。
