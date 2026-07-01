@@ -27,7 +27,8 @@
 - A0.9 自動マージセットアップ不足調査: docs整理は完了。GitHub Settingsで `Allow auto-merge` / branch protection / required checks / workflow permissions の人間確認待ち。
 
 ## NEXT
-- v1.3c app_add_requests migration適用先の人間判断
+- 検証用Supabase project新規作成
+- v1.3c app_add_requests migrationの本番相当DBへの人間手動適用
 - v1.3d account.html 申請DB保存
 - v1.3e 管理者側 申請確認MVP
 - v1.4 実アプリの商品化方針整理
@@ -73,8 +74,9 @@
 - v1.2bは `account.html` 内の自社企業情報編集MVP。`company_name` / `contact_name` / `business_type` / `phone` の編集、`email` 表示のみ、保存後のSupabase Dashboard確認、RLS有効確認は人間確認済み。
 - v1.3aはDB保存なしのアプリ追加申請UI mockとして完了。正式保存には申請専用テーブル、RLS、migration設計が必要なため、v1.3bで人間確認前提の設計から扱う。
 - v1.3bでは、アプリ追加申請の正式保存先として `app_add_requests` 専用テーブル案を整理した。`app_instances`、`app_data`、`audit_logs` には申請の正本を入れない。次のv1.3cでmigration / RLSへ進む場合は、人間確認を前提にする。
-- v1.3cでは、`app_add_requests` 作成migration案とRLS policy案を作成した。実DBへは未適用。GitHub Pages公開版が現在のSupabase projectを参照しているため、現在のprojectは運用上本番相当DBとして扱う。環境方針と適用先projectを人間が明示するまで、SQL Editor適用とv1.3d DB保存実装へ進まない。
-- Supabase本番/検証分離方針では、A案「現在のSupabase projectを本番相当DB、別projectを検証用DB」が推奨候補。ただし最終判断は人間が行う。
+- v1.3cでは、`app_add_requests` 作成migration案とRLS policy案を作成した。実DBへは未適用。GitHub Pages公開版が現在のSupabase projectを参照しているため、2026-07-01の人間判断で現在のprojectは本番相当DBとして扱うことに確定した。
+- Supabase本番/検証分離方針では、A案「現在のSupabase projectを本番相当DB、別projectを検証用DB」を採用する。現行Supabase projectへのSQL適用は本番相当DB変更として必ず `HUMAN_REQUIRED: YES` とし、人間がSQL全文確認後にSQL Editorで手動適用する。
+- 検証用Supabase projectができるまでは、DB変更の検証も本番相当DBで行うことになるため、既存データ削除、RLS無効化、Auth破壊につながる変更は禁止する。
 - v1系ロードマップは、v1.3c〜v1.3eでアプリ追加申請のDB保存と確認導線を固め、v1.4で実アプリの商品化方針整理、v1.5で販売用UI/UX強化、v1.6で購入ページ、v1.7で販売前QAを行い、v1.8で初めて決済・購入履歴へ進む。
 - 本線へ戻るにはPROJECT_STATUSで再開条件を確認する。
 
