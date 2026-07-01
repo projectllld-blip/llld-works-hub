@@ -113,3 +113,20 @@ v1.3aでは申請内容をDBへ保存しない。
 `v1.3b アプリ追加申請DB保存設計`
 
 v1.3aの人間ブラウザ確認とmain反映確認は完了済み。次は正式保存に進む前に、申請専用テーブル、RLS、migration、人間確認フローを設計する。
+
+## v1.3d DB保存接続
+
+v1.3c migrationが人間により手動適用されたため、v1.3dでは `account.html` の申請UIを `app_add_requests` へ接続する。
+
+v1.3dで行うこと:
+
+- Supabase modeで申請履歴を取得し、保存済み申請を `申請済み` と表示する。
+- 未利用アプリの申請時に `app_add_requests` へinsertする。
+- mock modeでは従来どおり画面内状態だけで確認する。
+
+v1.3dで行わないこと:
+
+- `app_instances` の自動追加。
+- `app_data` 保存。
+- `company_accounts` / `plan_status` 更新。
+- 決済、自動契約、アプリ即時有効化。

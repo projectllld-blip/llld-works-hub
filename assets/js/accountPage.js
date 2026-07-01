@@ -11,7 +11,9 @@
   let currentRequestStatus = null;
   const appRequestState = {
     requestedKeys: new Set(),
-    requests: []
+    requests: [],
+    recordsByKey: new Map(),
+    catalogRowsByKey: new Map()
   };
 
   const APP_REQUEST_CATALOG = [
@@ -155,7 +157,7 @@
         setText('#accountStatus', '取得エラー');
         setText('#accountSyncStatus', 'アカウント情報を取得できませんでした。接続状態を確認して再読込してください。');
         setText('#accountAppsStatus', '利用アプリ一覧を取得できませんでした。');
-        renderAppRequestPanel(null, status, []);
+        await renderAppRequestPanel(null, status, []);
         renderStatus('アカウント情報の取得に失敗しました。再読込を押してください。', false);
       }
     };
@@ -378,14 +380,14 @@
     if (!window.AppInstanceService?.getMyAppInstances) {
       renderAppCards('#accountApps', []);
       setText('#accountAppsStatus', '利用アプリ一覧サービスを確認できません。');
-      renderAppRequestPanel(account, status, []);
+      await renderAppRequestPanel(account, status, []);
       return;
     }
 
     const result = await window.AppInstanceService.getMyAppInstances(account.id);
     setText('#accountAppsStatus', result.message || '利用アプリ一覧を表示しています。');
     renderAppCards('#accountApps', result.apps || []);
-    renderAppRequestPanel(account, status, result.apps || []);
+    await renderAppRequestPanel(account, status, result.apps || []);
     await renderDemoAppAddPanel(account, status);
 
     if (status.mode === 'supabase' && result.appStatus === 'empty') {
@@ -399,7 +401,7 @@
     const form = $('#appRequestForm');
     if (!form) return;
 
-    form.addEventListener('submit', event => {
+    form.addEventListener('submit', async event => {
       event.preventDefault();
       if (!selectedAppRequest) {
         setAppRequestStatus('申請したいアプリを選んでください。', false);
@@ -409,18 +411,25 @@
 
       const message = $('#appRequestMessage')?.value.trim() || '';
       const contactWanted = $('#appRequestContactWanted')?.value === 'yes';
-      appRequestState.requestedKeys.add(selectedAppRequest.appKey);
-      appRequestState.requests.push({
-        appKey: selectedAppRequest.appKey,
-        name: selectedAppRequest.name,
-        message,
-        contactWanted,
-        requestedAt: new Date().toISOString()
-      });
 
-      setAppRequestStatus('申請を受け付けました。内容を確認後、運営からご連絡します。', true);
-      hideAppRequestForm();
-      renderAppRequestPanel(currentRequestAccount, currentRequestStatus, readRenderedOwnedApps());
+      setAppRequestFormBusy(true);
+      setAppRequestStatus('申請を送信しています...', true);
+
+      try {
+        const result = await submitAppRequest(selectedAppRequest, message, contactWanted);
+        if (!result.ok) {
+          setAppRequestStatus(result.message || '申請の送信に失敗しました。時間をおいてもう一度お試しください。', false);
+          return;
+        }
+
+        setAppRequestStatus(result.message || '申請を受け付けました。内容を確認後、運営からご連絡します。', true);
+        hideAppRequestForm();
+        await renderAppRequestPanel(currentRequestAccount, currentRequestStatus, readRenderedOwnedApps());
+      } catch {
+        setAppRequestStatus('申請の送信に失敗しました。接続状態を確認してください。', false);
+      } finally {
+        setAppRequestFormBusy(false);
+      }
     });
 
     const cancelButton = $('#cancelAppRequestButton');
@@ -432,11 +441,14 @@
     }
   }
 
-  function renderAppRequestPanel(account, status, ownedApps = []) {
+  async function renderAppRequestPanel(account, status, ownedApps = []) {
     const root = $('#accountAppRequests');
     if (!root) return;
 
     hideAppRequestForm(false);
+    if (!account || (currentRequestAccount?.id && currentRequestAccount.id !== account.id)) {
+      resetAppRequestState();
+    }
     if (account) currentRequestAccount = account;
     if (status) currentRequestStatus = status;
     const candidates = buildAppRequestCandidates(ownedApps);
@@ -450,8 +462,20 @@
 
     setText(
       '#accountAppRequestsStatus',
-      'まだ利用していないアプリについて、追加利用や相談を申請できます。'
+      status?.mode === 'supabase'
+        ? 'まだ利用していないアプリについて、追加利用や相談を申請できます。申請内容はapp_add_requestsへ保存します。'
+        : 'まだ利用していないアプリについて、追加利用や相談を申請できます。mock modeでは画面内状態だけで確認します。'
     );
+
+    if (status?.mode === 'supabase') {
+      setAppRequestStatus('申請履歴を確認しています。', true);
+      const loadResult = await loadSupabaseAppRequests(account.id);
+      if (!loadResult.ok) {
+        setAppRequestStatus(loadResult.message || '申請履歴の取得に失敗しました。', false);
+      } else {
+        setAppRequestStatus(loadResult.message || '申請履歴を確認しました。', true);
+      }
+    }
 
     if (!candidates.length) {
       root.innerHTML = '<p class="account-request-empty">申請できる未利用アプリはありません。</p>';
@@ -522,6 +546,199 @@
     setValue('#appRequestContactWanted', 'yes');
     setAppRequestStatus('利用目的・相談内容を入力して、申請を送ってください。', true);
     $('#appRequestMessage')?.focus();
+  }
+
+  async function submitAppRequest(app, message, contactWanted) {
+    if (currentRequestStatus?.mode !== 'supabase') {
+      return submitMockAppRequest(app, message, contactWanted);
+    }
+
+    if (!currentRequestAccount?.id) {
+      return {
+        ok: false,
+        message: '企業アカウント情報を確認できません。再読込してからお試しください。'
+      };
+    }
+
+    if (appRequestState.requestedKeys.has(app.appKey)) {
+      return {
+        ok: true,
+        message: 'このアプリはすでに申請済みです。'
+      };
+    }
+
+    const client = await window.SupabaseClientService?.getSupabaseClient?.();
+    if (!client?.from) {
+      return {
+        ok: false,
+        message: 'Supabase clientを確認できません。接続設定を確認してください。'
+      };
+    }
+
+    const appRow = appRequestState.catalogRowsByKey.get(app.appKey) || await fetchAppCatalogRow(client, app.appKey);
+    if (!appRow?.id) {
+      return {
+        ok: false,
+        message: '申請対象アプリを確認できません。appsテーブルの内容を確認してください。'
+      };
+    }
+
+    const insert = {
+      company_account_id: currentRequestAccount.id,
+      app_id: appRow.id,
+      app_key_snapshot: appRow.app_key || app.appKey,
+      app_name_snapshot: appRow.name || app.name,
+      request_message: message,
+      contact_requested: Boolean(contactWanted),
+      status: 'pending'
+    };
+
+    const { data, error } = await client
+      .from('app_add_requests')
+      .insert(insert)
+      .select('id,app_id,app_key_snapshot,app_name_snapshot,status,contact_requested,request_message,created_at,updated_at')
+      .single();
+
+    if (error) {
+      return {
+        ok: false,
+        message: '申請の保存に失敗しました。app_add_requestsのRLSとmigration適用状況を確認してください。'
+      };
+    }
+
+    rememberAppRequest(data || insert, app.appKey);
+    return {
+      ok: true,
+      message: '申請を受け付けました。内容を確認後、運営からご連絡します。'
+    };
+  }
+
+  function submitMockAppRequest(app, message, contactWanted) {
+    appRequestState.requestedKeys.add(app.appKey);
+    appRequestState.requests.push({
+      appKey: app.appKey,
+      name: app.name,
+      message,
+      contactWanted,
+      requestedAt: new Date().toISOString()
+    });
+    return {
+      ok: true,
+      message: '申請を受け付けました。内容を確認後、運営からご連絡します。'
+    };
+  }
+
+  async function loadSupabaseAppRequests(companyAccountId) {
+    if (!companyAccountId) {
+      return {
+        ok: false,
+        message: '企業アカウント情報を確認できません。'
+      };
+    }
+
+    const client = await window.SupabaseClientService?.getSupabaseClient?.();
+    if (!client?.from) {
+      return {
+        ok: false,
+        message: 'Supabase clientを確認できません。'
+      };
+    }
+
+    try {
+      const appKeys = APP_REQUEST_CATALOG.map(app => app.appKey);
+      const [{ data: appRows, error: appsError }, { data: requestRows, error: requestError }] = await Promise.all([
+        client
+          .from('apps')
+          .select('id,app_key,name,description,status')
+          .in('app_key', appKeys),
+        client
+          .from('app_add_requests')
+          .select('id,app_id,app_key_snapshot,app_name_snapshot,status,contact_requested,request_message,created_at,updated_at')
+          .eq('company_account_id', companyAccountId)
+          .order('created_at', { ascending: false })
+      ]);
+
+      if (appsError) {
+        return {
+          ok: false,
+          message: '申請対象アプリの取得に失敗しました。appsテーブルとRLSを確認してください。'
+        };
+      }
+
+      if (requestError) {
+        return {
+          ok: false,
+          message: '申請履歴の取得に失敗しました。app_add_requestsのRLSを確認してください。'
+        };
+      }
+
+      appRequestState.catalogRowsByKey = new Map((appRows || []).map(row => [row.app_key, row]));
+      appRequestState.recordsByKey = new Map();
+      appRequestState.requestedKeys = new Set(appRequestState.requests.map(row => row.appKey).filter(Boolean));
+
+      (requestRows || []).forEach(row => rememberAppRequest(row));
+
+      return {
+        ok: true,
+        message: requestRows?.length
+          ? '保存済みの申請履歴を反映しました。'
+          : '保存済みの申請はまだありません。'
+      };
+    } catch {
+      return {
+        ok: false,
+        message: '申請履歴の取得に失敗しました。接続状態を確認してください。'
+      };
+    }
+  }
+
+  async function fetchAppCatalogRow(client, appKey) {
+    const { data, error } = await client
+      .from('apps')
+      .select('id,app_key,name,description,status')
+      .eq('app_key', appKey)
+      .maybeSingle();
+    if (error || !data) return null;
+    appRequestState.catalogRowsByKey.set(data.app_key, data);
+    return data;
+  }
+
+  function rememberAppRequest(row = {}, fallbackAppKey = '') {
+    const appKey = row.app_key_snapshot || fallbackAppKey || appKeyFromAppId(row.app_id);
+    if (!appKey) return;
+    appRequestState.requestedKeys.add(appKey);
+    appRequestState.recordsByKey.set(appKey, row);
+  }
+
+  function appKeyFromAppId(appId) {
+    if (!appId) return '';
+    for (const [appKey, row] of appRequestState.catalogRowsByKey.entries()) {
+      if (row.id === appId) return appKey;
+    }
+    return '';
+  }
+
+  function setAppRequestFormBusy(busy) {
+    const submitButton = $('#submitAppRequestButton');
+    const cancelButton = $('#cancelAppRequestButton');
+    const form = $('#appRequestForm');
+    if (form) {
+      form.querySelectorAll('textarea,select').forEach(control => {
+        control.disabled = busy;
+      });
+    }
+    if (submitButton) {
+      submitButton.disabled = busy;
+      submitButton.textContent = busy ? '送信中...' : '申請を送る';
+    }
+    if (cancelButton) cancelButton.disabled = busy;
+  }
+
+  function resetAppRequestState() {
+    appRequestState.requestedKeys = new Set();
+    appRequestState.requests = [];
+    appRequestState.recordsByKey = new Map();
+    appRequestState.catalogRowsByKey = new Map();
   }
 
   function hideAppRequestForm(clearSelection = true) {

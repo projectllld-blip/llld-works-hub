@@ -4,11 +4,24 @@
 v1.3c app_add_requests migration / RLS実装案
 
 ## 状態
-migration / RLS案を作成。実DBには未適用。
+migration / RLS案を作成。2026-07-02に人間がSQL全文確認後、現行Supabase projectへ手動適用済み。
 
 今回作成したSQLは、Supabase SQL Editorで人間が確認してから適用する前提のmigration案。
 
-ただし、環境分離状況確認により、GitHub Pages公開版も現在のSupabase projectを参照していることが分かった。現在のSupabase projectは運用上本番相当DBとして扱うため、環境方針と適用先projectが人間判断で確定するまで、このmigrationは実DBへ適用しない。
+環境分離状況確認により、GitHub Pages公開版も現在のSupabase projectを参照していることが分かった。現在のSupabase projectは運用上本番相当DBとして扱う。
+
+2026-07-02に、現行Supabase projectを本番相当DBとして扱ったうえで、人間がSQL全文確認後にSQL Editorで手動適用した。
+
+適用確認:
+
+- `apps.id` / `company_accounts.id` は `uuid`。
+- `set_updated_at` 関数あり。
+- migration SQLに `drop table` / `truncate` / `delete from` / `disable row level security` / secret系なし。
+- SQL Editorで実行成功。
+- `app_add_requests` テーブル作成確認。
+- RLS有効確認。
+- `app_add_requests_select_own_company` policy 確認。
+- `app_add_requests_insert_own_company` policy 確認。
 
 ## 作成したmigration案
 
@@ -173,12 +186,12 @@ account.html 申請DB保存
 
 v1.3dへ進む前提:
 
-- 人間がv1.3c migrationをSupabaseへ適用済みであること。
-- 適用先project名が人間により明示されていること。
-- 環境方針が確定していること。
-- `app_add_requests` が存在すること。
-- RLS policyが有効であること。
-- 自社insert / selectができ、他社申請が見えないことを確認できること。
+- 人間がv1.3c migrationをSupabaseへ適用済みであること: 完了。
+- 適用先project名が人間により明示されていること: 現行Supabase project。
+- 環境方針が確定していること: 現行Supabase projectを本番相当DBとして扱う。
+- `app_add_requests` が存在すること: 確認済み。
+- RLS policyが有効であること: 確認済み。
+- 自社insert / selectができ、他社申請が見えないことを確認できること: v1.3dブラウザ確認で行う。
 
 ## STOP条件
 
