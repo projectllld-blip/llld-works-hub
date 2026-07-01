@@ -16,6 +16,16 @@
 
 復元は未実装。
 
+## v0.17c 実装結果
+
+バックアップJSONの読込・検証・プレビューを追加した。
+
+- 処理本体: `assets/js/backupImportPreviewService.js`
+- 呼び出し: `assets/js/accountPage.js`
+- UI: `account.html`
+
+検証とプレビューのみ。DB更新と復元実行は未実装。
+
 ## 対象範囲
 
 ### v0.17bで実装してよい候補

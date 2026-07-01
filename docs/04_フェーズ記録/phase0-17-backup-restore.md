@@ -292,3 +292,47 @@ v0.17では、復元の実装は急がない。
 
 - v0.17c バックアップJSON読込・検証・プレビュー。
 - `portal_state` 限定復元を行うかは、人間判断後に決める。
+
+## 2026-07-01 v0.17c バックアップJSON読込・検証・プレビュー
+
+実装範囲:
+
+- `account.html` にバックアップJSON確認導線を追加。
+- `assets/js/backupImportPreviewService.js` を追加。
+- ブラウザ上でJSONファイルを読み込み、構造を検証する。
+- DB更新なしで検証結果と復元プレビューを表示する。
+
+検証内容:
+
+- JSONとしてparseできること。
+- `backupVersion` が存在し、対応バージョンであること。
+- `source = llld-works-hub` であること。
+- `scope = company_account` であること。
+- `restorePolicy.doNotTrustSourceIds = true` であること。
+- `company` が存在すること。
+- `appInstances` が配列であること。
+- `appData` が配列であること。
+- `appData` の各要素に `appKey` / `dataType` / `dataJson` があること。
+
+プレビュー表示内容:
+
+- バックアップバージョン。
+- エクスポート日時。
+- バックアップ元。
+- スコープ。
+- 企業名。
+- アプリ数。
+- データ件数。
+- `data_type` 一覧。
+- 復元時の注意。
+
+復元未実装の扱い:
+
+- 復元ボタンは作らない。
+- `app_data` upsert、`app_instances` 作成、`company_accounts` 更新は行わない。
+- バックアップ内の `source...Id` は参考情報であり、復元時にはログイン中企業アカウントへ再紐づけする必要があると表示する。
+
+次の候補:
+
+- v0.17d 限定復元設計。
+- `portal_state` 限定復元を行う場合も、まず設計と人間確認を挟む。

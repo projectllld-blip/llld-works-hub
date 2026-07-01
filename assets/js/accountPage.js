@@ -145,6 +145,7 @@
     }
 
     bindBackupExport();
+    bindBackupPreview();
   }
 
   function renderAccountLoading(status) {
@@ -240,6 +241,83 @@
 
     button.disabled = false;
     setText('#backupExportStatus', 'ログイン中企業アカウントの自社クラウドデータをJSONで書き出します。復元はまだ未対応です。');
+  }
+
+  function bindBackupPreview() {
+    const button = $('#backupPreviewButton');
+    const input = $('#backupPreviewFile');
+    if (!button || !input || button.dataset.bound === '1') return;
+    button.dataset.bound = '1';
+    button.addEventListener('click', async () => {
+      if (!window.BackupImportPreviewService?.readBackupFile) {
+        setText('#backupPreviewStatus', 'バックアップJSON確認サービスを確認できません。');
+        renderStatus('バックアップJSON確認サービスを確認できません。', false);
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = '検証中...';
+      setText('#backupPreviewStatus', 'バックアップJSONを検証しています。');
+
+      try {
+        const result = await window.BackupImportPreviewService.readBackupFile(input.files?.[0]);
+        renderBackupPreview(result);
+        renderStatus(result.message, result.ok);
+      } catch {
+        const failed = {
+          ok: false,
+          message: 'バックアップJSONの検証に失敗しました。ファイルを確認してください。',
+          errors: ['バックアップJSONの検証に失敗しました。'],
+          warnings: [],
+          summary: {}
+        };
+        renderBackupPreview(failed);
+        renderStatus(failed.message, false);
+      } finally {
+        button.disabled = false;
+        button.textContent = 'JSONを検証';
+      }
+    });
+  }
+
+  function renderBackupPreview(result = {}) {
+    const root = $('#backupPreviewResult');
+    if (!root) return;
+    root.hidden = false;
+
+    if (!result.ok) {
+      setText('#backupPreviewStatus', result.message || 'バックアップJSONに問題があります。');
+    } else {
+      setText('#backupPreviewStatus', 'バックアップJSONを確認しました。復元はまだ未対応です。');
+    }
+
+    const summary = result.summary || {};
+    const rows = [
+      ['バックアップバージョン', summary.backupVersion || '-'],
+      ['エクスポート日時', formatDateTime(summary.exportedAt)],
+      ['バックアップ元', summary.source || '-'],
+      ['スコープ', summary.scope || '-'],
+      ['企業名', summary.companyName || '-'],
+      ['アプリ数', summary.appInstanceCount ?? '-'],
+      ['データ件数', summary.appDataCount ?? '-'],
+      ['data_type一覧', (summary.dataTypes || []).join('、') || '-'],
+      ['復元方針', summary.restorePolicy?.doNotTrustSourceIds ? 'source IDは参考情報として扱う' : '確認が必要']
+    ];
+
+    const errors = (result.errors || []).map(item => `<li>${escapeHtml(item)}</li>`).join('');
+    const warnings = (result.warnings || []).map(item => `<li>${escapeHtml(item)}</li>`).join('');
+
+    root.innerHTML = `
+      <dl class="account-detail-list">
+        ${rows.map(([key, value]) => `<div><dt>${escapeHtml(key)}</dt><dd>${escapeHtml(value)}</dd></div>`).join('')}
+      </dl>
+      ${errors ? `<p class="account-note">検証エラー</p><ul>${errors}</ul>` : ''}
+      ${warnings ? `<p class="account-note">注意</p><ul>${warnings}</ul>` : ''}
+      <p class="account-note">
+        この画面はプレビューのみです。まだ復元は実行されません。
+        バックアップ内のIDは参考情報であり、復元時にはログイン中企業アカウントへ再紐づけする必要があります。
+      </p>
+    `;
   }
 
   function renderAccount(account, status) {
@@ -555,6 +633,13 @@
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return value;
     return date.toLocaleDateString('ja-JP');
+  }
+
+  function formatDateTime(value) {
+    if (!value) return '-';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return value;
+    return date.toLocaleString('ja-JP');
   }
 
   function escapeHtml(value) {

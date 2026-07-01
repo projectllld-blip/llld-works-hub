@@ -67,6 +67,13 @@
         <div class="detail-cta-row">
           <button class="btn secondary" id="backupExportButton" type="button">バックアップを書き出す</button>
         </div>
+        <hr>
+        <p class="account-note" id="backupPreviewStatus">バックアップJSONを選択すると、構造と件数だけ確認できます。復元は実行されません。</p>
+        <div class="detail-cta-row">
+          <input id="backupPreviewFile" type="file" accept="application/json,.json">
+          <button class="btn secondary" id="backupPreviewButton" type="button">JSONを検証</button>
+        </div>
+        <div class="account-preview" id="backupPreviewResult" hidden></div>
       </article>
 
       <article class="detail-panel">
@@ -99,6 +106,7 @@
   <script src="./assets/js/authService.js"></script>
   <script src="./assets/js/appInstanceService.js"></script>
   <script src="./assets/js/backupExportService.js"></script>
+  <script src="./assets/js/backupImportPreviewService.js"></script>
   <script src="./assets/js/accountHeader.js"></script>
   <script src="./assets/js/accountPage.js"></script>
 </body>
