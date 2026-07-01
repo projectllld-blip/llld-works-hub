@@ -6,9 +6,13 @@ v1.3d account.html 申請DB保存
 
 ## 状態
 
-`account.html` のアプリ追加申請UIを、Supabase modeでは `app_add_requests` へ保存する実装に接続した。
+停止。
 
-mock modeでは従来どおり画面内状態のみで申請の流れを確認する。
+人間確認で、`account.html` から申請操作しても `app_add_requests` に新しい行が作成されず、再読み込み後に `申請内容はまだ送られていません。` へ戻ることが確認された。
+
+そのため、v1.3dは完了扱いにしない。
+
+さらに、「アプリ追加申請」という仕様名自体が本線意図とズレていたため、購入者向け利用申請として進めない。
 
 ## 前提
 
@@ -27,7 +31,7 @@ v1.3c `app_add_requests` migrationは、人間がSQL全文確認後に現行Supa
 
 現行Supabase projectは本番相当DBとして扱う。
 
-## 実装内容
+## 実装したが未完了の内容
 
 - Supabase modeで申請履歴を `app_add_requests` から取得する。
 - 保存済み申請があるアプリは `申請済み` 表示にする。
@@ -36,6 +40,23 @@ v1.3c `app_add_requests` migrationは、人間がSQL全文確認後に現行Supa
 - 申請作成だけでは `app_instances` を追加しない。
 - 申請作成だけでは `app_data`、`company_accounts`、`plan_status` を変更しない。
 - mock modeではDBへ接続せず、画面内状態だけで `申請済み` を表示する。
+
+## 人間確認結果
+
+- `account.html` で申請操作後、再読み込みすると「申請内容はまだ送られていません。」に戻る。
+- Supabase Dashboardの `app_add_requests` に新しい行が追加されていない。
+- DB保存は成功していない。
+- v1.3dは完了扱いにできない。
+
+## 仕様見直し
+
+「アプリを追加する」は、購入者が既存アプリの利用申請を出す意味ではなく、クリエイター / 開発者がWorks Market上で利用・販売できるアプリを開発・追加する意味。
+
+購入者側は、アプリ購入後に基本的に即時使える想定。
+
+購入者に必要なのは、初期設定サポート、使い方説明、カスタマイズ相談、導入代行などの任意サポート申込。
+
+詳細は `docs/04_フェーズ記録/phase1-3-spec-realignment.md` を正とする。
 
 ## 変更したファイル
 
@@ -94,3 +115,5 @@ public.app_add_requests
 - `app_data`、`company_accounts`、`plan_status` が変更される。
 - RLS変更やmigration変更が必要。
 - Supabase Dashboard操作が必要。
+- v1.3dを完了扱いにしようとする。
+- 購入者向け利用申請としてこのまま進めようとする。
