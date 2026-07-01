@@ -16,12 +16,12 @@
 - v1.0 アカウント別クラウド基盤MVP完成
 - v1.1b mock簡易管理者画面
 - v1.2 企業情報編集 方針整理
+- v1.2b 企業情報編集フォームMVP
 
 ## IN_PROGRESS
 - なし
 
 ## NEXT
-- v1.2b 企業情報編集フォームMVP
 - v1.3 アプリ追加申請
 - v1.4 購入ページ
 - v1.5 決済・購入履歴
@@ -61,6 +61,7 @@
 - A0.6ではPR安全分類とdocs-only自動マージを設計する。実際のGitHub Actions実装やauto-merge有効化は人間確認後に別作業で扱う。
 - A0.7ではHUMAN_REQUIRED判定修正と安全docs-only PRのGitHub auto-merge workflowを追加した。ただしworkflow変更PR自身は人間確認・人間マージが必要。
 - v1.1bは実DB接続なしのmock簡易管理者画面。mock企業一覧、企業詳細切替、利用アプリ一覧、保存有無、異常状態mockは人間確認済み。企業横断取得、本物の管理者権限、DB / RLS変更は含めない。
+- v1.2bは `account.html` 内の自社企業情報編集MVP。`company_name` / `contact_name` / `business_type` / `phone` の編集、`email` 表示のみ、保存後のSupabase Dashboard確認、RLS有効確認は人間確認済み。
 - 本線へ戻るにはPROJECT_STATUSで再開条件を確認する。
 
 ## ステータス分類

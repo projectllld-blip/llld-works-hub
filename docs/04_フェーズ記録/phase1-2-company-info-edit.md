@@ -4,7 +4,9 @@
 v1.2 企業情報編集
 
 ## 状態
-方針整理完了。
+v1.2 方針整理完了。
+
+v1.2b 企業情報編集フォームMVP完了。
 
 今回は実装しない。ログイン中企業アカウントが、自社の基本情報を確認・編集できるようにするための対象範囲、画面、RLS、入力チェック、保存方針を整理する。
 
@@ -252,3 +254,26 @@ DB / RLS変更が必要になった場合は、v1.2b実装へ進まず `HUMAN_RE
 実装時STOP:
 - Auth user情報編集が必要。
 - メール編集を含める必要がある。
+
+## v1.2b 人間確認結果
+確認日: 2026-07-01
+
+ブラウザ確認:
+- `account.html` に企業情報編集フォームが表示される: OK
+- 企業名 / 担当者名 / 業種 / 電話番号を編集できる: OK
+- メールアドレスは編集不可: OK
+- 保存完了メッセージが出る: OK
+- 再読み込み後も変更が残る: OK
+- 変更を取り消す導線が期待通り動く: OK
+
+Supabase Dashboard確認:
+- `company_name` / `contact_name` / `business_type` / `phone` のみ変更される: OK
+- `email` / `owner_user_id` / `plan_status` は変更されていない: OK
+- `company_accounts_update_own` policy は有効なまま: OK
+- RLSは無効化していない: OK
+- service_role / sb_secret_ / secret は使っていない: OK
+
+完了判断:
+- v1.2bは完了扱い。
+- DB / RLS / migration / Auth user変更は行っていない。
+- 次の本線候補は v1.3 アプリ追加申請。
