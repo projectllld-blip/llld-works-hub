@@ -21,7 +21,7 @@
 - v1.3a アプリ追加申請UI mock
 
 ## IN_PROGRESS
-- なし
+- A0.9 自動マージセットアップ不足調査: docs整理は完了。GitHub Settingsで `Allow auto-merge` / branch protection / required checks / workflow permissions の人間確認待ち。
 
 ## NEXT
 - v1.3b アプリ追加申請DB保存設計
@@ -63,6 +63,7 @@
 - A0.6ではPR安全分類とdocs-only自動マージを設計する。実際のGitHub Actions実装やauto-merge有効化は人間確認後に別作業で扱う。
 - A0.7ではHUMAN_REQUIRED判定修正と安全docs-only PRのGitHub auto-merge workflowを追加した。ただしworkflow変更PR自身は人間確認・人間マージが必要。
 - A0.8/A0.9ではdocs-only自動マージ判定を厳密化し、禁止語・確認語の説明だけではブロックせず、実secret値・private key block・RLS無効化SQLらしき追加だけをブロックする。ただしworkflow変更PR自身は人間確認・人間マージが必要。
+- A0.9自動マージセットアップ不足調査では、PR #23でsafe docs-only判定は成功したが、`Auto merge is not allowed for this repository` によりauto-merge有効化が失敗した。GitHub Settings確認は人間作業。
 - v1.1bは実DB接続なしのmock簡易管理者画面。mock企業一覧、企業詳細切替、利用アプリ一覧、保存有無、異常状態mockは人間確認済み。企業横断取得、本物の管理者権限、DB / RLS変更は含めない。
 - v1.2bは `account.html` 内の自社企業情報編集MVP。`company_name` / `contact_name` / `business_type` / `phone` の編集、`email` 表示のみ、保存後のSupabase Dashboard確認、RLS有効確認は人間確認済み。
 - v1.3aはDB保存なしのアプリ追加申請UI mockとして完了。正式保存には申請専用テーブル、RLS、migration設計が必要なため、v1.3bで人間確認前提の設計から扱う。
