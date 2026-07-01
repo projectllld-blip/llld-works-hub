@@ -28,7 +28,6 @@
 
 ## NEXT
 - 検証用Supabase project新規作成
-- account.html の未完了申請DB保存UIを一時停止表示へ戻す修正
 - v1.4 実アプリの商品化方針整理
 - v1.5 販売用UI/UX強化
 - v1.6 購入ページ
