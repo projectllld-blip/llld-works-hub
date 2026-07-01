@@ -5,6 +5,7 @@
   const $$ = selector => [...document.querySelectorAll(selector)];
 
   const page = document.body.dataset.accountPage;
+  let loadedCompanyInfo = null;
   if (!page) return;
 
   init();
@@ -113,6 +114,7 @@
     };
 
     await loadAccount();
+    initCompanyInfoForm(status);
 
     const retryButton = $('#retryAccountButton');
     if (retryButton) {
@@ -149,6 +151,8 @@
     setText('#accountStatus', `${modeLabel(status)} / 読み込み中`);
     setText('#accountSyncStatus', '企業アカウント情報を確認しています。');
     setText('#accountAppsStatus', '利用アプリ一覧を確認しています。');
+    setCompanyFormEnabled(false);
+    setCompanyFormStatus('企業情報を読み込み中です。', true);
     renderAppCards('#accountApps', []);
     renderStatus('読み込み中です。少しお待ちください。', true);
   }
@@ -190,6 +194,132 @@
     setText('#accountUpdatedAt', formatDate(account.updatedAt));
     setText('#accountSyncStatus', status.message || account.syncStatus);
     renderList('#accountRecentApps', account.recentApps);
+    populateCompanyInfoForm(account);
+    setCompanyFormEnabled(true);
+    setCompanyFormStatus(status.mode === 'supabase'
+      ? '自社の企業情報だけを保存します。'
+      : 'mock modeでは画面確認用に保存表示だけを行います。', true);
+  }
+
+  function initCompanyInfoForm(status) {
+    const form = $('#companyInfoForm');
+    if (!form) return;
+
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      const input = readCompanyInfoForm();
+      const validation = validateCompanyInfoForm(input);
+
+      if (!validation.ok) {
+        setCompanyFormStatus(validation.errors.join(' '), false);
+        return;
+      }
+
+      setCompanyFormBusy(true);
+      setCompanyFormStatus('保存中です...', true);
+
+      try {
+        const result = await window.AuthService.updateCurrentCompanyAccount(input);
+        renderModeStatus(result.status || status);
+
+        if (!result.ok) {
+          setCompanyFormStatus(result.message || '保存に失敗しました。時間をおいてもう一度お試しください。', false);
+          renderStatus(result.message || '企業情報の保存に失敗しました。', false);
+          return;
+        }
+
+        if (result.account) {
+          renderAccount(result.account, result.status || status);
+        }
+        setCompanyFormStatus(result.message || '企業情報を保存しました。', true);
+        renderStatus(result.message || '企業情報を保存しました。', true);
+      } catch {
+        setCompanyFormStatus('保存に失敗しました。時間をおいてもう一度お試しください。', false);
+        renderStatus('企業情報の保存に失敗しました。', false);
+      } finally {
+        setCompanyFormBusy(false);
+      }
+    });
+
+    const resetButton = $('#resetCompanyInfoButton');
+    if (resetButton) {
+      resetButton.addEventListener('click', () => {
+        if (!loadedCompanyInfo) return;
+        populateCompanyInfoForm(loadedCompanyInfo);
+        setCompanyFormStatus('最後に読み込んだ企業情報へ戻しました。', true);
+      });
+    }
+  }
+
+  function populateCompanyInfoForm(account = {}) {
+    loadedCompanyInfo = {
+      companyName: account.companyName || '',
+      contactName: account.contactName || '',
+      businessType: account.businessType || '',
+      phone: account.phone || '',
+      email: account.email || ''
+    };
+
+    setValue('#companyNameInput', loadedCompanyInfo.companyName);
+    setValue('#companyContactInput', loadedCompanyInfo.contactName);
+    setValue('#companyBusinessTypeInput', loadedCompanyInfo.businessType);
+    setValue('#companyPhoneInput', loadedCompanyInfo.phone);
+    setValue('#companyEmailDisplay', loadedCompanyInfo.email);
+  }
+
+  function readCompanyInfoForm() {
+    return {
+      companyName: $('#companyNameInput')?.value.trim() || '',
+      contactName: $('#companyContactInput')?.value.trim() || '',
+      businessType: $('#companyBusinessTypeInput')?.value || '',
+      phone: $('#companyPhoneInput')?.value.trim() || ''
+    };
+  }
+
+  function validateCompanyInfoForm(input = {}) {
+    if (window.AuthService?.validateCompanyAccountUpdate) {
+      return window.AuthService.validateCompanyAccountUpdate(input);
+    }
+
+    const errors = [];
+    if (!input.companyName) errors.push('企業名を入力してください。');
+    return { ok: errors.length === 0, errors };
+  }
+
+  function setCompanyFormEnabled(enabled) {
+    const form = $('#companyInfoForm');
+    if (!form) return;
+    form.querySelectorAll('input,select,button').forEach(control => {
+      control.disabled = !enabled;
+    });
+    const email = $('#companyEmailDisplay');
+    if (email) {
+      email.disabled = !enabled;
+      email.readOnly = true;
+    }
+  }
+
+  function setCompanyFormBusy(busy) {
+    const button = $('#saveCompanyInfoButton');
+    const resetButton = $('#resetCompanyInfoButton');
+    const form = $('#companyInfoForm');
+    if (form) {
+      form.querySelectorAll('input,select').forEach(control => {
+        control.disabled = busy;
+      });
+    }
+    if (button) {
+      button.disabled = busy;
+      button.textContent = busy ? '保存中です...' : '企業情報を保存';
+    }
+    if (resetButton) resetButton.disabled = busy;
+  }
+
+  function setCompanyFormStatus(message, ok) {
+    const status = $('#companyInfoStatus');
+    if (!status) return;
+    status.textContent = message || '';
+    status.dataset.state = ok ? 'ok' : 'warn';
   }
 
   async function renderAppsForAccount(account, status) {
@@ -281,6 +411,10 @@
     setText('#accountPlanStatus', '-');
     setText('#accountCreatedAt', '-');
     setText('#accountUpdatedAt', '-');
+    loadedCompanyInfo = null;
+    populateCompanyInfoForm({});
+    setCompanyFormEnabled(false);
+    setCompanyFormStatus('ログイン後に企業情報を編集できます。', false);
   }
 
   function renderModeStatus(status) {
@@ -397,6 +531,7 @@
       restaurant: '飲食店',
       small_business: '小規模事業者',
       consulting: 'コンサル',
+      personal: '個人事業',
       demo: 'デモ利用'
     };
     return labels[value] || value || '未選択';
@@ -485,6 +620,11 @@
   function setText(selector, value) {
     const el = $(selector);
     if (el) el.textContent = value || '';
+  }
+
+  function setValue(selector, value) {
+    const el = $(selector);
+    if (el) el.value = value || '';
   }
 
   function formatDate(value) {

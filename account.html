@@ -47,6 +47,47 @@
           <div><dt>更新日</dt><dd id="accountUpdatedAt">-</dd></div>
           <div><dt>データ同期状態</dt><dd id="accountSyncStatus">-</dd></div>
         </dl>
+
+        <form class="account-form account-company-form" id="companyInfoForm" novalidate>
+          <h3>企業情報編集</h3>
+          <p class="account-note">ログイン中の企業アカウントの基本情報だけを編集します。</p>
+          <label>
+            企業名
+            <input id="companyNameInput" name="companyName" type="text" maxlength="80" required autocomplete="organization">
+          </label>
+          <label>
+            担当者名
+            <input id="companyContactInput" name="contactName" type="text" maxlength="80" autocomplete="name">
+          </label>
+          <label>
+            業種
+            <select id="companyBusinessTypeInput" name="businessType">
+              <option value="">未選択</option>
+              <option value="school">学習塾</option>
+              <option value="store">小売店</option>
+              <option value="restaurant">飲食店</option>
+              <option value="small_business">小規模事業者</option>
+              <option value="consulting">コンサル</option>
+              <option value="personal">個人事業</option>
+              <option value="demo">デモ利用</option>
+            </select>
+          </label>
+          <label>
+            電話番号
+            <input id="companyPhoneInput" name="phone" type="tel" maxlength="40" inputmode="tel" autocomplete="tel" placeholder="例: 03-1234-5678">
+          </label>
+          <label>
+            メールアドレス
+            <input id="companyEmailDisplay" name="email" type="email" readonly aria-describedby="companyEmailHelp">
+          </label>
+          <p class="account-form-help" id="companyEmailHelp">ログインメールアドレスは現在この画面では変更できません。</p>
+          <div class="detail-cta-row account-form-actions">
+            <button class="btn primary" id="saveCompanyInfoButton" type="submit">企業情報を保存</button>
+            <button class="btn secondary" id="resetCompanyInfoButton" type="button">変更を取り消す</button>
+          </div>
+          <p class="account-status account-form-status" id="companyInfoStatus" aria-live="polite">企業情報を読み込み中です。</p>
+        </form>
+
         <div class="detail-cta-row">
           <button class="btn secondary" id="retryAccountButton" type="button">再読込</button>
           <button class="btn secondary" id="logoutButton" type="button">ログアウト表示を確認</button>
