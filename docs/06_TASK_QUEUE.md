@@ -26,11 +26,13 @@
 
 ## NEXT
 - v1.3c app_add_requests migration / RLS実装
-- v1.4 購入ページ
-- v1.5 決済・購入履歴
-- v1.6 実アプリの商品化
-- v1.7 販売用UI/UX強化
-- v1.8 販売前QA・導入テスト
+- v1.3d account.html 申請DB保存
+- v1.3e 管理者側 申請確認MVP
+- v1.4 実アプリの商品化方針整理
+- v1.5 販売用UI/UX強化
+- v1.6 購入ページ
+- v1.7 販売前QA・導入テスト
+- v1.8 決済・購入履歴
 - v1.9 β販売開始
 - v2.0 小規模事業者向け販売版
 
@@ -69,6 +71,7 @@
 - v1.2bは `account.html` 内の自社企業情報編集MVP。`company_name` / `contact_name` / `business_type` / `phone` の編集、`email` 表示のみ、保存後のSupabase Dashboard確認、RLS有効確認は人間確認済み。
 - v1.3aはDB保存なしのアプリ追加申請UI mockとして完了。正式保存には申請専用テーブル、RLS、migration設計が必要なため、v1.3bで人間確認前提の設計から扱う。
 - v1.3bでは、アプリ追加申請の正式保存先として `app_add_requests` 専用テーブル案を整理した。`app_instances`、`app_data`、`audit_logs` には申請の正本を入れない。次のv1.3cでmigration / RLSへ進む場合は、人間確認を前提にする。
+- v1系ロードマップは、v1.3c〜v1.3eでアプリ追加申請のDB保存と確認導線を固め、v1.4で実アプリの商品化方針整理、v1.5で販売用UI/UX強化、v1.6で購入ページ、v1.7で販売前QAを行い、v1.8で初めて決済・購入履歴へ進む。
 - 本線へ戻るにはPROJECT_STATUSで再開条件を確認する。
 
 ## ステータス分類
