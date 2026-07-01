@@ -162,3 +162,22 @@ HUMAN_REQUIREDを「人間が実務として確認・判断・操作する必要
 - `docs/15_HUMAN_REQUIRED_RULES.md` がある
 - GitHub auto-merge設定不足時は `human-required` に戻る
 - 今回のA0.7 PR自身は `.github/workflows/**` 変更を含むため自動マージ対象外として扱う
+
+## A0.8/A0.9 docs-only自動マージ判定の厳密化
+状態:
+完了。
+
+目的:
+docs-only PRに含まれる禁止語・確認語の説明を、実secret値やRLS無効化SQLと区別し、安全なdocs-only PRの自動マージ候補化を維持する。
+
+やること:
+- 単純な危険語出現だけでブロックしない
+- `service_role`、`sb_secret_`、`secret`、`disable row level security`、`RLS`、`migration` などの説明語をdocsでは許容する
+- 実secret値、private key block、RLS無効化SQLらしき追加は引き続きブロックする
+- `docs/14_PR_SAFE_AUTOMERGE_RULES.md` と `docs/15_HUMAN_REQUIRED_RULES.md` を更新する
+
+完了条件:
+- `.github/workflows/pr-safe-automerge.yml` が実secret値と説明語を区別する
+- STOP条件docsに説明語だけでは停止しないことが明記されている
+- 実secret値・RLS無効化SQLは引き続き停止条件になっている
+- 今回のA0.8/A0.9 PR自身は `.github/workflows/**` 変更を含むため自動マージ対象外として扱う

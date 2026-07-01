@@ -49,6 +49,8 @@ Codex報告で `HUMAN_REQUIRED` の意味を統一する。
 - 人間がブラウザで確認することがない。
 - 追加のUI判断・仕様判断がない。
 - 危険ファイル変更がない。
+- docs-only PR内の `service_role`、`sb_secret_`、`secret`、`disable row level security`、`RLS`、`migration` などは、禁止語・確認語の説明としての追加に限られている。
+- 実secret値、private key block、RLS無効化SQL、Supabase設定値変更らしき追加がない。
 - 作業完了後、ユーザーが何もしなくてよい。
 
 ## MERGE_REQUIREDとの分離
@@ -112,6 +114,16 @@ AUTO_MERGE_ELIGIBLE: YES
 AUTO_MERGE_STATUS: enabled
 HUMAN_REQUIRED: NO
 ```
+
+この例には、docs内で禁止語・確認語を説明するだけのPRも含めてよい。
+
+例:
+- `service_role keyをrepoへ入れない` とdocsに追記する。
+- `sb_secret_ を検出対象にする` とdocsに追記する。
+- `disable row level security を追加しない` とdocsに追記する。
+- `RLS確認が必要` とdocsに追記する。
+
+ただし、実secret値、private key block、RLS無効化SQL、Supabase設定値変更らしき追加がある場合は `HUMAN_REQUIRED: YES` にする。
 
 ### GitHub auto-merge設定不足
 ```md
