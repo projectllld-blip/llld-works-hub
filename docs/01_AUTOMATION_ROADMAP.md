@@ -117,15 +117,30 @@ Codexの変更をPR単位で確認できるようにする。
 - A0.6 / A0.7は人間確認後に進める扱いになっている
 - 本体機能を変更していない
 
-## A0.6 Codex GitHub Action連携検討
+## A0.6 PR安全分類・docs-only自動マージ設計
 状態:
-人間確認後に進める候補。
+完了。
 
 目的:
-Codex GitHub Actionを使って、レビューやパッチ提案をCI/CD上で実行できるか検討する。
+docs-only PRを安全に分類し、危険変更を自動マージ対象から外す運用を設計する。
+
+やること:
+- PR分類ルールを作る
+- docs-only自動マージ候補の条件を整理する
+- secret / RLS / Supabase / Auth / migration riskの停止条件を整理する
+- GitHub Actions案をdocsに残す
+- ラベル運用案を整理する
+
+完了条件:
+- `docs/14_PR_SAFE_AUTOMERGE_RULES.md` がある
+- docs-only自動マージ候補の条件がある
+- 自動マージ禁止条件がある
+- GitHub Actions案がdocsにある
+- 実際のworkflow実装はしていない
+- GitHub Settings / branch protection / Secrets変更は人間作業として残している
 
 注意:
-この段階では、APIキーやGitHub Secretsが必要になる可能性があります。実際の設定は人間確認が必要なので、勝手に進めないでください。
+この段階では設計のみ。GitHub Actions実装、GitHub Settings変更、branch protection変更、auto-merge有効化は勝手に進めない。
 
 ## A0.7 HUMAN_REQUIREDダッシュボード化
 状態:
