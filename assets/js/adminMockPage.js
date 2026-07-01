@@ -10,8 +10,10 @@
       status: '正常',
       flag: '確認済み',
       appDataCount: 3,
-      portalState: true,
-      worksPortal: true,
+      hasWorksPortal: true,
+      hasPortalState: true,
+      hasSeatflow: true,
+      hasSeatLayout: true,
       lastSavedAt: '2026-07-01 10:30',
       apps: [
         { key: 'works_portal', label: 'Works Portal', status: 'active' },
@@ -28,15 +30,17 @@
       status: '確認待ち',
       flag: 'RLS確認待ち',
       appDataCount: 1,
-      portalState: true,
-      worksPortal: true,
+      hasWorksPortal: true,
+      hasPortalState: true,
+      hasSeatflow: false,
+      hasSeatLayout: false,
       lastSavedAt: '2026-06-30 18:05',
       apps: [
         { key: 'works_portal', label: 'Works Portal', status: 'active' },
         { key: 'quiz_maker', label: 'Quiz Maker', status: 'active' },
         { key: 'meeting_support', label: 'Meeting Support', status: 'mock' }
       ],
-      issues: ['RLS確認待ち']
+      issues: ['RLS確認待ち', 'seatflowなし', 'seat_layoutなし']
     },
     {
       id: 'mock-company-c',
@@ -46,14 +50,16 @@
       status: '注意あり',
       flag: 'portal_stateなし',
       appDataCount: 0,
-      portalState: false,
-      worksPortal: true,
+      hasWorksPortal: true,
+      hasPortalState: false,
+      hasSeatflow: false,
+      hasSeatLayout: false,
       lastSavedAt: '未保存',
       apps: [
         { key: 'works_portal', label: 'Works Portal', status: 'active' },
         { key: 'dakokun', label: 'だこくん', status: 'mock' }
       ],
-      issues: ['portal_stateなし', 'app_instanceあり / app_dataなし', '長期間更新なし']
+      issues: ['portal_stateなし', 'seatflowなし', 'seat_layoutなし', 'app_instanceあり / app_dataなし', '長期間更新なし']
     },
     {
       id: 'mock-company-d',
@@ -63,14 +69,34 @@
       status: '注意あり',
       flag: 'PARKED機能あり',
       appDataCount: 2,
-      portalState: true,
-      worksPortal: true,
+      hasWorksPortal: true,
+      hasPortalState: true,
+      hasSeatflow: true,
+      hasSeatLayout: false,
       lastSavedAt: '2026-06-29 14:48',
       apps: [
         { key: 'works_portal', label: 'Works Portal', status: 'active' },
         { key: 'seatflow', label: 'SeatFlow', status: 'limited' }
       ],
-      issues: ['PARKED機能あり']
+      issues: ['seat_layoutなし', 'PARKED機能あり']
+    },
+    {
+      id: 'mock-company-e',
+      name: '未設定サンプル',
+      createdAt: '2026-06-28',
+      updatedAt: '2026-06-28 11:20',
+      status: '要確認',
+      flag: 'works_portalなし',
+      appDataCount: 0,
+      hasWorksPortal: false,
+      hasPortalState: false,
+      hasSeatflow: true,
+      hasSeatLayout: false,
+      lastSavedAt: '未保存',
+      apps: [
+        { key: 'seatflow', label: 'SeatFlow', status: 'active' }
+      ],
+      issues: ['works_portalなし', 'portal_stateなし', 'seat_layoutなし']
     }
   ];
 
@@ -124,6 +150,8 @@
             <span>登録日: ${escapeHtml(company.createdAt)}</span>
             <span>最終更新: ${escapeHtml(company.updatedAt)}</span>
             <span>利用アプリ: ${company.apps.length} / 注意: ${escapeHtml(company.flag)}</span>
+            <span>works_portal: ${yesNo(company.hasWorksPortal)} / portal_state: ${yesNo(company.hasPortalState)}</span>
+            <span>seatflow: ${yesNo(company.hasSeatflow)} / seat_layout: ${yesNo(company.hasSeatLayout)}</span>
           </span>
         </button>
       `;
@@ -138,8 +166,10 @@
     root.innerHTML = `
       <h3>${escapeHtml(company.name)}</h3>
       <div class="admin-detail-grid">
-        ${detailItem('works_portal', company.worksPortal ? 'あり' : 'なし')}
-        ${detailItem('portal_state', company.portalState ? 'あり' : 'なし')}
+        ${detailItem('works_portal app_instance', yesNo(company.hasWorksPortal))}
+        ${detailItem('portal_state app_data', yesNo(company.hasPortalState))}
+        ${detailItem('seatflow app_instance', yesNo(company.hasSeatflow))}
+        ${detailItem('seat_layout app_data', yesNo(company.hasSeatLayout))}
         ${detailItem('app_data件数', String(company.appDataCount))}
         ${detailItem('最終保存日時', company.lastSavedAt)}
       </div>
@@ -181,10 +211,14 @@
   }
 
   function latestUpdatedAt() {
-    return mockCompanies
+    const dates = mockCompanies
       .map(company => company.updatedAt)
-      .sort()
-      .at(-1) || '-';
+      .sort();
+    return dates.length ? dates[dates.length - 1] : '-';
+  }
+
+  function yesNo(value) {
+    return value ? 'あり' : 'なし';
   }
 
   function detailItem(label, value) {
@@ -203,14 +237,14 @@
 
   function escapeHtml(value) {
     return String(value)
-      .replaceAll('&', '&amp;')
-      .replaceAll('<', '&lt;')
-      .replaceAll('>', '&gt;')
-      .replaceAll('"', '&quot;')
-      .replaceAll("'", '&#039;');
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
   }
 
   function escapeAttr(value) {
-    return escapeHtml(value).replaceAll('`', '&#096;');
+    return escapeHtml(value).replace(/`/g, '&#096;');
   }
 })();

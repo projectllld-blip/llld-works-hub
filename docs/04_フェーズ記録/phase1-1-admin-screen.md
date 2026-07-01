@@ -39,6 +39,17 @@ v1.1b mock簡易管理者画面まで完了。
 - 異常状態mock。
 - 本物管理画面へ進む前の判断事項。
 
+## v1.1b 追加修正
+人間ブラウザ確認でmock企業一覧が確認しづらかったため、追加修正を行った。
+
+修正内容:
+- mock企業一覧の表示を明確化。
+- 企業一覧の各企業をクリックして詳細を切り替えられるように整理。
+- 企業一覧にも `works_portal` / `portal_state` / `seatflow` / `seat_layout` の有無を表示。
+- 企業詳細にも `works_portal app_instance`、`portal_state app_data`、`seatflow app_instance`、`seat_layout app_data` の有無を表示。
+- `works_portalなし`、`portal_stateなし`、`seatflowなし`、`seat_layoutなし` が分かる異常状態mockを追加。
+- 固定mockデータのみを使用し、実DB接続は行わない。
+
 ## 実装上の制限
 - 実DB接続なし。
 - 企業横断取得なし。
