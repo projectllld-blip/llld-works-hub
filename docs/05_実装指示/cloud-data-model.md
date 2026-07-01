@@ -50,6 +50,25 @@ v0.10時点では、`owner_user_id = auth.uid()` を基本にして1企業アカ
 
 複数メンバー管理はまだ作らない。将来必要になった場合は `company_users` や `account_members` のようなテーブルをv1.7以降で追加検討する。
 
+### v1.2 企業情報編集方針
+`account.html` から編集する候補は、既存カラムのうち以下に限定する。
+
+- `company_name`
+- `contact_name`
+- `business_type`
+- `phone`
+
+以下はv1.2では編集しない。
+
+- `id`
+- `owner_user_id`
+- `email`
+- `plan_status`
+- `created_at`
+- `updated_at`
+
+住所、メモ、表示名は現行DBカラムにないため、v1.2bには含めない。必要になった場合はDB設計とmigration案を別Phaseで扱う。
+
 ## apps
 
 利用できるアプリ一覧。

@@ -38,6 +38,19 @@ insert / select / update は自分の `owner_user_id` のみ許可する。
 
 deleteはポリシーを作らず、原則禁止にする。
 
+v1.2企業情報編集では、自社 `company_accounts` のうち `company_name`、`contact_name`、`business_type`、`phone` だけを更新候補にする。
+
+更新しないもの:
+- `owner_user_id`
+- Auth user情報
+- `email`
+- `plan_status`
+- `app_instances`
+- `app_data`
+- `portal_state`
+
+実DBで `company_accounts_update_own` が有効か確認できない場合、実装や本番確認へ進まず `HUMAN_REQUIRED` とする。
+
 ## app_instances
 
 `company_account_id` が本人の企業アカウントと一致する行だけ読み書きできるようにする。
