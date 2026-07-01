@@ -10,12 +10,13 @@
 - v0.15追加修正 / v0.15.1相当
 - v0.16 RLS・他社データ混入テスト
 - v0.17a バックアップ・復元 方針整理
+- v0.18 検証環境デプロイ: Codex確認範囲まで
 
 ## IN_PROGRESS
 - なし
 
 ## NEXT
-- v0.18 検証環境デプロイ
+- v1.0 アカウント別クラウド基盤MVP完成: v0.18の人間確認完了後に判断
 
 ## PARKED
 - A0.6 Codex GitHub Action連携検討
@@ -29,6 +30,13 @@
 - SeatFlow全体状態の完全バックアップ・復元
 - SeatFlow複数タブ競合解決
 - SeatFlow正式商品化に必要な保存対象整理
+
+## HUMAN_REQUIRED
+- v0.18 公開版ブラウザ確認
+- v0.18 Supabase Auth URL Configuration確認
+- v0.18 RLS最終確認
+- v0.18 iPad / スマホ実機確認
+- v1.0へ進むかの人間判断
 
 ## 運用ルール
 - 先頭の作業から順に進める。
