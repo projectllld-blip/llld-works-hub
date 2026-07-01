@@ -218,5 +218,37 @@ DB / RLS変更が必要になった場合は、v1.2b実装へ進まず `HUMAN_RE
 実装前STOP:
 - 実DBの `company_accounts_update_own` が確認できない。
 - DB / RLS / migration変更が必要。
+
+## v1.2b 実装メモ
+`account.html` に企業情報編集フォームを追加する。
+
+編集対象:
+- `company_name`
+- `contact_name`
+- `business_type`
+- `phone`
+
+表示のみ:
+- `email`
+
+保存処理:
+- Supabase modeでは、ログイン中ユーザーに紐づく自社 `company_accounts` の1行だけを更新する。
+- 更新対象は `company_name`、`contact_name`、`business_type`、`phone` に限定する。
+- `id`、`owner_user_id`、`email`、`plan_status`、`created_at`、`updated_at`、`app_instances`、`app_data`、`portal_state` は更新しない。
+- `updated_at` はDB側のtriggerに任せ、フロントから直接更新しない。
+- mock modeでは実DBに接続せず、画面内のサンプル企業情報だけを更新する。
+
+入力チェック:
+- `company_name` は必須。
+- `contact_name`、`business_type`、`phone` は任意。
+- `phone` は数字、ハイフン、括弧、スペース、`+` を許可する軽いチェックに留める。
+- `email` はログインメールアドレスと混同しやすいため編集不可。
+
+人間確認:
+- 実DBで `company_accounts_update_own` policy が有効か確認する。
+- GitHub Pages上の `account.html` で企業情報を保存し、再読み込み後も反映されるか確認する。
+- Supabase Dashboardで、保存後に `company_name` / `contact_name` / `business_type` / `phone` だけが変わり、`email` / `owner_user_id` / `plan_status` が変わっていないことを確認する。
+
+実装時STOP:
 - Auth user情報編集が必要。
 - メール編集を含める必要がある。

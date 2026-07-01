@@ -2,6 +2,7 @@
 
 (() => {
   const DEFAULT_ACCOUNT = {
+    id: 'mock-company-account',
     status: 'mock',
     companyName: 'デモ企業 / 教室',
     contactName: 'デモ担当者',
@@ -15,7 +16,9 @@
     syncStatus: 'mock mode: クラウド同期はまだ行っていません'
   };
 
-  const VALID_BUSINESS_TYPES = ['school', 'store', 'restaurant', 'small_business', 'consulting', 'demo'];
+  let mockAccountState = { ...DEFAULT_ACCOUNT };
+
+  const VALID_BUSINESS_TYPES = ['school', 'store', 'restaurant', 'small_business', 'consulting', 'personal', 'demo'];
   const APP_LABELS = {
     works_portal: 'LLLD Works Hub ポータル',
     attendance: '勤怠管理',
@@ -343,11 +346,127 @@
     return {
       mode: status.mode,
       status,
-      account: { ...DEFAULT_ACCOUNT },
+      account: { ...mockAccountState },
       isAuthenticated: true,
       accountStatus: 'mock_account',
       message: 'mock modeのサンプルアカウントを表示しています。'
     };
+  }
+
+  async function updateCurrentCompanyAccount(input = {}) {
+    const normalized = normalizeCompanyAccountUpdate(input);
+    const validation = validateCompanyAccountUpdate(normalized);
+    const status = await getAuthStatus();
+
+    if (!validation.ok) {
+      return {
+        ok: false,
+        mode: 'validation',
+        status,
+        validation,
+        account: null,
+        message: validation.errors.join(' ')
+      };
+    }
+
+    if (status.mode !== 'supabase') return mockUpdateCurrentCompanyAccount(normalized, status);
+    return supabaseUpdateCurrentCompanyAccount(normalized, status);
+  }
+
+  async function mockUpdateCurrentCompanyAccount(input = {}, status = null) {
+    const latestStatus = status || await getAuthStatus();
+    mockAccountState = {
+      ...mockAccountState,
+      companyName: input.companyName,
+      contactName: input.contactName,
+      businessType: input.businessType,
+      phone: input.phone,
+      updatedAt: new Date().toISOString(),
+      syncStatus: 'mock mode: 画面内のサンプル企業情報を更新しました。'
+    };
+
+    return {
+      ok: true,
+      mode: latestStatus.mode,
+      status: latestStatus,
+      account: { ...mockAccountState },
+      accountStatus: 'mock_account_updated',
+      message: 'mock modeで企業情報保存の表示を確認しました。実DBには保存していません。'
+    };
+  }
+
+  async function supabaseUpdateCurrentCompanyAccount(input = {}, status = null) {
+    const latestStatus = status || await getAuthStatus();
+    const current = await getSupabaseCurrentAccount();
+
+    if (!current.ok || !current.account?.id) {
+      return {
+        ok: false,
+        mode: latestStatus.mode,
+        status: latestStatus,
+        account: null,
+        accountStatus: current.accountStatus || 'account_load_failed',
+        message: current.message || '企業アカウント情報を確認できないため保存できません。'
+      };
+    }
+
+    const client = await window.SupabaseClientService?.getSupabaseClient?.();
+    if (!client?.from) {
+      return {
+        ok: false,
+        mode: latestStatus.mode,
+        status: latestStatus,
+        account: null,
+        accountStatus: 'client_unavailable',
+        message: 'Supabase clientを確認できません。接続設定を確認してください。'
+      };
+    }
+
+    const updatePayload = {
+      company_name: input.companyName,
+      contact_name: input.contactName,
+      phone: input.phone
+    };
+    if (input.businessType) updatePayload.business_type = input.businessType;
+
+    try {
+      const { data, error } = await client
+        .from('company_accounts')
+        .update(updatePayload)
+        .eq('id', current.account.id)
+        .select('id,email,company_name,contact_name,business_type,phone,plan_status,created_at,updated_at')
+        .maybeSingle();
+
+      if (error || !data) {
+        return {
+          ok: false,
+          mode: latestStatus.mode,
+          status: latestStatus,
+          account: current.account,
+          accountStatus: 'account_update_failed',
+          message: '企業情報の保存に失敗しました。RLS設定とcompany_accountsの更新権限を確認してください。'
+        };
+      }
+
+      return {
+        ok: true,
+        mode: latestStatus.mode,
+        status: latestStatus,
+        account: mapCompanyAccount(data),
+        rawAccount: data,
+        accountStatus: 'account_updated',
+        message: '企業情報を保存しました。'
+      };
+    } catch {
+      return {
+        ok: false,
+        mode: latestStatus.mode,
+        status: latestStatus,
+        account: current.account,
+        accountStatus: 'account_update_failed',
+        message: '企業情報の保存に失敗しました。時間をおいてもう一度お試しください。'
+      };
+    }
   }
 
   async function getSupabaseCurrentAccount() {
@@ -555,6 +674,32 @@
     };
   }
 
+  function normalizeCompanyAccountUpdate(input = {}) {
+    return {
+      companyName: String(input.companyName || '').trim(),
+      contactName: String(input.contactName || '').trim(),
+      businessType: VALID_BUSINESS_TYPES.includes(input.businessType) ? input.businessType : '',
+      phone: String(input.phone || '').trim()
+    };
+  }
+
+  function validateCompanyAccountUpdate(input = {}) {
+    const errors = [];
+
+    if (!input.companyName) errors.push('企業名を入力してください。');
+    if (input.companyName.length > 80) errors.push('企業名は80文字以内にしてください。');
+    if (input.contactName.length > 80) errors.push('担当者名は80文字以内にしてください。');
+    if (input.phone.length > 40) errors.push('電話番号は40文字以内にしてください。');
+    if (input.phone && !/^[0-9+\-()\s]+$/.test(input.phone)) {
+      errors.push('電話番号は数字、ハイフン、括弧、スペース、+で入力してください。');
+    }
+
+    return {
+      ok: errors.length === 0,
+      errors
+    };
+  }
+
   function sanitizeSignupInput(input = {}) {
     return {
       companyName: input.companyName || '',
@@ -579,6 +724,7 @@
       contactName: row.contact_name || '',
       email: row.email || '',
       businessType: row.business_type || '',
+      phone: row.phone || '',
       planStatus: row.plan_status || '',
       createdAt: row.created_at || '',
       updatedAt: row.updated_at || '',
@@ -650,6 +796,9 @@
     getCurrentUser,
     getCurrentAccount,
     getSupabaseCurrentAccount,
+    updateCurrentCompanyAccount,
+    normalizeCompanyAccountUpdate,
+    validateCompanyAccountUpdate,
     logout,
     supabaseLogout,
     APP_LABELS

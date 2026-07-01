@@ -1592,6 +1592,36 @@ body[data-market-page="detail"] .market-badge:last-child{
   padding:10px 12px;
   outline:none;
 }
+.account-company-form{
+  margin-top:var(--sp-2);
+  border:1px solid var(--border);
+  border-radius:var(--radius-card);
+  background:var(--bg-page);
+  padding:var(--sp-2);
+}
+.account-company-form h3{
+  margin:0;
+  color:var(--text);
+  font-size:15px;
+  line-height:1.35;
+}
+.account-form input[readonly]{
+  background:#f8fafc;
+  color:var(--text-sub);
+}
+.account-form-help{
+  margin:calc(var(--sp-1) * -1) 0 0;
+  color:var(--text-sub);
+  font-size:12px;
+  font-weight:800;
+  line-height:1.55;
+}
+.account-form-actions{
+  margin-top:0;
+}
+.account-form-status{
+  min-height:0;
+}
 .account-checks{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
