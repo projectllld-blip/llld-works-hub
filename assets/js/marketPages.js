@@ -14,7 +14,7 @@
   const priceLabels = {
     free: '無料',
     'free-beta': '無料β',
-    paid: '有料',
+    paid: '有料化予定',
     consultation: '開発相談',
     internal: '社内限定',
     'coming-soon': '準備中'
@@ -29,7 +29,7 @@
   };
 
   const saleStatusLabels = {
-    'on-sale': '販売中',
+    'on-sale': '有料化予定',
     beta: 'β版',
     'inquiry-only': '相談受付',
     preparing: '準備中',
@@ -105,7 +105,7 @@
   function renderPriceOptions() {
     const select = $('#priceFilter');
     if (!select) return;
-    const options = ['all', 'free', 'free-beta', 'paid', 'consultation', 'coming-soon'];
+    const options = ['all', 'free', 'free-beta', 'paid', 'coming-soon'];
     select.innerHTML = options.map(value => `<option value="${escapeAttr(value)}">${escapeHtml(value === 'all' ? '価格タイプすべて' : priceLabels[value])}</option>`).join('');
   }
 
@@ -155,20 +155,21 @@
 
   function renderMarketplaceLists() {
     const filtered = filteredContents();
-    const marketContents = visibleMarketContents(state.contents);
+    const marketContents = productContents(state.contents);
+    const consultationFiltered = consultationContents(state.contents);
     setText('#marketResultMeta', `${filtered.length}件表示中 / 全${marketContents.length}件`);
     renderCards('#marketGrid', filtered);
     renderCards('#freeToolsGrid', filtered.filter(content => ['free', 'free-beta'].includes(content.priceType)).slice(0, 6));
     renderCards('#paidTemplatesGrid', filtered.filter(content => content.priceType === 'paid' && ['on-sale', 'inquiry-only'].includes(content.saleStatus)).slice(0, 6));
     renderCards('#comingSoonGrid', filtered.filter(content => content.priceType === 'coming-soon' || content.saleStatus === 'preparing').slice(0, 6));
-    renderCards('#consultationGrid', filtered.filter(content => content.priceType === 'consultation').slice(0, 6));
+    renderCards('#consultationGrid', consultationFiltered.slice(0, 6), { consultation: true });
     renderCards('#schoolGrid', filtered.filter(content => includesAny(content.targetUsers, ['塾', '教室長', '教室スタッフ', '講師'])).slice(0, 6));
     renderCards('#smallBusinessGrid', filtered.filter(content => includesAny(content.targetUsers, ['小規模事業者', '店舗', '事務'])).slice(0, 6));
   }
 
   function filteredContents() {
     const q = normalize(state.query);
-    return visibleMarketContents(state.contents).filter(content => {
+    return productContents(state.contents).filter(content => {
       const text = normalize([
         content.title,
         content.summary,
@@ -197,28 +198,42 @@
     );
   }
 
-  function renderCards(selector, contents) {
+  function productContents(contents) {
+    return visibleMarketContents(contents).filter(content => !isConsultationContent(content));
+  }
+
+  function consultationContents(contents) {
+    return visibleMarketContents(contents).filter(isConsultationContent);
+  }
+
+  function isConsultationContent(content) {
+    return content.priceType === 'consultation' || content.saleStatus === 'inquiry-only' || content.primaryCtaType === 'consultation';
+  }
+
+  function renderCards(selector, contents, options = {}) {
     const wrap = $(selector);
     if (!wrap) return;
     wrap.innerHTML = contents.length
-      ? contents.map(contentCard).join('')
+      ? contents.map(content => contentCard(content, options)).join('')
       : '<div class="empty market-empty">条件に合うコンテンツがありません。</div>';
   }
 
-  function contentCard(content) {
+  function contentCard(content, options = {}) {
     const author = getAuthor(content.authorId);
     const category = getCategory(content.categoryId);
     const action = getPrimaryAction(content);
-    const priceText = formatPrice(content);
-    const saleText = saleStatusLabels[content.saleStatus] || statusLabels[content.status] || content.saleStatus || content.status || '未設定';
-    return `<article class="market-card">
+    const productState = getProductState(content);
+    const priceText = productState.label;
+    const saleText = productState.note;
+    const cardClass = options.consultation ? ' market-card-consultation' : '';
+    return `<article class="market-card${cardClass}">
       <a class="market-thumb" href="${escapeAttr(content.detailUrl)}">
         <img src="${escapeAttr(content.thumbnail || content.thumbnailImage || '')}" alt="${escapeAttr(content.title)}" loading="lazy">
       </a>
       <div class="market-card-body">
         <div class="market-card-badges">
-          <span class="market-badge price-${escapeAttr(content.priceType || 'free')}">${escapeHtml(priceText)}</span>
-          <span class="market-badge status-${escapeAttr(content.saleStatus || content.status || 'draft')}">${escapeHtml(saleText)}</span>
+          <span class="market-badge state-${escapeAttr(productState.key)}">${escapeHtml(priceText)}</span>
+          <span class="market-badge status-${escapeAttr(productState.key)}">${escapeHtml(saleText)}</span>
         </div>
         <h3><a href="${escapeAttr(content.detailUrl)}">${escapeHtml(content.title)}</a></h3>
         <p>${escapeHtml(content.summary || content.description || '')}</p>
@@ -254,26 +269,28 @@
     const category = getCategory(content.categoryId);
     const action = getPrimaryAction(content);
     const secondaryAction = getSecondaryAction(content, action);
+    const productState = getProductState(content);
     const secondaryButton = secondaryAction
       ? `<a class="btn secondary" href="${escapeAttr(secondaryAction.href)}">${escapeHtml(secondaryAction.label)}</a>`
       : '';
-    const related = state.contents
-      .filter(item => item.id !== content.id && item.priceType !== 'internal' && (item.categoryId === content.categoryId || hasOverlap(item.tags, content.tags)))
+    const related = productContents(state.contents)
+      .filter(item => item.id !== content.id && (item.categoryId === content.categoryId || hasOverlap(item.tags, content.tags)))
       .slice(0, 3);
 
     root.innerHTML = `
       <section class="detail-lp-hero">
         <div>
           <div class="market-card-badges">
-            <span class="market-badge price-${escapeAttr(content.priceType || 'free')}">${escapeHtml(formatPrice(content))}</span>
-            <span class="market-badge status-${escapeAttr(content.saleStatus || content.status || 'draft')}">${escapeHtml(saleStatusLabels[content.saleStatus] || statusLabels[content.status] || content.saleStatus || content.status || '未設定')}</span>
+            <span class="market-badge state-${escapeAttr(productState.key)}">${escapeHtml(productState.label)}</span>
+            <span class="market-badge status-${escapeAttr(productState.key)}">${escapeHtml(productState.note)}</span>
           </div>
           <h1>${escapeHtml(content.title)}</h1>
           <p>${escapeHtml(content.description || content.summary || '')}</p>
           <div class="detail-hero-facts">
             ${detailFact('対象者', listText(content.targetUsers, 3))}
-            ${detailFact('販売状態', saleStatusLabels[content.saleStatus] || content.saleStatus || '-')}
+            ${detailFact('提供状態', productState.label)}
             ${detailFact('価格', formatPrice(content))}
+            ${detailFact('今押せるボタン', action.label)}
             ${detailFact('提供方法', deliveryLabels[content.deliveryType] || content.deliveryType || '-')}
           </div>
           <div class="detail-cta-row">
@@ -298,7 +315,7 @@
       <section class="detail-panel detail-bottom-cta">
         <div>
           <h2>気になる場合は、まず相談できます。</h2>
-          <p>購入、導入、カスタマイズ、β版利用など、今の状態に合わせて手動で確認します。</p>
+          <p>${escapeHtml(productState.helpText)} 初期設定、使い方説明、カスタマイズ、導入代行は必要に応じて相談できます。</p>
         </div>
         <div class="detail-cta-row">
           <a class="btn primary" href="${escapeAttr(action.href)}">${escapeHtml(action.label)}</a>
@@ -312,8 +329,10 @@
           <div><dt>カテゴリ</dt><dd>${escapeHtml(category?.name || content.category || '未分類')}</dd></div>
           <div><dt>投稿者</dt><dd><a href="${escapeAttr(author?.profileUrl || '#')}">${escapeHtml(author?.name || '投稿者未設定')}</a></dd></div>
           <div><dt>公開状態</dt><dd>${escapeHtml(statusLabels[content.status] || content.status || '-')}</dd></div>
-          <div><dt>販売状態</dt><dd>${escapeHtml(saleStatusLabels[content.saleStatus] || content.saleStatus || '-')}</dd></div>
+          <div><dt>提供状態</dt><dd>${escapeHtml(productState.label)}</dd></div>
           <div><dt>価格</dt><dd>${escapeHtml(formatPrice(content))}</dd></div>
+          <div><dt>今押せるCTA</dt><dd>${escapeHtml(action.label)}</dd></div>
+          <div><dt>状態メモ</dt><dd>${escapeHtml(productState.note)}</dd></div>
           <div><dt>提供方法</dt><dd>${escapeHtml(deliveryLabels[content.deliveryType] || content.deliveryType || '-')}</dd></div>
           <div><dt>対象ユーザー</dt><dd>${escapeHtml(listText(content.targetUsers) || '-')}</dd></div>
           <div><dt>更新日</dt><dd>${escapeHtml(content.updatedAt || '-')}</dd></div>
@@ -337,7 +356,7 @@
 
       <section class="detail-panel">
         <h2>関連コンテンツ</h2>
-        <div class="market-grid compact">${related.map(contentCard).join('') || '<div class="empty">関連コンテンツはまだありません。</div>'}</div>
+        <div class="market-grid compact">${related.map(content => contentCard(content)).join('') || '<div class="empty">関連コンテンツはまだありません。</div>'}</div>
       </section>
     `;
   }
@@ -364,9 +383,58 @@
       </section>
       <section class="detail-panel">
         <h2>投稿コンテンツ</h2>
-        <div class="market-grid">${visibleMarketContents(works).map(contentCard).join('') || '<div class="empty">掲載コンテンツはまだありません。</div>'}</div>
+        <div class="market-grid">${productContents(works).map(content => contentCard(content)).join('') || '<div class="empty">掲載コンテンツはまだありません。</div>'}</div>
       </section>
     `;
+  }
+
+  function getProductState(content) {
+    if (isConsultationContent(content)) {
+      return {
+        key: 'consultation',
+        label: '相談導線',
+        note: '個別確認が必要',
+        helpText: 'この内容は通常購入カードではなく、相談導線として扱います。'
+      };
+    }
+    if (content.priceType === 'free') {
+      return {
+        key: 'free',
+        label: '無料',
+        note: 'すぐ利用開始',
+        helpText: '無料で利用開始できる入口です。'
+      };
+    }
+    if (content.priceType === 'free-beta') {
+      return {
+        key: 'beta',
+        label: 'β版',
+        note: '試しながら改善中',
+        helpText: 'β版として試せます。未完成範囲は注意事項を確認してください。'
+      };
+    }
+    if (content.priceType === 'coming-soon' || content.saleStatus === 'preparing' || content.status === 'coming-soon') {
+      return {
+        key: 'preparing',
+        label: '準備中',
+        note: 'まだ利用開始しない',
+        helpText: '現在は準備中のため、利用開始や購入はまだできません。'
+      };
+    }
+    if (content.priceType === 'paid') {
+      return {
+        key: 'planned-paid',
+        label: '有料化予定',
+        note: '購入ページ準備中',
+        helpText: '決済は未実装です。現時点では購入について相談する導線で確認します。'
+      };
+    }
+    return {
+      key: content.priceType || 'unknown',
+      label: priceLabels[content.priceType] || '確認中',
+      note: saleStatusLabels[content.saleStatus] || statusLabels[content.status] || '状態確認中',
+      helpText: '提供状態を確認中です。'
+    };
   }
 
   function getPrimaryAction(content) {
@@ -374,23 +442,23 @@
     const inquiryUrl = content.inquiryUrl || content.requestUrl || content.primaryCtaUrl || './request.html';
 
     if (content.priceType === 'free') {
-      return { label: content.primaryCtaLabel || '無料で使う', href: openUrl || content.detailUrl || './marketplace.html' };
+      return { label: '利用開始', href: openUrl || content.detailUrl || './marketplace.html' };
     }
     if (content.priceType === 'free-beta') {
-      return { label: content.primaryCtaLabel || 'β版を試す', href: openUrl || inquiryUrl };
+      return { label: 'β版を試す', href: openUrl || inquiryUrl };
     }
     if (content.priceType === 'paid' && content.saleStatus === 'on-sale') {
       if (content.paymentUrl) return { label: '購入する', href: content.paymentUrl };
       return { label: content.primaryCtaLabel || '購入について相談する', href: inquiryUrl };
     }
     if (content.priceType === 'paid' && content.saleStatus === 'preparing') {
-      return { label: content.primaryCtaLabel || '先行案内を受ける', href: inquiryUrl };
+      return { label: '準備中', href: content.detailUrl || './marketplace.html' };
     }
     if (content.priceType === 'consultation') {
       return { label: content.primaryCtaLabel || '開発を相談する', href: inquiryUrl };
     }
     if (content.priceType === 'coming-soon') {
-      return { label: content.primaryCtaLabel || '先行案内を受ける', href: inquiryUrl };
+      return { label: '準備中', href: content.detailUrl || './marketplace.html' };
     }
     if (content.priceType === 'internal') {
       return { label: content.primaryCtaLabel || '社内限定', href: openUrl || './index.html' };
@@ -473,12 +541,12 @@
     if (content.priceType === 'free') return '無料';
     if (content.priceType === 'free-beta') return '無料β';
     if (content.priceType === 'consultation') return '個別見積';
-    if (content.priceType === 'coming-soon') return '有料予定';
+    if (content.priceType === 'coming-soon') return '準備中';
     if (content.priceType === 'internal') return '社内限定';
     if (content.priceType === 'paid') {
       return Number.isFinite(content.price) && content.price > 0
-        ? `${content.price.toLocaleString('ja-JP')}円`
-        : '購入相談';
+        ? `有料化予定 ${content.price.toLocaleString('ja-JP')}円`
+        : '有料化予定';
     }
     return priceLabels[content.priceType] || content.priceType || '未設定';
   }
