@@ -7,6 +7,7 @@
 - A0.4 Codex文脈圧縮・引き継ぎ運用
 - A0.5 PRレビュー運用
 - A0.6 PR安全分類・docs-only自動マージ設計
+- A0.7 HUMAN_REQUIRED判定修正・安全PR自動マージ実装
 - v0.15 エラー処理・空状態
 - v0.15追加修正 / v0.15.1相当
 - v0.16 RLS・他社データ混入テスト
@@ -31,7 +32,7 @@
 - v2.0 小規模事業者向け販売版
 
 ## PARKED
-- A0.7 HUMAN_REQUIREDダッシュボード化
+- A0.8 HUMAN_REQUIREDダッシュボード化
 - v0.17b バックアップJSONエクスポートMVP
 - v0.17c バックアップJSON読込・検証・プレビュー
 - v0.17d 限定復元設計
@@ -58,6 +59,7 @@
 - A0.1〜A0.5はCodex半自動運用の初期実用ラインとして扱う。
 - A0.6 / A0.7 はGitHub Secrets、GitHub Settings、外部連携に踏み込む可能性があるため、人間確認後に進める。
 - A0.6ではPR安全分類とdocs-only自動マージを設計する。実際のGitHub Actions実装やauto-merge有効化は人間確認後に別作業で扱う。
+- A0.7ではHUMAN_REQUIRED判定修正と安全docs-only PRのGitHub auto-merge workflowを追加した。ただしworkflow変更PR自身は人間確認・人間マージが必要。
 - v1.1bは実DB接続なしのmock簡易管理者画面。mock企業一覧、企業詳細切替、利用アプリ一覧、保存有無、異常状態mockは人間確認済み。企業横断取得、本物の管理者権限、DB / RLS変更は含めない。
 - 本線へ戻るにはPROJECT_STATUSで再開条件を確認する。
 

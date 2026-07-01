@@ -1,0 +1,292 @@
+name: PR Safe Automerge
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+      - labeled
+      - unlabeled
+      - closed
+
+permissions:
+  contents: write
+  pull-requests: write
+  checks: read
+  statuses: read
+  issues: write
+
+jobs:
+  classify-and-automerge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Classify PR and configure safe auto-merge
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const pr = context.payload.pull_request;
+
+            if (!pr) {
+              core.info('No pull_request payload. Nothing to do.');
+              return;
+            }
+
+            const marker = '<!-- llld-pr-safe-automerge -->';
+            const labels = {
+              safe: 'safe-docs-automerge',
+              human: 'human-required',
+              blocked: 'auto-merge-blocked',
+              setup: 'auto-merge-setup-required'
+            };
+
+            async function ensureLabel(name, color, description) {
+              try {
+                await github.rest.issues.getLabel({ owner, repo, name });
+              } catch (error) {
+                if (error.status !== 404) throw error;
+                await github.rest.issues.createLabel({ owner, repo, name, color, description });
+              }
+            }
+
+            async function addLabels(names) {
+              if (!names.length) return;
+              await github.rest.issues.addLabels({
+                owner,
+                repo,
+                issue_number: pr.number,
+                labels: names
+              });
+            }
+
+            async function removeLabel(name) {
+              try {
+                await github.rest.issues.removeLabel({
+                  owner,
+                  repo,
+                  issue_number: pr.number,
+                  name
+                });
+              } catch (error) {
+                if (error.status !== 404) throw error;
+              }
+            }
+
+            async function upsertComment(body) {
+              const { data: comments } = await github.rest.issues.listComments({
+                owner,
+                repo,
+                issue_number: pr.number,
+                per_page: 100
+              });
+              const existing = comments.find(comment =>
+                comment.user?.type === 'Bot' && comment.body?.includes(marker)
+              );
+              if (existing) {
+                await github.rest.issues.updateComment({
+                  owner,
+                  repo,
+                  comment_id: existing.id,
+                  body
+                });
+                return;
+              }
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: pr.number,
+                body
+              });
+            }
+
+            await Promise.all([
+              ensureLabel(labels.safe, '2ea44f', 'Safe docs-only PR eligible for GitHub auto-merge.'),
+              ensureLabel(labels.human, 'd73a4a', 'Human confirmation, judgment, or operation is required.'),
+              ensureLabel(labels.blocked, 'b60205', 'PR is not eligible for auto-merge.'),
+              ensureLabel(labels.setup, 'fbca04', 'GitHub auto-merge setup or branch protection requires human confirmation.')
+            ]);
+
+            if (context.payload.action === 'closed') {
+              if (pr.merged && pr.head.repo.full_name === pr.base.repo.full_name) {
+                const labelNames = (pr.labels || []).map(label => label.name);
+                if (labelNames.includes(labels.safe)) {
+                  try {
+                    await github.rest.git.deleteRef({
+                      owner,
+                      repo,
+                      ref: `heads/${pr.head.ref}`
+                    });
+                    core.info(`Deleted merged PR branch ${pr.head.ref}.`);
+                  } catch (error) {
+                    core.warning(`Could not delete branch ${pr.head.ref}: ${error.message}`);
+                  }
+                }
+              }
+              return;
+            }
+
+            const reasons = [];
+            const humanReasons = [];
+            const labelNames = (pr.labels || []).map(label => label.name);
+            const sameRepo = pr.head.repo?.full_name === pr.base.repo?.full_name;
+            const baseMain = pr.base.ref === 'main';
+
+            if (pr.draft) reasons.push('draft PR is not auto-merge eligible.');
+            if (!sameRepo) reasons.push('fork PR is not auto-merge eligible.');
+            if (!baseMain) reasons.push('base branch is not main.');
+            if (labelNames.includes(labels.human) || labelNames.includes('human-required')) {
+              reasons.push('human-required label is already present.');
+            }
+
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner,
+              repo,
+              pull_number: pr.number,
+              per_page: 100
+            });
+
+            const filenames = files.map(file => file.filename);
+            const allowedDocsOnly = filenames.length > 0 && filenames.every(file =>
+              file === 'README.md' || file.startsWith('docs/')
+            );
+
+            if (!allowedDocsOnly) {
+              reasons.push('changed files are not limited to docs/** or README.md.');
+            }
+
+            const dangerousFileMatchers = [
+              file => file.startsWith('.github/workflows/'),
+              file => file.startsWith('supabase/migrations/'),
+              file => file === 'data/site-config.json',
+              file => file.startsWith('assets/js/'),
+              file => file.endsWith('.html'),
+              file => file.startsWith('apps/'),
+              file => file.startsWith('contents/'),
+              file => file.includes('authService'),
+              file => file.includes('supabaseClientService'),
+              file => file.includes('siteConfigService'),
+              file => file.includes('appInstanceService'),
+              file => file.includes('portalStateService'),
+              file => file.includes('seatflowCloudService')
+            ];
+
+            const dangerousFiles = filenames.filter(file =>
+              dangerousFileMatchers.some(matcher => matcher(file))
+            );
+            if (dangerousFiles.length) {
+              reasons.push(`dangerous files changed: ${dangerousFiles.join(', ')}`);
+            }
+
+            const riskyTerms = [
+              /service_role/i,
+              /sb_secret_/i,
+              /SUPABASE_SERVICE_ROLE/,
+              /access_token/i,
+              /refresh_token/i,
+              /private key/i,
+              /disable row level security/i,
+              /anon key/i,
+              /secret/i,
+              /password/i,
+              /api key/i,
+              /app_data/i,
+              /app_instances/i,
+              /company_accounts/i,
+              /RLS/i,
+              /Supabase/i,
+              /Auth/i
+            ];
+
+            const riskyAdditions = [];
+            for (const file of files) {
+              const patch = file.patch || '';
+              const additions = patch
+                .split('\n')
+                .filter(line => line.startsWith('+') && !line.startsWith('+++'))
+                .map(line => line.slice(1));
+              for (const line of additions) {
+                if (riskyTerms.some(pattern => pattern.test(line))) {
+                  riskyAdditions.push(file.filename);
+                  break;
+                }
+              }
+            }
+
+            if (riskyAdditions.length) {
+              reasons.push(`risky terms added in diff: ${Array.from(new Set(riskyAdditions)).join(', ')}`);
+            }
+
+            const safe = reasons.length === 0;
+            let prStatus = safe ? 'ready_to_merge' : 'open';
+            let mergeRequired = 'YES';
+            let mergeMethod = safe ? 'auto_merge' : 'manual';
+            let autoMergeEligible = safe ? 'YES' : 'NO';
+            let autoMergeStatus = safe ? 'eligible' : 'blocked';
+            let humanRequired = safe ? 'NO' : 'YES';
+            let autoMergeMessage = '';
+
+            await removeLabel(labels.safe);
+            await removeLabel(labels.blocked);
+            await removeLabel(labels.setup);
+
+            if (!safe) {
+              await addLabels([labels.human, labels.blocked]);
+              humanReasons.push(...reasons);
+            } else {
+              await removeLabel(labels.human);
+              await addLabels([labels.safe]);
+              try {
+                const mutation = `
+                  mutation EnablePullRequestAutoMerge($pullRequestId: ID!, $mergeMethod: PullRequestMergeMethod!) {
+                    enablePullRequestAutoMerge(input: {
+                      pullRequestId: $pullRequestId,
+                      mergeMethod: $mergeMethod
+                    }) {
+                      pullRequest { number autoMergeRequest { enabledAt mergeMethod } }
+                    }
+                  }
+                `;
+                await github.graphql(mutation, {
+                  pullRequestId: pr.node_id,
+                  mergeMethod: 'SQUASH'
+                });
+                prStatus = 'auto_merge_enabled';
+                autoMergeStatus = 'enabled';
+                autoMergeMessage = 'GitHub auto-merge was enabled with squash merge.';
+              } catch (error) {
+                await addLabels([labels.human, labels.setup]);
+                mergeMethod = 'manual';
+                autoMergeStatus = 'setup_required';
+                humanRequired = 'YES';
+                autoMergeMessage = `Could not enable GitHub auto-merge: ${error.message}`;
+                humanReasons.push('GitHub auto-merge setup, branch protection, or required checks need human confirmation.');
+              }
+            }
+
+            const resultLines = [
+              marker,
+              '## PR Safe Automerge 判定',
+              '',
+              `PR_STATUS: ${prStatus}`,
+              `MERGE_REQUIRED: ${mergeRequired}`,
+              `MERGE_METHOD: ${mergeMethod}`,
+              `AUTO_MERGE_ELIGIBLE: ${autoMergeEligible}`,
+              `AUTO_MERGE_STATUS: ${autoMergeStatus}`,
+              `HUMAN_REQUIRED: ${humanRequired}`,
+              '',
+              `changed_files: ${filenames.length}`,
+              '',
+              '### 判定理由',
+              ...(safe ? ['- docs-only PRとして安全条件を満たしました。'] : reasons.map(reason => `- ${reason}`)),
+              ...(autoMergeMessage ? ['', '### Auto-merge', `- ${autoMergeMessage}`] : []),
+              '',
+              '### 人間が次にやること',
+              ...(humanRequired === 'YES'
+                ? humanReasons.map(reason => `- ${reason}`)
+                : ['- なし'])
+            ];
+
+            await upsertComment(resultLines.join('\n'));

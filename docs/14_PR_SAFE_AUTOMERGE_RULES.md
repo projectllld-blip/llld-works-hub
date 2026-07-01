@@ -6,7 +6,9 @@
 - 危険変更は自動マージ候補にしない。
 - main保護ルール、GitHub Actions、既存レビュー運用を壊さない。
 
-このdocsは設計メモであり、現時点ではGitHub Actions実装やGitHub Settings変更を行わない。
+A0.7で `.github/workflows/pr-safe-automerge.yml` を追加した。
+
+ただし、`.github/workflows/**` を変更するPR自身は自動マージ対象外であり、人間確認・人間マージが必要。
 
 ## 基本方針
 ```text
@@ -168,41 +170,39 @@ docs内のSTOP条件や禁止語説明として既に存在する語は、単純
 - 将来的に許可リストを作る場合も、実secretらしき値を見逃さないようにする。
 - 危険語を「説明として追加」したdocs-only PRは `HUMAN_REQUIRED` に寄せる。
 
-## GitHub Actions案
-候補workflow名:
+## GitHub Actions
 
 ```text
-.github/workflows/pr-safe-classifier.yml
+.github/workflows/pr-safe-automerge.yml
 ```
 
-今回はworkflowファイルを作らない。案だけをここに残す。
-
-処理案:
+処理:
 1. PRのchanged filesを取得する。
 2. 変更ファイルがdocs-only候補か判定する。
 3. 禁止ファイルパターンを判定する。
 4. PR差分の追加行に対して危険語scanを行う。
-5. QA workflow / required checks の成功状態を確認する。
-6. mainとの競合有無を確認する。
-7. 分類ラベルを付与する。
-8. `SAFE_DOCS_ONLY` かつActions成功なら `automerge-candidate` を付ける。
-9. それ以外は `needs-human-review` または `blocked/*` を付ける。
+5. fork PR、draft PR、base branchがmain以外のPRを自動マージ対象外にする。
+6. `human-required` ラベル付きPRを自動マージ対象外にする。
+7. 安全なdocs-only PRに `safe-docs-automerge` を付ける。
+8. 危険または判定不能なPRに `human-required` と `auto-merge-blocked` を付ける。
+9. safeなdocs-only PRだけGitHub auto-mergeを有効化する。
+10. auto-merge設定に失敗した場合は `auto-merge-setup-required` と `human-required` を付ける。
+11. 判定結果をPRコメントに残す。
+12. safe PRがmergedされたら、可能な範囲でhead branch削除を試みる。
 
-ラベル付与案:
-- `safe/docs-only`
-- `needs-human-review`
-- `blocked/secret-risk`
-- `blocked/supabase-risk`
-- `blocked/rls-risk`
-- `blocked/actions-failed`
-- `automerge-candidate`
-- `do-not-automerge`
+ラベル:
+- `safe-docs-automerge`
+- `human-required`
+- `auto-merge-blocked`
+- `auto-merge-setup-required`
 
-auto-merge有効化案:
-- GitHub branch protectionを尊重する。
-- required checksがすべて成功している場合のみ候補にする。
-- Actions失敗時は絶対にmergeしない。
-- 実際のauto-merge有効化は人間がGitHub Settingsと権限を確認してから行う。
+安全条件:
+- `pull_request_target` を使うが、`actions/checkout` は使わない。
+- PRブランチ上のスクリプトを実行しない。
+- PR由来の `npm install` をしない。
+- GitHub APIでchanged filesとpatchだけを読む。
+- 即時マージコマンドは使わない。
+- GitHub auto-mergeが使えない場合は人間確認に戻す。
 
 ## 自動マージしてはいけない理由
 - データ漏洩を防ぐため。
@@ -214,21 +214,22 @@ auto-merge有効化案:
 - migrationやsite-configの誤変更を防ぐため。
 
 ## 運用ルール
-- A0.6は設計のみ。workflow実装は別Phaseで扱う。
+- A0.6は設計、A0.7はworkflow実装として扱う。
 - 自動マージ対象は最初から広げない。
 - docs-onlyでも、危険語や危険ファイルに触れたら `HUMAN_REQUIRED` とする。
-- `automerge-candidate` は「安全候補」であり、人間が運用開始を決めるまでは実mergeを自動化しない。
+- `safe-docs-automerge` は安全候補であり、GitHub auto-merge設定に成功した場合のみ人間操作なしでmainへ入る。
+- GitHub auto-merge設定に失敗した場合は `auto-merge-setup-required` と `human-required` にする。
 - 本線PRとA0.x運用PRを混ぜない。
 
 ## STOP条件
 以下に該当したら自動マージ設計・実装を止める。
 
-- GitHub Actions実装が必要。
+- GitHub Actions実装が安全にできない。
 - GitHub Settings変更が必要。
 - branch protection設定変更が必要。
 - GitHub token / Secrets設定が必要。
 - workflow permissions変更が必要。
-- 実際の自動マージ有効化が必要。
+- 即時マージしかできない。
 - 本体UI / JS変更が必要。
 - Supabase / Auth / RLS / migrationに触る必要がある。
 - secretやservice_role keyが必要。
