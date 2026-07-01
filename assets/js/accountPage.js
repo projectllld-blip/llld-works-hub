@@ -6,54 +6,6 @@
 
   const page = document.body.dataset.accountPage;
   let loadedCompanyInfo = null;
-  let selectedAppRequest = null;
-  let currentRequestAccount = null;
-  let currentRequestStatus = null;
-  const appRequestState = {
-    requestedKeys: new Set(),
-    requests: [],
-    recordsByKey: new Map(),
-    catalogRowsByKey: new Map()
-  };
-
-  const APP_REQUEST_CATALOG = [
-    {
-      appKey: 'seatflow',
-      name: '座席管理 SeatFlow',
-      category: '教室・店舗',
-      description: '座席配置を管理し、教室や店舗の見える化を助けます。'
-    },
-    {
-      appKey: 'pdf_tool',
-      name: 'PDF編集',
-      category: '書類',
-      description: 'PDFの結合・分割・整理を行う書類作業向けツールです。'
-    },
-    {
-      appKey: 'quiz_maker',
-      name: '小テスト作成',
-      category: '学習支援',
-      description: '小テスト作成と出力を支援します。'
-    },
-    {
-      appKey: 'attendance',
-      name: '勤怠管理 だこくん',
-      category: '勤怠',
-      description: '小さな現場向けの出退勤記録を扱うアプリです。'
-    },
-    {
-      appKey: 'meeting_support',
-      name: '会議サポート',
-      category: '業務支援',
-      description: '会議メモや準備を支援するコンテンツです。'
-    },
-    {
-      appKey: 'sales_talk_support',
-      name: '営業トーク支援',
-      category: '営業',
-      description: '営業時の説明や相談内容の整理を支援します。'
-    }
-  ];
   if (!page) return;
 
   init();
@@ -157,14 +109,12 @@
         setText('#accountStatus', '取得エラー');
         setText('#accountSyncStatus', 'アカウント情報を取得できませんでした。接続状態を確認して再読込してください。');
         setText('#accountAppsStatus', '利用アプリ一覧を取得できませんでした。');
-        await renderAppRequestPanel(null, status, []);
         renderStatus('アカウント情報の取得に失敗しました。再読込を押してください。', false);
       }
     };
 
     await loadAccount();
     initCompanyInfoForm(status);
-    initAppRequestForm();
 
     const retryButton = $('#retryAccountButton');
     if (retryButton) {
@@ -204,7 +154,6 @@
     setCompanyFormEnabled(false);
     setCompanyFormStatus('企業情報を読み込み中です。', true);
     renderAppCards('#accountApps', []);
-    renderAppRequestPanel(null, status, []);
     renderStatus('読み込み中です。少しお待ちください。', true);
   }
 
@@ -221,7 +170,6 @@
     setText('#accountSyncStatus', result?.message || 'ログインが必要です。企業アカウントでログインしてください。');
     renderAppCards('#accountApps', []);
     setText('#accountAppsStatus', 'ログイン後に利用アプリ一覧を表示します。');
-    renderAppRequestPanel(null, status, []);
     setText('#accountDemoAppsStatus', 'ログイン後に検証用アプリ追加を表示します。');
     const demoApps = $('#accountDemoApps');
     if (demoApps) demoApps.innerHTML = '<p class="account-demo-empty">ログイン後に表示します。</p>';
@@ -380,14 +328,12 @@
     if (!window.AppInstanceService?.getMyAppInstances) {
       renderAppCards('#accountApps', []);
       setText('#accountAppsStatus', '利用アプリ一覧サービスを確認できません。');
-      await renderAppRequestPanel(account, status, []);
       return;
     }
 
     const result = await window.AppInstanceService.getMyAppInstances(account.id);
     setText('#accountAppsStatus', result.message || '利用アプリ一覧を表示しています。');
     renderAppCards('#accountApps', result.apps || []);
-    await renderAppRequestPanel(account, status, result.apps || []);
     await renderDemoAppAddPanel(account, status);
 
     if (status.mode === 'supabase' && result.appStatus === 'empty') {
@@ -395,372 +341,6 @@
     } else if (result.ok === false) {
       renderStatus(result.message, false);
     }
-  }
-
-  function initAppRequestForm() {
-    const form = $('#appRequestForm');
-    if (!form) return;
-
-    form.addEventListener('submit', async event => {
-      event.preventDefault();
-      if (!selectedAppRequest) {
-        setAppRequestStatus('申請したいアプリを選んでください。', false);
-        return;
-      }
-      if (!form.reportValidity()) return;
-
-      const message = $('#appRequestMessage')?.value.trim() || '';
-      const contactWanted = $('#appRequestContactWanted')?.value === 'yes';
-
-      setAppRequestFormBusy(true);
-      setAppRequestStatus('申請を送信しています...', true);
-
-      try {
-        const result = await submitAppRequest(selectedAppRequest, message, contactWanted);
-        if (!result.ok) {
-          setAppRequestStatus(result.message || '申請の送信に失敗しました。時間をおいてもう一度お試しください。', false);
-          return;
-        }
-
-        setAppRequestStatus(result.message || '申請を受け付けました。内容を確認後、運営からご連絡します。', true);
-        hideAppRequestForm();
-        await renderAppRequestPanel(currentRequestAccount, currentRequestStatus, readRenderedOwnedApps());
-      } catch {
-        setAppRequestStatus('申請の送信に失敗しました。接続状態を確認してください。', false);
-      } finally {
-        setAppRequestFormBusy(false);
-      }
-    });
-
-    const cancelButton = $('#cancelAppRequestButton');
-    if (cancelButton) {
-      cancelButton.addEventListener('click', () => {
-        hideAppRequestForm();
-        setAppRequestStatus('申請を閉じました。未利用アプリから選び直せます。', true);
-      });
-    }
-  }
-
-  async function renderAppRequestPanel(account, status, ownedApps = []) {
-    const root = $('#accountAppRequests');
-    if (!root) return;
-
-    hideAppRequestForm(false);
-    if (!account || (currentRequestAccount?.id && currentRequestAccount.id !== account.id)) {
-      resetAppRequestState();
-    }
-    if (account) currentRequestAccount = account;
-    if (status) currentRequestStatus = status;
-    const candidates = buildAppRequestCandidates(ownedApps);
-
-    if (!account) {
-      setText('#accountAppRequestsStatus', 'ログイン後に未利用アプリの申請mockを表示します。');
-      root.innerHTML = '<p class="account-request-empty">ログイン後に表示します。</p>';
-      setAppRequestStatus('申請内容はまだ送られていません。', true);
-      return;
-    }
-
-    setText(
-      '#accountAppRequestsStatus',
-      status?.mode === 'supabase'
-        ? 'まだ利用していないアプリについて、追加利用や相談を申請できます。申請内容はapp_add_requestsへ保存します。'
-        : 'まだ利用していないアプリについて、追加利用や相談を申請できます。mock modeでは画面内状態だけで確認します。'
-    );
-
-    if (status?.mode === 'supabase') {
-      setAppRequestStatus('申請履歴を確認しています。', true);
-      const loadResult = await loadSupabaseAppRequests(account.id);
-      if (!loadResult.ok) {
-        setAppRequestStatus(loadResult.message || '申請履歴の取得に失敗しました。', false);
-      } else {
-        setAppRequestStatus(loadResult.message || '申請履歴を確認しました。', true);
-      }
-    }
-
-    if (!candidates.length) {
-      root.innerHTML = '<p class="account-request-empty">申請できる未利用アプリはありません。</p>';
-      return;
-    }
-
-    root.innerHTML = candidates.map(app => {
-      const state = appRequestStatusFor(app);
-      const disabled = state !== 'unused';
-      const buttonLabel = state === 'requested' ? '申請済み' : state === 'owned' ? '利用中' : '追加を申請する';
-      return `
-        <article class="account-request-card" data-request-state="${escapeHtml(state)}">
-          <div class="account-request-main">
-            <span class="account-request-key">${escapeHtml(app.appKey)}</span>
-            <strong>${escapeHtml(app.name)}</strong>
-            <p>${escapeHtml(app.description)}</p>
-          </div>
-          <dl class="account-request-meta">
-            <div><dt>カテゴリ</dt><dd>${escapeHtml(app.category)}</dd></div>
-            <div><dt>状態</dt><dd><span class="account-request-pill">${escapeHtml(labelForRequestState(state))}</span></dd></div>
-          </dl>
-          <button class="btn secondary account-request-button" type="button" data-app-request-key="${escapeHtml(app.appKey)}"${disabled ? ' disabled' : ''}>${escapeHtml(buttonLabel)}</button>
-        </article>
-      `;
-    }).join('');
-
-    root.querySelectorAll('[data-app-request-key]').forEach(button => {
-      button.addEventListener('click', () => {
-        const app = APP_REQUEST_CATALOG.find(item => item.appKey === button.dataset.appRequestKey);
-        if (!app) return;
-        openAppRequestForm(app);
-      });
-    });
-  }
-
-  function buildAppRequestCandidates(ownedApps = []) {
-    const ownedKeys = new Set((ownedApps || []).map(app => app.appKey).filter(Boolean));
-    return APP_REQUEST_CATALOG.map(app => ({
-      ...app,
-      owned: ownedKeys.has(app.appKey)
-    }));
-  }
-
-  function appRequestStatusFor(app = {}) {
-    if (app.owned) return 'owned';
-    if (appRequestState.requestedKeys.has(app.appKey)) return 'requested';
-    return 'unused';
-  }
-
-  function labelForRequestState(state) {
-    const labels = {
-      owned: '利用中',
-      requested: '申請済み',
-      unused: '未利用'
-    };
-    return labels[state] || state || '-';
-  }
-
-  function openAppRequestForm(app) {
-    selectedAppRequest = { ...app };
-    const form = $('#appRequestForm');
-    if (!form) return;
-
-    form.hidden = false;
-    setValue('#appRequestAppName', app.name);
-    setText('#appRequestSelectedApp', `${app.name} の追加申請を作成します。`);
-    setValue('#appRequestMessage', '');
-    setValue('#appRequestContactWanted', 'yes');
-    setAppRequestStatus('利用目的・相談内容を入力して、申請を送ってください。', true);
-    $('#appRequestMessage')?.focus();
-  }
-
-  async function submitAppRequest(app, message, contactWanted) {
-    if (currentRequestStatus?.mode !== 'supabase') {
-      return submitMockAppRequest(app, message, contactWanted);
-    }
-
-    if (!currentRequestAccount?.id) {
-      return {
-        ok: false,
-        message: '企業アカウント情報を確認できません。再読込してからお試しください。'
-      };
-    }
-
-    if (appRequestState.requestedKeys.has(app.appKey)) {
-      return {
-        ok: true,
-        message: 'このアプリはすでに申請済みです。'
-      };
-    }
-
-    const client = await window.SupabaseClientService?.getSupabaseClient?.();
-    if (!client?.from) {
-      return {
-        ok: false,
-        message: 'Supabase clientを確認できません。接続設定を確認してください。'
-      };
-    }
-
-    const appRow = appRequestState.catalogRowsByKey.get(app.appKey) || await fetchAppCatalogRow(client, app.appKey);
-    if (!appRow?.id) {
-      return {
-        ok: false,
-        message: '申請対象アプリを確認できません。appsテーブルの内容を確認してください。'
-      };
-    }
-
-    const insert = {
-      company_account_id: currentRequestAccount.id,
-      app_id: appRow.id,
-      app_key_snapshot: appRow.app_key || app.appKey,
-      app_name_snapshot: appRow.name || app.name,
-      request_message: message,
-      contact_requested: Boolean(contactWanted),
-      status: 'pending'
-    };
-
-    const { data, error } = await client
-      .from('app_add_requests')
-      .insert(insert)
-      .select('id,app_id,app_key_snapshot,app_name_snapshot,status,contact_requested,request_message,created_at,updated_at')
-      .single();
-
-    if (error) {
-      return {
-        ok: false,
-        message: '申請の保存に失敗しました。app_add_requestsのRLSとmigration適用状況を確認してください。'
-      };
-    }
-
-    rememberAppRequest(data || insert, app.appKey);
-    return {
-      ok: true,
-      message: '申請を受け付けました。内容を確認後、運営からご連絡します。'
-    };
-  }
-
-  function submitMockAppRequest(app, message, contactWanted) {
-    appRequestState.requestedKeys.add(app.appKey);
-    appRequestState.requests.push({
-      appKey: app.appKey,
-      name: app.name,
-      message,
-      contactWanted,
-      requestedAt: new Date().toISOString()
-    });
-    return {
-      ok: true,
-      message: '申請を受け付けました。内容を確認後、運営からご連絡します。'
-    };
-  }
-
-  async function loadSupabaseAppRequests(companyAccountId) {
-    if (!companyAccountId) {
-      return {
-        ok: false,
-        message: '企業アカウント情報を確認できません。'
-      };
-    }
-
-    const client = await window.SupabaseClientService?.getSupabaseClient?.();
-    if (!client?.from) {
-      return {
-        ok: false,
-        message: 'Supabase clientを確認できません。'
-      };
-    }
-
-    try {
-      const appKeys = APP_REQUEST_CATALOG.map(app => app.appKey);
-      const [{ data: appRows, error: appsError }, { data: requestRows, error: requestError }] = await Promise.all([
-        client
-          .from('apps')
-          .select('id,app_key,name,description,status')
-          .in('app_key', appKeys),
-        client
-          .from('app_add_requests')
-          .select('id,app_id,app_key_snapshot,app_name_snapshot,status,contact_requested,request_message,created_at,updated_at')
-          .eq('company_account_id', companyAccountId)
-          .order('created_at', { ascending: false })
-      ]);
-
-      if (appsError) {
-        return {
-          ok: false,
-          message: '申請対象アプリの取得に失敗しました。appsテーブルとRLSを確認してください。'
-        };
-      }
-
-      if (requestError) {
-        return {
-          ok: false,
-          message: '申請履歴の取得に失敗しました。app_add_requestsのRLSを確認してください。'
-        };
-      }
-
-      appRequestState.catalogRowsByKey = new Map((appRows || []).map(row => [row.app_key, row]));
-      appRequestState.recordsByKey = new Map();
-      appRequestState.requestedKeys = new Set(appRequestState.requests.map(row => row.appKey).filter(Boolean));
-
-      (requestRows || []).forEach(row => rememberAppRequest(row));
-
-      return {
-        ok: true,
-        message: requestRows?.length
-          ? '保存済みの申請履歴を反映しました。'
-          : '保存済みの申請はまだありません。'
-      };
-    } catch {
-      return {
-        ok: false,
-        message: '申請履歴の取得に失敗しました。接続状態を確認してください。'
-      };
-    }
-  }
-
-  async function fetchAppCatalogRow(client, appKey) {
-    const { data, error } = await client
-      .from('apps')
-      .select('id,app_key,name,description,status')
-      .eq('app_key', appKey)
-      .maybeSingle();
-    if (error || !data) return null;
-    appRequestState.catalogRowsByKey.set(data.app_key, data);
-    return data;
-  }
-
-  function rememberAppRequest(row = {}, fallbackAppKey = '') {
-    const appKey = row.app_key_snapshot || fallbackAppKey || appKeyFromAppId(row.app_id);
-    if (!appKey) return;
-    appRequestState.requestedKeys.add(appKey);
-    appRequestState.recordsByKey.set(appKey, row);
-  }
-
-  function appKeyFromAppId(appId) {
-    if (!appId) return '';
-    for (const [appKey, row] of appRequestState.catalogRowsByKey.entries()) {
-      if (row.id === appId) return appKey;
-    }
-    return '';
-  }
-
-  function setAppRequestFormBusy(busy) {
-    const submitButton = $('#submitAppRequestButton');
-    const cancelButton = $('#cancelAppRequestButton');
-    const form = $('#appRequestForm');
-    if (form) {
-      form.querySelectorAll('textarea,select').forEach(control => {
-        control.disabled = busy;
-      });
-    }
-    if (submitButton) {
-      submitButton.disabled = busy;
-      submitButton.textContent = busy ? '送信中...' : '申請を送る';
-    }
-    if (cancelButton) cancelButton.disabled = busy;
-  }
-
-  function resetAppRequestState() {
-    appRequestState.requestedKeys = new Set();
-    appRequestState.requests = [];
-    appRequestState.recordsByKey = new Map();
-    appRequestState.catalogRowsByKey = new Map();
-  }
-
-  function hideAppRequestForm(clearSelection = true) {
-    const form = $('#appRequestForm');
-    if (!form) return;
-    form.hidden = true;
-    if (clearSelection) selectedAppRequest = null;
-  }
-
-  function setAppRequestStatus(message, ok) {
-    const status = $('#appRequestStatus');
-    if (!status) return;
-    status.textContent = message || '';
-    status.dataset.state = ok ? 'ok' : 'warn';
-  }
-
-  function readRenderedOwnedApps() {
-    const keys = $$('.account-app-key')
-      .map(node => node.textContent.trim())
-      .filter(Boolean)
-      .filter(key => key !== '-');
-    return keys.map(appKey => ({ appKey }));
   }
 
   async function renderDemoAppAddPanel(account, status) {
