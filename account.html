@@ -103,6 +103,37 @@
       </article>
 
       <article class="detail-panel">
+        <h2>アプリ追加申請</h2>
+        <p class="account-note" id="accountAppRequestsStatus">未利用アプリを確認しています。</p>
+        <div class="account-request-apps" id="accountAppRequests"></div>
+        <form class="account-form account-request-form" id="appRequestForm" hidden novalidate>
+          <h3>追加申請の内容</h3>
+          <p class="account-form-help" id="appRequestSelectedApp">申請したいアプリを選んでください。</p>
+          <label>
+            申請したいアプリ
+            <input id="appRequestAppName" name="appName" type="text" readonly>
+          </label>
+          <label>
+            利用目的・相談内容
+            <textarea id="appRequestMessage" name="message" rows="4" maxlength="500" required placeholder="このアプリを追加したい理由や、相談したい内容があれば入力してください。"></textarea>
+          </label>
+          <label>
+            連絡希望
+            <select id="appRequestContactWanted" name="contactWanted">
+              <option value="yes">運営からの連絡を希望する</option>
+              <option value="no">まずは申請だけ送る</option>
+            </select>
+          </label>
+          <div class="detail-cta-row account-form-actions">
+            <button class="btn primary" id="submitAppRequestButton" type="submit">申請を送る</button>
+            <button class="btn secondary" id="cancelAppRequestButton" type="button">閉じる</button>
+          </div>
+          <p class="account-form-help">このMVPではDB保存・自動追加は行いません。画面上で申請の流れだけを確認します。</p>
+        </form>
+        <p class="account-status account-form-status" id="appRequestStatus" aria-live="polite">申請内容はまだ送られていません。</p>
+      </article>
+
+      <article class="detail-panel">
         <h2>検証用アプリ追加</h2>
         <p class="account-note" id="accountDemoAppsStatus">本番購入ではなく、クラウド保存検証用に利用アプリを追加します。</p>
         <div class="account-demo-apps" id="accountDemoApps"></div>
