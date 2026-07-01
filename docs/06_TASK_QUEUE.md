@@ -20,7 +20,7 @@
 - v1.2b 企業情報編集フォームMVP
 
 ## IN_PROGRESS
-- v1.3a アプリ追加申請UI mock: `account.html` にDB保存なしの申請導線を追加。PR / 人間ブラウザ確認 / main反映確認待ち。
+- v1.3a アプリ追加申請UI mock 追加修正: `account.html` の申請エリアを明確化。追加修正PR / 人間ブラウザ確認 / main反映確認待ち。
 
 ## NEXT
 - v1.3b アプリ追加申請DB保存設計
