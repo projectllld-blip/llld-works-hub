@@ -1433,6 +1433,145 @@ body.tree-dragging{
   .todo-body{grid-template-rows:auto 1fr!important}
   .todo-list{max-height:none!important}
 }
+
+/* v20: responsive portal header repair */
+.header>*,
+.brand,
+.search,
+.h-actions,
+.portal-save-status{
+  min-width:0;
+}
+.brand strong{
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.market,
+.hbtn{
+  white-space:nowrap;
+}
+.h-actions{
+  flex-wrap:wrap;
+}
+@media(max-width:1180px){
+  .header{
+    grid-template-columns:minmax(0,1fr) auto auto auto;
+    grid-template-areas:
+      "brand market actions status"
+      "search search search search";
+    align-items:center;
+    gap:10px 12px;
+    padding:10px 16px;
+  }
+  .brand{grid-area:brand}
+  .market{grid-area:market}
+  .search{grid-area:search}
+  .h-actions{grid-area:actions}
+  .portal-save-status{
+    grid-area:status;
+    max-width:180px;
+  }
+}
+@media(max-width:900px){
+  .header{
+    position:sticky;
+    top:0;
+    grid-template-columns:minmax(0,1fr) auto;
+    grid-template-areas:
+      "brand status"
+      "market actions"
+      "search search";
+    gap:9px;
+    padding:10px 12px;
+  }
+  .brand strong{
+    font-size:1.55rem;
+  }
+  .brand span:last-child{
+    margin-left:4px;
+    font-size:.92rem;
+  }
+  .market{
+    justify-self:start;
+    max-width:100%;
+    height:32px;
+    padding:0 12px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .h-actions{
+    justify-content:flex-end;
+    gap:7px;
+  }
+  .hbtn{
+    min-height:32px;
+    padding:0 10px;
+  }
+  .portal-save-status{
+    justify-self:end;
+    max-width:min(38vw,180px);
+    min-height:32px;
+  }
+  .portal-cloud-notice{
+    align-items:flex-start;
+    flex-direction:column;
+    padding:10px 12px;
+  }
+  .portal-cloud-actions{
+    justify-content:flex-start;
+  }
+}
+@media(max-width:520px){
+  html,
+  body,
+  .portal-shell{
+    max-width:100%;
+    overflow-x:hidden;
+  }
+  .header{
+    grid-template-columns:minmax(0,1fr);
+    grid-template-areas:
+      "brand"
+      "status"
+      "market"
+      "actions"
+      "search";
+  }
+  .brand{
+    gap:8px;
+  }
+  .mark{
+    width:28px;
+    height:28px;
+    flex:0 0 auto;
+  }
+  .brand strong{
+    font-size:1.34rem;
+  }
+  .brand span:last-child{
+    display:none;
+  }
+  .portal-save-status,
+  .market,
+  .h-actions,
+  .search{
+    width:100%;
+    max-width:100%;
+    justify-self:stretch;
+  }
+  .h-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+  .hbtn{
+    justify-content:center;
+    text-align:center;
+  }
+  .search input{
+    height:36px;
+  }
+}
 </style>
 </head>
 <body>
