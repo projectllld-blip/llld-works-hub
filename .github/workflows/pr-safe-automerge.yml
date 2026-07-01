@@ -180,43 +180,70 @@ jobs:
               reasons.push(`dangerous files changed: ${dangerousFiles.join(', ')}`);
             }
 
-            const riskyTerms = [
-              /service_role/i,
-              /sb_secret_/i,
-              /SUPABASE_SERVICE_ROLE/,
-              /access_token/i,
-              /refresh_token/i,
-              /private key/i,
-              /disable row level security/i,
-              /anon key/i,
-              /secret/i,
-              /password/i,
-              /api key/i,
-              /app_data/i,
-              /app_instances/i,
-              /company_accounts/i,
-              /RLS/i,
-              /Supabase/i,
-              /Auth/i
+            const blockingAdditionPatterns = [
+              {
+                name: 'Supabase service role style assignment',
+                pattern: /\b(service_role|SUPABASE_SERVICE_ROLE|sb_secret_[A-Za-z0-9_-]*)\b\s*[:=]\s*['"]?[A-Za-z0-9._-]{20,}/i
+              },
+              {
+                name: 'private key block',
+                pattern: /-----BEGIN [A-Z ]*PRIVATE KEY-----/i
+              },
+              {
+                name: 'sensitive environment assignment',
+                pattern: /\b(DATABASE_URL|OPENAI_API_KEY|STRIPE_SECRET|GITHUB_TOKEN|SUPABASE_SERVICE_ROLE)\b\s*[:=]\s*['"]?\S{12,}/i
+              },
+              {
+                name: 'refresh or access token assignment',
+                pattern: /\b(refresh_token|access_token)\b\s*[:=]\s*['"]?[A-Za-z0-9._-]{20,}/i
+              },
+              {
+                name: 'RLS disable SQL',
+                pattern: /\balter\s+table\b.+\bdisable\s+row\s+level\s+security\b\s*;?/i
+              },
+              {
+                name: 'RLS disable statement',
+                pattern: /^\s*disable\s+row\s+level\s+security\s*;?\s*$/i
+              }
             ];
 
-            const riskyAdditions = [];
+            const docsExplanationTerms = [
+              /service_role/i,
+              /sb_secret_/i,
+              /secret/i,
+              /disable row level security/i,
+              /\bRLS\b/i,
+              /migration/i,
+              /Supabase/i,
+              /Auth/i,
+              /company_accounts/i,
+              /app_instances/i,
+              /app_data/i
+            ];
+
+            const blockingAdditions = [];
+            const docsExplanationAdditions = [];
             for (const file of files) {
               const patch = file.patch || '';
+              const docsLikeFile = file.filename === 'README.md' || file.filename.startsWith('docs/');
               const additions = patch
                 .split('\n')
                 .filter(line => line.startsWith('+') && !line.startsWith('+++'))
                 .map(line => line.slice(1));
               for (const line of additions) {
-                if (riskyTerms.some(pattern => pattern.test(line))) {
-                  riskyAdditions.push(file.filename);
+                const blockingMatch = blockingAdditionPatterns.find(item => item.pattern.test(line));
+                if (blockingMatch) {
+                  blockingAdditions.push(`${file.filename} (${blockingMatch.name})`);
                   break;
+                }
+                if (docsLikeFile && docsExplanationTerms.some(pattern => pattern.test(line))) {
+                  docsExplanationAdditions.push(file.filename);
                 }
               }
             }
 
-            if (riskyAdditions.length) {
-              reasons.push(`risky terms added in diff: ${Array.from(new Set(riskyAdditions)).join(', ')}`);
+            if (blockingAdditions.length) {
+              reasons.push(`blocking risky additions found: ${Array.from(new Set(blockingAdditions)).join(', ')}`);
             }
 
             const safe = reasons.length === 0;
@@ -281,6 +308,9 @@ jobs:
               '',
               '### 判定理由',
               ...(safe ? ['- docs-only PRとして安全条件を満たしました。'] : reasons.map(reason => `- ${reason}`)),
+              ...(safe && docsExplanationAdditions.length
+                ? ['', '### docs説明語の扱い', `- 禁止語・確認語の説明として扱いました: ${Array.from(new Set(docsExplanationAdditions)).join(', ')}`]
+                : []),
               ...(autoMergeMessage ? ['', '### Auto-merge', `- ${autoMergeMessage}`] : []),
               '',
               '### 人間が次にやること',

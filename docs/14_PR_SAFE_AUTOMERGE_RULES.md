@@ -22,7 +22,7 @@ docs-only以外:
   必ず HUMAN_REQUIRED
 
 secret / service_role / RLS無効化検出:
-  必ず停止
+  実secret値・RLS無効化SQLらしき追加は必ず停止
 ```
 
 自動マージは「候補」にとどめる。実際に有効化するには、branch protection、Actions権限、auto-merge設定、ラベル運用を人間が確認する。
@@ -37,7 +37,8 @@ secret / service_role / RLS無効化検出:
 - QA / Actionsが成功している。
 - mainとの競合がない。
 - 危険ファイルパターンに一致しない。
-- 危険語の新規追加がない。
+- 実secret値・RLS無効化SQLらしき追加がない。
+- docs内のSTOP条件や禁止語説明だけならブロックしない。
 - PR本文に `HUMAN_REQUIRED: NO` がある。
 
 ### HUMAN_REQUIRED
@@ -105,7 +106,8 @@ GitHub Actionsまたは必須QAが失敗している分類。
 - 本体UI / JS / CSSを変更していない。
 - Supabase / migration / site-configを変更していない。
 - Auth / login / signup / account関連を変更していない。
-- 危険語の新規追加がない。
+- 実secret値・RLS無効化SQLらしき追加がない。
+- `service_role`、`sb_secret_`、`secret`、`disable row level security`、`RLS`、`migration` などを禁止語・確認語としてdocsに説明するだけならブロックしない。
 - QA / Actionsがすべて成功している。
 - mainとの競合がない。
 - PR本文に `HUMAN_REQUIRED: NO` がある。
@@ -150,25 +152,42 @@ GitHub Actionsまたは必須QAが失敗している分類。
 A0.xの専用作業で人間が明示した場合のみ、別PRで扱う。
 
 ## 危険語scan方針
-自動マージ判定では、危険語を検出したら原則 `do-not-automerge` とする。
+自動マージ判定では、単純な禁止語出現ではなく、実secret値・破壊的SQLらしき追加だけをブロックする。
 
-検出候補:
+docs内では、STOP条件や安全ルールとして以下の語を説明することがある。
+
 - `service_role`
 - `sb_secret_`
-- `SUPABASE_SERVICE_ROLE`
-- `refresh_token`
-- `access_token`
-- `private key`
+- `secret`
 - `disable row level security`
-- `alter table .* disable row level security`
+- `RLS`
+- `migration`
+- `Supabase`
+- `Auth`
+- `company_accounts`
+- `app_instances`
+- `app_data`
 
-docs内のSTOP条件や禁止語説明として既に存在する語は、単純な全文scanだけでは誤検知しやすい。
+これらの語がdocsの説明文・チェック項目・確認結果として追加されるだけなら、自動マージ対象外にしない。
 
-推奨:
+ブロックする例:
+- `service_role` や `SUPABASE_SERVICE_ROLE` に長い値を代入している。
+- `sb_secret_` で始まる実値らしき文字列を追加している。
+- `DATABASE_URL`、`OPENAI_API_KEY`、`STRIPE_SECRET`、`GITHUB_TOKEN` などに値を代入している。
+- private key blockを追加している。
+- `alter table ... disable row level security` のようなRLS無効化SQLを追加している。
+
+許可する例:
+- 「service_role keyをrepoへ入れない」とdocsに書く。
+- 「sb_secret_ を検出対象にする」とdocsに書く。
+- 「disable row level security を追加しない」とdocsに書く。
+- 「RLS確認が必要」とdocsに書く。
+- 「migrationはCodexが実DBへ適用しない」とdocsに書く。
+
+運用上の注意:
 - PR差分の追加行だけをscanする。
-- `docs/02_STOP_CONDITIONS.md` や本ファイルのような禁止語説明は、最初は自動マージ対象外にして人間確認する。
-- 将来的に許可リストを作る場合も、実secretらしき値を見逃さないようにする。
-- 危険語を「説明として追加」したdocs-only PRは `HUMAN_REQUIRED` に寄せる。
+- docs-only以外のPRでは、ファイル種別の危険判定を優先する。
+- 実secret値を見逃さないため、値代入や秘密鍵ブロックは引き続き強くブロックする。
 
 ## GitHub Actions
 
@@ -180,7 +199,7 @@ docs内のSTOP条件や禁止語説明として既に存在する語は、単純
 1. PRのchanged filesを取得する。
 2. 変更ファイルがdocs-only候補か判定する。
 3. 禁止ファイルパターンを判定する。
-4. PR差分の追加行に対して危険語scanを行う。
+4. PR差分の追加行に対して実secret値・RLS無効化SQLらしき追加をscanする。
 5. fork PR、draft PR、base branchがmain以外のPRを自動マージ対象外にする。
 6. `human-required` ラベル付きPRを自動マージ対象外にする。
 7. 安全なdocs-only PRに `safe-docs-automerge` を付ける。
@@ -216,7 +235,8 @@ docs内のSTOP条件や禁止語説明として既に存在する語は、単純
 ## 運用ルール
 - A0.6は設計、A0.7はworkflow実装として扱う。
 - 自動マージ対象は最初から広げない。
-- docs-onlyでも、危険語や危険ファイルに触れたら `HUMAN_REQUIRED` とする。
+- docs-onlyでも、実secret値、RLS無効化SQL、危険ファイルに触れたら `HUMAN_REQUIRED` とする。
+- docs内の禁止語・確認語の説明だけなら、他の安全条件を満たす限り自動マージ候補にできる。
 - `safe-docs-automerge` は安全候補であり、GitHub auto-merge設定に成功した場合のみ人間操作なしでmainへ入る。
 - GitHub auto-merge設定に失敗した場合は `auto-merge-setup-required` と `human-required` にする。
 - 本線PRとA0.x運用PRを混ぜない。

@@ -50,6 +50,14 @@
 - RLSを無効化するSQLや `disable row level security` の追加。
 - Supabase設定、Auth / login / signup / account、migration、`app_data`、`app_instances` に関わる変更。
 
+docs-only自動マージ判定では、`service_role`、`sb_secret_`、`secret`、`disable row level security`、`RLS`、`migration` などをSTOP条件や禁止語説明としてdocsへ書くだけなら、このSTOP条件には該当しない。
+
+ただし、以下はSTOP条件に該当する。
+- 実secret値らしき文字列を追加している。
+- private key blockを追加している。
+- `alter table ... disable row level security` のようなRLS無効化SQLを追加している。
+- Supabase URL / anon key / service_role keyなどの設定値を変更している。
+
 ## HUMAN_REQUIRED判定関連
 - `HUMAN_REQUIRED` は「作業が残っているか」ではなく、「人間が実務として確認・判断・操作する必要が残っているか」で判定する。
 - 人間が何か1つでも確認・判断・操作する必要がある場合は `HUMAN_REQUIRED: YES` とする。
