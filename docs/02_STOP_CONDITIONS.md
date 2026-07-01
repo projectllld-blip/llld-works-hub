@@ -17,6 +17,9 @@
 - branch protection設定が必要。
 - mainへの反映判断が必要。
 - 公開URLでの確認が必要。
+- GitHub Actions実装、workflow permissions変更、auto-merge有効化が必要。
+- docs-only自動マージ対象外ファイルに触れている。
+- GitHub Actionsまたは必須QAが失敗している。
 
 ## 外部サービス関連
 - Stripe。
@@ -40,6 +43,9 @@
 - 認証・権限・RLS・支払いに関わる変更。
 - secret混入の疑い。
 - 仕様が曖昧で勝手に決めると危険。
+- service_role / sb_secret_ / private key / access_token / refresh_token などの混入疑い。
+- RLSを無効化するSQLや `disable row level security` の追加。
+- Supabase設定、Auth / login / signup / account、migration、`app_data`、`app_instances` に関わる変更。
 
 ## git状態関連
 - 作業開始時に `git status` がcleanでない。
