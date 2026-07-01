@@ -2,11 +2,13 @@
 
 ## 状態
 
-条件整理中。
+完了。
 
 v1.0は販売開始や決済開始ではなく、アカウント別クラウド基盤のMVP完成宣言を行うPhase。
 
 v0.18 検証環境デプロイまでに、GitHub Pages公開版、認証・ポータル導線、PC / iPad / スマホ表示の大きな崩れがないことは確認済み。
+
+v0.9.5〜v0.18で整備した範囲を、アカウント別クラウド基盤MVPとして完了扱いにする。
 
 ## v1.0の目的
 
@@ -127,7 +129,7 @@ v1.0完了整理へ進む前に、以下を確認する。
 
 ## v1.0完了候補条件
 
-以下を満たしていれば、v1.0完了整理へ進める。
+以下を満たしているため、v1.0完了扱いにする。
 
 - 認証導線が公開版で成立している。
 - `company_accounts` と `app_instances` がログイン中企業アカウント単位で取得できる。
@@ -136,6 +138,130 @@ v1.0完了整理へ進む前に、以下を確認する。
 - GitHub Pages公開版で主要ページが開ける。
 - Supabase設定、RLS、secret混入に重大問題がない。
 - PARKED範囲が明確に切り分けられている。
+
+## v1.0完了判断
+
+v1.0 アカウント別クラウド基盤MVP完成は完了。
+
+完了扱いに含むもの:
+
+- 企業アカウント単位のsignup / login / logout。
+- 未ログイン時の `portal.html` login誘導。
+- login後の `portal.html` 復帰。
+- `company_accounts` の取得。
+- `app_instances` の取得。
+- `account.html` の企業情報表示。
+- `account.html` の利用アプリ一覧。
+- `works_portal` app_instance。
+- `portal_state` のSupabase保存・復元。
+- `portal_state` の企業間分離。
+- GitHub Pages公開環境での主要ページ確認。
+- PC / iPad / スマホで大きな崩れがないこと。
+
+完了扱いに含めないもの:
+
+- 販売機能。
+- 決済。
+- 購入履歴。
+- アプリ追加申請。
+- 管理者承認画面。
+- スタッフ個別ログイン。
+- 権限管理。
+- 複数店舗管理。
+- SeatFlow完全クラウド同期。
+- バックアップ復元の実装。
+- Supabase Storage。
+- ファイル本体保存。
+
+## v1.1へ進む前の確認事項
+
+v1.1 簡易管理者画面では、いきなり実装に入らず、まず管理者画面で見る対象と権限境界を整理する。
+
+確認すること:
+
+- 管理者画面で何を見るべきか。
+- 企業一覧を表示する必要があるか。
+- `company_accounts` の一覧確認が必要か。
+- `app_instances` の確認が必要か。
+- `app_data` / `portal_state` の状態確認が必要か。
+- 管理者認証をどう扱うか。
+- 管理者権限をどのテーブル・RLSで表現するか。
+- v1.1でDB / RLS変更が必要そうか。
+- Supabase Dashboard操作が必要か。
+- 人間判断が必要な設定・権限・公開範囲があるか。
+
+v1.1で注意すること:
+
+- service_role keyをフロントに置かない。
+- RLSを無効化しない。
+- 企業横断のデータ閲覧は権限設計なしに実装しない。
+- 管理者画面を公開URLに置く場合のアクセス制御を先に決める。
+- DB / RLS / migration変更が必要な場合は案だけ作り、人間確認で止まる。
+
+## v1.1 作業票案
+
+```md
+# LLLD Works Hub / Works Market
+
+# Codex作業票：v1.1 簡易管理者画面 方針整理
+
+## 今回の作業
+
+v1.1 簡易管理者画面に進む前に、管理者画面で見る対象、権限境界、実装範囲、STOP条件を整理してください。
+
+今回は実装に入らず、docs整理のみ行ってください。
+
+## 前提
+
+- v1.0 アカウント別クラウド基盤MVP完成は完了。
+- v1.0は販売開始ではなく、企業アカウント単位のクラウド基盤MVP完成。
+- 決済、購入履歴、スタッフ個別ログイン、権限管理、複数店舗管理、SeatFlow完全クラウド同期、バックアップ復元はPARKED。
+
+## 整理すること
+
+- 管理者画面で何を見るべきか。
+- 企業一覧が必要か。
+- `company_accounts` の確認範囲。
+- `app_instances` の確認範囲。
+- `app_data` / `portal_state` の状態確認範囲。
+- 管理者認証・管理者権限の扱い。
+- v1.1でDB / RLS / migration変更が必要か。
+- Supabase Dashboard操作が必要か。
+- 人間判断が必要な点。
+
+## 触ってよいファイル
+
+- docs/04_フェーズ記録/phase1-1-admin-screen.md
+- docs/00_PROJECT_STATUS.md
+- docs/06_TASK_QUEUE.md
+- docs/05_DECISION_LOG.md
+- docs/03_構想/roadmap-after-portal-uiux-change.md
+
+## 触ってはいけないファイル
+
+- portal.html
+- login.html
+- signup.html
+- account.html
+- assets/js/*.js
+- data/site-config.json
+- Supabase migration
+- .github/workflows/qa.yml
+- Supabase URL / anon key関連設定
+
+## STOP条件
+
+- 本体UI / JS実装が必要
+- Supabase Dashboard操作が必要
+- DB / RLS / migration変更が必要
+- service_role keyが必要
+- 管理者権限の人間判断が必要
+- 企業横断データ閲覧の安全性が判断できない
+
+## 報告フォーマット
+
+docs/03_CODEX_REPORT_FORMAT.md に従ってください。
+```
 
 ## v1.0後に進むPhase候補
 
@@ -163,8 +289,8 @@ v1.0完了整理へ進む前に、以下を確認する。
 
 ## 現時点の判断
 
-v1.0完了整理へ進める候補。
+v1.0完了。
 
-ただし、v1.0完了宣言そのものは、上記の完了判断項目を最終確認してから行う。
+次の候補は v1.1 簡易管理者画面。
 
-本体UI / JS / Supabase設定 / migrationの追加修正が必要になった場合は、勝手に実装せず `HUMAN_REQUIRED: YES` で停止する。
+ただし、v1.1は管理者権限・企業横断確認・DB / RLS変更に踏み込む可能性があるため、最初は方針整理から始める。
