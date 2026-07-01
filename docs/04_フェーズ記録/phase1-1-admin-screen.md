@@ -50,6 +50,17 @@ v1.1b mock簡易管理者画面まで完了。
 - `works_portalなし`、`portal_stateなし`、`seatflowなし`、`seat_layoutなし` が分かる異常状態mockを追加。
 - 固定mockデータのみを使用し、実DB接続は行わない。
 
+## v1.1b 人間確認結果
+以下を人間確認済みとして扱う。
+
+- `admin.html` にmock企業一覧が表示される。
+- 企業をクリックすると詳細が切り替わる。
+- 企業ごとに利用アプリ一覧が変わる。
+- `works_portal` / `portal_state` / `seatflow` / `seat_layout` の有無が見える。
+- `works_portalなし` / `portal_stateなし` / `seatflowなし` / `seat_layoutなし` の異常状態mockが分かる。
+- これは実データではないことが画面上で明確。
+- Supabase / Auth / RLS / 実DBに接続していないことが明確。
+
 ## 実装上の制限
 - 実DB接続なし。
 - 企業横断取得なし。
