@@ -25,9 +25,6 @@
         <span class="market-kicker">企業アカウント</span>
         <h1>企業アカウントのマイページ確認画面です。</h1>
         <p>Supabase設定済みの場合はログイン中の企業アカウント情報と利用中アプリ一覧を表示します。アプリ内データ保存はSeatFlowレイアウトのみ検証中です。</p>
-        <div class="detail-cta-row account-hero-actions">
-          <a class="btn secondary" href="#appRequestPanel">アプリ追加申請を見る</a>
-        </div>
       </div>
       <div class="account-mode-card">
         <span>現在の認証状態</span>
@@ -103,38 +100,6 @@
         <h2>利用中アプリ</h2>
         <p class="account-note" id="accountAppsStatus">利用アプリ一覧を確認しています。</p>
         <ul class="account-list" id="accountApps"></ul>
-      </article>
-
-      <article class="detail-panel account-request-panel" id="appRequestPanel">
-        <h2>アプリ追加申請</h2>
-        <p class="account-note" id="accountAppRequestsStatus">まだ利用していないアプリについて、追加利用や相談を申請できます。</p>
-        <p class="account-request-note">Supabase modeでは申請内容を保存します。mock modeでは画面内状態のみで確認します。自動契約、アプリの即時追加は行いません。</p>
-        <div class="account-request-apps" id="accountAppRequests"></div>
-        <form class="account-form account-request-form" id="appRequestForm" hidden novalidate>
-          <h3>アプリ追加申請フォーム</h3>
-          <p class="account-form-help" id="appRequestSelectedApp">申請したいアプリを選んでください。</p>
-          <label>
-            申請したいアプリ
-            <input id="appRequestAppName" name="appName" type="text" readonly>
-          </label>
-          <label>
-            利用目的・相談内容
-            <textarea id="appRequestMessage" name="message" rows="4" maxlength="500" required placeholder="このアプリを追加したい理由や、相談したい内容があれば入力してください。"></textarea>
-          </label>
-          <label>
-            連絡希望
-            <select id="appRequestContactWanted" name="contactWanted">
-              <option value="yes">運営からの連絡を希望する</option>
-              <option value="no">まずは申請だけ送る</option>
-            </select>
-          </label>
-          <div class="detail-cta-row account-form-actions">
-            <button class="btn primary" id="submitAppRequestButton" type="submit">申請を送る</button>
-            <button class="btn secondary" id="cancelAppRequestButton" type="button">閉じる</button>
-          </div>
-          <p class="account-form-help">申請してもアプリは自動追加されません。内容を確認後、運営側で対応します。</p>
-        </form>
-        <p class="account-status account-form-status" id="appRequestStatus" aria-live="polite">申請内容はまだ送られていません。</p>
       </article>
 
       <article class="detail-panel">
