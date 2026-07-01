@@ -19,12 +19,13 @@
 - v1.2 企業情報編集 方針整理
 - v1.2b 企業情報編集フォームMVP
 - v1.3a アプリ追加申請UI mock
+- v1.3b アプリ追加申請DB保存設計
 
 ## IN_PROGRESS
 - A0.9 自動マージセットアップ不足調査: docs整理は完了。GitHub Settingsで `Allow auto-merge` / branch protection / required checks / workflow permissions の人間確認待ち。
 
 ## NEXT
-- v1.3b アプリ追加申請DB保存設計
+- v1.3c app_add_requests migration / RLS実装
 - v1.4 購入ページ
 - v1.5 決済・購入履歴
 - v1.6 実アプリの商品化
@@ -67,6 +68,7 @@
 - v1.1bは実DB接続なしのmock簡易管理者画面。mock企業一覧、企業詳細切替、利用アプリ一覧、保存有無、異常状態mockは人間確認済み。企業横断取得、本物の管理者権限、DB / RLS変更は含めない。
 - v1.2bは `account.html` 内の自社企業情報編集MVP。`company_name` / `contact_name` / `business_type` / `phone` の編集、`email` 表示のみ、保存後のSupabase Dashboard確認、RLS有効確認は人間確認済み。
 - v1.3aはDB保存なしのアプリ追加申請UI mockとして完了。正式保存には申請専用テーブル、RLS、migration設計が必要なため、v1.3bで人間確認前提の設計から扱う。
+- v1.3bでは、アプリ追加申請の正式保存先として `app_add_requests` 専用テーブル案を整理した。`app_instances`、`app_data`、`audit_logs` には申請の正本を入れない。次のv1.3cでmigration / RLSへ進む場合は、人間確認を前提にする。
 - 本線へ戻るにはPROJECT_STATUSで再開条件を確認する。
 
 ## ステータス分類
