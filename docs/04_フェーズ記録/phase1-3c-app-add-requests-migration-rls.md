@@ -4,7 +4,13 @@
 v1.3c app_add_requests migration / RLS実装案
 
 ## 状態
-migration / RLS案を作成。2026-07-02に人間がSQL全文確認後、現行Supabase projectへ手動適用済み。
+PARKED。
+
+migration / RLS案を作成し、2026-07-02に人間がSQL全文確認後、現行Supabase projectへ手動適用済み。
+
+ただし、2026-07-02の仕様見直しにより、購入者向けの「アプリ追加申請」は不要と判断した。`app_add_requests` はdropしないが、本線では使わずPARKED扱いにする。
+
+現在の正本は `phase1-3-purchase-start-flow-realignment.md`。
 
 今回作成したSQLは、Supabase SQL Editorで人間が確認してから適用する前提のmigration案。
 
@@ -171,7 +177,9 @@ CodexはSupabase Dashboardを操作しない。
 
 ## 次フェーズ v1.3d でやること
 
-v1.3d候補:
+以下は旧方針の記録。現在は停止。
+
+v1.3d候補だったもの:
 
 ```text
 account.html 申請DB保存
@@ -184,7 +192,7 @@ account.html 申請DB保存
 - 自社申請をselectして `申請済み` 表示を復元する。
 - DB保存失敗時の表示を追加する。
 
-v1.3dへ進む前提:
+v1.3dへ進む前提だったもの:
 
 - 人間がv1.3c migrationをSupabaseへ適用済みであること: 完了。
 - 適用先project名が人間により明示されていること: 現行Supabase project。
@@ -192,6 +200,8 @@ v1.3dへ進む前提:
 - `app_add_requests` が存在すること: 確認済み。
 - RLS policyが有効であること: 確認済み。
 - 自社insert / selectができ、他社申請が見えないことを確認できること: v1.3dブラウザ確認で行う。
+
+現在は、購入者向けに `app_add_requests` を使う導線を本線から外す。購入者は購入画面で「購入」または「利用開始」を押すとアプリを使える設計にする。
 
 ## STOP条件
 
