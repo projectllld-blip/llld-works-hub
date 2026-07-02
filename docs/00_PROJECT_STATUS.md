@@ -3,13 +3,13 @@
 ## 現在の最新フェーズ
 v1.3f 旧アプリ追加申請UIの撤去まで完了。
 
-現在の作業対象は v1.4 実アプリの商品化方針整理。
+現在の作業対象は v1.x Portal UIUX Consolidation。`portal.html` を社内ポータル本体として扱い、旧 `index.html` の社内ツールポータル表示を廃止して `portal.html` 入口へ整理する。
 
 GitHub Pages公開版、認証・ポータル導線、PC / iPad / スマホ表示の大きな崩れがないことを人間確認済み。
 
 v1.0は販売開始ではなく、企業アカウント単位のクラウド基盤MVP完成宣言。
 
-現在はv1.4 実アプリの商品化方針整理として、既存アプリやコンテンツを「無料」「有料化予定」「β版」「準備中」「相談導線」「PARKED」に分類し、購入ページや決済より前に商品としてどう見せるかを整理している。
+v1.4 実アプリの商品化方針整理はmain反映済み。現在は販売用UI/UX強化へ進む前に、社内ポータル入口、ヘッダー、投稿一覧、アプリカード、サムネイル表示のUIUXを整理している。
 
 v1.3 購入前後の利用開始フロー整理により、旧v1.3「購入者向けアプリ追加申請」を本線から外した。購入者側のアプリ追加申請は不要とし、購入者は購入画面で「購入」または「利用開始」すればアプリを使える設計へ戻す。`account.html` の旧購入者向けアプリ追加申請UIはv1.3fで撤去。`app_add_requests` は削除せずPARKED。
 
@@ -47,6 +47,7 @@ LLLD Works Hub / Works Market は、社内ポータル・販売マーケット�
 - v1.2b 企業情報編集フォームMVP: `account.html` で自社 `company_accounts` の `company_name` / `contact_name` / `business_type` / `phone` を編集できるMVPを実装。`email` は表示のみ。ブラウザ確認とSupabase Dashboard確認で、指定4項目のみ更新され、`email` / `owner_user_id` / `plan_status` は変更されないことを人間確認済み。
 - v1.3 購入前後の利用開始フロー整理: 購入者向けアプリ追加申請を本線から外し、購入 / 利用開始 / 任意サポート申込へ整理。
 - v1.3f 旧アプリ追加申請UIの撤去: `account.html` から旧購入者向けアプリ追加申請導線を撤去し、`accountPage.js` から `app_add_requests` 読み書き処理を撤去。人間ブラウザ確認済み。
+- v1.4 実アプリの商品化方針整理: 実アプリやコンテンツを「無料」「有料化予定」「β版」「準備中」「相談導線」「PARKED」に分類し、販売用UI/UX強化へ渡す方針を整理。
 - v1.3c適用前 Supabase本番/検証分離方針整理: GitHub Pages公開版が現在のSupabase projectを参照しているため、現在のprojectを運用上本番相当DBとして扱う方針を整理。v1.3c migrationは環境方針確定まで実DB適用停止。
 - A0.1 Codex半自動運用基盤
 - A0.2 GitHub Issue運用化
@@ -73,7 +74,7 @@ LLLD Works Hub / Works Market は、社内ポータル・販売マーケット�
 - A0.9 自動マージセットアップ不足調査: docs整理は完了。GitHub Settings人間確認待ち。
 
 ## 進行中の本線
-- v1.4 実アプリの商品化方針整理: docs整理中。`data/contents.json` や本体UIは変更せず、商品状態、CTA、相談導線、PARKED範囲を整理する。
+- v1.x Portal UIUX Consolidation: `portal.html` を社内ポータル本体として扱い、旧 `index.html` の社内ツールポータル表示を廃止。ヘッダー右側ボタン、新着投稿余白、アプリカードサイズ、サムネイル表示を整える。
 
 ## 今回の寄り道プロジェクト
 - A0.1 Codex半自動運用基盤: 完了

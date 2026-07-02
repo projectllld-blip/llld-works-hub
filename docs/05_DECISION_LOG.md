@@ -260,3 +260,11 @@ DECISION_LOGは重要な判断の記録に使う。単なる作業ログでは�
 - 影響範囲: `docs/04_フェーズ記録/phase1-4-productization-policy.md`、`docs/00_PROJECT_STATUS.md`、`docs/06_TASK_QUEUE.md`、`docs/03_構想/roadmap-after-portal-uiux-change.md`、v1.5 / v1.6。
 - 関連Phase: v1.4、v1.5、v1.6、v1.7、v1.8、v1.9。
 - 取り消し条件: 人間判断により、先に価格、購入ページ、決済、または `data/contents.json` の商品データ変更へ進む方針に変更する場合。
+
+## 2026-07-02 portal.htmlを社内ポータル本体に統一する
+
+- 決定内容: GitHub Pagesの `/llld-works-hub/` で旧社内ツールポータルを表示せず、`index.html` は `portal.html` への入口にする。今後の社内ポータル本体は `portal.html` とし、画面上の呼称は「社内ポータル」に統一する。
+- 理由: 旧入口と新ポータルが分かれていると、利用者がどちらを本線として使うべきか迷うため。販売用UI/UX強化へ進む前に、毎日使う入口とカード表示を揃える必要がある。
+- 影響範囲: `index.html`、`portal.html`、`docs/04_フェーズ記録/phase1-x-portal-uiux-consolidation.md`、`docs/00_PROJECT_STATUS.md`、`docs/06_TASK_QUEUE.md`。
+- 関連Phase: v1.x Portal UIUX Consolidation、v1.5。
+- 取り消し条件: 人間判断により、旧 `index.html` の社内ツールポータルを別用途で復活させる必要が出た場合。

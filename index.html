@@ -3,144 +3,78 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>LLLD Works Hub</title>
-  <meta name="description" content="株式会社LLLDの社内コンテンツポータル">
-  <link rel="stylesheet" href="./assets/css/style.css">
+  <meta http-equiv="refresh" content="0; url=./portal.html">
+  <title>LLLD Works Hub | 社内ポータル</title>
+  <meta name="description" content="LLLD Works Hubの社内ポータル入口です。">
+  <style>
+    :root{
+      color-scheme:light;
+      --navy:#061829;
+      --teal:#12b8ab;
+      --bg:#f2f5f9;
+      --line:#dce3ed;
+      --text:#2b3850;
+      --muted:#6d7b92;
+      --font:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{
+      min-height:100vh;
+      margin:0;
+      display:grid;
+      place-items:center;
+      padding:24px;
+      background:var(--bg);
+      color:var(--text);
+      font-family:var(--font);
+      line-height:1.7;
+    }
+    main{
+      width:min(520px,100%);
+      padding:28px;
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:#fff;
+      box-shadow:0 14px 34px rgba(6,24,41,.08);
+      text-align:center;
+    }
+    .mark{
+      width:42px;
+      height:42px;
+      margin:0 auto 14px;
+      border-radius:12px;
+      background:linear-gradient(135deg,#3acde8,var(--teal));
+    }
+    h1{
+      margin:0 0 8px;
+      color:var(--navy);
+      font-size:1.7rem;
+      line-height:1.3;
+    }
+    p{margin:0 0 18px;color:var(--muted)}
+    a{
+      display:inline-flex;
+      min-height:42px;
+      align-items:center;
+      justify-content:center;
+      padding:0 18px;
+      border-radius:10px;
+      background:var(--teal);
+      color:#fff;
+      font-weight:700;
+      text-decoration:none;
+    }
+  </style>
+  <script>
+    window.location.replace("./portal.html");
+  </script>
 </head>
 <body>
-  <div class="app-shell">
-    <aside class="sidebar" id="sidebar">
-      <div class="brand">
-        <div class="brand-mark" aria-hidden="true">
-          <span></span>
-        </div>
-        <div>
-          <h1>LLLD Works Hub</h1>
-          <p>社内ツールポータル</p>
-        </div>
-      </div>
-
-      <nav class="nav-group" aria-label="カテゴリ">
-        <div class="nav-title">カテゴリ</div>
-        <div id="categoryNav" class="category-nav"></div>
-      </nav>
-
-      <section class="side-favorites" aria-label="お気に入り">
-        <div class="nav-title">お気に入り</div>
-        <div class="side-favorite-list" id="sideFavoriteList"></div>
-      </section>
-
-      <section class="summary-grid" aria-label="サマリー">
-        <article class="summary-card">
-          <span class="summary-icon doc"></span>
-          <div>
-            <span>登録コンテンツ</span>
-            <strong id="metricTotal">0</strong>
-          </div>
-        </article>
-        <article class="summary-card">
-          <span class="summary-icon star"></span>
-          <div>
-            <span>お気に入り</span>
-            <strong id="metricFavorites">0</strong>
-          </div>
-        </article>
-        <article class="summary-card">
-          <span class="summary-icon code"></span>
-          <div>
-            <span>HTMLアプリ</span>
-            <strong id="metricApps">0</strong>
-          </div>
-        </article>
-        <article class="summary-card">
-          <span class="summary-icon clock"></span>
-          <div>
-            <span>利用履歴</span>
-            <strong id="metricRecent">0</strong>
-          </div>
-        </article>
-      </section>
-
-    </aside>
-
-    <main class="main">
-      <header class="topbar">
-        <button class="icon-button menu-button" id="openSidebar" type="button" aria-label="カテゴリを開く">
-          <span></span><span></span><span></span>
-        </button>
-        <div class="topbar-title">
-          <strong>LLLD Works Hub</strong>
-          <span>社内ツールポータル</span>
-        </div>
-        <span class="topbar-badge">ツール共有基盤</span>
-        <div class="search">
-          <span class="search-icon" aria-hidden="true"></span>
-          <input id="searchInput" type="search" placeholder="コンテンツ名・カテゴリ・タグで検索" autocomplete="off">
-          <button id="clearSearch" class="clear-search" type="button" aria-label="検索をクリア">×</button>
-        </div>
-        <div class="account-slot" aria-label="アカウント領域">
-          <a class="account-link-pill" href="./portal.html">新ポータル</a>
-          <a class="account-link-pill" href="./login.html">ログイン準備中</a>
-          <a class="account-link-pill" href="./account.html">アカウント</a>
-        </div>
-      </header>
-
-      <section class="hub-market-strip" aria-label="マーケットβ">
-        <div>
-          <strong>Works Market β</strong>
-          <span>社内ツールを壊さず、投稿型コンテンツの見え方を検証中です。</span>
-        </div>
-        <div class="hub-market-actions">
-          <a class="btn primary" href="./portal.html">新ポータルを開く</a>
-          <a class="btn primary" href="./marketplace.html">マーケットβ</a>
-          <a class="btn secondary" href="./request.html">開発相談</a>
-          <a class="btn secondary" href="./login.html">ログイン準備中</a>
-        </div>
-      </section>
-
-      <section class="recent-section">
-        <div class="section-head">
-          <div>
-            <h3>最終利用履歴</h3>
-            <p>毎日使うツールにすぐ戻れます。</p>
-          </div>
-          <button class="text-button" id="showAllRecent" type="button">すべて見る</button>
-        </div>
-        <div class="recent-row" id="recentGrid"></div>
-      </section>
-
-      <section class="content-section">
-        <div class="section-head content-head">
-          <div>
-            <h3>コンテンツ一覧</h3>
-            <p id="resultMeta">0件表示中</p>
-          </div>
-          <div class="sort-tabs" id="sortTabs" aria-label="並び替え">
-            <button class="sort-tab active" type="button" data-sort="recent">最終利用順</button>
-            <button class="sort-tab" type="button" data-sort="updated">更新日順</button>
-            <button class="sort-tab" type="button" data-sort="title">名前順</button>
-            <button class="sort-tab" type="button" data-sort="category">カテゴリ順</button>
-            <button class="sort-tab reset" id="resetFilters" type="button">リセット</button>
-          </div>
-        </div>
-        <div class="type-chips" id="typeChips"></div>
-        <div class="content-grid" id="contentGrid"></div>
-      </section>
-    </main>
-  </div>
-
-  <div class="modal-backdrop" id="detailModal" aria-hidden="true">
-    <section class="detail-modal" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
-      <button class="modal-close" id="closeDetail" type="button" aria-label="詳細を閉じる">×</button>
-      <div id="detailContent"></div>
-    </section>
-  </div>
-
-  <div id="toast" class="toast"></div>
-
-  <script src="./assets/js/storagePolicy.js"></script>
-  <script src="./assets/js/authMockService.js"></script>
-  <script src="./assets/js/contentService.js"></script>
-  <script src="./assets/js/app.js"></script>
+  <main>
+    <div class="mark" aria-hidden="true"></div>
+    <h1>社内ポータルへ移動しています</h1>
+    <p>自動で移動しない場合は、下のボタンから社内ポータルを開いてください。</p>
+    <a href="./portal.html">社内ポータルを開く</a>
+  </main>
 </body>
 </html>
