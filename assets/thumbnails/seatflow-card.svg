@@ -1,30 +1,140 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" font-family="system-ui, -apple-system, BlinkMacSystemFont, Noto Sans JP, sans-serif" viewBox="0 0 640 360" role="img" aria-label="座席管理アプリ">
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="SeatFlow 座席管理アプリの画面モック" font-family="system-ui,-apple-system,BlinkMacSystemFont,'Noto Sans JP',sans-serif">
   <defs>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="145%"><feDropShadow dx="0" dy="18" stdDeviation="15" flood-color="#102033" flood-opacity=".18"/></filter>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f8fbff"/><stop offset=".6" stop-color="#edf7ff"/><stop offset="1" stop-color="#ecfdf5"/></linearGradient>
-    <pattern id="grid" width="18" height="18" patternUnits="userSpaceOnUse"><path d="M18 0H0v18" fill="none" stroke="#dbe6f2" stroke-width="1"/></pattern>
+    <linearGradient id="pageBg" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#f8fbff"/>
+      <stop offset=".52" stop-color="#eef7ff"/>
+      <stop offset="1" stop-color="#f3fff9"/>
+    </linearGradient>
+    <linearGradient id="navy" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#0b2745"/>
+      <stop offset="1" stop-color="#07182d"/>
+    </linearGradient>
+    <linearGradient id="seatBlue" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#3b82f6"/>
+      <stop offset="1" stop-color="#1d4ed8"/>
+    </linearGradient>
+    <linearGradient id="seatGreen" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#4ade80"/>
+      <stop offset="1" stop-color="#16a34a"/>
+    </linearGradient>
+    <linearGradient id="seatPink" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#fb7185"/>
+      <stop offset="1" stop-color="#e11d48"/>
+    </linearGradient>
+    <linearGradient id="seatAmber" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#f59e0b"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="24" stdDeviation="18" flood-color="#102033" flood-opacity=".18"/>
+    </filter>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#102033" flood-opacity=".16"/>
+    </filter>
+    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M24 0H0v24" fill="none" stroke="#dce7f3" stroke-width="1"/>
+    </pattern>
+    <style>
+      .title{font-weight:900;fill:#102033}
+      .muted{fill:#64748b;font-weight:700}
+      .tiny{font-size:12px}
+      .label{font-size:15px;font-weight:900}
+      .seatText{font-size:15px;font-weight:900;fill:white;text-anchor:middle}
+    </style>
   </defs>
-  <rect width="640" height="360" rx="24" fill="url(#bg)"/>
-  <rect x="16" y="20" width="608" height="296" rx="20" fill="#fff" filter="url(#shadow)"/>
-  <rect x="16" y="20" width="608" height="296" rx="20" fill="#fff" stroke="#d8e1ee"/>
-  <rect x="16" y="20" width="608" height="44" rx="20" fill="#10233f"/><rect x="16" y="46" width="608" height="18" fill="#10233f"/>
-  <text x="42" y="47" font-size="14" font-weight="900" fill="#fff">SeatFlow</text>
-  <rect x="488" y="32" width="86" height="20" rx="10" fill="#0f9f91"/><text x="531" y="46" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">自動配置</text>
-  <rect x="32" y="82" width="104" height="176" rx="14" fill="#f4f7fb" stroke="#dde6f0"/>
-  <text x="52" y="108" font-size="11" font-weight="900" fill="#10233f">条件</text>
-  <rect x="50" y="124" width="68" height="20" rx="7" fill="#fff" stroke="#d8e1ee"/><rect x="50" y="154" width="68" height="20" rx="7" fill="#fff" stroke="#d8e1ee"/><rect x="50" y="184" width="68" height="20" rx="7" fill="#fff" stroke="#d8e1ee"/>
-  <rect x="50" y="222" width="68" height="20" rx="7" fill="#eaf2ff"/><circle cx="64" cy="232" r="4" fill="#1f78ff"/><rect x="76" y="228" width="24" height="7" rx="3.5" fill="#8aa0b8"/>
-  <rect x="154" y="82" width="300" height="176" rx="14" fill="#fbfdff" stroke="#d8e1ee"/>
-  <rect x="170" y="98" width="268" height="144" rx="8" fill="url(#grid)"/>
-  <rect x="194" y="114" width="72" height="38" rx="8" fill="#dff8ff" stroke="#35c7d8"/><text x="230" y="137" text-anchor="middle" font-size="11" font-weight="900" fill="#087987">教卓</text>
-  <rect x="306" y="116" width="84" height="22" rx="8" fill="#fff7d6" stroke="#f4b942"/><text x="348" y="131" text-anchor="middle" font-size="10" font-weight="800" fill="#9a5d00">欠席席</text>
-  <rect x="204" y="168" width="26" height="16" rx="4" fill="#1f78ff"/><rect x="244" y="168" width="26" height="16" rx="4" fill="#f59e0b"/><rect x="284" y="168" width="26" height="16" rx="4" fill="#22c55e"/><rect x="324" y="168" width="26" height="16" rx="4" fill="#ef4444"/><rect x="364" y="168" width="26" height="16" rx="4" fill="#1f78ff"/>
-  <rect x="204" y="196" width="26" height="16" rx="4" fill="#22c55e"/><rect x="244" y="196" width="26" height="16" rx="4" fill="#1f78ff"/><rect x="284" y="196" width="26" height="16" rx="4" fill="#f59e0b"/><rect x="324" y="196" width="26" height="16" rx="4" fill="#22c55e"/><rect x="364" y="196" width="26" height="16" rx="4" fill="#ef4444"/>
-  <rect x="204" y="224" width="26" height="16" rx="4" fill="#f59e0b"/><rect x="244" y="224" width="26" height="16" rx="4" fill="#22c55e"/><rect x="284" y="224" width="26" height="16" rx="4" fill="#1f78ff"/><rect x="324" y="224" width="26" height="16" rx="4" fill="#ef4444"/><rect x="364" y="224" width="26" height="16" rx="4" fill="#22c55e"/>
-  <rect x="474" y="82" width="126" height="176" rx="14" fill="#fff" stroke="#d8e1ee"/>
-  <text x="496" y="108" font-size="11" font-weight="900" fill="#10233f">クラス一覧</text>
-  <rect x="496" y="126" width="78" height="16" rx="8" fill="#dcfce7"/><rect x="496" y="154" width="78" height="16" rx="8" fill="#eaf2ff"/><rect x="496" y="182" width="78" height="16" rx="8" fill="#fff7ed"/><rect x="496" y="210" width="78" height="16" rx="8" fill="#f4f7fb"/>
-  <path d="M496 242h78" stroke="#d8e1ee" stroke-width="1"/><circle cx="510" cy="242" r="5" fill="#1f78ff"/><circle cx="534" cy="242" r="5" fill="#22c55e"/><circle cx="558" cy="242" r="5" fill="#f59e0b"/>
-  <g transform="translate(28 280)"><rect width="116" height="36" rx="18" fill="#1f78ff"/><text x="58" y="24" text-anchor="middle" font-size="15" font-weight="900" fill="#fff">SEAT</text></g>
-  <text x="164" y="304" font-size="22" font-weight="900" fill="#122033">座席管理アプリ</text>
+
+  <rect width="960" height="540" rx="34" fill="url(#pageBg)"/>
+  <rect x="36" y="34" width="888" height="444" rx="28" fill="#fff" filter="url(#cardShadow)"/>
+  <rect x="36" y="34" width="888" height="444" rx="28" fill="#fff" stroke="#d8e2ee" stroke-width="2"/>
+
+  <g transform="translate(62 62)">
+    <rect width="836" height="348" rx="20" fill="#fff" stroke="#d7e2ee" stroke-width="2" filter="url(#softShadow)"/>
+    <rect width="836" height="56" rx="20" fill="url(#navy)"/>
+    <rect y="36" width="836" height="20" fill="url(#navy)"/>
+    <text x="28" y="35" font-size="19" font-weight="900" fill="#fff">SeatFlow</text>
+    <rect x="136" y="16" width="92" height="26" rx="13" fill="#173a62"/>
+    <text x="182" y="34" text-anchor="middle" font-size="13" font-weight="800" fill="#d8e7ff">3年A組</text>
+    <rect x="244" y="16" width="96" height="26" rx="13" fill="#eef6ff" opacity=".14"/>
+    <text x="292" y="34" text-anchor="middle" font-size="13" font-weight="800" fill="#d8e7ff">座席管理</text>
+    <circle cx="378" cy="29" r="13" fill="#fff" opacity=".12"/>
+    <text x="378" y="34" text-anchor="middle" font-size="15" font-weight="900" fill="#d8e7ff">⌕</text>
+    <text x="420" y="34" font-size="18" font-weight="900" fill="#8aa5c8">←</text>
+    <text x="452" y="34" font-size="18" font-weight="900" fill="#8aa5c8">→</text>
+    <rect x="558" y="15" width="118" height="28" rx="14" fill="#2563eb"/>
+    <text x="617" y="34" text-anchor="middle" font-size="13" font-weight="900" fill="#fff">編集モード</text>
+    <rect x="704" y="15" width="72" height="28" rx="14" fill="#fff"/>
+    <text x="740" y="34" text-anchor="middle" font-size="13" font-weight="900" fill="#475569">保存</text>
+    <text x="806" y="35" font-size="24" font-weight="900" fill="#c4d3e5">⋮</text>
+
+    <rect x="24" y="78" width="176" height="246" rx="16" fill="#f8fbff" stroke="#d9e5f0"/>
+    <text x="44" y="108" class="label" fill="#102033">表示条件</text>
+    <rect x="44" y="124" width="132" height="36" rx="10" fill="#fff" stroke="#d4e0ec"/>
+    <text x="58" y="147" class="tiny muted">日付</text>
+    <text x="108" y="147" font-size="13" font-weight="900" fill="#102033">2024/05/20</text>
+    <rect x="44" y="174" width="132" height="36" rx="10" fill="#fff" stroke="#d4e0ec"/>
+    <text x="58" y="197" class="tiny muted">クラス</text>
+    <text x="112" y="197" font-size="13" font-weight="900" fill="#102033">3年A組</text>
+    <rect x="44" y="226" width="132" height="78" rx="12" fill="#fff" stroke="#d4e0ec"/>
+    <text x="58" y="250" class="tiny muted">出欠状況</text>
+    <rect x="58" y="264" width="11" height="11" rx="3" fill="#2563eb"/><text x="78" y="274" class="tiny muted">出席 28</text>
+    <rect x="58" y="284" width="11" height="11" rx="3" fill="#16a34a"/><text x="78" y="294" class="tiny muted">欠席 2</text>
+    <rect x="126" y="264" width="11" height="11" rx="3" fill="#f59e0b"/><text x="146" y="274" class="tiny muted">遅刻 1</text>
+    <rect x="126" y="284" width="11" height="11" rx="3" fill="#e11d48"/><text x="146" y="294" class="tiny muted">早退 1</text>
+
+    <rect x="224" y="78" width="588" height="246" rx="16" fill="#fbfdff" stroke="#d9e5f0"/>
+    <rect x="246" y="100" width="544" height="202" rx="10" fill="url(#grid)"/>
+    <rect x="430" y="108" width="150" height="28" rx="9" fill="#10233f"/>
+    <text x="505" y="128" text-anchor="middle" font-size="15" font-weight="900" fill="#fff">黒板</text>
+    <rect x="452" y="202" width="82" height="40" rx="6" fill="#f4f7fb" stroke="#cbd5e1"/>
+    <rect x="480" y="212" width="28" height="16" rx="3" fill="#fff" stroke="#cbd5e1"/>
+  </g>
+
+  <g transform="translate(292 210)">
+    <g transform="translate(0 0)">
+      <rect width="38" height="30" rx="7" fill="url(#seatBlue)"/><path d="M4 28h30" stroke="#93c5fd" stroke-width="3"/><text x="19" y="21" class="seatText">1</text>
+    </g>
+    <g transform="translate(58 0)"><rect width="38" height="30" rx="7" fill="url(#seatBlue)"/><path d="M4 28h30" stroke="#93c5fd" stroke-width="3"/><text x="19" y="21" class="seatText">2</text></g>
+    <g transform="translate(116 0)"><rect width="38" height="30" rx="7" fill="url(#seatBlue)"/><path d="M4 28h30" stroke="#93c5fd" stroke-width="3"/><text x="19" y="21" class="seatText">3</text></g>
+    <g transform="translate(174 0)"><rect width="38" height="30" rx="7" fill="url(#seatBlue)"/><path d="M4 28h30" stroke="#93c5fd" stroke-width="3"/><text x="19" y="21" class="seatText">4</text></g>
+    <g transform="translate(392 0)"><rect width="38" height="30" rx="7" fill="url(#seatBlue)"/><path d="M4 28h30" stroke="#93c5fd" stroke-width="3"/><text x="19" y="21" class="seatText">5</text></g>
+    <g transform="translate(450 0)"><rect width="38" height="30" rx="7" fill="url(#seatBlue)"/><path d="M4 28h30" stroke="#93c5fd" stroke-width="3"/><text x="19" y="21" class="seatText">6</text></g>
+    <g transform="translate(508 0)"><rect width="38" height="30" rx="7" fill="url(#seatBlue)"/><path d="M4 28h30" stroke="#93c5fd" stroke-width="3"/><text x="19" y="21" class="seatText">7</text></g>
+    <g transform="translate(566 0)"><rect width="38" height="30" rx="7" fill="url(#seatBlue)"/><path d="M4 28h30" stroke="#93c5fd" stroke-width="3"/><text x="19" y="21" class="seatText">8</text></g>
+
+    <g transform="translate(0 54)"><rect width="38" height="30" rx="7" fill="url(#seatBlue)"/><path d="M4 28h30" stroke="#93c5fd" stroke-width="3"/><text x="19" y="21" class="seatText">9</text></g>
+    <g transform="translate(58 54)"><rect width="38" height="30" rx="7" fill="url(#seatBlue)"/><path d="M4 28h30" stroke="#93c5fd" stroke-width="3"/><text x="19" y="21" class="seatText">10</text></g>
+    <g transform="translate(116 54)"><rect width="38" height="30" rx="7" fill="url(#seatBlue)"/><path d="M4 28h30" stroke="#93c5fd" stroke-width="3"/><text x="19" y="21" class="seatText">11</text></g>
+    <g transform="translate(174 54)"><rect width="38" height="30" rx="7" fill="url(#seatBlue)"/><path d="M4 28h30" stroke="#93c5fd" stroke-width="3"/><text x="19" y="21" class="seatText">12</text></g>
+    <g transform="translate(392 54)"><rect width="38" height="30" rx="7" fill="url(#seatBlue)"/><path d="M4 28h30" stroke="#93c5fd" stroke-width="3"/><text x="19" y="21" class="seatText">13</text></g>
+    <g transform="translate(450 54)"><rect width="38" height="30" rx="7" fill="url(#seatBlue)"/><path d="M4 28h30" stroke="#93c5fd" stroke-width="3"/><text x="19" y="21" class="seatText">14</text></g>
+    <g transform="translate(508 54)"><rect width="38" height="30" rx="7" fill="url(#seatBlue)"/><path d="M4 28h30" stroke="#93c5fd" stroke-width="3"/><text x="19" y="21" class="seatText">15</text></g>
+    <g transform="translate(566 54)"><rect width="38" height="30" rx="7" fill="url(#seatBlue)"/><path d="M4 28h30" stroke="#93c5fd" stroke-width="3"/><text x="19" y="21" class="seatText">16</text></g>
+
+    <g transform="translate(0 128)"><rect width="38" height="30" rx="7" fill="url(#seatGreen)"/><path d="M4 28h30" stroke="#86efac" stroke-width="3"/><text x="19" y="21" class="seatText">25</text></g>
+    <g transform="translate(58 128)"><rect width="38" height="30" rx="7" fill="url(#seatGreen)"/><path d="M4 28h30" stroke="#86efac" stroke-width="3"/><text x="19" y="21" class="seatText">26</text></g>
+    <g transform="translate(116 128)"><rect width="38" height="30" rx="7" fill="url(#seatGreen)"/><path d="M4 28h30" stroke="#86efac" stroke-width="3"/><text x="19" y="21" class="seatText">27</text></g>
+    <g transform="translate(174 128)"><rect width="38" height="30" rx="7" fill="url(#seatGreen)"/><path d="M4 28h30" stroke="#86efac" stroke-width="3"/><text x="19" y="21" class="seatText">28</text></g>
+    <g transform="translate(392 128)"><rect width="38" height="30" rx="7" fill="url(#seatGreen)"/><path d="M4 28h30" stroke="#86efac" stroke-width="3"/><text x="19" y="21" class="seatText">29</text></g>
+    <g transform="translate(450 128)"><rect width="38" height="30" rx="7" fill="url(#seatGreen)"/><path d="M4 28h30" stroke="#86efac" stroke-width="3"/><text x="19" y="21" class="seatText">30</text></g>
+    <g transform="translate(508 128)"><rect width="38" height="30" rx="7" fill="url(#seatGreen)"/><path d="M4 28h30" stroke="#86efac" stroke-width="3"/><text x="19" y="21" class="seatText">31</text></g>
+    <g transform="translate(566 128)"><rect width="38" height="30" rx="7" fill="url(#seatGreen)"/><path d="M4 28h30" stroke="#86efac" stroke-width="3"/><text x="19" y="21" class="seatText">32</text></g>
+
+    <g transform="translate(0 182)"><rect width="38" height="30" rx="7" fill="url(#seatPink)"/><path d="M4 28h30" stroke="#fda4af" stroke-width="3"/><text x="19" y="21" class="seatText">49</text></g>
+    <g transform="translate(58 182)"><rect width="38" height="30" rx="7" fill="url(#seatPink)"/><path d="M4 28h30" stroke="#fda4af" stroke-width="3"/><text x="19" y="21" class="seatText">50</text></g>
+    <g transform="translate(450 182)"><rect width="38" height="30" rx="7" fill="url(#seatAmber)"/><path d="M4 28h30" stroke="#fde68a" stroke-width="3"/><text x="19" y="21" class="seatText">37</text></g>
+    <g transform="translate(508 182)"><rect width="38" height="30" rx="7" fill="url(#seatPink)"/><path d="M4 28h30" stroke="#fda4af" stroke-width="3"/><text x="19" y="21" class="seatText">38</text></g>
+    <g transform="translate(566 182)"><rect width="38" height="30" rx="7" fill="url(#seatGreen)"/><path d="M4 28h30" stroke="#86efac" stroke-width="3"/><text x="19" y="21" class="seatText">39</text></g>
+  </g>
+
+  <rect x="86" y="432" width="72" height="72" rx="22" fill="#0ea5e9"/>
+  <circle cx="122" cy="452" r="11" fill="#e0f7ff"/>
+  <circle cx="103" cy="478" r="10" fill="#e0f7ff"/>
+  <circle cx="141" cy="478" r="10" fill="#e0f7ff"/>
+  <rect x="100" y="488" width="44" height="9" rx="5" fill="#e0f7ff"/>
+  <text x="190" y="460" font-size="43" font-weight="900" fill="#102033">SeatFlow / 座席管理</text>
+  <text x="190" y="500" font-size="22" font-weight="800" fill="#64748b">教室の座席配置と出欠を一元管理</text>
+  <rect x="686" y="438" width="152" height="50" rx="16" fill="#eaf2ff"/>
+  <text x="762" y="471" text-anchor="middle" font-size="24" font-weight="900" fill="#1d4ed8">塾事業</text>
+  <rect x="78" y="74" width="120" height="48" rx="24" fill="#f59e0b"/>
+  <text x="138" y="106" text-anchor="middle" font-size="27" font-weight="900" fill="#fff">おすすめ</text>
 </svg>
