@@ -27,6 +27,7 @@
 ## IN_PROGRESS
 - A0.9 自動マージセットアップ不足調査: docs整理は完了。GitHub Settingsで `Allow auto-merge` / branch protection / required checks / workflow permissions の人間確認待ち。
 - v1.x Portal UIUX Consolidation
+- v1.5 Marketplace UIUX / Purchase Flow Consolidation
 
 ## NEXT
 - 検証用Supabase project新規作成
@@ -95,6 +96,7 @@
 - v1.4では、商品状態を「無料」「有料化予定」「β版」「準備中」「相談導線」「PARKED」に分類する。`data/contents.json` や本体UIは変更せず、v1.5販売用UI/UX強化へ渡す方針をdocsで整理する。
 - v1.4では、PDF編集ツールは無料、小テスト作成ツールはβ版、SeatFlowとだこくんはβ版 + 相談導線、有料テンプレート類は有料化予定、営業トーク支援ツールは準備中、カスタマイズ商品は相談導線へ分離する案を正本候補にする。
 - v1.x Portal UIUX Consolidationでは、`portal.html` を社内ポータル本体とし、`index.html` は `portal.html` 入口にする。旧「社内ツールポータル」表示は廃止し、ヘッダー、投稿一覧、アプリカード、サムネイル表示を人間ブラウザ確認前提で整える。
+- v1.5 Marketplace UIUX / Purchase Flow Consolidationでは、マーケットカードをPC / iPad 4列、スマホ2列に整理し、無料 / β版 / 有料を直接追加せず確認画面へ通す。今回のポータル追加は `sessionStorage` による一時表示MVPであり、正式な購入履歴、決済、`app_instances` 反映は後続フェーズで扱う。
 - 本線へ戻るにはPROJECT_STATUSで再開条件を確認する。
 
 ## ステータス分類
