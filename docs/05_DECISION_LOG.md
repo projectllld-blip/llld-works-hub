@@ -268,3 +268,11 @@ DECISION_LOGは重要な判断の記録に使う。単なる作業ログでは�
 - 影響範囲: `index.html`、`portal.html`、`docs/04_フェーズ記録/phase1-x-portal-uiux-consolidation.md`、`docs/00_PROJECT_STATUS.md`、`docs/06_TASK_QUEUE.md`。
 - 関連Phase: v1.x Portal UIUX Consolidation、v1.5。
 - 取り消し条件: 人間判断により、旧 `index.html` の社内ツールポータルを別用途で復活させる必要が出た場合。
+
+## 2026-07-02 マーケットの無料 / β版 / 有料は確認画面を通す
+
+- 決定内容: `marketplace.html` の無料、β版、有料コンテンツは、直接ポータル追加や直接起動にせず、`purchase-confirm.html` の購入 / 利用開始確認画面を通す。確認後はブラウザセッション内で `portal.html` に一時追加して操作感を確認する。
+- 理由: 無料、β版、有料、手動納品、開発相談が混在していると、利用者が「開くのか、買うのか、追加するのか、相談するのか」を判断しにくいため。決済や購入履歴の前に、確認してから追加する共通フローを作る。
+- 影響範囲: `marketplace.html`、`purchase-confirm.html`、`portal.html`、`assets/js/marketPages.js`、`assets/js/purchaseConfirmPage.js`、`assets/js/requestPage.js`、`assets/css/style.css`。
+- 関連Phase: v1.5、v1.6、v1.7、v1.9。
+- 取り消し条件: 人間判断により、無料アプリだけは確認画面を通さず直接利用開始する方針へ戻す場合。

@@ -92,7 +92,7 @@
 
     if (selectedContent) fields.item.value = selectedContent.title;
     fields.desired.value = desiredDefault(type);
-    fields.message.value = defaultMessage(type, fields.item.value, selectedContent);
+    fields.message.value = params.get('message') || defaultMessage(type, fields.item.value, selectedContent);
     renderItemContext(selectedContent);
 
     form.addEventListener('input', update);

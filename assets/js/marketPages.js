@@ -87,6 +87,7 @@
     renderPriceOptions();
     renderTagChips();
     bindMarketplaceFilters();
+    bindIdeaBox();
     renderMarketplaceLists();
   }
 
@@ -158,12 +159,12 @@
     const marketContents = visibleMarketContents(state.contents);
     setText('#marketResultMeta', `${filtered.length}件表示中 / 全${marketContents.length}件`);
     renderCards('#marketGrid', filtered);
-    renderCards('#freeToolsGrid', filtered.filter(content => ['free', 'free-beta'].includes(content.priceType)).slice(0, 6));
-    renderCards('#paidTemplatesGrid', filtered.filter(content => content.priceType === 'paid' && ['on-sale', 'inquiry-only'].includes(content.saleStatus)).slice(0, 6));
-    renderCards('#comingSoonGrid', filtered.filter(content => content.priceType === 'coming-soon' || content.saleStatus === 'preparing').slice(0, 6));
-    renderCards('#consultationGrid', filtered.filter(content => content.priceType === 'consultation').slice(0, 6));
-    renderCards('#schoolGrid', filtered.filter(content => includesAny(content.targetUsers, ['塾', '教室長', '教室スタッフ', '講師'])).slice(0, 6));
-    renderCards('#smallBusinessGrid', filtered.filter(content => includesAny(content.targetUsers, ['小規模事業者', '店舗', '事務'])).slice(0, 6));
+    renderCards('#freeToolsGrid', filtered.filter(content => ['free', 'free-beta'].includes(content.priceType)).slice(0, 8));
+    renderCards('#paidTemplatesGrid', filtered.filter(content => content.priceType === 'paid' && ['on-sale', 'inquiry-only'].includes(content.saleStatus)).slice(0, 8));
+    renderCards('#comingSoonGrid', filtered.filter(content => content.priceType === 'coming-soon' || content.saleStatus === 'preparing').slice(0, 8));
+    renderCards('#consultationGrid', filtered.filter(content => content.priceType === 'consultation').slice(0, 8));
+    renderCards('#schoolGrid', filtered.filter(content => includesAny(content.targetUsers, ['塾', '教室長', '教室スタッフ', '講師'])).slice(0, 8));
+    renderCards('#smallBusinessGrid', filtered.filter(content => includesAny(content.targetUsers, ['小規模事業者', '店舗', '事務'])).slice(0, 8));
   }
 
   function filteredContents() {
@@ -234,7 +235,7 @@
         <div class="tag-row">${(content.tags || []).slice(0, 4).map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>
         <div class="market-actions">
           <a class="btn primary" href="${escapeAttr(content.detailUrl)}">詳細を見る</a>
-          <a class="btn secondary" href="${escapeAttr(action.href)}">${escapeHtml(action.label)}</a>
+          <a class="btn secondary" href="${escapeAttr(action.href)}"${actionAttrs(action)}>${escapeHtml(action.label)}</a>
         </div>
       </div>
     </article>`;
@@ -255,7 +256,7 @@
     const action = getPrimaryAction(content);
     const secondaryAction = getSecondaryAction(content, action);
     const secondaryButton = secondaryAction
-      ? `<a class="btn secondary" href="${escapeAttr(secondaryAction.href)}">${escapeHtml(secondaryAction.label)}</a>`
+      ? `<a class="btn secondary" href="${escapeAttr(secondaryAction.href)}"${actionAttrs(secondaryAction)}>${escapeHtml(secondaryAction.label)}</a>`
       : '';
     const related = state.contents
       .filter(item => item.id !== content.id && item.priceType !== 'internal' && (item.categoryId === content.categoryId || hasOverlap(item.tags, content.tags)))
@@ -277,7 +278,7 @@
             ${detailFact('提供方法', deliveryLabels[content.deliveryType] || content.deliveryType || '-')}
           </div>
           <div class="detail-cta-row">
-            <a class="btn primary" href="${escapeAttr(action.href)}">${escapeHtml(action.label)}</a>
+            <a class="btn primary" href="${escapeAttr(action.href)}"${actionAttrs(action)}>${escapeHtml(action.label)}</a>
             ${secondaryButton}
           </div>
         </div>
@@ -298,10 +299,10 @@
       <section class="detail-panel detail-bottom-cta">
         <div>
           <h2>気になる場合は、まず相談できます。</h2>
-          <p>購入、導入、カスタマイズ、β版利用など、今の状態に合わせて手動で確認します。</p>
+          <p>無料、β版、有料の利用開始は確認画面を通します。開発が必要なものは要望・相談として整理します。</p>
         </div>
         <div class="detail-cta-row">
-          <a class="btn primary" href="${escapeAttr(action.href)}">${escapeHtml(action.label)}</a>
+          <a class="btn primary" href="${escapeAttr(action.href)}"${actionAttrs(action)}>${escapeHtml(action.label)}</a>
           ${secondaryButton}
         </div>
       </section>
@@ -373,6 +374,13 @@
     const openUrl = content.url || content.contentUrl || content.primaryCtaUrl;
     const inquiryUrl = content.inquiryUrl || content.requestUrl || content.primaryCtaUrl || './request.html';
 
+    if (usesPurchaseConfirmation(content)) {
+      return {
+        label: confirmationLabel(content),
+        href: confirmationUrl(content)
+      };
+    }
+
     if (content.priceType === 'free') {
       return { label: content.primaryCtaLabel || '無料で使う', href: openUrl || content.detailUrl || './marketplace.html' };
     }
@@ -387,7 +395,7 @@
       return { label: content.primaryCtaLabel || '先行案内を受ける', href: inquiryUrl };
     }
     if (content.priceType === 'consultation') {
-      return { label: content.primaryCtaLabel || '開発を相談する', href: inquiryUrl };
+      return { label: content.primaryCtaLabel || '開発要望を書く', href: inquiryUrl };
     }
     if (content.priceType === 'coming-soon') {
       return { label: content.primaryCtaLabel || '先行案内を受ける', href: inquiryUrl };
@@ -399,15 +407,58 @@
   }
 
   function getSecondaryAction(content, primaryAction = null) {
+    const openUrl = content.url || content.contentUrl || '';
+    if (usesPurchaseConfirmation(content) && openUrl) {
+      return { label: '別タブで開く', href: openUrl, external: true };
+    }
     if (content.secondaryCtaLabel && content.secondaryCtaUrl) {
       if (primaryAction && content.secondaryCtaUrl === primaryAction.href && content.secondaryCtaLabel === primaryAction.label) return null;
-      return { label: content.secondaryCtaLabel, href: content.secondaryCtaUrl };
+      return { label: content.secondaryCtaLabel, href: content.secondaryCtaUrl, external: isExternalOpen(content.secondaryCtaType, content.secondaryCtaUrl) };
     }
     if (content.priceType === 'free' || content.priceType === 'free-beta') {
       const href = content.inquiryUrl || './request.html';
       if (!primaryAction || primaryAction.href !== href) return { label: '相談する', href };
     }
     return null;
+  }
+
+  function usesPurchaseConfirmation(content) {
+    return ['free', 'free-beta', 'paid'].includes(content.priceType);
+  }
+
+  function confirmationUrl(content) {
+    return `./purchase-confirm.html?item=${encodeURIComponent(content.slug || content.id || '')}`;
+  }
+
+  function confirmationLabel(content) {
+    if (content.priceType === 'free') return '利用開始確認へ';
+    if (content.priceType === 'free-beta') return 'β版確認へ';
+    if (content.priceType === 'paid') return '購入確認へ';
+    return '確認へ進む';
+  }
+
+  function actionAttrs(action) {
+    return action.external ? ' target="_blank" rel="noopener"' : '';
+  }
+
+  function isExternalOpen(type, url) {
+    return type === 'open' || String(url || '').includes('/apps/') || String(url || '').includes('/contents/');
+  }
+
+  function bindIdeaBox() {
+    const form = $('#marketIdeaForm');
+    if (!form) return;
+    const message = $('#marketIdeaMessage');
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      const value = (message?.value || '').trim();
+      const params = new URLSearchParams({
+        type: 'development',
+        item: 'こんなツールが欲しい'
+      });
+      if (value) params.set('message', value);
+      window.location.href = `./request.html?${params.toString()}`;
+    });
   }
 
   function chipButton(value, label, active, type) {

@@ -2119,6 +2119,22 @@ body.tree-dragging{
     ["採","採用面談チェック","社内テンプレート","採用面談で確認する質問・評価項目をまとめた資料です。","採用 / 面談","assets/thumbnails/consulting-kit-card.svg"],
     ["英","英検資料セット","社内テンプレート","英検対策で使う語彙・確認テスト・進行メモです。","英検 / 教材","assets/thumbnails/quiz-maker-card.svg"]
   ];
+  const marketAdditionsKey="llldWorksHub.portalAdditions.session";
+  function marketPortalAdditions(){
+    try{
+      const parsed=JSON.parse(sessionStorage.getItem(marketAdditionsKey)||"[]");
+      if(!Array.isArray(parsed))return[];
+      return parsed.map(item=>[
+        "追",
+        item.title||"追加コンテンツ",
+        item.priceType==="paid"?"購入確認済み":"利用開始済み",
+        item.summary||"マーケットの確認画面からポータルへ追加しました。",
+        item.url||item.detailUrl||"marketplace.html",
+        [item.category||"Market",item.priceType||"追加"].filter(Boolean).join(" / "),
+        item.thumbnail||""
+      ]);
+    }catch{return[];}
+  }
   const fallbackThumb=()=>'<div class="mock-thumb"><div class="mock-screen"><div class="mock-top"><span></span><span></span><span></span></div><div class="mock-body"><div class="mock-menu"><i></i><i></i><i></i></div><div class="mock-main"><b></b><p><i></i><i></i><i></i></p><em></em></div></div></div></div>';
   const thumb=(src,label)=>src?`<div class="mock-thumb app-thumb"><img src="${src}" alt="${label}の画面モック" loading="lazy"></div>`:fallbackThumb();
   const card=(d,link=true)=>{
@@ -2127,7 +2143,10 @@ body.tree-dragging{
     return `<article class="content-card ${link?"":"is-mock"}">${thumb(image,d[1])}<div class="card-main"><div class="card-top"><span class="type-icon">${d[0]}</span><div><h3>${d[1]}</h3><small>${d[2]}</small>${link?"":'<br><span class="mock-label">準備中</span>'}</div><button class="pin" data-pin>☆</button></div><p>${d[3]}</p><div class="card-foot"><div class="chips">${tags.split("/").map(x=>`<span>${x.trim()}</span>`).join("")}</div>${link?`<a class="btn" href="${d[4]}" target="_blank" rel="noopener">開く</a>`:`<button class="btn mock-action" data-mock="このカードは購入済みコンテンツ表示のmockです。実データ接続は後続フェーズで整理します。">準備中</button>`}</div></div></article>`;
   };
   document.getElementById("favScroll").innerHTML=appData.map(d=>card(d,true)).join("");
-  document.getElementById("contentsScroll").innerHTML=contentsData.map(d=>card(d,false)).join("");
+  document.getElementById("contentsScroll").innerHTML=[
+    ...marketPortalAdditions().map(d=>card(d,true)),
+    ...contentsData.map(d=>card(d,false))
+  ].join("");
   markPortalOutboundLinks(document);
 
   document.body.addEventListener("click",e=>{
