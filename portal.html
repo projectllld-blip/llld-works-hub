@@ -24,6 +24,8 @@ a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}b
 .market{height:34px;padding:0 17px;border-radius:8px;background:var(--teal);display:inline-flex;align-items:center;justify-content:center;text-align:center;line-height:1;color:#fff;font-weight:500}
 .search{position:relative}.search input{width:100%;height:38px;border:0;border-radius:7px;padding:0 14px 0 39px;font-weight:350}.search span{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#48576d}
 .h-actions{display:flex;gap:10px;align-items:center;justify-content:flex-end}.hbtn{min-height:34px;border:1px solid rgba(255,255,255,.23);border-radius:8px;background:transparent;color:#fff;padding:0 14px;font-weight:500;display:inline-flex;align-items:center;justify-content:center;text-align:center;line-height:1}
+.hbtn.auth-login{background:#fff;color:#061829;border-color:#fff;box-shadow:0 4px 12px rgba(255,255,255,.08)}
+.hbtn.auth-account{background:#eaf2ff;color:#123765;border-color:#b9cff0}
 .portal-save-status{min-height:34px;display:inline-flex;align-items:center;justify-content:center;max-width:220px;padding:0 12px;border:1px solid rgba(255,255,255,.22);border-radius:999px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.86);font-size:.88rem;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
 .portal-save-status.is-saving{background:rgba(244,189,61,.18);border-color:rgba(244,189,61,.45);color:#fff6dd}
 .portal-save-status.is-saved{background:rgba(18,184,171,.18);border-color:rgba(18,184,171,.5);color:#d8fffb}
@@ -66,12 +68,12 @@ a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}b
 textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border-radius:11px;resize:none;font-weight:350;font-size:1rem}
 
 /* Quick / logs */
-.quick-list{height:calc(100% - 58px);overflow:hidden;display:grid;gap:9px;padding:12px}.quick-card{display:grid;grid-template-columns:84px 1fr auto;gap:11px;align-items:center;min-height:78px;padding:9px;border:1px solid var(--line);border-radius:13px;background:#fff}.quick-card h4{margin:0;font-size:1.1rem;font-weight:550}.quick-card p{margin:4px 0 0;color:var(--muted);font-size:.9rem}.qthumb{width:84px;height:54px;border-radius:8px;overflow:hidden;background:#eef3f9;border:1px solid #dfe7f0}
+.quick-list{height:calc(100% - 58px);overflow:hidden;display:grid;gap:9px;padding:12px}.quick-card{display:grid;grid-template-columns:84px 1fr auto;gap:11px;align-items:center;min-height:78px;padding:9px;border:1px solid var(--line);border-radius:13px;background:#fff}.quick-card h4{margin:0;font-size:1.1rem;font-weight:550}.quick-card p{margin:4px 0 0;color:var(--muted);font-size:.9rem}.qthumb{width:84px;height:54px;border-radius:8px;overflow:hidden;background:#eef3f9;border:1px solid #dfe7f0}.qthumb img{display:block;width:100%;height:100%;object-fit:cover;object-position:top center}
 .log-list{height:calc(100% - 58px);overflow:hidden;padding:12px;display:grid;gap:8px;align-content:start}.log-item{display:grid;grid-template-columns:30px 1fr auto;gap:8px;align-items:start;padding:8px 9px;border:1px solid var(--line2);border-radius:10px;background:#f9fbfd}.log-icon{width:30px;height:30px;display:grid;place-items:center;border-radius:8px;background:var(--tealSoft);color:var(--teal2)}.log-item strong{display:block;font-size:.98rem;font-weight:500;line-height:1.25}.log-item span{display:block;margin-top:2px;color:var(--muted);font-size:.86rem;line-height:1.35}.log-time{color:#92a0b4;font-size:.8rem;white-space:nowrap}
 
 /* Stable card design: restored from earlier direction */
-.mock-thumb{height:130px;padding:13px;background:linear-gradient(135deg,#f8fbff,#edf3f9);border-bottom:1px solid var(--line2)}.mock-thumb.app-thumb{padding:0;background:#eef3f9}.mock-thumb img{display:block;width:100%;height:100%;object-fit:cover;object-position:top center}.mock-screen{height:100%;border-radius:8px;background:#fff;border:1px solid #dbe3ed;box-shadow:0 10px 24px rgba(6,24,41,.09);overflow:hidden}.mock-top{height:18px;background:#071d33;display:flex;gap:4px;align-items:center;padding:0 8px}.mock-top span{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.45)}.mock-body{display:grid;grid-template-columns:30px 1fr;height:calc(100% - 18px)}.mock-menu{background:#102b45;padding:7px 5px}.mock-menu i{display:block;height:5px;margin-bottom:5px;border-radius:999px;background:rgba(255,255,255,.2)}.mock-main{padding:8px;background:#f6f8fb}.mock-main b{display:block;width:54%;height:8px;border-radius:999px;background:#d7e0ea;margin-bottom:7px}.mock-main p{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin:0 0 7px}.mock-main p i{height:22px;border-radius:6px;background:#fff;border:1px solid #e2e8f0}.mock-main em{display:block;height:26px;border-radius:6px;background:linear-gradient(90deg,var(--teal) 14%,transparent 14% 22%,var(--blue) 22% 34%,transparent 34% 45%,#82c991 45% 58%,transparent 58%),#fff;border:1px solid #e2e8f0}
-.scroll-wrap{position:relative}.card-scroll{display:flex;gap:14px;overflow-x:auto;overflow-y:hidden;scroll-behavior:smooth;scroll-snap-type:x mandatory;padding:2px 2px 8px;scrollbar-width:thin;overscroll-behavior-x:contain;overscroll-behavior-y:auto;touch-action:pan-x}.content-card{flex:0 0 calc((100% - 42px)/4);max-width:calc((100% - 42px)/4);min-width:0;min-height:346px;overflow:hidden;border:1px solid var(--line);border-radius:var(--r);background:#fff;box-shadow:var(--shadow);scroll-snap-align:start;display:flex;flex-direction:column}
+.mock-thumb{height:168px;padding:13px;background:linear-gradient(135deg,#f8fbff,#edf3f9);border-bottom:1px solid var(--line2)}.mock-thumb.app-thumb{padding:0;background:#eef3f9}.mock-thumb img{display:block;width:100%;height:100%;object-fit:cover;object-position:top center}.mock-screen{height:100%;border-radius:8px;background:#fff;border:1px solid #dbe3ed;box-shadow:0 10px 24px rgba(6,24,41,.09);overflow:hidden}.mock-top{height:18px;background:#071d33;display:flex;gap:4px;align-items:center;padding:0 8px}.mock-top span{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.45)}.mock-body{display:grid;grid-template-columns:30px 1fr;height:calc(100% - 18px)}.mock-menu{background:#102b45;padding:7px 5px}.mock-menu i{display:block;height:5px;margin-bottom:5px;border-radius:999px;background:rgba(255,255,255,.2)}.mock-main{padding:8px;background:#f6f8fb}.mock-main b{display:block;width:54%;height:8px;border-radius:999px;background:#d7e0ea;margin-bottom:7px}.mock-main p{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin:0 0 7px}.mock-main p i{height:22px;border-radius:6px;background:#fff;border:1px solid #e2e8f0}.mock-main em{display:block;height:26px;border-radius:6px;background:linear-gradient(90deg,var(--teal) 14%,transparent 14% 22%,var(--blue) 22% 34%,transparent 34% 45%,#82c991 45% 58%,transparent 58%),#fff;border:1px solid #e2e8f0}
+.scroll-wrap{position:relative}.card-scroll{display:flex;gap:14px;overflow-x:auto;overflow-y:hidden;scroll-behavior:smooth;scroll-snap-type:x mandatory;padding:2px 2px 8px;scrollbar-width:thin;overscroll-behavior-x:contain;overscroll-behavior-y:auto;touch-action:pan-x}.content-card{flex:0 0 calc((100% - 42px)/4);max-width:calc((100% - 42px)/4);min-width:0;min-height:392px;overflow:hidden;border:1px solid var(--line);border-radius:var(--r);background:#fff;box-shadow:var(--shadow);scroll-snap-align:start;display:flex;flex-direction:column}
 .scroll-arrow{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--navy2);box-shadow:var(--shadow);position:absolute;top:50%;transform:translateY(-50%);z-index:3}.scroll-arrow.left{left:-11px}.scroll-arrow.right{right:-11px}
 .card-main{padding:13px 14px 14px;display:flex;flex:1;flex-direction:column}.card-top{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:8px;align-items:start;margin-bottom:9px}.type-icon{width:24px;height:24px;display:grid;place-items:center;border-radius:7px;background:var(--tealSoft);color:var(--teal2);font-weight:550}.content-card h3{margin:0;font-size:1.16rem;font-weight:550;line-height:1.33;letter-spacing:0}.content-card small{display:inline-flex;margin-top:3px;padding:2px 7px;border-radius:6px;background:var(--blueSoft);color:#2360b6;font-size:.9rem}.content-card p{margin:8px 0 11px;min-height:50px;color:var(--muted);font-weight:350;font-size:.95rem;line-height:1.45}.card-foot{display:flex;justify-content:space-between;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-top:auto}.chips{display:flex;gap:6px;flex-wrap:wrap;min-width:0}.chips span{padding:3px 8px;border-radius:999px;background:#edf2f7;color:#526174;font-size:.88rem}
 .content-card.is-mock{background:linear-gradient(180deg,#fff,#fffdf6)}
@@ -255,7 +257,7 @@ textarea{width:100%;min-height:92px;padding:10px;border:1px solid #cfd9e6;border
   flex:0 0 calc((100% - 42px)/4)!important;
   max-width:calc((100% - 42px)/4)!important;
   min-width:0!important;
-  min-height:346px!important;
+  min-height:392px!important;
 }
 .card-scroll.is-animating{
   transition:transform .25s ease;
@@ -1575,6 +1577,53 @@ body.tree-dragging{
     height:36px;
   }
 }
+
+/* v1.x consolidation follow-up: align board panels and keep todo list scrollable */
+.panel.board-height,
+.todo-panel,
+.panel.board-height.todo-panel{
+  height:360px!important;
+  min-height:360px!important;
+}
+.todo-body{
+  height:calc(100% - 58px)!important;
+  min-height:0!important;
+  display:grid!important;
+  grid-template-rows:auto minmax(0,1fr)!important;
+  gap:9px!important;
+  padding:11px!important;
+  overflow:hidden!important;
+}
+.todo-list{
+  min-height:0!important;
+  max-height:none!important;
+  overflow:auto!important;
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  grid-auto-rows:minmax(54px,auto)!important;
+  gap:8px!important;
+  align-content:start!important;
+  padding-right:3px!important;
+  scrollbar-width:thin;
+}
+.todo-list li{
+  min-height:54px!important;
+  padding:8px 10px!important;
+}
+@media(max-width:900px){
+  .panel.board-height,
+  .todo-panel,
+  .panel.board-height.todo-panel{
+    height:360px!important;
+    min-height:360px!important;
+  }
+}
+@media(max-width:640px){
+  .todo-list{
+    grid-template-columns:1fr!important;
+    grid-auto-rows:minmax(54px,auto)!important;
+  }
+}
 </style>
 </head>
 <body>
@@ -1584,7 +1633,7 @@ body.tree-dragging{
   <a class="market" href="marketplace.html" target="_blank" rel="noopener">LLLD Works Market β</a>
   <div class="search"><span>🔍</span><input placeholder="コンテンツ名・カテゴリ・タグで検索"></div>
   <div class="header-spacer"></div>
-  <nav class="h-actions"><a class="hbtn" href="login.html" target="_blank" rel="noopener">ログイン</a><a class="hbtn" href="account.html" target="_blank" rel="noopener">アカウント</a></nav>
+  <nav class="h-actions"><a class="hbtn auth-login" href="login.html" target="_blank" rel="noopener">ログイン</a><a class="hbtn auth-account" href="account.html" target="_blank" rel="noopener">アカウント</a></nav>
   <span class="portal-save-status" id="portalSaveStatus">保存確認中</span>
 </header>
 <div class="portal-cloud-notice is-info" id="portalCloudNotice" hidden>
@@ -1659,9 +1708,9 @@ body.tree-dragging{
     <div class="s-head"><h2>クイックアクセス・操作ログ</h2><div class="s-actions"><button class="pin" data-pin>☆</button><button class="collapse" data-collapse>▲</button></div></div>
     <div class="s-body"><div class="quick-log-grid">
       <div class="panel quick-height"><div class="p-head"><h3>最近使ったもの</h3><span class="upd">直近順</span></div><div class="quick-list">
-        <article class="quick-card"><div class="qthumb"><div class="mock-screen"><div class="mock-top"><span></span><span></span><span></span></div><div class="mock-body"><div class="mock-menu"><i></i><i></i><i></i></div><div class="mock-main"><b></b><p><i></i><i></i><i></i></p><em></em></div></div></div></div><div><h4>小テスト作成アプリ</h4><p>英検・漢字・語彙テストを作成</p></div><a class="mini-btn primary" href="apps/quiz-maker/index.html" target="_blank" rel="noopener">開く</a></article>
-        <article class="quick-card"><div class="qthumb"><div class="mock-screen"><div class="mock-top"><span></span><span></span><span></span></div><div class="mock-main"><b></b><p><i></i><i></i><i></i></p><em></em></div></div></div><div><h4>入試問題アプリ</h4><p>入試問題・演習プリントを印刷</p></div><a class="mini-btn primary" href="apps/exam-print/index.html" target="_blank" rel="noopener">開く</a></article>
-        <article class="quick-card"><div class="qthumb"><div class="mock-screen"><div class="mock-top"><span></span><span></span><span></span></div><div class="mock-main"><b></b><p><i></i><i></i><i></i></p><em></em></div></div></div><div><h4>PDF編集ツール</h4><p>結合・分割・並べ替え</p></div><a class="mini-btn primary" href="apps/pdf-tool/index.html" target="_blank" rel="noopener">開く</a></article>
+        <article class="quick-card"><div class="qthumb"><img src="assets/thumbnails/quiz-maker-card.svg" alt="小テスト作成アプリの画面モック" loading="lazy"></div><div><h4>小テスト作成アプリ</h4><p>英検・漢字・語彙テストを作成</p></div><a class="mini-btn primary" href="apps/quiz-maker/index.html" target="_blank" rel="noopener">開く</a></article>
+        <article class="quick-card"><div class="qthumb"><img src="assets/thumbnails/exam-print-card.svg" alt="入試問題アプリの画面モック" loading="lazy"></div><div><h4>入試問題アプリ</h4><p>入試問題・演習プリントを印刷</p></div><a class="mini-btn primary" href="apps/exam-print/index.html" target="_blank" rel="noopener">開く</a></article>
+        <article class="quick-card"><div class="qthumb"><img src="assets/thumbnails/pdf-tool-card.svg" alt="PDF編集ツールの画面モック" loading="lazy"></div><div><h4>PDF編集ツール</h4><p>結合・分割・並べ替え</p></div><a class="mini-btn primary" href="apps/pdf-tool/index.html" target="_blank" rel="noopener">開く</a></article>
       </div></div>
       <aside class="panel quick-height"><div class="p-head"><h3>操作ログ</h3><span class="upd">最新順</span></div><div class="log-list" id="activityLog">
         <article class="log-item" data-log-target="#files" data-log-file-name="体験授業_中2英検対策_所見テンプレ.pdf"><span class="log-icon">📂</span><div><strong>体験授業_所見テンプレ.pdf を開きました</strong><span>教育事業 / 体験授業資料</span></div><time class="log-time">19:12</time></article>
