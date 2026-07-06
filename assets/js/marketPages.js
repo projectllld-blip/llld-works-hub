@@ -13,8 +13,9 @@
 
   const priceLabels = {
     free: '無料',
-    'free-beta': '無料β',
-    paid: '有料',
+    'free-beta': 'β版',
+    paid: '買い切り',
+    subscription: 'サブスク',
     consultation: '開発相談',
     internal: '社内限定',
     'coming-soon': '準備中'
@@ -117,7 +118,7 @@
   function renderPriceOptions() {
     const select = $('#priceFilter');
     if (!select) return;
-    const options = ['all', 'free', 'free-beta', 'paid', 'consultation', 'coming-soon'];
+    const options = ['all', 'paid', 'subscription', 'free', 'free-beta', 'coming-soon'];
     select.innerHTML = options.map(value => `<option value="${escapeAttr(value)}">${escapeHtml(value === 'all' ? '価格タイプすべて' : priceLabels[value])}</option>`).join('');
   }
 
@@ -189,9 +190,8 @@
     setText('#marketResultMeta', `${filtered.length}件表示中 / 全${marketContents.length}件`);
     renderCards('#marketGrid', filtered);
     renderCards('#freeToolsGrid', filtered.filter(content => ['free', 'free-beta'].includes(content.priceType)).slice(0, 8));
-    renderCards('#paidTemplatesGrid', filtered.filter(content => content.priceType === 'paid' && ['on-sale', 'inquiry-only'].includes(content.saleStatus)).slice(0, 8));
+    renderCards('#paidTemplatesGrid', filtered.filter(content => ['paid', 'subscription'].includes(content.priceType) && ['on-sale', 'inquiry-only'].includes(content.saleStatus)).slice(0, 8));
     renderCards('#comingSoonGrid', filtered.filter(content => content.priceType === 'coming-soon' || content.saleStatus === 'preparing').slice(0, 8));
-    renderCards('#consultationGrid', filtered.filter(content => content.priceType === 'consultation').slice(0, 8));
     renderCards('#schoolGrid', filtered.filter(content => includesAny(content.targetUsers, ['塾', '教室長', '教室スタッフ', '講師'])).slice(0, 8));
     renderCards('#smallBusinessGrid', filtered.filter(content => includesAny(content.targetUsers, ['小規模事業者', '店舗', '事務'])).slice(0, 8));
   }
@@ -211,7 +211,9 @@
       ].join(' '));
       const matchQuery = !q || text.includes(q);
       const matchCategory = state.categoryId === 'all' || content.categoryId === state.categoryId;
-      const matchPrice = state.priceType === 'all' || content.priceType === state.priceType;
+      const matchPrice = state.priceType === 'all' ||
+        content.priceType === state.priceType ||
+        (state.priceType === 'subscription' && ['subscription', 'monthly', 'recurring'].includes(content.billingType));
       const matchTag = state.tag === 'all' || (content.tags || []).includes(state.tag);
       return matchQuery && matchCategory && matchPrice && matchTag;
     });
@@ -424,6 +426,9 @@
     if (content.priceType === 'paid' && content.saleStatus === 'preparing') {
       return { label: content.primaryCtaLabel || '先行案内を受ける', href: inquiryUrl };
     }
+    if (content.priceType === 'subscription') {
+      return { label: content.primaryCtaLabel || '利用確認へ', href: confirmationUrl(content) };
+    }
     if (content.priceType === 'consultation') {
       return { label: content.primaryCtaLabel || '開発要望を書く', href: inquiryUrl };
     }
@@ -453,7 +458,7 @@
   }
 
   function usesPurchaseConfirmation(content) {
-    return ['free', 'free-beta', 'paid'].includes(content.priceType);
+    return ['free', 'free-beta', 'paid', 'subscription'].includes(content.priceType);
   }
 
   function thumbnailFor(content) {
@@ -468,6 +473,7 @@
     if (content.priceType === 'free') return '利用開始確認へ';
     if (content.priceType === 'free-beta') return 'β版確認へ';
     if (content.priceType === 'paid') return '購入確認へ';
+    if (content.priceType === 'subscription') return '利用確認へ';
     return '確認へ進む';
   }
 
@@ -556,14 +562,15 @@
 
   function formatPrice(content) {
     if (content.priceType === 'free') return '無料';
-    if (content.priceType === 'free-beta') return '無料β';
+    if (content.priceType === 'free-beta') return 'β版';
     if (content.priceType === 'consultation') return '個別見積';
     if (content.priceType === 'coming-soon') return '有料予定';
     if (content.priceType === 'internal') return '社内限定';
+    if (content.priceType === 'subscription') return 'サブスク';
     if (content.priceType === 'paid') {
       return Number.isFinite(content.price) && content.price > 0
-        ? `${content.price.toLocaleString('ja-JP')}円`
-        : '購入相談';
+        ? '買い切り'
+        : '個別見積';
     }
     return priceLabels[content.priceType] || content.priceType || '未設定';
   }
