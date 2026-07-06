@@ -414,26 +414,26 @@
     }
 
     if (content.priceType === 'free') {
-      return { label: content.primaryCtaLabel || '無料で使う', href: openUrl || content.detailUrl || './marketplace.html' };
+      return { label: '利用開始', href: openUrl || content.detailUrl || './marketplace.html' };
     }
     if (content.priceType === 'free-beta') {
-      return { label: content.primaryCtaLabel || 'β版を試す', href: openUrl || inquiryUrl };
+      return { label: 'β版を利用', href: openUrl || inquiryUrl };
     }
     if (content.priceType === 'paid' && content.saleStatus === 'on-sale') {
-      if (content.paymentUrl) return { label: '購入する', href: content.paymentUrl };
-      return { label: content.primaryCtaLabel || '購入について相談する', href: inquiryUrl };
+      if (content.paymentUrl) return { label: '購入確認', href: content.paymentUrl };
+      return { label: '購入確認', href: inquiryUrl };
     }
     if (content.priceType === 'paid' && content.saleStatus === 'preparing') {
-      return { label: content.primaryCtaLabel || '先行案内を受ける', href: inquiryUrl };
+      return { label: '開発中', href: inquiryUrl };
     }
     if (content.priceType === 'subscription') {
-      return { label: content.primaryCtaLabel || '利用確認へ', href: confirmationUrl(content) };
+      return { label: '購入確認', href: confirmationUrl(content) };
     }
     if (content.priceType === 'consultation') {
-      return { label: content.primaryCtaLabel || '開発要望を書く', href: inquiryUrl };
+      return { label: '開発中', href: inquiryUrl };
     }
     if (content.priceType === 'coming-soon') {
-      return { label: content.primaryCtaLabel || '先行案内を受ける', href: inquiryUrl };
+      return { label: '開発中', href: inquiryUrl };
     }
     if (content.priceType === 'internal') {
       return { label: content.primaryCtaLabel || '社内限定', href: openUrl || './index.html' };
@@ -458,6 +458,7 @@
   }
 
   function usesPurchaseConfirmation(content) {
+    if (content.saleStatus === 'preparing') return false;
     return ['free', 'free-beta', 'paid', 'subscription'].includes(content.priceType);
   }
 
@@ -470,10 +471,10 @@
   }
 
   function confirmationLabel(content) {
-    if (content.priceType === 'free') return '利用開始確認へ';
-    if (content.priceType === 'free-beta') return 'β版確認へ';
-    if (content.priceType === 'paid') return '購入確認へ';
-    if (content.priceType === 'subscription') return '利用確認へ';
+    if (content.priceType === 'free') return '利用開始';
+    if (content.priceType === 'free-beta') return 'β版を利用';
+    if (content.priceType === 'paid') return '購入確認';
+    if (content.priceType === 'subscription') return '購入確認';
     return '確認へ進む';
   }
 
