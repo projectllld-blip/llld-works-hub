@@ -3058,3 +3058,178 @@ body[data-market-page="detail"] .market-badge:last-child{
     grid-template-columns:1fr;
   }
 }
+
+/* v1.x common header lock: keep height and controls aligned across site pages. */
+:root{
+  --llld-common-header-height:64px;
+  --llld-common-header-control-height:36px;
+}
+
+.market-header,
+body[data-market-page="marketplace"] .market-header,
+body[data-market-page="detail"] .market-header,
+body[data-market-page="author"] .market-header,
+body[data-market-page="purchase"] .market-header,
+body[data-market-page="request"] .market-header,
+body[data-market-page="thanks"] .market-header,
+body[data-market-page="admin"] .market-header,
+body[data-market-page="account"] .market-header{
+  height:var(--llld-common-header-height)!important;
+  min-height:var(--llld-common-header-height)!important;
+  position:fixed!important;
+  top:0!important;
+  left:0!important;
+  right:0!important;
+  z-index:40!important;
+  display:flex!important;
+  flex-direction:row!important;
+  flex-wrap:nowrap!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  gap:8px!important;
+  padding:0 clamp(12px,1.5vw,20px)!important;
+  margin:0!important;
+  border:0!important;
+  overflow:visible!important;
+  box-sizing:border-box!important;
+}
+
+.market-header .market-brand,
+body[data-market-page="marketplace"] .market-brand,
+body[data-market-page="detail"] .market-brand,
+body[data-market-page="author"] .market-brand,
+body[data-market-page="purchase"] .market-brand,
+body[data-market-page="request"] .market-brand,
+body[data-market-page="thanks"] .market-brand,
+body[data-market-page="admin"] .market-brand,
+body[data-market-page="account"] .market-brand{
+  min-height:var(--llld-common-header-control-height)!important;
+  margin-right:auto!important;
+  flex:0 1 auto!important;
+  white-space:nowrap!important;
+}
+
+.market-header nav,
+body[data-market-page="marketplace"] .market-header nav,
+body[data-market-page="detail"] .market-header nav,
+body[data-market-page="author"] .market-header nav,
+body[data-market-page="purchase"] .market-header nav,
+body[data-market-page="request"] .market-header nav,
+body[data-market-page="thanks"] .market-header nav,
+body[data-market-page="admin"] .market-header nav,
+body[data-market-page="account"] .market-header nav{
+  width:auto!important;
+  min-width:0!important;
+  flex:0 1 auto!important;
+  order:0!important;
+  display:flex!important;
+  flex-wrap:nowrap!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  gap:6px!important;
+  margin-left:auto!important;
+  overflow:visible!important;
+}
+
+.market-header nav a,
+.market-header .market-notice-button,
+.market-header .account-session-menu summary,
+body[data-market-page="marketplace"] .market-header nav a,
+body[data-market-page="marketplace"] .market-notice-button,
+body[data-market-page="marketplace"] .account-session-menu summary,
+body[data-market-page="detail"] .market-header nav a,
+body[data-market-page="detail"] .market-notice-button,
+body[data-market-page="detail"] .account-session-menu summary,
+body[data-market-page="author"] .market-header nav a,
+body[data-market-page="author"] .market-notice-button,
+body[data-market-page="author"] .account-session-menu summary,
+body[data-market-page="purchase"] .market-header nav a,
+body[data-market-page="purchase"] .market-notice-button,
+body[data-market-page="purchase"] .account-session-menu summary,
+body[data-market-page="request"] .market-header nav a,
+body[data-market-page="request"] .market-notice-button,
+body[data-market-page="request"] .account-session-menu summary,
+body[data-market-page="thanks"] .market-header nav a,
+body[data-market-page="thanks"] .market-notice-button,
+body[data-market-page="thanks"] .account-session-menu summary,
+body[data-market-page="admin"] .market-header nav a,
+body[data-market-page="admin"] .market-notice-button,
+body[data-market-page="admin"] .account-session-menu summary,
+body[data-market-page="account"] .market-header nav a,
+body[data-market-page="account"] .market-notice-button,
+body[data-market-page="account"] .account-session-menu summary{
+  height:var(--llld-common-header-control-height)!important;
+  min-height:var(--llld-common-header-control-height)!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  line-height:1!important;
+}
+
+.market-header .market-notice-button,
+body[data-market-page="marketplace"] .market-notice-button,
+body[data-market-page="detail"] .market-notice-button,
+body[data-market-page="author"] .market-notice-button,
+body[data-market-page="purchase"] .market-notice-button,
+body[data-market-page="request"] .market-notice-button,
+body[data-market-page="thanks"] .market-notice-button,
+body[data-market-page="admin"] .market-notice-button,
+body[data-market-page="account"] .market-notice-button{
+  width:var(--llld-common-header-control-height)!important;
+  flex:0 0 var(--llld-common-header-control-height)!important;
+}
+
+.market-header .account-session-menu,
+body[data-market-page="marketplace"] .account-session-menu,
+body[data-market-page="detail"] .account-session-menu,
+body[data-market-page="author"] .account-session-menu,
+body[data-market-page="purchase"] .account-session-menu,
+body[data-market-page="request"] .account-session-menu,
+body[data-market-page="thanks"] .account-session-menu,
+body[data-market-page="admin"] .account-session-menu,
+body[data-market-page="account"] .account-session-menu{
+  width:auto!important;
+  min-width:max-content!important;
+  flex:0 0 auto!important;
+}
+
+body[data-market-page="marketplace"] .market-page,
+body[data-market-page="detail"] .market-page,
+body[data-market-page="author"] .market-page,
+body[data-market-page="purchase"] .market-page,
+body[data-market-page="request"] .market-page,
+body[data-market-page="thanks"] .market-page,
+body[data-market-page="admin"] .market-page,
+body[data-market-page="account"] .market-page{
+  padding-top:calc(var(--llld-common-header-height) + 24px)!important;
+}
+
+@media(max-width:860px){
+  .market-header,
+  body[data-market-page="marketplace"] .market-header,
+  body[data-market-page="detail"] .market-header,
+  body[data-market-page="author"] .market-header,
+  body[data-market-page="purchase"] .market-header,
+  body[data-market-page="request"] .market-header,
+  body[data-market-page="thanks"] .market-header,
+  body[data-market-page="admin"] .market-header,
+  body[data-market-page="account"] .market-header{
+    overflow-x:auto!important;
+    overflow-y:visible!important;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  .market-header .market-brand,
+  body[data-market-page="marketplace"] .market-brand,
+  body[data-market-page="detail"] .market-brand,
+  body[data-market-page="author"] .market-brand,
+  body[data-market-page="purchase"] .market-brand,
+  body[data-market-page="request"] .market-brand,
+  body[data-market-page="thanks"] .market-brand,
+  body[data-market-page="admin"] .market-brand,
+  body[data-market-page="account"] .market-brand{
+    max-width:46vw!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+}

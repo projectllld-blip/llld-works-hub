@@ -31,14 +31,17 @@
     }
     .site-header{
       width:100%;
-      min-height:66px;
+      height:64px;
+      min-height:64px;
       display:flex;
       align-items:center;
       justify-content:flex-end;
-      gap:12px;
-      padding:12px 18px;
+      flex-wrap:nowrap;
+      gap:8px;
+      padding:0 clamp(12px,1.5vw,20px);
       background:var(--navy);
       color:#fff;
+      overflow:visible;
     }
     .brand{
       margin-right:auto;
@@ -61,12 +64,14 @@
       align-items:center;
       justify-content:flex-end;
       gap:6px;
-      flex-wrap:wrap;
+      flex-wrap:nowrap;
+      margin-left:auto;
     }
     .site-nav a,
     .notice-button,
     .page-menu summary{
-      min-height:34px;
+      min-height:36px;
+      height:36px;
       display:inline-flex;
       align-items:center;
       justify-content:center;
@@ -84,7 +89,8 @@
       border-color:transparent;
     }
     .notice-button{
-      width:34px;
+      width:36px;
+      flex:0 0 36px;
       padding:0;
       border-radius:999px;
       cursor:pointer;
@@ -182,10 +188,15 @@
     }
     @media(max-width:720px){
       .site-header{
-        align-items:flex-end;
-        flex-direction:column;
+        overflow-x:auto;
+        overflow-y:visible;
+        -webkit-overflow-scrolling:touch;
       }
-      .brand{margin-right:0}
+      .brand{
+        max-width:46vw;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
       .site-nav{justify-content:flex-end}
     }
   </style>
@@ -206,7 +217,7 @@
       <summary>マイページ</summary>
       <div class="page-menu-list">
         <span>会社名/メアド</span>
-        <a href="./account.html">企業ページ</a>
+        <a href="./account.html">マイページ</a>
         <a href="./support.html">サポート</a>
         <a href="./request.html">開発相談</a>
         <button type="button">ログアウト</button>
