@@ -60,6 +60,16 @@
     staff: 'スタッフ'
   };
 
+  const thumbnailByType = {
+    attendance: './assets/reference/mock-generation-pack/llld_product_mock_generation_pack/references/04_attendance_card_reference.png',
+    dashboard: './assets/reference/mock-generation-pack/llld_product_mock_generation_pack/references/07_dashboard_card_reference.png',
+    document: './assets/reference/mock-generation-pack/llld_product_mock_generation_pack/references/05_subsidy_card_reference.png',
+    pdf: './assets/reference/mock-generation-pack/llld_product_mock_generation_pack/references/01_pdf_card_reference.png',
+    proposal: './assets/reference/mock-generation-pack/llld_product_mock_generation_pack/references/06_proposal_card_reference.png',
+    quiz: './assets/reference/mock-generation-pack/llld_product_mock_generation_pack/references/03_quiz_card_reference.png',
+    seats: './assets/reference/mock-generation-pack/llld_product_mock_generation_pack/references/08_seats_card_reference.png'
+  };
+
   const $ = selector => document.querySelector(selector);
   const $$ = selector => Array.from(document.querySelectorAll(selector));
 
@@ -126,6 +136,15 @@
       search.addEventListener('input', event => {
         state.query = event.target.value.trim();
         renderMarketplaceLists();
+      });
+    }
+
+    const searchButton = $('[data-market-search-button]');
+    if (searchButton && search) {
+      searchButton.addEventListener('click', () => {
+        state.query = search.value.trim();
+        renderMarketplaceLists();
+        search.focus();
       });
     }
 
@@ -212,9 +231,10 @@
     const action = getPrimaryAction(content);
     const priceText = formatPrice(content);
     const saleText = saleStatusLabels[content.saleStatus] || statusLabels[content.status] || content.saleStatus || content.status || '未設定';
+    const thumbnail = thumbnailFor(content);
     return `<article class="market-card">
       <a class="market-thumb" href="${escapeAttr(content.detailUrl)}">
-        <img src="${escapeAttr(content.thumbnail || content.thumbnailImage || '')}" alt="${escapeAttr(content.title)}" loading="lazy">
+        <img src="${escapeAttr(thumbnail)}" alt="${escapeAttr(content.title)}" loading="lazy">
       </a>
       <div class="market-card-body">
         <div class="market-card-badges">
@@ -283,7 +303,7 @@
           </div>
         </div>
         <figure>
-          <img src="${escapeAttr(content.thumbnail || content.thumbnailImage || '')}" alt="${escapeAttr(content.title)}">
+          <img src="${escapeAttr(thumbnailFor(content))}" alt="${escapeAttr(content.title)}">
         </figure>
       </section>
 
@@ -424,6 +444,10 @@
 
   function usesPurchaseConfirmation(content) {
     return ['free', 'free-beta', 'paid'].includes(content.priceType);
+  }
+
+  function thumbnailFor(content) {
+    return content.thumbnailImage || thumbnailByType[content.thumbnailType] || content.thumbnail || './assets/thumbs/internal-operations.png';
   }
 
   function confirmationUrl(content) {
