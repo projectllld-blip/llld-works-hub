@@ -1096,6 +1096,641 @@ body[data-market-page="marketplace"] .detail-cta-row .btn.secondary{
   body[data-market-page="marketplace"] .market-thumb{height:104px}
 }
 
+/* Marketplace productized layout */
+body[data-market-page="marketplace"]{
+  background:#f4f7fb;
+}
+body[data-market-page="marketplace"] .market-header{
+  position:sticky;
+  top:0;
+  z-index:40;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-height:66px;
+  padding:10px clamp(12px,1.5vw,20px);
+  background:linear-gradient(90deg,#061b32 0%,#092542 60%,#061b32 100%);
+  border:0;
+}
+body[data-market-page="marketplace"] .market-brand{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  min-width:max-content;
+  color:#fff;
+  font-size:19px;
+  line-height:1;
+  letter-spacing:-.02em;
+}
+body[data-market-page="marketplace"] .market-brand:before{
+  width:32px;
+  height:32px;
+  border-radius:9px;
+  background:linear-gradient(135deg,#18d5c4,#2f81f7);
+}
+body[data-market-page="marketplace"] .market-header nav{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  min-width:0;
+  flex:1;
+  flex-wrap:nowrap;
+}
+body[data-market-page="marketplace"] .market-header nav a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:36px;
+  padding:0 10px;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:9px;
+  background:rgba(255,255,255,.04);
+  color:#e2e8f0;
+  font-size:12px;
+  font-weight:850;
+  line-height:1;
+}
+body[data-market-page="marketplace"] .market-header nav a[href="./marketplace.html"]{
+  background:linear-gradient(135deg,#13c7ba,#009f91);
+  border-color:transparent;
+  color:#fff;
+}
+body[data-market-page="marketplace"] .market-header nav a:hover{
+  background:rgba(255,255,255,.1);
+  color:#fff;
+}
+body[data-market-page="marketplace"] .market-notice-dot{
+  width:34px;
+  height:34px;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:999px;
+  position:relative;
+}
+body[data-market-page="marketplace"] .market-notice-dot:before{
+  content:"";
+  position:absolute;
+  inset:9px 10px 8px;
+  border:2px solid #e2e8f0;
+  border-top-color:transparent;
+  border-radius:50% 50% 45% 45%;
+}
+body[data-market-page="marketplace"] .market-notice-dot:after{
+  content:"3";
+  position:absolute;
+  top:-5px;
+  right:-5px;
+  width:18px;
+  height:18px;
+  border-radius:999px;
+  background:#ef4444;
+  color:#fff;
+  display:grid;
+  place-items:center;
+  font-size:10px;
+  font-weight:950;
+}
+body[data-market-page="marketplace"] .market-page-menu{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  min-width:max-content;
+  padding:4px;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:11px;
+  background:rgba(255,255,255,.05);
+}
+body[data-market-page="marketplace"] .market-page-menu a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:30px;
+  padding:0 8px;
+  border-radius:8px;
+  color:#dbe7f3;
+  font-size:12px;
+  font-weight:850;
+  line-height:1;
+}
+body[data-market-page="marketplace"] .market-page-menu a:hover{
+  background:rgba(255,255,255,.12);
+  color:#fff;
+}
+body[data-market-page="marketplace"] .account-session-pill{
+  min-width:max-content;
+  border:1px solid rgba(20,184,166,.45);
+  background:rgba(20,184,166,.12);
+  color:#bff8ef;
+}
+body[data-market-page="marketplace"] .market-page{
+  padding:0;
+  background:#f4f7fb;
+}
+body[data-market-page="marketplace"] .market-hero{
+  border:0;
+  border-radius:0;
+  background:
+    radial-gradient(circle at 18% 20%,rgba(20,184,166,.14),transparent 34%),
+    radial-gradient(circle at 82% 12%,rgba(35,119,215,.12),transparent 30%),
+    linear-gradient(180deg,#ffffff 0%,#f4f7fb 100%);
+  box-shadow:none;
+  padding:54px 20px 44px;
+}
+body[data-market-page="marketplace"] .market-hero-inner{
+  max-width:1120px;
+  margin:0 auto;
+}
+body[data-market-page="marketplace"] .market-hero h1{
+  max-width:760px;
+  margin:0;
+  color:#0f1b2e;
+  font-size:clamp(30px,4vw,56px);
+  line-height:1.12;
+  letter-spacing:0;
+}
+body[data-market-page="marketplace"] .market-hero p{
+  max-width:760px;
+  margin:18px 0 0;
+  color:#526278;
+  font-size:16px;
+  line-height:1.85;
+  font-weight:750;
+}
+body[data-market-page="marketplace"] .market-hero-search{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:12px;
+  max-width:820px;
+  margin-top:28px;
+}
+body[data-market-page="marketplace"] .market-search{
+  width:100%;
+  height:52px;
+  border-radius:12px;
+  background:#fff;
+  border:1px solid #cfd9e6;
+  box-shadow:0 16px 38px rgba(15,35,58,.08);
+  padding:0 18px;
+  font-size:15px;
+}
+body[data-market-page="marketplace"] .market-hero-search .btn{
+  min-width:112px;
+  min-height:52px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#13c7ba,#009f91);
+  border:0;
+  color:#fff;
+  font-weight:900;
+  box-shadow:0 12px 26px rgba(0,159,145,.22);
+}
+body[data-market-page="marketplace"] .market-content-shell{
+  width:min(1360px,100%);
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:224px minmax(0,1fr);
+  gap:22px;
+  padding:28px 20px 52px;
+}
+body[data-market-page="marketplace"] .market-sidebar{
+  align-self:start;
+  position:sticky;
+  top:88px;
+  display:grid;
+  gap:14px;
+}
+body[data-market-page="marketplace"] .market-sidebar-block{
+  border:1px solid #d9e4ef;
+  border-radius:16px;
+  background:#fff;
+  box-shadow:0 10px 30px rgba(15,35,58,.06);
+  padding:16px;
+}
+body[data-market-page="marketplace"] .market-sidebar-block h2{
+  margin:0 0 12px;
+  font-size:15px;
+  color:#0f1b2e;
+}
+body[data-market-page="marketplace"] .market-sidebar-list{
+  display:grid;
+  gap:8px;
+}
+body[data-market-page="marketplace"] .market-sidebar-list .chip{
+  justify-content:flex-start;
+  width:100%;
+  border-radius:10px;
+  min-height:40px;
+}
+body[data-market-page="marketplace"] .market-price-notes{
+  display:grid;
+  gap:7px;
+  margin-top:10px;
+}
+body[data-market-page="marketplace"] .market-price-notes span{
+  display:flex;
+  align-items:center;
+  min-height:30px;
+  padding:0 10px;
+  border-radius:9px;
+  background:#f2f6fb;
+  color:#64748b;
+  font-size:12px;
+  font-weight:850;
+}
+body[data-market-page="marketplace"] .market-price-notes span.active{
+  background:#e7f8f5;
+  color:#007d74;
+}
+body[data-market-page="marketplace"] .market-main{
+  min-width:0;
+}
+body[data-market-page="marketplace"] .market-find-section{
+  margin-top:0;
+  border:1px solid #d9e4ef;
+  border-radius:16px;
+  background:#fff;
+  box-shadow:0 10px 30px rgba(15,35,58,.06);
+  padding:20px;
+}
+body[data-market-page="marketplace"] .market-section{
+  margin-top:24px;
+}
+body[data-market-page="marketplace"] .market-section-head{
+  align-items:center;
+  margin-bottom:14px;
+}
+body[data-market-page="marketplace"] .market-section-head h2{
+  margin:0;
+  color:#0f1b2e;
+  font-size:22px;
+}
+body[data-market-page="marketplace"] .market-section-head p{
+  font-size:13px;
+  color:#64748b;
+}
+body[data-market-page="marketplace"] .market-tags{
+  margin-top:14px;
+}
+body[data-market-page="marketplace"] .chip{
+  border-radius:999px;
+  background:#f2f6fb;
+  color:#46566d;
+}
+body[data-market-page="marketplace"] .chip.active{
+  background:#0f1b2e;
+  color:#fff;
+}
+body[data-market-page="marketplace"] .market-grid,
+body[data-market-page="marketplace"] .market-grid.compact{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:16px;
+}
+body[data-market-page="marketplace"] .market-card{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  min-height:420px;
+  overflow:hidden;
+  border:1px solid #d9e4ef;
+  border-radius:16px;
+  background:#fff;
+  box-shadow:0 12px 34px rgba(15,35,58,.08);
+}
+body[data-market-page="marketplace"] .market-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 18px 42px rgba(15,35,58,.12);
+}
+body[data-market-page="marketplace"] .market-thumb{
+  display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio:16/11;
+  margin:0;
+  border:0;
+  border-radius:0;
+  background:linear-gradient(180deg,#f8fbff,#edf3f9);
+  overflow:hidden;
+}
+body[data-market-page="marketplace"] .market-thumb img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  object-position:top center;
+}
+body[data-market-page="marketplace"] .market-card-body{
+  display:flex;
+  flex:1;
+  flex-direction:column;
+  gap:10px;
+  padding:14px;
+}
+body[data-market-page="marketplace"] .market-card h3{
+  order:2;
+  display:block;
+  margin:0;
+  color:#0f1b2e;
+  font-size:17px;
+  line-height:1.35;
+}
+body[data-market-page="marketplace"] .market-card h3:before{
+  display:none;
+}
+body[data-market-page="marketplace"] .market-card h3 a{
+  display:-webkit-box;
+  overflow:hidden;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+}
+body[data-market-page="marketplace"] .market-card p{
+  order:3;
+  min-height:42px;
+  color:#526278;
+  font-size:13px;
+  line-height:1.6;
+  -webkit-line-clamp:2;
+}
+body[data-market-page="marketplace"] .market-card-badges{
+  order:1;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:0;
+}
+body[data-market-page="marketplace"] .market-card-badges .market-badge:first-child,
+body[data-market-page="marketplace"] .market-card-badges .market-badge:last-child{
+  width:auto;
+  min-height:26px;
+  border-radius:999px;
+  padding:0 9px;
+  font-size:11px;
+  line-height:1;
+}
+body[data-market-page="marketplace"] .market-card-badges .price-free,
+body[data-market-page="marketplace"] .market-card-badges .price-free-beta{
+  background:#dff8ef;
+  color:#087f5b;
+}
+body[data-market-page="marketplace"] .market-card-badges .price-paid{
+  background:#fff1cf;
+  color:#9a6500;
+}
+body[data-market-page="marketplace"] .market-card-badges .price-consultation{
+  background:#e8f0ff;
+  color:#1d5fbf;
+}
+body[data-market-page="marketplace"] .market-card-badges .price-coming-soon{
+  background:#eef2f7;
+  color:#64748b;
+}
+body[data-market-page="marketplace"] .market-card-badges .market-badge:last-child{
+  background:#f2f6fb;
+  color:#64748b;
+}
+body[data-market-page="marketplace"] .market-meta{
+  order:4;
+  gap:8px;
+}
+body[data-market-page="marketplace"] .market-meta span,
+body[data-market-page="marketplace"] .market-meta a{
+  min-height:26px;
+  border-radius:999px;
+  background:#edf4ff;
+  color:#1d5fbf;
+  padding:4px 9px;
+  font-size:12px;
+}
+body[data-market-page="marketplace"] .market-card-facts{
+  order:5;
+  display:none;
+}
+body[data-market-page="marketplace"] .target-row{
+  order:6;
+  display:none;
+}
+body[data-market-page="marketplace"] .tag-row{
+  order:7;
+  display:flex;
+  gap:7px;
+  margin-top:0;
+}
+body[data-market-page="marketplace"] .tag{
+  max-width:100%;
+  border-radius:999px;
+  background:#f1f5f9;
+  color:#475569;
+  padding:5px 9px;
+  font-size:12px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+body[data-market-page="marketplace"] .market-actions{
+  order:8;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:auto;
+}
+body[data-market-page="marketplace"] .market-actions .btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:0;
+  min-height:40px;
+  padding:0 10px;
+  border-radius:9px;
+  font-size:13px;
+  line-height:1;
+}
+body[data-market-page="marketplace"] .market-actions .btn.primary{
+  border:1px solid #cfd9e6;
+  background:#fff;
+  color:#0f1b2e;
+}
+body[data-market-page="marketplace"] .market-actions .btn.secondary{
+  border:0;
+  background:linear-gradient(135deg,#13c7ba,#009f91);
+  color:#fff;
+}
+body[data-market-page="marketplace"] .market-empty{
+  grid-column:1/-1;
+}
+body[data-market-page="marketplace"] .market-idea-band{
+  margin-top:30px;
+  border:0;
+  border-radius:18px;
+  background:linear-gradient(135deg,#062241,#0c3b55);
+  color:#fff;
+  box-shadow:0 20px 50px rgba(6,34,65,.18);
+}
+body[data-market-page="marketplace"] .market-idea-band h2,
+body[data-market-page="marketplace"] .market-idea-band p{
+  color:#fff;
+}
+body[data-market-page="marketplace"] .market-idea-form label{
+  color:#fff;
+}
+body[data-market-page="marketplace"] .market-footer{
+  display:grid;
+  grid-template-columns:2fr repeat(3,1fr);
+  gap:24px;
+  padding:36px max(20px,calc((100vw - 1320px)/2 + 20px));
+  background:#061b32;
+  color:#dbe7f3;
+}
+body[data-market-page="marketplace"] .market-footer h2,
+body[data-market-page="marketplace"] .market-footer h3{
+  margin:0 0 12px;
+  color:#fff;
+  line-height:1.4;
+}
+body[data-market-page="marketplace"] .market-footer p{
+  margin:0;
+  color:#a9bbce;
+}
+body[data-market-page="marketplace"] .market-footer a{
+  display:block;
+  margin:8px 0;
+  color:#dbe7f3;
+  font-weight:750;
+}
+
+@media(max-width:1100px){
+  body[data-market-page="marketplace"] .market-header{
+    align-items:flex-start;
+    flex-wrap:wrap;
+    gap:10px 14px;
+  }
+  body[data-market-page="marketplace"] .market-header nav{
+    order:3;
+    flex-basis:100%;
+    flex-wrap:wrap;
+  }
+  body[data-market-page="marketplace"] .account-session-pill{
+    display:none;
+  }
+  body[data-market-page="marketplace"] .market-content-shell{
+    grid-template-columns:1fr;
+  }
+  body[data-market-page="marketplace"] .market-sidebar{
+    position:static;
+    grid-template-columns:1fr 1fr;
+  }
+  body[data-market-page="marketplace"] .market-sidebar-list{
+    display:flex;
+    flex-wrap:wrap;
+  }
+  body[data-market-page="marketplace"] .market-sidebar-list .chip{
+    width:auto;
+  }
+}
+
+@media(max-width:767px){
+  body[data-market-page="marketplace"] .market-header{
+    position:static;
+    padding:12px;
+  }
+  body[data-market-page="marketplace"] .market-brand{
+    width:100%;
+    font-size:19px;
+  }
+  body[data-market-page="marketplace"] .market-header nav{
+    gap:6px;
+    min-width:0;
+  }
+  body[data-market-page="marketplace"] .market-header nav a{
+    min-height:32px;
+    padding:0 9px;
+    font-size:11px;
+  }
+  body[data-market-page="marketplace"] .account-session-pill{
+    display:none;
+  }
+  body[data-market-page="marketplace"] .market-page-menu{
+    width:100%;
+    min-width:0;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    justify-content:stretch;
+  }
+  body[data-market-page="marketplace"] .market-page-menu a{
+    min-width:0;
+  }
+  body[data-market-page="marketplace"] .market-notice-dot{
+    display:none;
+  }
+  body[data-market-page="marketplace"] .market-hero{
+    padding:30px 14px 28px;
+  }
+  body[data-market-page="marketplace"] .market-hero h1{
+    font-size:28px;
+  }
+  body[data-market-page="marketplace"] .market-hero p{
+    font-size:13px;
+  }
+  body[data-market-page="marketplace"] .market-hero-search{
+    grid-template-columns:1fr;
+  }
+  body[data-market-page="marketplace"] .market-content-shell{
+    padding:18px 12px 36px;
+    gap:16px;
+  }
+  body[data-market-page="marketplace"] .market-sidebar{
+    grid-template-columns:1fr;
+  }
+  body[data-market-page="marketplace"] .market-find-section{
+    padding:14px;
+  }
+  body[data-market-page="marketplace"] .market-section-head{
+    align-items:flex-start;
+    gap:10px;
+  }
+  body[data-market-page="marketplace"] .market-filter-line{
+    width:100%;
+  }
+  body[data-market-page="marketplace"] .market-grid,
+  body[data-market-page="marketplace"] .market-grid.compact{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+  }
+  body[data-market-page="marketplace"] .market-card{
+    min-height:330px;
+    border-radius:13px;
+  }
+  body[data-market-page="marketplace"] .market-card-body{
+    padding:10px;
+    gap:8px;
+  }
+  body[data-market-page="marketplace"] .market-card h3{
+    font-size:14px;
+  }
+  body[data-market-page="marketplace"] .market-card p,
+  body[data-market-page="marketplace"] .market-meta,
+  body[data-market-page="marketplace"] .tag-row{
+    display:none;
+  }
+  body[data-market-page="marketplace"] .market-card-badges .market-badge:first-child,
+  body[data-market-page="marketplace"] .market-card-badges .market-badge:last-child{
+    min-height:23px;
+    padding:0 7px;
+    font-size:10px;
+  }
+  body[data-market-page="marketplace"] .market-actions{
+    grid-template-columns:1fr;
+  }
+  body[data-market-page="marketplace"] .market-actions .btn{
+    min-height:34px;
+    font-size:12px;
+  }
+  body[data-market-page="marketplace"] .market-idea-form{
+    grid-template-columns:1fr;
+  }
+  body[data-market-page="marketplace"] .market-footer{
+    grid-template-columns:1fr;
+    padding:28px 16px;
+  }
+}
+
 /* Sales-ready market pages */
 body[data-market-page="detail"],
 body[data-market-page="request"],

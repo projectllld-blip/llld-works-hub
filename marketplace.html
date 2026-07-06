@@ -8,122 +8,161 @@
   <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 <body data-market-page="marketplace">
+  <header class="market-header">
+    <a class="market-brand" href="./index.html">LLLD Works Market / Works Hub</a>
+    <nav aria-label="マーケット導線">
+      <a href="./marketplace.html">マーケット</a>
+      <a href="./portal.html">マイアプリ</a>
+      <a href="#marketSupportBand">サポート</a>
+      <a href="./request.html">開発相談</a>
+      <a href="./portal.html">お知らせ</a>
+      <span class="market-notice-dot" aria-hidden="true"></span>
+      <a class="market-my-page" href="./account.html">マイページ</a>
+    </nav>
+    <span class="account-session-pill" data-account-badge>確認中</span>
+    <div class="market-page-menu" aria-label="関連ページ">
+      <a href="./portal.html">社内ポータル</a>
+      <a href="./account.html">企業ページ</a>
+    </div>
+  </header>
+
   <main class="market-page">
-    <header class="market-header">
-      <a class="market-brand" href="./index.html">LLLD Works Hub</a>
-      <nav aria-label="マーケット導線">
-        <a href="./index.html">社内Hub</a>
-        <a href="./marketplace.html">Market β</a>
-        <a href="./request.html">開発相談</a>
-        <a href="./login.html">ログイン準備中</a>
-        <a href="./account.html">アカウント</a>
-      </nav>
-      <span class="account-session-pill" data-account-badge>確認中</span>
-    </header>
-
     <section class="market-hero">
-      <div>
-        <span class="market-kicker">LLLD Works Market β</span>
-        <h1>現場で生まれた便利ツールを、必要な人へ。</h1>
-        <p>教室・店舗・事務所の小さな困りごとを解決する、実務ツール・テンプレートを探し、確認してからポータルに追加できます。</p>
-        <div class="detail-cta-row">
-          <a class="btn primary" href="#paidTemplatesGrid">販売中の商品を見る</a>
-          <a class="btn secondary" href="#marketIdeaForm">欲しいツールを書く</a>
+      <div class="market-hero-inner">
+        <h1>現場で生まれた便利ツールを、<br>必要な人へ。</h1>
+        <p>業務の“ムダ・手間・ミス”の小さな課題を解決するアプリを厳選してお届けします。すぐに使えるツールから、開発相談までワンストップでサポートします。</p>
+        <div class="market-hero-search">
+          <input id="marketSearch" class="market-search" type="search" placeholder="アプリ名やキーワードで検索">
+          <button class="btn primary" type="button" data-market-search-button>検索</button>
         </div>
-      </div>
-      <div class="hero-preview" aria-label="マーケット概要">
-        <span>無料ツール</span>
-        <span>販売中テンプレート</span>
-        <span>開発相談</span>
-        <span>手動納品</span>
       </div>
     </section>
 
-    <section class="market-status-guide" aria-label="提供状態の見方">
-      <span><b>無料</b>確認後に利用開始</span>
-      <span><b>β版</b>確認後にポータル追加</span>
-      <span><b>有料</b>購入確認後に追加</span>
-      <span><b>要望</b>開発相談として投稿</span>
-    </section>
-
-    <section class="market-section">
-      <div class="market-section-head">
-        <div>
-          <h2>探す</h2>
-          <p id="marketResultMeta">読み込み中です。</p>
-        </div>
-        <div class="market-filter-line">
-          <input id="marketSearch" class="market-search" type="search" placeholder="キーワードで検索">
+    <div class="market-content-shell">
+      <aside class="market-sidebar" aria-label="マーケット絞り込み">
+        <section class="market-sidebar-block">
+          <h2>カテゴリ</h2>
+          <div id="marketCategoryChips" class="type-chips market-sidebar-list"></div>
+        </section>
+        <section class="market-sidebar-block">
+          <h2>料金形態</h2>
           <select id="priceFilter" class="market-select" aria-label="価格タイプ"></select>
-        </div>
-      </div>
-      <div id="marketCategoryChips" class="type-chips"></div>
-      <div id="tagChips" class="type-chips market-tags"></div>
-    </section>
+          <div class="market-price-notes" aria-hidden="true">
+            <span class="active">すべて</span>
+            <span>買い切り（単発購入）</span>
+            <span>無料</span>
+            <span>有料予定コンテンツ</span>
+          </div>
+        </section>
+      </aside>
 
-    <section class="market-section">
-      <div class="market-section-head">
-        <h2>販売中テンプレート</h2>
-      </div>
-      <div id="paidTemplatesGrid" class="market-grid compact"></div>
-    </section>
+      <div class="market-main">
+        <section class="market-section market-find-section">
+          <div class="market-section-head">
+            <div>
+              <h2>マーケット</h2>
+              <p id="marketResultMeta">読み込み中です。</p>
+            </div>
+            <div class="market-filter-line">
+              <span>並び替え：</span>
+              <select class="market-select" aria-label="並び替え">
+                <option>新着順</option>
+                <option>人気順</option>
+                <option>価格が安い順</option>
+              </select>
+            </div>
+          </div>
+          <div id="tagChips" class="type-chips market-tags"></div>
+        </section>
 
-    <section class="market-section">
-      <div class="market-section-head">
-        <h2>すぐ使える無料ツール</h2>
-      </div>
-      <div id="freeToolsGrid" class="market-grid compact"></div>
-    </section>
+        <section class="market-section">
+          <div class="market-section-head">
+            <h2>コンテンツ一覧</h2>
+          </div>
+          <div id="marketGrid" class="market-grid"></div>
+        </section>
 
-    <section class="market-section">
-      <div class="market-section-head">
-        <h2>開発要望・相談</h2>
-      </div>
-      <div id="consultationGrid" class="market-grid compact"></div>
-    </section>
+        <section class="market-section">
+          <div class="market-section-head">
+            <h2>販売中テンプレート</h2>
+          </div>
+          <div id="paidTemplatesGrid" class="market-grid compact"></div>
+        </section>
 
-    <section class="market-section">
-      <div class="market-section-head">
-        <h2>有料予定コンテンツ</h2>
-      </div>
-      <div id="comingSoonGrid" class="market-grid compact"></div>
-    </section>
+        <section class="market-section">
+          <div class="market-section-head">
+            <h2>すぐ使える無料ツール</h2>
+          </div>
+          <div id="freeToolsGrid" class="market-grid compact"></div>
+        </section>
 
-    <section class="market-section">
-      <div class="market-section-head">
-        <h2>塾・教室向け</h2>
-      </div>
-      <div id="schoolGrid" class="market-grid compact"></div>
-    </section>
+        <section class="market-section">
+          <div class="market-section-head">
+            <h2>開発要望・相談</h2>
+          </div>
+          <div id="consultationGrid" class="market-grid compact"></div>
+        </section>
 
-    <section class="market-section">
-      <div class="market-section-head">
-        <h2>小規模事業者向け</h2>
-      </div>
-      <div id="smallBusinessGrid" class="market-grid compact"></div>
-    </section>
+        <section class="market-section">
+          <div class="market-section-head">
+            <h2>有料予定コンテンツ</h2>
+          </div>
+          <div id="comingSoonGrid" class="market-grid compact"></div>
+        </section>
 
-    <section class="market-section">
-      <div class="market-section-head">
-        <h2>すべてのコンテンツ</h2>
-      </div>
-      <div id="marketGrid" class="market-grid"></div>
-    </section>
+        <section class="market-section">
+          <div class="market-section-head">
+            <h2>塾・教室向け</h2>
+          </div>
+          <div id="schoolGrid" class="market-grid compact"></div>
+        </section>
 
-    <section class="submit-band market-idea-band">
-      <div>
-        <h2>ご意見ボックス</h2>
-        <p>お金を払って開発依頼するほどではないけれど、現場にあったら助かるツールの要望を書けます。</p>
+        <section class="market-section">
+          <div class="market-section-head">
+            <h2>小規模事業者向け</h2>
+          </div>
+          <div id="smallBusinessGrid" class="market-grid compact"></div>
+        </section>
+
+        <section id="marketSupportBand" class="submit-band market-idea-band">
+          <div>
+            <h2>開発のご相談・ご意見ボックス</h2>
+            <p>お金を払って開発依頼するほどではないけれど、現場にあったら助かるツールの要望を書けます。</p>
+          </div>
+          <form id="marketIdeaForm" class="market-idea-form">
+            <label>
+              欲しいツール・困っている作業
+              <textarea id="marketIdeaMessage" rows="3" placeholder="例: 毎月の提出物チェックを、スタッフ全員で共有できる小さな表にしたい"></textarea>
+            </label>
+            <button class="btn primary" type="submit">要望を書く</button>
+          </form>
+        </section>
       </div>
-      <form id="marketIdeaForm" class="market-idea-form">
-        <label>
-          欲しいツール・困っている作業
-          <textarea id="marketIdeaMessage" rows="3" placeholder="例: 毎月の提出物チェックを、スタッフ全員で共有できる小さな表にしたい"></textarea>
-        </label>
-        <button class="btn primary" type="submit">要望を書く</button>
-      </form>
-    </section>
+    </div>
   </main>
+
+  <footer class="market-footer">
+    <div>
+      <h2>LLLD Works Market /<br>Works Hub</h2>
+      <p>現場で生まれた便利ツールを、必要な人へ。課題に応じたツールを見つけて、すぐに使える・つながる・効率が上がる。</p>
+    </div>
+    <div>
+      <h3>マーケット</h3>
+      <a href="./marketplace.html">すべてのコンテンツ</a>
+      <a href="#marketCategoryChips">カテゴリー一覧</a>
+      <a href="#priceFilter">料金形態</a>
+    </div>
+    <div>
+      <h3>マイアプリ</h3>
+      <a href="./portal.html">社内ポータル</a>
+      <a href="./account.html">アカウント</a>
+    </div>
+    <div>
+      <h3>サポート</h3>
+      <a href="./request.html">お問い合わせ</a>
+      <a href="#marketSupportBand">開発相談</a>
+    </div>
+  </footer>
 
   <script src="./assets/js/siteConfigService.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
