@@ -442,12 +442,22 @@ button{cursor:pointer}
   top:calc(100% + 8px);
   right:0;
   z-index:80;
-  min-width:168px;
+  min-width:220px;
   border:1px solid rgba(15,35,58,.12);
   border-radius:12px;
   background:#fff;
   box-shadow:0 20px 40px rgba(6,27,50,.18);
   padding:6px;
+}
+.market-header .account-session-info{
+  display:block;
+  padding:8px 10px 10px;
+  border-bottom:1px solid #eef2f7;
+  color:#536276;
+  font-size:11px;
+  font-weight:850;
+  line-height:1.35;
+  overflow-wrap:anywhere;
 }
 .market-header .account-session-menu a,
 .market-header .account-session-menu button{
@@ -2049,6 +2059,7 @@ body[data-market-page="marketplace"] .market-grid.compact{
 
 /* Sales-ready market pages */
 body[data-market-page="detail"],
+body[data-market-page="author"],
 body[data-market-page="request"],
 body[data-market-page="thanks"],
 body[data-market-page="purchase"],
@@ -2059,6 +2070,7 @@ body[data-market-page="account"]{
   font-family:var(--font);
 }
 body[data-market-page="detail"] .market-page,
+body[data-market-page="author"] .market-page,
 body[data-market-page="request"] .market-page,
 body[data-market-page="thanks"] .market-page,
 body[data-market-page="purchase"] .market-page,
@@ -2070,6 +2082,7 @@ body[data-market-page="account"] .market-page{
   background:var(--bg-page);
 }
 body[data-market-page="detail"] .market-header,
+body[data-market-page="author"] .market-header,
 body[data-market-page="request"] .market-header,
 body[data-market-page="thanks"] .market-header,
 body[data-market-page="purchase"] .market-header,
@@ -2089,6 +2102,7 @@ body[data-market-page="account"] .market-header{
   box-shadow:none;
 }
 body[data-market-page="detail"] .market-brand,
+body[data-market-page="author"] .market-brand,
 body[data-market-page="request"] .market-brand,
 body[data-market-page="thanks"] .market-brand,
 body[data-market-page="purchase"] .market-brand,
@@ -2100,6 +2114,7 @@ body[data-market-page="account"] .market-brand{
   font-weight:800;
 }
 body[data-market-page="detail"] .market-brand:before,
+body[data-market-page="author"] .market-brand:before,
 body[data-market-page="request"] .market-brand:before,
 body[data-market-page="thanks"] .market-brand:before,
 body[data-market-page="purchase"] .market-brand:before,
@@ -2112,6 +2127,7 @@ body[data-market-page="account"] .market-brand:before{
   box-shadow:none;
 }
 body[data-market-page="detail"] .market-header nav a,
+body[data-market-page="author"] .market-header nav a,
 body[data-market-page="request"] .market-header nav a,
 body[data-market-page="thanks"] .market-header nav a,
 body[data-market-page="purchase"] .market-header nav a,
@@ -2127,6 +2143,7 @@ body[data-market-page="account"] .market-header nav a{
   font-weight:800;
 }
 body[data-market-page="detail"] .market-notice-button,
+body[data-market-page="author"] .market-notice-button,
 body[data-market-page="request"] .market-notice-button,
 body[data-market-page="thanks"] .market-notice-button,
 body[data-market-page="purchase"] .market-notice-button,
@@ -2137,6 +2154,7 @@ body[data-market-page="account"] .market-notice-button{
   color:var(--text-onDark);
 }
 body[data-market-page="detail"] .market-notice-button:hover,
+body[data-market-page="author"] .market-notice-button:hover,
 body[data-market-page="request"] .market-notice-button:hover,
 body[data-market-page="thanks"] .market-notice-button:hover,
 body[data-market-page="purchase"] .market-notice-button:hover,
@@ -2146,6 +2164,7 @@ body[data-market-page="account"] .market-notice-button:hover{
   color:#fff;
 }
 body[data-market-page="detail"] .account-session-menu summary,
+body[data-market-page="author"] .account-session-menu summary,
 body[data-market-page="request"] .account-session-menu summary,
 body[data-market-page="thanks"] .account-session-menu summary,
 body[data-market-page="purchase"] .account-session-menu summary,
@@ -2157,6 +2176,8 @@ body[data-market-page="account"] .account-session-menu summary{
 }
 body[data-market-page="detail"] .account-session-menu[open] summary,
 body[data-market-page="detail"] .account-session-menu summary:hover,
+body[data-market-page="author"] .account-session-menu[open] summary,
+body[data-market-page="author"] .account-session-menu summary:hover,
 body[data-market-page="request"] .account-session-menu[open] summary,
 body[data-market-page="request"] .account-session-menu summary:hover,
 body[data-market-page="thanks"] .account-session-menu[open] summary,
@@ -2171,6 +2192,7 @@ body[data-market-page="account"] .account-session-menu summary:hover{
   color:#fff;
 }
 body[data-market-page="detail"] .market-header nav a[href="./marketplace.html"],
+body[data-market-page="author"] .market-header nav a[href="./marketplace.html"],
 body[data-market-page="purchase"] .market-header nav a[href="./marketplace.html"],
 body[data-market-page="request"] .market-header nav a[href="./request.html"],
 body[data-support-page="support"] .market-header nav a[href="./support.html"],
@@ -2990,6 +3012,8 @@ body[data-market-page="detail"] .market-badge:last-child{
 
 @media(max-width:860px){
   body[data-market-page="detail"] .market-page,
+  body[data-market-page="author"] .market-page,
+  body[data-market-page="purchase"] .market-page,
   body[data-market-page="request"] .market-page,
   body[data-market-page="thanks"] .market-page,
   body[data-market-page="admin"] .market-page,
@@ -2997,6 +3021,8 @@ body[data-market-page="detail"] .market-badge:last-child{
     padding:118px var(--sp-2) var(--sp-4);
   }
   body[data-market-page="detail"] .market-header,
+  body[data-market-page="author"] .market-header,
+  body[data-market-page="purchase"] .market-header,
   body[data-market-page="request"] .market-header,
   body[data-market-page="thanks"] .market-header,
   body[data-market-page="admin"] .market-header,

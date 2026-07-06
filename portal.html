@@ -19,7 +19,7 @@ body{margin:0;background:var(--bg);font-family:var(--font);color:var(--ink);font
 a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}button{cursor:pointer}
 
 /* Header / sidebar */
-.header{position:sticky;top:0;z-index:20;min-height:var(--head);display:grid;grid-template-columns:auto auto minmax(260px,520px) 1fr auto auto;align-items:center;gap:14px;padding:12px 22px;background:var(--navy);color:#fff;box-shadow:0 8px 24px rgba(3,13,24,.2)}
+.header{position:sticky;top:0;z-index:20;min-height:var(--head);display:grid;grid-template-columns:auto minmax(260px,520px) auto 1fr auto auto;align-items:center;gap:14px;padding:12px 22px;background:var(--navy);color:#fff;box-shadow:0 8px 24px rgba(3,13,24,.2)}
 .brand{display:flex;align-items:center;gap:12px;white-space:nowrap}.mark{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#3acde8,var(--teal))}.brand strong{font-size:2rem;font-weight:650;letter-spacing:-.045em}
 .portal-nav{display:flex;gap:8px;align-items:center;justify-content:flex-end;min-width:0;flex-wrap:wrap}
 .search{position:relative}.search input{width:100%;height:38px;border:0;border-radius:7px;padding:0 14px 0 39px;font-weight:350}.search span{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#48576d}
@@ -34,7 +34,8 @@ a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}b
 .portal-account-menu summary{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:0 12px;border:1px solid rgba(20,184,166,.45);border-radius:999px;background:rgba(20,184,166,.12);color:#d8fffb;font-size:.88rem;font-weight:500;line-height:1;cursor:pointer;list-style:none;max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .portal-account-menu summary::-webkit-details-marker{display:none}
 .portal-account-menu[open] summary,.portal-account-menu summary:hover{background:rgba(20,184,166,.2);color:#fff}
-.portal-account-menu-list{position:absolute;top:calc(100% + 8px);right:0;z-index:60;min-width:168px;border:1px solid rgba(15,35,58,.12);border-radius:12px;background:#fff;box-shadow:0 20px 40px rgba(6,27,50,.18);padding:6px}
+.portal-account-menu-list{position:absolute;top:calc(100% + 8px);right:0;z-index:60;min-width:220px;border:1px solid rgba(15,35,58,.12);border-radius:12px;background:#fff;box-shadow:0 20px 40px rgba(6,27,50,.18);padding:6px}
+.portal-account-info{display:block;padding:8px 10px 10px;border-bottom:1px solid #eef2f7;color:#536276;font-size:.82rem;font-weight:500;line-height:1.35;overflow-wrap:anywhere}
 .portal-account-menu a,.portal-account-menu button{display:inline-flex;align-items:center;justify-content:flex-start;width:100%;min-height:36px;padding:0 10px;border:0;border-radius:8px;background:transparent;color:#0f1b2e;font:inherit;font-size:.92rem;font-weight:500;line-height:1;text-align:left;cursor:pointer}
 .portal-account-menu a:hover,.portal-account-menu button:hover{background:#eef6ff;color:#0f1b2e}
 .portal-account-menu button:disabled{cursor:wait;opacity:.68}
@@ -1637,23 +1638,24 @@ body.tree-dragging{
 <div class="portal-shell">
 <header class="header">
   <a class="brand" href="portal.html"><i class="mark"></i><strong>LLLD Works Portal</strong></a>
+  <div class="search"><span>🔍</span><input placeholder="コンテンツ名・カテゴリ・タグで検索"></div>
   <nav class="portal-nav" aria-label="共通導線">
-    <a class="hbtn" href="portal.html">ポータル</a>
+    <a class="hbtn" href="portal.html">社内ポータル</a>
     <a class="hbtn" href="marketplace.html">マーケット</a>
     <a class="hbtn" href="my-apps.html">マイアプリ</a>
-    <a class="hbtn" href="request.html">開発相談</a>
     <button class="market-notice-button" type="button" data-market-notice-link aria-label="お知らせ" title="お知らせ">
       <span class="market-notice-dot" aria-hidden="true"></span>
       <span class="market-notice-count" aria-hidden="true">3</span>
     </button>
   </nav>
-  <div class="search"><span>🔍</span><input placeholder="コンテンツ名・カテゴリ・タグで検索"></div>
   <div class="header-spacer"></div>
   <details class="portal-account-menu" aria-label="マイページ">
-    <summary><span data-account-badge>確認中</span></summary>
+    <summary>マイページ</summary>
     <div class="portal-account-menu-list">
-      <a href="account.html">マイページ</a>
+      <span class="portal-account-info" data-account-badge>確認中</span>
+      <a href="account.html">企業ページ</a>
       <a href="support.html">サポート</a>
+      <a href="request.html">開発相談</a>
       <button type="button" data-account-logout>ログアウト</button>
     </div>
   </details>
