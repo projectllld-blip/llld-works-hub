@@ -98,6 +98,7 @@
     renderTagChips();
     bindMarketplaceFilters();
     bindIdeaBox();
+    bindNoticePopup();
     renderMarketplaceLists();
   }
 
@@ -170,6 +171,15 @@
         renderTagChips();
         renderMarketplaceLists();
       }
+    });
+  }
+
+  function bindNoticePopup() {
+    $$('[data-market-notice-link]').forEach(link => {
+      link.addEventListener('click', event => {
+        event.preventDefault();
+        window.alert('運営からのお知らせ機能は準備中です。公開までしばらくお待ちください。');
+      });
     });
   }
 

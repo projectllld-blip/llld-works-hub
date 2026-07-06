@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>マイアプリ | LLLD Works Hub</title>
+  <meta name="description" content="LLLD Works Hubで利用中のアプリ一覧">
+  <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body data-market-page="account" data-account-page="my-apps">
+  <main class="market-page account-page my-apps-page">
+    <header class="market-header">
+      <a class="market-brand" href="./index.html">LLLD Works Hub</a>
+      <nav aria-label="マイアプリ導線">
+        <a href="./marketplace.html">Market β</a>
+        <a href="./my-apps.html">マイアプリ</a>
+        <a href="./portal.html">社内ポータル</a>
+        <a href="./support.html">サポート</a>
+        <a href="./account.html">アカウント</a>
+      </nav>
+      <span class="account-session-pill" data-account-badge>確認中</span>
+    </header>
+
+    <section class="market-hero account-hero">
+      <div>
+        <span class="market-kicker">マイアプリ</span>
+        <h1>利用中のアプリを一覧で確認できます。</h1>
+        <p>ログイン中の企業アカウントに登録されているアプリだけを表示します。マーケットで探す画面と、実際に使うアプリ一覧を分けています。</p>
+      </div>
+      <div class="account-mode-card">
+        <span>表示状態</span>
+        <strong id="myAppsMode">確認中</strong>
+        <p id="myAppsModeNote">利用アプリ一覧を読み込んでいます。</p>
+      </div>
+    </section>
+
+    <section class="detail-lp-grid account-layout my-apps-layout">
+      <article class="detail-panel my-apps-panel">
+        <div class="my-apps-panel-head">
+          <div>
+            <h2>利用中アプリ一覧</h2>
+            <p class="account-note" id="myAppsStatus">利用中アプリを確認しています。</p>
+          </div>
+          <div class="detail-cta-row">
+            <a class="btn secondary" href="./marketplace.html">マーケットで探す</a>
+            <a class="btn primary" href="./portal.html">社内ポータルへ</a>
+          </div>
+        </div>
+        <ul class="account-list my-apps-list" id="myAppsList"></ul>
+      </article>
+
+      <article class="detail-panel">
+        <h2>このページで分かること</h2>
+        <ul>
+          <li>現在利用できるアプリ</li>
+          <li>各アプリの利用状態</li>
+          <li>アプリごとのクラウド保存メモ</li>
+          <li>準備中アプリと開けるアプリの区別</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+
+  <script src="./assets/js/siteConfigService.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./assets/js/supabaseClientService.js"></script>
+  <script src="./assets/js/authService.js"></script>
+  <script src="./assets/js/appInstanceService.js"></script>
+  <script src="./assets/js/accountHeader.js"></script>
+  <script src="./assets/js/myAppsPage.js"></script>
+</body>
+</html>
