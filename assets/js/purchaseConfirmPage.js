@@ -109,8 +109,8 @@
             <button class="btn primary" type="button" id="confirmPurchaseButton">${escapeHtml(flow.buttonLabel)}</button>
             <a class="btn secondary" href="./marketplace.html">戻る</a>
           </div>
-          <p class="request-status" id="purchaseStatus" aria-live="polite">まだポータルには追加していません。</p>
-          ${openUrl ? `<p class="purchase-open-note">確認後に、ポータルから開く導線と別タブ起動を確認できます。</p>` : ''}
+          <p class="request-status" id="purchaseStatus" aria-live="polite">${escapeHtml(flow.initialStatus)}</p>
+          ${flow.canPortalAdd && openUrl ? `<p class="purchase-open-note">確認後に、ポータルから開く導線と別タブ起動を確認できます。</p>` : ''}
         </div>
       </section>
     `;
@@ -119,10 +119,21 @@
   }
 
   function confirm(content) {
-    const additions = readAdditions();
     const flow = getPurchaseFlow(content);
     const supportRequests = Array.from(document.querySelectorAll('.purchase-support-options input:checked'))
       .map(input => input.value);
+    const status = document.getElementById('purchaseStatus');
+    if (!flow.canPortalAdd) {
+      if (status) {
+        const supportLink = supportRequests.length
+          ? ` <a href="${escapeAttr(supportUrl(content, supportRequests))}">サポート相談へ進む</a>`
+          : '';
+        status.innerHTML = `${escapeHtml(flow.doneMessage)}${supportLink}`;
+      }
+      return;
+    }
+
+    const additions = readAdditions();
     const nextItem = {
       id: content.id,
       slug: content.slug,
@@ -140,7 +151,6 @@
       addedAt: new Date().toISOString()
     };
     const next = [nextItem, ...additions.filter(item => item.id !== nextItem.id)].slice(0, 12);
-    const status = document.getElementById('purchaseStatus');
     try {
       sessionStorage.setItem(STORAGE_KEY, JSON.stringify(next));
     } catch {
@@ -206,8 +216,10 @@
         actionType: 'beta',
         kicker: 'β版利用確認',
         buttonLabel: 'β版を利用する',
+        canPortalAdd: true,
         afterConfirm: 'β版としてポータルへ一時追加',
         portalStatusLabel: 'β版利用開始済み',
+        initialStatus: 'まだポータルには追加していません。',
         noteTitle: 'β版として確認してから使います',
         note: 'β版は未完成範囲が残る前提で利用します。正式な利用中アプリ反映、購入履歴、決済連携は後続フェーズで扱います。',
         doneMessage: 'β版をポータルへ一時追加しました。'
@@ -218,19 +230,23 @@
         actionType: 'purchase',
         kicker: '購入確認',
         buttonLabel: '購入確認を完了する',
-        afterConfirm: '購入確認済みとしてポータルへ一時追加',
-        portalStatusLabel: '購入確認済み',
+        canPortalAdd: false,
+        afterConfirm: '購入確認のみ。ポータルへは追加しません',
+        portalStatusLabel: '決済待ち',
+        initialStatus: '購入確認前です。このアプリはまだ利用開始されません。',
         noteTitle: 'この画面では決済しません',
-        note: '今回は購入確認フローのMVPです。支払い処理、購入履歴、正式な利用権限付与はまだ行わず、確認後はブラウザセッション内で一時追加します。',
-        doneMessage: '購入確認を完了し、ポータルへ一時追加しました。'
+        note: '今回は購入確認フローのMVPです。支払い処理、購入履歴、正式な利用権限付与はまだ行いません。このアプリは決済完了後、または運営側の明示的な利用開始処理後に利用できるようになります。',
+        doneMessage: '購入内容を確認しました。現在、決済機能は準備中です。このアプリはまだ利用開始されていません。正式な購入・決済が完了すると利用できるようになります。'
       };
     }
     return {
       actionType: 'start',
       kicker: '利用開始確認',
       buttonLabel: '利用開始する',
+      canPortalAdd: true,
       afterConfirm: '利用開始済みとしてポータルへ一時追加',
       portalStatusLabel: '利用開始済み',
+      initialStatus: 'まだポータルには追加していません。',
       noteTitle: '確認してから利用開始します',
       note: '無料ツールも直接追加せず、ここで内容を確認してからポータルへ追加します。正式な利用中アプリ反映は後続フェーズで扱います。',
       doneMessage: '利用開始としてポータルへ一時追加しました。'
