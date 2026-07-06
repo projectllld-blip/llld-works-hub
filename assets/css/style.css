@@ -349,7 +349,7 @@ button{cursor:pointer}
   background:linear-gradient(135deg,#18d5c4,#2f81f7);
   box-shadow:0 6px 14px rgba(0,159,145,.2);
 }
-.market-header nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.market-header nav{display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap;margin-left:auto}
 .market-header nav a{
   min-height:34px;
   display:inline-flex;
@@ -713,7 +713,7 @@ button{cursor:pointer}
   .hub-market-strip,.submit-band{align-items:flex-start;flex-direction:column}
   .hub-market-actions{width:100%}.hub-market-actions .btn{flex:1}
   .market-page{padding:12px 12px 30px}
-  .market-header{align-items:flex-start;flex-direction:column;gap:8px}
+  .market-header{align-items:flex-end;flex-direction:column;gap:8px}
   .market-header nav a{font-size:11px;padding:6px 9px}
   .market-hero,.detail-lp-hero,.submit-page .market-hero{grid-template-columns:1fr;padding:14px}
   .market-hero h1,.detail-lp-hero h1{font-size:21px}
@@ -1149,7 +1149,7 @@ body[data-market-page="marketplace"] .detail-cta-row .btn.secondary{
     padding:128px var(--sp-2) var(--sp-4);
   }
   body[data-market-page="marketplace"] .market-header{
-    align-items:flex-start;
+    align-items:flex-end;
     flex-direction:column;
     gap:var(--sp-1);
     min-height:102px;
@@ -1157,7 +1157,7 @@ body[data-market-page="marketplace"] .detail-cta-row .btn.secondary{
   }
   body[data-market-page="marketplace"] .market-header nav{
     width:100%;
-    justify-content:flex-start;
+    justify-content:flex-end;
   }
   body[data-market-page="marketplace"] .market-header nav a{
     min-height:32px;
@@ -1812,7 +1812,7 @@ body[data-market-page="marketplace"] .market-footer a{
 
 @media(max-width:1100px){
   body[data-market-page="marketplace"] .market-header{
-    align-items:flex-start;
+    align-items:flex-end;
     flex-wrap:wrap;
     gap:10px 14px;
   }
@@ -1853,7 +1853,7 @@ body[data-market-page="marketplace"] .market-footer a{
     gap:6px;
     min-width:0;
     flex-wrap:wrap;
-    justify-content:flex-start;
+    justify-content:flex-end;
     overflow:visible;
   }
   body[data-market-page="marketplace"] .market-header nav a{
@@ -2191,13 +2191,6 @@ body[data-market-page="account"] .account-session-menu summary:hover{
   background:rgba(20,184,166,.2);
   color:#fff;
 }
-body[data-market-page="detail"] .market-header nav a[href="./marketplace.html"],
-body[data-market-page="author"] .market-header nav a[href="./marketplace.html"],
-body[data-market-page="purchase"] .market-header nav a[href="./marketplace.html"],
-body[data-market-page="request"] .market-header nav a[href="./request.html"],
-body[data-support-page="support"] .market-header nav a[href="./support.html"],
-body[data-market-page="thanks"] .market-header nav a[href="./request.html"],
-body[data-market-page="admin"] .market-header nav a[href="./admin.html"],
 body[data-account-page="my-apps"] .market-header nav a[href="./my-apps.html"]{
   border-color:var(--primary);
   background:var(--primary);
@@ -3027,7 +3020,7 @@ body[data-market-page="detail"] .market-badge:last-child{
   body[data-market-page="thanks"] .market-header,
   body[data-market-page="admin"] .market-header,
   body[data-market-page="account"] .market-header{
-    align-items:flex-start;
+    align-items:flex-end;
     flex-direction:column;
     gap:var(--sp-1);
     min-height:102px;

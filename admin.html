@@ -13,6 +13,11 @@
       padding: 24px 0 56px;
     }
 
+    .admin-mock-page.market-page {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
     .admin-mock-header {
       display: flex;
       align-items: center;
@@ -266,16 +271,29 @@
     }
   </style>
 </head>
-<body data-page="admin-mock">
-  <main class="admin-mock-page">
-    <header class="admin-mock-header">
-      <a class="admin-mock-brand" href="./index.html">LLLD Works Hub</a>
-      <nav class="admin-mock-nav" aria-label="管理mock導線">
-        <a href="./index.html">Hub</a>
-        <a href="./portal.html">Portal</a>
-        <a href="./account.html">Account</a>
-        <a href="./marketplace.html">Market</a>
+<body data-market-page="admin" data-page="admin-mock">
+  <main class="market-page admin-mock-page">
+    <header class="market-header">
+      <a class="market-brand" href="./admin.html">LLLD Works Admin</a>
+      <nav aria-label="共通導線">
+        <a href="./portal.html">社内ポータル</a>
+        <a href="./marketplace.html">マーケット</a>
+        <a href="./my-apps.html">マイアプリ</a>
+        <button class="market-notice-button" type="button" data-market-notice-link aria-label="お知らせ" title="お知らせ">
+          <span class="market-notice-dot" aria-hidden="true"></span>
+          <span class="market-notice-count" aria-hidden="true">3</span>
+        </button>
       </nav>
+      <details class="account-session-menu" aria-label="マイページ">
+        <summary>マイページ</summary>
+        <div class="account-session-menu-list">
+          <span class="account-session-info" data-account-badge>mock画面</span>
+          <a href="./account.html">企業ページ</a>
+          <a href="./support.html">サポート</a>
+          <a href="./request.html">開発相談</a>
+          <button type="button" data-account-logout>ログアウト</button>
+        </div>
+      </details>
     </header>
 
     <section class="admin-mock-hero">
