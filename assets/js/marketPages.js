@@ -204,6 +204,8 @@
 
   function bindNoticePopup() {
     $$('[data-market-notice-link]').forEach(link => {
+      if (link.dataset.noticeBound === 'true') return;
+      link.dataset.noticeBound = 'true';
       link.addEventListener('click', event => {
         event.preventDefault();
         window.alert('運営からのお知らせ機能は準備中です。公開までしばらくお待ちください。');

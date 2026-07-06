@@ -10,16 +10,34 @@
 <body data-market-page="author">
   <main class="market-page">
     <header class="market-header">
-      <a class="market-brand" href="./index.html">LLLD Works Hub</a>
-      <nav aria-label="投稿者ページ導線">
-        <a href="./index.html">社内Hub</a>
-        <a href="./marketplace.html">Market β</a>
+      <a class="market-brand" href="./marketplace.html">LLLD Works Market</a>
+      <nav aria-label="共通導線">
+        <a href="./portal.html">社内ポータル</a>
+        <a href="./marketplace.html">マーケット</a>
+        <a href="./my-apps.html">マイアプリ</a>
         <a href="./request.html">開発相談</a>
+        <button class="market-notice-button" type="button" data-market-notice-link aria-label="お知らせ" title="お知らせ">
+          <span class="market-notice-dot" aria-hidden="true"></span>
+          <span class="market-notice-count" aria-hidden="true">3</span>
+        </button>
       </nav>
+      <details class="account-session-menu" aria-label="マイページ">
+        <summary><span data-account-badge>確認中</span></summary>
+        <div class="account-session-menu-list">
+          <a href="./account.html">マイページ</a>
+          <a href="./support.html">サポート</a>
+          <button type="button" data-account-logout>ログアウト</button>
+        </div>
+      </details>
     </header>
     <div id="authorDetail"></div>
   </main>
 
+  <script src="./assets/js/siteConfigService.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./assets/js/supabaseClientService.js"></script>
+  <script src="./assets/js/authService.js"></script>
+  <script src="./assets/js/accountHeader.js"></script>
   <script src="./assets/js/contentService.js"></script>
   <script src="./assets/js/marketPages.js"></script>
 </body>

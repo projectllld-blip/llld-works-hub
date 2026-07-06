@@ -10,13 +10,25 @@
 <body data-market-page="account" data-account-page="login">
   <main class="market-page account-page">
     <header class="market-header">
-      <a class="market-brand" href="./index.html">LLLD Works Hub</a>
-      <nav aria-label="アカウント導線">
-        <a href="./index.html">社内Hub</a>
-        <a href="./marketplace.html">Market β</a>
-        <a href="./login.html">ログイン準備中</a>
-        <a href="./account.html">アカウント</a>
+      <a class="market-brand" href="./account.html">LLLD Works アカウント</a>
+      <nav aria-label="共通導線">
+        <a href="./portal.html">社内ポータル</a>
+        <a href="./marketplace.html">マーケット</a>
+        <a href="./my-apps.html">マイアプリ</a>
+        <a href="./request.html">開発相談</a>
+        <button class="market-notice-button" type="button" data-market-notice-link aria-label="お知らせ" title="お知らせ">
+          <span class="market-notice-dot" aria-hidden="true"></span>
+          <span class="market-notice-count" aria-hidden="true">3</span>
+        </button>
       </nav>
+      <details class="account-session-menu" aria-label="マイページ">
+        <summary><span data-account-badge>確認中</span></summary>
+        <div class="account-session-menu-list">
+          <a href="./account.html">マイページ</a>
+          <a href="./support.html">サポート</a>
+          <button type="button" data-account-logout>ログアウト</button>
+        </div>
+      </details>
     </header>
 
     <section class="market-hero account-hero">
@@ -66,6 +78,7 @@
   <script src="./assets/js/siteConfigService.js"></script>
   <script src="./assets/js/supabaseClientService.js"></script>
   <script src="./assets/js/authService.js"></script>
+  <script src="./assets/js/accountHeader.js"></script>
   <script src="./assets/js/accountPage.js"></script>
 </body>
 </html>

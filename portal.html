@@ -20,12 +20,24 @@ a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}b
 
 /* Header / sidebar */
 .header{position:sticky;top:0;z-index:20;min-height:var(--head);display:grid;grid-template-columns:auto auto minmax(260px,520px) 1fr auto auto;align-items:center;gap:14px;padding:12px 22px;background:var(--navy);color:#fff;box-shadow:0 8px 24px rgba(3,13,24,.2)}
-.brand{display:flex;align-items:center;gap:12px;white-space:nowrap}.mark{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#3acde8,var(--teal))}.brand strong{font-size:2rem;font-weight:650;letter-spacing:-.045em}.brand span:last-child{color:rgba(255,255,255,.7);font-size:1.05rem;margin-left:10px}
-.market{height:34px;padding:0 17px;border-radius:8px;background:var(--teal);display:inline-flex;align-items:center;justify-content:center;text-align:center;line-height:1;color:#fff;font-weight:500}
+.brand{display:flex;align-items:center;gap:12px;white-space:nowrap}.mark{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#3acde8,var(--teal))}.brand strong{font-size:2rem;font-weight:650;letter-spacing:-.045em}
+.portal-nav{display:flex;gap:8px;align-items:center;justify-content:flex-end;min-width:0;flex-wrap:wrap}
 .search{position:relative}.search input{width:100%;height:38px;border:0;border-radius:7px;padding:0 14px 0 39px;font-weight:350}.search span{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#48576d}
 .h-actions{display:flex;gap:10px;align-items:center;justify-content:flex-end}.hbtn{min-height:34px;border:1px solid rgba(255,255,255,.23);border-radius:8px;background:transparent;color:#fff;padding:0 14px;font-weight:500;display:inline-flex;align-items:center;justify-content:center;text-align:center;line-height:1}
-.hbtn.auth-login{background:#fff;color:#061829;border-color:#fff;box-shadow:0 4px 12px rgba(255,255,255,.08)}
-.hbtn.auth-account{background:#eaf2ff;color:#123765;border-color:#b9cff0}
+.portal-nav .hbtn[href="portal.html"]{background:var(--teal);border-color:transparent;color:#fff}
+.market-notice-button{position:relative;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;flex:0 0 34px;border:1px solid rgba(255,255,255,.23);border-radius:999px;background:transparent;color:#fff;cursor:pointer}
+.market-notice-button:hover{background:rgba(255,255,255,.1)}
+.market-notice-dot{display:block;width:16px;height:16px;position:relative}
+.market-notice-dot:before{content:"";position:absolute;inset:2px 3px 3px;border:2px solid currentColor;border-top-color:transparent;border-radius:50% 50% 45% 45%}
+.market-notice-count{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:999px;background:#ef4444;color:#fff;display:grid;place-items:center;font-size:.78rem;font-weight:700}
+.portal-account-menu{position:relative;min-width:max-content}
+.portal-account-menu summary{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:0 12px;border:1px solid rgba(20,184,166,.45);border-radius:999px;background:rgba(20,184,166,.12);color:#d8fffb;font-size:.88rem;font-weight:500;line-height:1;cursor:pointer;list-style:none;max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.portal-account-menu summary::-webkit-details-marker{display:none}
+.portal-account-menu[open] summary,.portal-account-menu summary:hover{background:rgba(20,184,166,.2);color:#fff}
+.portal-account-menu-list{position:absolute;top:calc(100% + 8px);right:0;z-index:60;min-width:168px;border:1px solid rgba(15,35,58,.12);border-radius:12px;background:#fff;box-shadow:0 20px 40px rgba(6,27,50,.18);padding:6px}
+.portal-account-menu a,.portal-account-menu button{display:inline-flex;align-items:center;justify-content:flex-start;width:100%;min-height:36px;padding:0 10px;border:0;border-radius:8px;background:transparent;color:#0f1b2e;font:inherit;font-size:.92rem;font-weight:500;line-height:1;text-align:left;cursor:pointer}
+.portal-account-menu a:hover,.portal-account-menu button:hover{background:#eef6ff;color:#0f1b2e}
+.portal-account-menu button:disabled{cursor:wait;opacity:.68}
 .portal-save-status{min-height:34px;display:inline-flex;align-items:center;justify-content:center;max-width:220px;padding:0 12px;border:1px solid rgba(255,255,255,.22);border-radius:999px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.86);font-size:.88rem;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
 .portal-save-status.is-saving{background:rgba(244,189,61,.18);border-color:rgba(244,189,61,.45);color:#fff6dd}
 .portal-save-status.is-saved{background:rgba(18,184,171,.18);border-color:rgba(18,184,171,.5);color:#d8fffb}
@@ -1443,7 +1455,8 @@ body.tree-dragging{
 .header>*,
 .brand,
 .search,
-.h-actions,
+.portal-nav,
+.portal-account-menu,
 .portal-save-status{
   min-width:0;
 }
@@ -1452,27 +1465,23 @@ body.tree-dragging{
   overflow:hidden;
   text-overflow:ellipsis;
 }
-.market,
 .hbtn{
   white-space:nowrap;
-}
-.h-actions{
-  flex-wrap:wrap;
 }
 @media(max-width:1180px){
   .header{
     grid-template-columns:minmax(0,1fr) auto auto auto;
     grid-template-areas:
-      "brand market actions status"
+      "brand nav account status"
       "search search search search";
     align-items:center;
     gap:10px 12px;
     padding:10px 16px;
   }
   .brand{grid-area:brand}
-  .market{grid-area:market}
+  .portal-nav{grid-area:nav}
   .search{grid-area:search}
-  .h-actions{grid-area:actions}
+  .portal-account-menu{grid-area:account}
   .portal-save-status{
     grid-area:status;
     max-width:180px;
@@ -1485,7 +1494,7 @@ body.tree-dragging{
     grid-template-columns:minmax(0,1fr) auto;
     grid-template-areas:
       "brand status"
-      "market actions"
+      "nav account"
       "search search";
     gap:9px;
     padding:10px 12px;
@@ -1493,21 +1502,13 @@ body.tree-dragging{
   .brand strong{
     font-size:1.55rem;
   }
-  .brand span:last-child{
-    margin-left:4px;
-    font-size:.92rem;
-  }
-  .market{
+  .portal-nav{
     justify-self:start;
     max-width:100%;
-    height:32px;
-    padding:0 12px;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
-  .h-actions{
-    justify-content:flex-end;
     gap:7px;
+  }
+  .portal-account-menu{
+    justify-content:flex-end;
   }
   .hbtn{
     min-height:32px;
@@ -1539,8 +1540,8 @@ body.tree-dragging{
     grid-template-areas:
       "brand"
       "status"
-      "market"
-      "actions"
+      "nav"
+      "account"
       "search";
   }
   .brand{
@@ -1554,24 +1555,30 @@ body.tree-dragging{
   .brand strong{
     font-size:1.34rem;
   }
-  .brand span:last-child{
-    display:none;
-  }
   .portal-save-status,
-  .market,
-  .h-actions,
+  .portal-nav,
+  .portal-account-menu,
   .search{
     width:100%;
     max-width:100%;
     justify-self:stretch;
   }
-  .h-actions{
+  .portal-nav{
     display:grid;
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:repeat(2,minmax(0,1fr));
   }
   .hbtn{
     justify-content:center;
     text-align:center;
+  }
+  .portal-account-menu summary{
+    width:100%;
+    max-width:100%;
+  }
+  .portal-account-menu-list{
+    left:0;
+    right:auto;
+    width:100%;
   }
   .search input{
     height:36px;
@@ -1629,11 +1636,27 @@ body.tree-dragging{
 <body>
 <div class="portal-shell">
 <header class="header">
-  <a class="brand" href="#board"><i class="mark"></i><strong>LLLD Works Hub</strong><span>社内ポータル</span></a>
-  <a class="market" href="marketplace.html" target="_blank" rel="noopener">LLLD Works Market β</a>
+  <a class="brand" href="portal.html"><i class="mark"></i><strong>LLLD Works Portal</strong></a>
+  <nav class="portal-nav" aria-label="共通導線">
+    <a class="hbtn" href="portal.html">ポータル</a>
+    <a class="hbtn" href="marketplace.html">マーケット</a>
+    <a class="hbtn" href="my-apps.html">マイアプリ</a>
+    <a class="hbtn" href="request.html">開発相談</a>
+    <button class="market-notice-button" type="button" data-market-notice-link aria-label="お知らせ" title="お知らせ">
+      <span class="market-notice-dot" aria-hidden="true"></span>
+      <span class="market-notice-count" aria-hidden="true">3</span>
+    </button>
+  </nav>
   <div class="search"><span>🔍</span><input placeholder="コンテンツ名・カテゴリ・タグで検索"></div>
   <div class="header-spacer"></div>
-  <nav class="h-actions"><a class="hbtn auth-login" href="login.html" target="_blank" rel="noopener">ログイン</a><a class="hbtn auth-account" href="account.html" target="_blank" rel="noopener">アカウント</a></nav>
+  <details class="portal-account-menu" aria-label="マイページ">
+    <summary><span data-account-badge>確認中</span></summary>
+    <div class="portal-account-menu-list">
+      <a href="account.html">マイページ</a>
+      <a href="support.html">サポート</a>
+      <button type="button" data-account-logout>ログアウト</button>
+    </div>
+  </details>
   <span class="portal-save-status" id="portalSaveStatus">保存確認中</span>
 </header>
 <div class="portal-cloud-notice is-info" id="portalCloudNotice" hidden>
@@ -1971,6 +1994,7 @@ body.tree-dragging{
 <script src="./assets/js/siteConfigService.js"></script>
 <script src="./assets/js/supabaseClientService.js"></script>
 <script src="./assets/js/authService.js"></script>
+<script src="./assets/js/accountHeader.js"></script>
 <script src="./assets/js/portalStateService.js"></script>
 <script>
 (() => {
