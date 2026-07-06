@@ -276,3 +276,11 @@ DECISION_LOGは重要な判断の記録に使う。単なる作業ログでは�
 - 影響範囲: `marketplace.html`、`purchase-confirm.html`、`portal.html`、`assets/js/marketPages.js`、`assets/js/purchaseConfirmPage.js`、`assets/js/requestPage.js`、`assets/css/style.css`。
 - 関連Phase: v1.5、v1.6、v1.7、v1.9。
 - 取り消し条件: 人間判断により、無料アプリだけは確認画面を通さず直接利用開始する方針へ戻す場合。
+
+## 2026-07-07 v1.6購入ページは決済なしの確認MVPに限定する
+
+- 決定内容: v1.6では、`purchase-confirm.html` を無料 / β版 / 買い切り / サブスクの購入・利用開始確認ページとして整える。確認後は `sessionStorage` によるポータル一時追加に留め、決済、購入履歴、正式な `app_instances` 反映は行わない。任意サポート希望は画面上で選択できるが、DB保存はしない。
+- 理由: 決済やDB反映へ進む前に、購入者が「何を確認し、何が今起きるのか」を迷わない導線にする必要があるため。先に正式なDB反映や決済へ進むと、商品状態、サポート希望、購入履歴の責務が混ざる。
+- 影響範囲: `purchase-confirm.html`、`assets/js/purchaseConfirmPage.js`、`assets/js/marketPages.js`、`portal.html`、`assets/css/style.css`、`docs/04_フェーズ記録/phase1-6-purchase-page.md`。
+- 関連Phase: v1.6、v1.7、v1.8、v1.9。
+- 取り消し条件: 人間判断により、v1.6内で正式な購入履歴、決済、または `app_instances` 反映まで進める方針へ変更する場合。

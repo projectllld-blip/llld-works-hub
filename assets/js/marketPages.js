@@ -471,12 +471,9 @@
   }
 
   function getSecondaryAction(content, primaryAction = null) {
-    const openUrl = content.url || content.contentUrl || '';
-    if (usesPurchaseConfirmation(content) && openUrl) {
-      return { label: '別タブで開く', href: openUrl, external: true };
-    }
     if (content.secondaryCtaLabel && content.secondaryCtaUrl) {
       if (primaryAction && content.secondaryCtaUrl === primaryAction.href && content.secondaryCtaLabel === primaryAction.label) return null;
+      if (usesPurchaseConfirmation(content) && isExternalOpen(content.secondaryCtaType, content.secondaryCtaUrl)) return null;
       return { label: content.secondaryCtaLabel, href: content.secondaryCtaUrl, external: isExternalOpen(content.secondaryCtaType, content.secondaryCtaUrl) };
     }
     if (content.priceType === 'free' || content.priceType === 'free-beta') {

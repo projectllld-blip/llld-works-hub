@@ -2233,7 +2233,13 @@ body.tree-dragging{
       return parsed.map(item=>[
         "追",
         item.title||"追加コンテンツ",
-        item.priceType==="paid"?"購入確認済み":"利用開始済み",
+        item.portalStatusLabel||(
+          item.actionType==="purchase"||item.priceType==="paid"||item.priceType==="subscription"
+            ?"購入確認済み"
+            :item.actionType==="beta"||item.priceType==="free-beta"
+              ?"β版利用開始済み"
+              :"利用開始済み"
+        ),
         item.summary||"マーケットの確認画面からポータルへ追加しました。",
         item.url||item.detailUrl||"marketplace.html",
         [item.category||"Market",item.priceType||"追加"].filter(Boolean).join(" / "),

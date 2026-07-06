@@ -23,16 +23,15 @@
 - v1.3 購入前後の利用開始フロー整理
 - v1.3f 旧アプリ追加申請UIの撤去
 - v1.4 実アプリの商品化方針整理
-
-## IN_PROGRESS
-- A0.9 自動マージセットアップ不足調査: docs整理は完了。GitHub Settingsで `Allow auto-merge` / branch protection / required checks / workflow permissions の人間確認待ち。
 - v1.x Portal UIUX Consolidation
 - v1.5 Marketplace UIUX / Purchase Flow Consolidation
 
+## IN_PROGRESS
+- A0.9 自動マージセットアップ不足調査: docs整理は完了。GitHub Settingsで `Allow auto-merge` / branch protection / required checks / workflow permissions の人間確認待ち。
+- v1.6 購入ページ
+
 ## NEXT
 - 検証用Supabase project新規作成
-- v1.5 販売用UI/UX強化
-- v1.6 購入ページ
 - v1.7 購入後の利用開始・利用中アプリ反映
 - v1.8 販売前QA・導入テスト
 - v1.9 決済・購入履歴
