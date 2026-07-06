@@ -9,7 +9,7 @@
 </head>
 <body data-market-page="marketplace">
   <header class="market-header">
-    <a class="market-brand" href="./index.html">LLLD Works Market / Works Hub</a>
+    <a class="market-brand" href="./index.html">LLLD Works Market</a>
     <nav aria-label="マーケット導線">
       <a href="./marketplace.html">マーケット</a>
       <a href="./my-apps.html">マイアプリ</a>
@@ -17,27 +17,18 @@
       <a href="./request.html">開発相談</a>
       <a href="#" data-market-notice-link>お知らせ</a>
       <span class="market-notice-dot" aria-hidden="true"></span>
-      <a class="market-my-page" href="./account.html">マイページ</a>
     </nav>
     <span class="account-session-pill" data-account-badge>確認中</span>
-    <div class="market-page-menu" aria-label="関連ページ">
-      <a href="./portal.html">社内ポータル</a>
-      <a href="./account.html">企業ページ</a>
-    </div>
+    <details class="market-page-menu" aria-label="マイページ">
+      <summary>マイページ</summary>
+      <div class="market-page-menu-list">
+        <a href="./portal.html">社内ポータル</a>
+        <a href="./account.html">企業ページ</a>
+      </div>
+    </details>
   </header>
 
   <main class="market-page">
-    <section class="market-hero">
-      <div class="market-hero-inner">
-        <h1>現場で生まれた便利ツールを、<br>必要な人へ。</h1>
-        <p>業務の“ムダ・手間・ミス”の小さな課題を解決するアプリを厳選してお届けします。すぐに使えるツールから、開発相談までワンストップでサポートします。</p>
-        <div class="market-hero-search">
-          <input id="marketSearch" class="market-search" type="search" placeholder="アプリ名やキーワードで検索">
-          <button class="btn primary" type="button" data-market-search-button>検索</button>
-        </div>
-      </div>
-    </section>
-
     <div class="market-content-shell">
       <aside class="market-sidebar" aria-label="マーケット絞り込み">
         <section class="market-sidebar-block">
@@ -49,14 +40,23 @@
           <select id="priceFilter" class="market-select" aria-label="価格タイプ"></select>
           <div class="market-price-notes" aria-hidden="true">
             <span class="active">すべて</span>
-            <span>買い切り（単発購入）</span>
-            <span>無料</span>
-            <span>有料予定コンテンツ</span>
+            <span>買い切り</span>
+            <span>サブスク</span>
           </div>
         </section>
       </aside>
 
       <div class="market-main">
+        <section class="market-hero">
+          <div class="market-hero-inner">
+            <h1>現場で生まれた便利ツールを、<br>必要な人へ。</h1>
+            <div class="market-hero-search">
+              <input id="marketSearch" class="market-search" type="search" placeholder="アプリ名やキーワードで検索">
+              <button class="btn primary" type="button" data-market-search-button>検索</button>
+            </div>
+          </div>
+        </section>
+
         <section class="market-section market-find-section">
           <div class="market-section-head">
             <div>
@@ -98,13 +98,6 @@
 
         <section class="market-section">
           <div class="market-section-head">
-            <h2>開発要望・相談</h2>
-          </div>
-          <div id="consultationGrid" class="market-grid compact"></div>
-        </section>
-
-        <section class="market-section">
-          <div class="market-section-head">
             <h2>有料予定コンテンツ</h2>
           </div>
           <div id="comingSoonGrid" class="market-grid compact"></div>
@@ -122,20 +115,6 @@
             <h2>小規模事業者向け</h2>
           </div>
           <div id="smallBusinessGrid" class="market-grid compact"></div>
-        </section>
-
-        <section id="marketSupportBand" class="submit-band market-idea-band">
-          <div>
-            <h2>開発のご相談・ご意見ボックス</h2>
-            <p>お金を払って開発依頼するほどではないけれど、現場にあったら助かるツールの要望を書けます。</p>
-          </div>
-          <form id="marketIdeaForm" class="market-idea-form">
-            <label>
-              欲しいツール・困っている作業
-              <textarea id="marketIdeaMessage" rows="3" placeholder="例: 毎月の提出物チェックを、スタッフ全員で共有できる小さな表にしたい"></textarea>
-            </label>
-            <button class="btn primary" type="submit">要望を書く</button>
-          </form>
         </section>
       </div>
     </div>
@@ -161,7 +140,7 @@
     <div>
       <h3>サポート</h3>
       <a href="./support.html">サポートサイト</a>
-      <a href="#marketSupportBand">開発相談</a>
+      <a href="./request.html">開発相談</a>
       <a href="./request.html">お問い合わせ</a>
     </div>
   </footer>
