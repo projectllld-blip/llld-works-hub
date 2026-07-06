@@ -248,6 +248,7 @@
   function visibleMarketContents(contents) {
     const internalValues = new Set(['internal', 'internal-only', 'internal_only']);
     return contents.filter(content =>
+      !String(content.title || '').includes('自社用カスタマイズ') &&
       !internalValues.has(content.priceType) &&
       !internalValues.has(content.saleStatus) &&
       !internalValues.has(content.visibility) &&
