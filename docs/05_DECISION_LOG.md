@@ -300,3 +300,11 @@ DECISION_LOGは重要な判断の記録に使う。単なる作業ログでは�
 - 影響範囲: `admin.html`、`assets/js/adminMockPage.js`、将来の商品マスタ / 料金マスタ、管理者権限、RLS / 管理者API。
 - 関連Phase: v1.6c、v1.9、v2.x。
 - 取り消し条件: 人間判断により、v1系内で本物管理者画面による商品・料金DB編集が必要と確定した場合。ただし、その場合もRLS / migration / 管理者権限の設計が先行条件。
+
+## 2026-07-07 v1.6購入ページを完了扱いにする
+
+- 決定内容: v1.6購入ページを完了扱いにする。無料 / β版は確認後に `sessionStorage` 仮追加され、有料 / サブスクは購入確認のみで `sessionStorage` 仮追加されず、`portal.html` に購入済み・利用可能として表示されないことを人間確認済み。
+- 理由: マーケット / 詳細から購入確認画面へ進めること、任意サポート選択、有料 / サブスクの決済準備中文言、`app_add_requests` 不使用、`app_instances` / `app_data` / `company_accounts` / `plan_status` 未変更、Supabase / RLS / migration / `site-config` 未変更を確認できたため。
+- 影響範囲: `purchase-confirm.html`、`assets/js/purchaseConfirmPage.js`、`portal.html`、`docs/04_フェーズ記録/phase1-6-purchase-page.md`、`docs/00_PROJECT_STATUS.md`、`docs/06_TASK_QUEUE.md`。
+- 関連Phase: v1.6、v1.6b、v1.6c、v1.7。
+- 取り消し条件: 有料 / サブスクが決済なしで利用可能になる、または `portal.html` に購入済み・利用可能として表示される不具合が見つかった場合。
