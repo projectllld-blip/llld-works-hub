@@ -25,10 +25,10 @@
 - v1.4 実アプリの商品化方針整理
 - v1.x Portal UIUX Consolidation
 - v1.5 Marketplace UIUX / Purchase Flow Consolidation
+- v1.6 購入ページ
 
 ## IN_PROGRESS
 - A0.9 自動マージセットアップ不足調査: docs整理は完了。GitHub Settingsで `Allow auto-merge` / branch protection / required checks / workflow permissions の人間確認待ち。
-- v1.6 購入ページ
 
 ## NEXT
 - 検証用Supabase project新規作成

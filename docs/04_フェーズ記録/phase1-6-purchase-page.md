@@ -161,6 +161,34 @@ v1.6では、商品状態とCTAの正本は以下に残る。
 - 決済処理や購入履歴が実行されないこと。
 - Supabase / RLS / migration / DBに変更がないこと。
 
+## 人間確認結果
+
+2026-07-07、人間ブラウザ確認済み。
+
+- `marketplace.html` から購入確認画面へ進める: OK
+- `content-detail.html` から購入確認画面へ進める: OK
+- 無料アプリ確認後、`sessionStorage` 仮追加される: OK
+- β版アプリ確認後、`sessionStorage` 仮追加される: OK
+- 有料アプリ確認後、`sessionStorage` 仮追加されない: OK
+- サブスク確認後、`sessionStorage` 仮追加されない: OK
+- 有料 / サブスクが `portal.html` に購入済み・利用可能として表示されない: OK
+- 有料 / サブスクで「決済機能は準備中」「まだ利用開始されていない」ことが分かる: OK
+- 任意サポート選択が表示される: OK
+- `app_add_requests` を購入者導線に使っていない: OK
+- `app_instances` / `app_data` / `company_accounts` / `plan_status` は変更していない: OK
+- Supabase / RLS / migration / `site-config` は変更していない: OK
+- `v1.6b` / `v1.6c` のロードマップ番号が正しい: OK
+- `v1.8a` / `v1.8b` / `v1.8c` の誤記がない: OK
+- スマホ表示で大きな崩れがない: OK
+
+## 完了判断
+
+v1.6 購入ページは、決済なしの購入 / 利用開始確認MVPとして完了扱いにする。
+
+無料 / β版は `sessionStorage` による仮追加まで確認済み。有料 / サブスクは決済未実装中に利用可能状態へしないことを確認済み。
+
+次は `v1.6b 商品・料金・CTA設定の整理`、`v1.6c 管理者mock画面：商品/料金/表示状態確認`、または検証用Supabase project新規作成へ進める。
+
 ## 次フェーズ候補
 
 `v1.6b 商品・料金・CTA設定の整理`
