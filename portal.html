@@ -11,6 +11,7 @@
   --line:#dce3ed;--line2:#e9eef5;--blue:#2f71d0;--blueSoft:#eaf2ff;
   --yellow:#f4bd3d;--yellowSoft:#fff6dd;--shadow:0 8px 20px rgba(6,24,41,.055);
   --r:16px;--side:204px;--head:64px;
+  --header-nav-width:92px;--header-menu-width:96px;--header-notice-width:36px;
   --font:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,sans-serif;
 }
 *{box-sizing:border-box}
@@ -24,15 +25,15 @@ a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}b
 .brand{grid-area:brand}.header-spacer{grid-area:spacer}.search{grid-area:search}.portal-nav{grid-area:nav}.portal-account-menu{grid-area:account}.portal-save-status{grid-area:status}
 .portal-nav{display:flex;gap:6px;align-items:center;justify-content:flex-end;justify-self:end;min-width:0;flex-wrap:wrap}
 .search{position:relative;justify-self:end;width:100%}.search input{width:100%;height:38px;border:0;border-radius:7px;padding:0 14px 0 39px;font-weight:350}.search span{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#48576d}
-.h-actions{display:flex;gap:10px;align-items:center;justify-content:flex-end}.hbtn{height:36px;min-height:36px;border:1px solid rgba(255,255,255,.23);border-radius:8px;background:transparent;color:#fff;padding:0 10px;font-weight:500;display:inline-flex;align-items:center;justify-content:center;text-align:center;line-height:1}
+.h-actions{display:flex;gap:10px;align-items:center;justify-content:flex-end}.hbtn{height:36px;min-height:36px;width:var(--header-nav-width);min-width:var(--header-nav-width);max-width:var(--header-nav-width);flex:0 0 var(--header-nav-width);border:1px solid rgba(255,255,255,.23);border-radius:8px;background:transparent;color:#fff;padding:0 8px;font-weight:500;display:inline-flex;align-items:center;justify-content:center;text-align:center;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .portal-nav .hbtn[href="portal.html"]{background:var(--teal);border-color:transparent;color:#fff}
-.market-notice-button{position:relative;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;flex:0 0 36px;border:1px solid rgba(255,255,255,.23);border-radius:999px;background:transparent;color:#fff;cursor:pointer}
+.market-notice-button{position:relative;display:inline-flex;align-items:center;justify-content:center;width:var(--header-notice-width);min-width:var(--header-notice-width);max-width:var(--header-notice-width);height:36px;flex:0 0 var(--header-notice-width);border:1px solid rgba(255,255,255,.23);border-radius:999px;background:transparent;color:#fff;cursor:pointer}
 .market-notice-button:hover{background:rgba(255,255,255,.1)}
 .market-notice-dot{display:block;width:16px;height:16px;position:relative}
 .market-notice-dot:before{content:"";position:absolute;inset:2px 3px 3px;border:2px solid currentColor;border-top-color:transparent;border-radius:50% 50% 45% 45%}
 .market-notice-count{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:999px;background:#ef4444;color:#fff;display:grid;place-items:center;font-size:.78rem;font-weight:700}
 .portal-account-menu{position:relative;min-width:max-content}
-.portal-account-menu summary{display:inline-flex;align-items:center;justify-content:center;height:36px;min-height:36px;padding:0 12px;border:1px solid rgba(255,255,255,.14);border-radius:9px;background:rgba(255,255,255,.04);color:#e2e8f0;font-size:.88rem;font-weight:500;line-height:1;cursor:pointer;list-style:none;max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.portal-account-menu summary{display:inline-flex;align-items:center;justify-content:center;width:var(--header-menu-width);min-width:var(--header-menu-width);max-width:var(--header-menu-width);height:36px;min-height:36px;padding:0 8px;border:1px solid rgba(255,255,255,.14);border-radius:9px;background:rgba(255,255,255,.04);color:#e2e8f0;font-size:.88rem;font-weight:500;line-height:1;cursor:pointer;list-style:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .portal-account-menu summary::-webkit-details-marker{display:none}
 .portal-account-menu[open] summary,.portal-account-menu summary:hover{background:rgba(255,255,255,.1);color:#fff}
 .portal-account-menu-list{position:absolute;top:calc(100% + 8px);right:0;z-index:60;min-width:220px;border:1px solid rgba(15,35,58,.12);border-radius:12px;background:#fff;box-shadow:0 20px 40px rgba(6,27,50,.18);padding:6px}
@@ -1655,11 +1656,16 @@ body.tree-dragging{
 .portal-save-status{grid-area:status!important;justify-self:start!important}
 .header-spacer{grid-area:spacer!important;display:block!important}
 .search{grid-area:search!important;justify-self:end!important}
-.portal-nav{grid-area:nav!important;display:flex!important;justify-self:end!important;flex-wrap:nowrap!important}
+.portal-nav{grid-area:nav!important;display:flex!important;justify-self:end!important;flex-wrap:nowrap!important;gap:6px!important}
 .portal-account-menu{grid-area:account!important;justify-self:end!important}
 .portal-account-menu summary{
+  width:var(--header-menu-width)!important;
+  min-width:var(--header-menu-width)!important;
+  max-width:var(--header-menu-width)!important;
+  flex:0 0 var(--header-menu-width)!important;
   height:36px!important;
   min-height:36px!important;
+  padding:0 8px!important;
   border-radius:9px!important;
   background:rgba(255,255,255,.04)!important;
   border-color:rgba(255,255,255,.14)!important;
@@ -1672,6 +1678,19 @@ body.tree-dragging{
   background:rgba(255,255,255,.1)!important;
   color:#fff!important;
 }
+.portal-nav .hbtn{
+  width:var(--header-nav-width)!important;
+  min-width:var(--header-nav-width)!important;
+  max-width:var(--header-nav-width)!important;
+  flex:0 0 var(--header-nav-width)!important;
+  padding:0 8px!important;
+}
+.portal-nav .market-notice-button{
+  width:var(--header-notice-width)!important;
+  min-width:var(--header-notice-width)!important;
+  max-width:var(--header-notice-width)!important;
+  flex:0 0 var(--header-notice-width)!important;
+}
 
 @media(max-width:900px){
   .header{
@@ -1682,7 +1701,7 @@ body.tree-dragging{
     -webkit-overflow-scrolling:touch;
   }
   .brand strong{font-size:1.45rem!important}
-  .portal-nav{width:auto!important;max-width:none!important}
+  .portal-nav{width:auto!important;max-width:none!important;gap:6px!important}
   .portal-account-menu{width:auto!important;max-width:none!important}
 }
 </style>

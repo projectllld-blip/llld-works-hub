@@ -3063,6 +3063,9 @@ body[data-market-page="detail"] .market-badge:last-child{
 :root{
   --llld-common-header-height:64px;
   --llld-common-header-control-height:36px;
+  --llld-common-header-notice-width:36px;
+  --llld-common-header-nav-width:92px;
+  --llld-common-header-menu-width:96px;
 }
 
 .market-header,
@@ -3164,6 +3167,44 @@ body[data-market-page="account"] .account-session-menu summary{
   align-items:center!important;
   justify-content:center!important;
   line-height:1!important;
+  white-space:nowrap!important;
+  text-align:center!important;
+}
+
+.market-header nav a,
+body[data-market-page="marketplace"] .market-header nav a,
+body[data-market-page="detail"] .market-header nav a,
+body[data-market-page="author"] .market-header nav a,
+body[data-market-page="purchase"] .market-header nav a,
+body[data-market-page="request"] .market-header nav a,
+body[data-market-page="thanks"] .market-header nav a,
+body[data-market-page="admin"] .market-header nav a,
+body[data-market-page="account"] .market-header nav a{
+  width:var(--llld-common-header-nav-width)!important;
+  min-width:var(--llld-common-header-nav-width)!important;
+  max-width:var(--llld-common-header-nav-width)!important;
+  flex:0 0 var(--llld-common-header-nav-width)!important;
+  padding:0 8px!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+
+.market-header .account-session-menu summary,
+body[data-market-page="marketplace"] .account-session-menu summary,
+body[data-market-page="detail"] .account-session-menu summary,
+body[data-market-page="author"] .account-session-menu summary,
+body[data-market-page="purchase"] .account-session-menu summary,
+body[data-market-page="request"] .account-session-menu summary,
+body[data-market-page="thanks"] .account-session-menu summary,
+body[data-market-page="admin"] .account-session-menu summary,
+body[data-market-page="account"] .account-session-menu summary{
+  width:var(--llld-common-header-menu-width)!important;
+  min-width:var(--llld-common-header-menu-width)!important;
+  max-width:var(--llld-common-header-menu-width)!important;
+  flex:0 0 var(--llld-common-header-menu-width)!important;
+  padding:0 8px!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
 }
 
 .market-header .market-notice-button,
@@ -3175,8 +3216,10 @@ body[data-market-page="request"] .market-notice-button,
 body[data-market-page="thanks"] .market-notice-button,
 body[data-market-page="admin"] .market-notice-button,
 body[data-market-page="account"] .market-notice-button{
-  width:var(--llld-common-header-control-height)!important;
-  flex:0 0 var(--llld-common-header-control-height)!important;
+  width:var(--llld-common-header-notice-width)!important;
+  min-width:var(--llld-common-header-notice-width)!important;
+  max-width:var(--llld-common-header-notice-width)!important;
+  flex:0 0 var(--llld-common-header-notice-width)!important;
 }
 
 .market-header .account-session-menu,
