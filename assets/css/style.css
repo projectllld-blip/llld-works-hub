@@ -766,6 +766,7 @@ button{cursor:pointer}
   .more-button{width:auto}
   .purchase-confirm-layout{grid-template-columns:1fr}
   .purchase-confirm-layout h1{font-size:22px}
+  .purchase-support-options{grid-template-columns:1fr}
 }
 
 /* Marketplace: Works Hub visual alignment */
@@ -2330,6 +2331,43 @@ body[data-market-page="detail"] .market-badge:last-child{
 .purchase-flow-note p{
   margin:0;
   font-size:13px;
+}
+.purchase-support-options{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px 12px;
+  margin:var(--sp-2) 0;
+  border:1px solid var(--border);
+  border-radius:var(--radius-btn);
+  background:var(--bg-card);
+  padding:var(--sp-2);
+}
+.purchase-support-options legend{
+  padding:0 6px;
+  color:var(--text);
+  font-size:13px;
+  font-weight:900;
+}
+.purchase-support-options label{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-height:34px;
+  color:var(--text-sub);
+  font-size:13px;
+  font-weight:800;
+}
+.purchase-support-options input{
+  inline-size:16px;
+  block-size:16px;
+  accent-color:var(--primary);
+  flex:none;
+}
+.purchase-open-note{
+  margin:8px 0 0;
+  color:var(--text-muted);
+  font-size:12px;
+  font-weight:800;
 }
 .request-form{
   display:grid;
