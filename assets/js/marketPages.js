@@ -8,6 +8,7 @@
     query: '',
     categoryId: 'all',
     priceType: 'all',
+    priceRange: 'all',
     tag: 'all'
   };
 
@@ -19,6 +20,15 @@
     consultation: '開発相談',
     internal: '社内限定',
     'coming-soon': '準備中'
+  };
+
+  const priceRangeLabels = {
+    all: '価格帯すべて',
+    free: '無料',
+    under1000: '1,000円未満',
+    '1000-2999': '1,000〜2,999円',
+    '3000-plus': '3,000円以上',
+    custom: '未定・個別見積'
   };
 
   const statusLabels = {
@@ -95,6 +105,7 @@
 
   function renderMarketplace() {
     renderCategoryChips();
+    renderPriceTypeChips();
     renderPriceOptions();
     renderTagChips();
     bindMarketplaceFilters();
@@ -116,10 +127,19 @@
   }
 
   function renderPriceOptions() {
-    const select = $('#priceFilter');
+    const select = $('#priceRangeFilter');
     if (!select) return;
-    const options = ['all', 'paid', 'subscription', 'free', 'free-beta', 'coming-soon'];
-    select.innerHTML = options.map(value => `<option value="${escapeAttr(value)}">${escapeHtml(value === 'all' ? '価格タイプすべて' : priceLabels[value])}</option>`).join('');
+    const options = ['all', 'free', 'under1000', '1000-2999', '3000-plus', 'custom'];
+    select.innerHTML = options.map(value => `<option value="${escapeAttr(value)}">${escapeHtml(priceRangeLabels[value])}</option>`).join('');
+  }
+
+  function renderPriceTypeChips() {
+    const wrap = $('#priceTypeChips');
+    if (!wrap) return;
+    const options = ['all', 'free', 'free-beta', 'paid', 'subscription'];
+    wrap.innerHTML = options
+      .map(value => chipButton(value, value === 'all' ? 'すべて' : priceLabels[value], state.priceType === value, 'price'))
+      .join('');
   }
 
   function renderTagChips() {
@@ -150,10 +170,10 @@
       });
     }
 
-    const price = $('#priceFilter');
-    if (price) {
-      price.addEventListener('change', event => {
-        state.priceType = event.target.value;
+    const priceRange = $('#priceRangeFilter');
+    if (priceRange) {
+      priceRange.addEventListener('change', event => {
+        state.priceRange = event.target.value;
         renderMarketplaceLists();
       });
     }
@@ -163,6 +183,13 @@
       if (category) {
         state.categoryId = category.dataset.marketCategory;
         renderCategoryChips();
+        renderMarketplaceLists();
+      }
+
+      const price = event.target.closest('[data-market-price]');
+      if (price) {
+        state.priceType = price.dataset.marketPrice;
+        renderPriceTypeChips();
         renderMarketplaceLists();
       }
 
@@ -211,11 +238,10 @@
       ].join(' '));
       const matchQuery = !q || text.includes(q);
       const matchCategory = state.categoryId === 'all' || content.categoryId === state.categoryId;
-      const matchPrice = state.priceType === 'all' ||
-        content.priceType === state.priceType ||
-        (state.priceType === 'subscription' && ['subscription', 'monthly', 'recurring'].includes(content.billingType));
+      const matchPrice = state.priceType === 'all' || content.priceType === state.priceType;
+      const matchPriceRange = state.priceRange === 'all' || priceRangeOf(content) === state.priceRange;
       const matchTag = state.tag === 'all' || (content.tags || []).includes(state.tag);
-      return matchQuery && matchCategory && matchPrice && matchTag;
+      return matchQuery && matchCategory && matchPrice && matchPriceRange && matchTag;
     });
   }
 
@@ -264,7 +290,7 @@
           <a href="${escapeAttr(author?.profileUrl || '#')}">${escapeHtml(author?.name || '投稿者未設定')}</a>
         </div>
         <div class="target-row">${(content.targetUsers || []).slice(0, 3).map(item => `<span>${escapeHtml(item)}</span>`).join('')}</div>
-        <div class="tag-row">${(content.tags || []).slice(0, 4).map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>
+        <div class="tag-row">${(content.tags || []).slice(0, 3).map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>
         <div class="market-actions">
           <a class="btn primary" href="${escapeAttr(content.detailUrl)}">詳細を見る</a>
           <a class="btn secondary" href="${escapeAttr(action.href)}"${actionAttrs(action)}>${escapeHtml(action.label)}</a>
@@ -503,7 +529,11 @@
   }
 
   function chipButton(value, label, active, type) {
-    const attr = type === 'category' ? 'data-market-category' : 'data-market-tag';
+    const attr = type === 'category'
+      ? 'data-market-category'
+      : type === 'price'
+        ? 'data-market-price'
+        : 'data-market-tag';
     return `<button class="chip ${active ? 'active' : ''}" type="button" ${attr}="${escapeAttr(value)}">${escapeHtml(label)}</button>`;
   }
 
@@ -574,6 +604,15 @@
         : '個別見積';
     }
     return priceLabels[content.priceType] || content.priceType || '未設定';
+  }
+
+  function priceRangeOf(content) {
+    if (['free', 'free-beta'].includes(content.priceType)) return 'free';
+    const price = Number(content.price);
+    if (!Number.isFinite(price) || price <= 0) return 'custom';
+    if (price < 1000) return 'under1000';
+    if (price < 3000) return '1000-2999';
+    return '3000-plus';
   }
 
   function unique(values) {

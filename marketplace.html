@@ -20,7 +20,6 @@
         <span class="market-notice-count" aria-hidden="true">3</span>
       </button>
     </nav>
-    <span class="account-session-pill" data-account-badge>確認中</span>
     <details class="market-page-menu" aria-label="マイページ">
       <summary>マイページ</summary>
       <div class="market-page-menu-list">
@@ -28,6 +27,7 @@
         <a href="./account.html">企業ページ</a>
       </div>
     </details>
+    <span class="account-session-pill" data-account-badge>確認中</span>
   </header>
 
   <main class="market-page">
@@ -39,12 +39,9 @@
         </section>
         <section class="market-sidebar-block">
           <h2>料金形態</h2>
-          <select id="priceFilter" class="market-select" aria-label="価格タイプ"></select>
-          <div class="market-price-notes" aria-hidden="true">
-            <span class="active">すべて</span>
-            <span>買い切り</span>
-            <span>サブスク</span>
-          </div>
+          <div id="priceTypeChips" class="type-chips market-sidebar-list"></div>
+          <label class="market-filter-label" for="priceRangeFilter">価格帯</label>
+          <select id="priceRangeFilter" class="market-select" aria-label="価格帯"></select>
         </section>
       </aside>
 
@@ -131,7 +128,7 @@
       <h3>マーケット</h3>
       <a href="./marketplace.html">すべてのコンテンツ</a>
       <a href="#marketCategoryChips">カテゴリー一覧</a>
-      <a href="#priceFilter">料金形態</a>
+      <a href="#priceRangeFilter">価格帯</a>
     </div>
     <div>
       <h3>マイアプリ</h3>
