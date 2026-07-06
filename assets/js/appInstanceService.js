@@ -159,7 +159,7 @@
         status,
         appStatus: 'loaded',
         apps: instances.map(row => normalizeAppInstance(row, appMap.get(row.app_key))),
-        message: '利用アプリ一覧を取得しました。SeatFlowレイアウトのみクラウド保存を検証中です。'
+        message: '利用アプリ一覧を取得しました。'
       };
     } catch {
       return {

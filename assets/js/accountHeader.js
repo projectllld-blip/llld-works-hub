@@ -4,12 +4,14 @@
   const BADGE_SELECTOR = '[data-account-badge]';
   const LOGOUT_SELECTOR = '[data-account-logout]';
   const NOTICE_SELECTOR = '[data-market-notice-link]';
+  const MENU_SELECTOR = '.account-session-menu, .portal-account-menu, .page-menu';
 
   init();
 
   async function init() {
     const badges = [...document.querySelectorAll(BADGE_SELECTOR)];
     bindNoticePopup();
+    bindMenuCloseOnOutsideClick();
     bindLogoutButtons(badges);
     if (!badges.length) return;
 
@@ -84,6 +86,25 @@
       button.addEventListener('click', event => {
         event.preventDefault();
         window.alert('運営からのお知らせ機能は準備中です。公開までしばらくお待ちください。');
+      });
+    });
+  }
+
+  function bindMenuCloseOnOutsideClick() {
+    const menus = [...document.querySelectorAll(MENU_SELECTOR)];
+    if (!menus.length) return;
+
+    document.addEventListener('click', event => {
+      menus.forEach(menu => {
+        if (!menu.open || menu.contains(event.target)) return;
+        menu.open = false;
+      });
+    });
+
+    document.addEventListener('keydown', event => {
+      if (event.key !== 'Escape') return;
+      menus.forEach(menu => {
+        menu.open = false;
       });
     });
   }

@@ -6,7 +6,7 @@
   document.addEventListener('DOMContentLoaded', init);
 
   async function init() {
-    setText('#myAppsStatus', '利用中アプリを確認しています。');
+    setText('#myAppsStatus', '');
     try {
       const account = await window.AuthService?.getCurrentAccount?.();
       if (!account?.id) {
@@ -16,9 +16,9 @@
       }
 
       const result = await window.AppInstanceService?.getMyAppInstances?.(account.id);
-      renderMode(modeLabel(result), result?.message || '利用中アプリ一覧を表示しています。');
+      renderMode(modeLabel(result), '利用中アプリ一覧を表示しています。');
       renderApps(result?.apps || []);
-      setText('#myAppsStatus', result?.message || `${result?.apps?.length || 0}件の利用中アプリを表示しています。`);
+      setText('#myAppsStatus', `${result?.apps?.length || 0}件の利用中アプリを表示しています。`);
     } catch {
       renderMode('読込失敗', '利用中アプリ一覧を読み込めませんでした。');
       renderEmpty('利用中アプリ一覧の取得に失敗しました。時間を置いて再度確認してください。');

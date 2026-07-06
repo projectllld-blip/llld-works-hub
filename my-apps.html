@@ -12,13 +12,13 @@
     <header class="market-header">
       <a class="market-brand" href="./my-apps.html">LLLD Works マイアプリ</a>
       <nav aria-label="共通導線">
-        <a href="./portal.html">社内ポータル</a>
-        <a href="./marketplace.html">マーケット</a>
-        <a href="./my-apps.html">マイアプリ</a>
         <button class="market-notice-button" type="button" data-market-notice-link aria-label="お知らせ" title="お知らせ">
           <span class="market-notice-dot" aria-hidden="true"></span>
           <span class="market-notice-count" aria-hidden="true">3</span>
         </button>
+        <a href="./portal.html">社内ポータル</a>
+        <a href="./marketplace.html">マーケット</a>
+        <a href="./my-apps.html">マイアプリ</a>
       </nav>
       <details class="account-session-menu" aria-label="マイページ">
         <summary>マイページ</summary>
@@ -27,6 +27,7 @@
           <a href="./account.html">マイページ</a>
           <a href="./support.html">サポート</a>
           <a href="./request.html">開発相談</a>
+          <a href="./login.html">ログイン</a>
           <button type="button" data-account-logout>ログアウト</button>
         </div>
       </details>
@@ -36,7 +37,6 @@
       <div>
         <span class="market-kicker">マイアプリ</span>
         <h1>利用中のアプリを一覧で確認できます。</h1>
-        <p>ログイン中の企業アカウントに登録されているアプリだけを表示します。マーケットで探す画面と、実際に使うアプリ一覧を分けています。</p>
       </div>
       <div class="account-mode-card">
         <span>表示状態</span>
@@ -50,7 +50,7 @@
         <div class="my-apps-panel-head">
           <div>
             <h2>利用中アプリ一覧</h2>
-            <p class="account-note" id="myAppsStatus">利用中アプリを確認しています。</p>
+            <p class="account-note" id="myAppsStatus"></p>
           </div>
           <div class="detail-cta-row">
             <a class="btn secondary" href="./marketplace.html">マーケットで探す</a>
