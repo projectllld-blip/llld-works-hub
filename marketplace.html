@@ -9,25 +9,27 @@
 </head>
 <body data-market-page="marketplace">
   <header class="market-header">
-    <a class="market-brand" href="./index.html">LLLD Works Market</a>
-    <nav aria-label="マーケット導線">
-      <a href="./marketplace.html">マーケット</a>
-      <a href="./my-apps.html">マイアプリ</a>
-      <a href="./support.html">サポート</a>
-      <a href="./request.html">開発相談</a>
-      <button class="market-notice-button" type="button" data-market-notice-link aria-label="お知らせ" title="お知らせ">
+    <a class="market-brand" href="./marketplace.html">LLLD Works Market</a>
+    <nav aria-label="共通導線">
+        <button class="market-notice-button" type="button" data-market-notice-link aria-label="お知らせ" title="お知らせ">
         <span class="market-notice-dot" aria-hidden="true"></span>
         <span class="market-notice-count" aria-hidden="true">3</span>
       </button>
-    </nav>
-    <details class="market-page-menu" aria-label="マイページ">
-      <summary>マイページ</summary>
-      <div class="market-page-menu-list">
         <a href="./portal.html">社内ポータル</a>
-        <a href="./account.html">企業ページ</a>
-      </div>
+        <a href="./marketplace.html">マーケット</a>
+        <a href="./my-apps.html">マイアプリ</a>
+    </nav>
+    <details class="account-session-menu" aria-label="マイページ">
+      <summary>マイページ</summary>
+        <div class="account-session-menu-list">
+          <span class="account-session-info" data-account-badge>確認中</span>
+          <a href="./account.html">マイページ</a>
+          <a href="./support.html">サポート</a>
+          <a href="./request.html">開発相談</a>
+          <a href="./login.html">ログイン</a>
+          <button type="button" data-account-logout>ログアウト</button>
+        </div>
     </details>
-    <span class="account-session-pill" data-account-badge>確認中</span>
   </header>
 
   <main class="market-page">
@@ -139,7 +141,6 @@
     <div>
       <h3>サポート</h3>
       <a href="./support.html">サポートサイト</a>
-      <a href="./request.html">開発相談</a>
       <a href="./request.html">お問い合わせ</a>
     </div>
   </footer>

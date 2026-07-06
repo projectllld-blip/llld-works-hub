@@ -11,6 +11,7 @@
   --line:#dce3ed;--line2:#e9eef5;--blue:#2f71d0;--blueSoft:#eaf2ff;
   --yellow:#f4bd3d;--yellowSoft:#fff6dd;--shadow:0 8px 20px rgba(6,24,41,.055);
   --r:16px;--side:204px;--head:64px;
+  --header-nav-width:92px;--header-menu-width:96px;--header-notice-width:36px;
   --font:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,sans-serif;
 }
 *{box-sizing:border-box}
@@ -19,17 +20,35 @@ body{margin:0;background:var(--bg);font-family:var(--font);color:var(--ink);font
 a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}button{cursor:pointer}
 
 /* Header / sidebar */
-.header{position:sticky;top:0;z-index:20;min-height:var(--head);display:grid;grid-template-columns:auto auto minmax(260px,520px) 1fr auto auto;align-items:center;gap:14px;padding:12px 22px;background:var(--navy);color:#fff;box-shadow:0 8px 24px rgba(3,13,24,.2)}
-.brand{display:flex;align-items:center;gap:12px;white-space:nowrap}.mark{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#3acde8,var(--teal))}.brand strong{font-size:2rem;font-weight:650;letter-spacing:-.045em}.brand span:last-child{color:rgba(255,255,255,.7);font-size:1.05rem;margin-left:10px}
-.market{height:34px;padding:0 17px;border-radius:8px;background:var(--teal);display:inline-flex;align-items:center;justify-content:center;text-align:center;line-height:1;color:#fff;font-weight:500}
-.search{position:relative}.search input{width:100%;height:38px;border:0;border-radius:7px;padding:0 14px 0 39px;font-weight:350}.search span{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#48576d}
-.h-actions{display:flex;gap:10px;align-items:center;justify-content:flex-end}.hbtn{min-height:34px;border:1px solid rgba(255,255,255,.23);border-radius:8px;background:transparent;color:#fff;padding:0 14px;font-weight:500;display:inline-flex;align-items:center;justify-content:center;text-align:center;line-height:1}
-.hbtn.auth-login{background:#fff;color:#061829;border-color:#fff;box-shadow:0 4px 12px rgba(255,255,255,.08)}
-.hbtn.auth-account{background:#eaf2ff;color:#123765;border-color:#b9cff0}
-.portal-save-status{min-height:34px;display:inline-flex;align-items:center;justify-content:center;max-width:220px;padding:0 12px;border:1px solid rgba(255,255,255,.22);border-radius:999px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.86);font-size:.88rem;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
-.portal-save-status.is-saving{background:rgba(244,189,61,.18);border-color:rgba(244,189,61,.45);color:#fff6dd}
-.portal-save-status.is-saved{background:rgba(18,184,171,.18);border-color:rgba(18,184,171,.5);color:#d8fffb}
-.portal-save-status.is-error{background:rgba(239,68,68,.18);border-color:rgba(239,68,68,.5);color:#ffe4e6}
+.header{position:sticky;top:0;z-index:20;height:var(--head);min-height:var(--head);display:grid;grid-template-columns:auto auto minmax(0,1fr) minmax(260px,520px) auto auto;grid-template-areas:"brand status spacer search nav account";align-items:center;gap:12px;padding:0 22px;background:var(--navy);color:#fff;box-shadow:0 8px 24px rgba(3,13,24,.2)}
+.brand{display:flex;align-items:center;gap:12px;white-space:nowrap}.mark{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#3acde8,var(--teal))}.brand strong{font-size:2rem;font-weight:650;letter-spacing:-.045em}
+.brand{grid-area:brand}.header-spacer{grid-area:spacer}.search{grid-area:search}.portal-nav{grid-area:nav}.portal-account-menu{grid-area:account}.portal-save-status{grid-area:status}
+.portal-nav{display:flex;gap:6px;align-items:center;justify-content:flex-end;justify-self:end;min-width:0;flex-wrap:wrap}
+.search{position:relative;justify-self:end;width:100%}.search input{width:100%;height:38px;border:0;border-radius:7px;padding:0 14px 0 39px;font-weight:350}.search span{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#48576d}
+.h-actions{display:flex;gap:10px;align-items:center;justify-content:flex-end}.hbtn{height:36px;min-height:36px;width:var(--header-nav-width);min-width:var(--header-nav-width);max-width:var(--header-nav-width);flex:0 0 var(--header-nav-width);border:1px solid rgba(255,255,255,.23);border-radius:8px;background:transparent;color:#fff;padding:0 8px;font-weight:500;display:inline-flex;align-items:center;justify-content:center;text-align:center;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.portal-nav .hbtn[href="portal.html"]{background:var(--teal);border-color:transparent;color:#fff}
+.market-notice-button{position:relative;display:inline-flex;align-items:center;justify-content:center;width:var(--header-notice-width);min-width:var(--header-notice-width);max-width:var(--header-notice-width);height:36px;flex:0 0 var(--header-notice-width);border:1px solid rgba(255,255,255,.23);border-radius:999px;background:transparent;color:#fff;cursor:pointer}
+.market-notice-button:hover{background:rgba(255,255,255,.1)}
+.market-notice-dot{display:block;width:16px;height:16px;position:relative}
+.market-notice-dot:before{content:"";position:absolute;inset:2px 3px 3px;border:2px solid currentColor;border-top-color:transparent;border-radius:50% 50% 45% 45%}
+.market-notice-count{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:999px;background:#ef4444;color:#fff;display:grid;place-items:center;font-size:.78rem;font-weight:700}
+.portal-account-menu{position:relative;min-width:max-content}
+.portal-account-menu summary{display:inline-flex;align-items:center;justify-content:center;width:var(--header-menu-width);min-width:var(--header-menu-width);max-width:var(--header-menu-width);height:36px;min-height:36px;padding:0 8px;border:1px solid rgba(255,255,255,.14);border-radius:9px;background:rgba(255,255,255,.04);color:#e2e8f0;font-size:.88rem;font-weight:500;line-height:1;cursor:pointer;list-style:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.portal-account-menu summary::-webkit-details-marker{display:none}
+.portal-account-menu[open] summary,.portal-account-menu summary:hover{background:rgba(255,255,255,.1);color:#fff}
+.portal-account-menu-list{position:absolute;top:calc(100% + 8px);right:0;z-index:60;min-width:220px;border:1px solid rgba(15,35,58,.12);border-radius:12px;background:#fff;box-shadow:0 20px 40px rgba(6,27,50,.18);padding:6px}
+.portal-account-info{display:block;padding:8px 10px 10px;border-bottom:1px solid #eef2f7;color:#536276;font-size:.82rem;font-weight:500;line-height:1.35;overflow-wrap:anywhere}
+.portal-account-menu a,.portal-account-menu button{display:inline-flex;align-items:center;justify-content:flex-start;width:100%;min-height:36px;padding:0 10px;border:0;border-radius:8px;background:transparent;color:#0f1b2e;font:inherit;font-size:.92rem;font-weight:500;line-height:1;text-align:left;cursor:pointer}
+.portal-account-menu a:hover,.portal-account-menu button:hover{background:#eef6ff;color:#0f1b2e}
+.portal-account-menu button:disabled{cursor:wait;opacity:.68}
+.portal-save-status{width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(248,113,113,.75);border-radius:999px;background:rgba(239,68,68,.16);color:#fecdd3;line-height:1;white-space:nowrap;text-align:center}
+.portal-save-status.is-saving{background:rgba(239,68,68,.18);border-color:rgba(248,113,113,.78);color:#ffe4e6}
+.portal-save-status.is-saved{background:rgba(18,184,171,.2);border-color:rgba(18,184,171,.72);color:#d8fffb}
+.portal-save-status.is-error{background:rgba(239,68,68,.18);border-color:rgba(248,113,113,.78);color:#ffe4e6}
+.portal-save-dot{width:10px;height:10px;border-radius:999px;background:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.16)}
+.portal-save-status.is-saved .portal-save-dot{background:#12b8ab;box-shadow:0 0 0 3px rgba(18,184,171,.18)}
+.portal-save-status.is-saving .portal-save-dot,.portal-save-status.is-error .portal-save-dot{background:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.16)}
+.portal-save-text{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .portal-cloud-notice{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 22px;border-bottom:1px solid var(--line);background:#fff;color:var(--text);font-size:1rem}
 .portal-cloud-notice[hidden]{display:none}
 .portal-cloud-notice.is-info{background:#eff6ff;color:#1e3a8a;border-color:#bfdbfe}
@@ -1443,7 +1462,8 @@ body.tree-dragging{
 .header>*,
 .brand,
 .search,
-.h-actions,
+.portal-nav,
+.portal-account-menu,
 .portal-save-status{
   min-width:0;
 }
@@ -1452,30 +1472,25 @@ body.tree-dragging{
   overflow:hidden;
   text-overflow:ellipsis;
 }
-.market,
 .hbtn{
   white-space:nowrap;
-}
-.h-actions{
-  flex-wrap:wrap;
 }
 @media(max-width:1180px){
   .header{
     grid-template-columns:minmax(0,1fr) auto auto auto;
     grid-template-areas:
-      "brand market actions status"
+      "brand status nav account"
       "search search search search";
     align-items:center;
     gap:10px 12px;
     padding:10px 16px;
   }
   .brand{grid-area:brand}
-  .market{grid-area:market}
+  .portal-nav{grid-area:nav}
   .search{grid-area:search}
-  .h-actions{grid-area:actions}
+  .portal-account-menu{grid-area:account}
   .portal-save-status{
     grid-area:status;
-    max-width:180px;
   }
 }
 @media(max-width:900px){
@@ -1485,7 +1500,7 @@ body.tree-dragging{
     grid-template-columns:minmax(0,1fr) auto;
     grid-template-areas:
       "brand status"
-      "market actions"
+      "account nav"
       "search search";
     gap:9px;
     padding:10px 12px;
@@ -1493,21 +1508,13 @@ body.tree-dragging{
   .brand strong{
     font-size:1.55rem;
   }
-  .brand span:last-child{
-    margin-left:4px;
-    font-size:.92rem;
-  }
-  .market{
-    justify-self:start;
+  .portal-nav{
+    justify-self:end;
     max-width:100%;
-    height:32px;
-    padding:0 12px;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
-  .h-actions{
-    justify-content:flex-end;
     gap:7px;
+  }
+  .portal-account-menu{
+    justify-content:flex-end;
   }
   .hbtn{
     min-height:32px;
@@ -1515,8 +1522,6 @@ body.tree-dragging{
   }
   .portal-save-status{
     justify-self:end;
-    max-width:min(38vw,180px);
-    min-height:32px;
   }
   .portal-cloud-notice{
     align-items:flex-start;
@@ -1524,7 +1529,7 @@ body.tree-dragging{
     padding:10px 12px;
   }
   .portal-cloud-actions{
-    justify-content:flex-start;
+    justify-content:flex-end;
   }
 }
 @media(max-width:520px){
@@ -1539,8 +1544,8 @@ body.tree-dragging{
     grid-template-areas:
       "brand"
       "status"
-      "market"
-      "actions"
+      "account"
+      "nav"
       "search";
   }
   .brand{
@@ -1554,24 +1559,34 @@ body.tree-dragging{
   .brand strong{
     font-size:1.34rem;
   }
-  .brand span:last-child{
-    display:none;
-  }
   .portal-save-status,
-  .market,
-  .h-actions,
+  .portal-nav,
+  .portal-account-menu,
   .search{
     width:100%;
     max-width:100%;
     justify-self:stretch;
   }
-  .h-actions{
+  .portal-save-status{
+    width:22px;
+    justify-self:end;
+  }
+  .portal-nav{
     display:grid;
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:repeat(2,minmax(0,1fr));
   }
   .hbtn{
     justify-content:center;
     text-align:center;
+  }
+  .portal-account-menu summary{
+    width:100%;
+    max-width:100%;
+  }
+  .portal-account-menu-list{
+    left:0;
+    right:auto;
+    width:100%;
   }
   .search input{
     height:36px;
@@ -1624,17 +1639,103 @@ body.tree-dragging{
     grid-auto-rows:minmax(54px,auto)!important;
   }
 }
+
+/* v1.x common portal header lock: match the site header height and keep controls in one row. */
+.header{
+  position:sticky!important;
+  top:0!important;
+  height:64px!important;
+  min-height:64px!important;
+  grid-template-columns:auto auto minmax(0,1fr) minmax(260px,520px) auto auto!important;
+  grid-template-areas:"brand status spacer search nav account"!important;
+  align-items:center!important;
+  gap:8px!important;
+  padding:0 clamp(12px,1.5vw,20px)!important;
+}
+.brand{grid-area:brand!important}
+.portal-save-status{grid-area:status!important;justify-self:start!important}
+.header-spacer{grid-area:spacer!important;display:block!important}
+.search{grid-area:search!important;justify-self:end!important}
+.portal-nav{grid-area:nav!important;display:flex!important;justify-self:end!important;flex-wrap:nowrap!important;gap:6px!important}
+.portal-account-menu{grid-area:account!important;justify-self:end!important}
+.portal-account-menu summary{
+  width:var(--header-menu-width)!important;
+  min-width:var(--header-menu-width)!important;
+  max-width:var(--header-menu-width)!important;
+  flex:0 0 var(--header-menu-width)!important;
+  height:36px!important;
+  min-height:36px!important;
+  padding:0 8px!important;
+  border-radius:9px!important;
+  background:rgba(255,255,255,.04)!important;
+  border-color:rgba(255,255,255,.14)!important;
+  color:#e2e8f0!important;
+  line-height:1!important;
+  justify-content:center!important;
+}
+.portal-account-menu[open] summary,
+.portal-account-menu summary:hover{
+  background:rgba(255,255,255,.1)!important;
+  color:#fff!important;
+}
+.portal-nav .hbtn{
+  width:var(--header-nav-width)!important;
+  min-width:var(--header-nav-width)!important;
+  max-width:var(--header-nav-width)!important;
+  flex:0 0 var(--header-nav-width)!important;
+  padding:0 8px!important;
+}
+.portal-nav .market-notice-button{
+  width:var(--header-notice-width)!important;
+  min-width:var(--header-notice-width)!important;
+  max-width:var(--header-notice-width)!important;
+  flex:0 0 var(--header-notice-width)!important;
+}
+
+@media(max-width:900px){
+  .header{
+    overflow-x:auto!important;
+    overflow-y:visible!important;
+    grid-template-columns:auto auto minmax(16px,1fr) minmax(220px,42vw) auto auto!important;
+    padding:0 12px!important;
+    -webkit-overflow-scrolling:touch;
+  }
+  .brand strong{font-size:1.45rem!important}
+  .portal-nav{width:auto!important;max-width:none!important;gap:6px!important}
+  .portal-account-menu{width:auto!important;max-width:none!important}
+}
 </style>
 </head>
 <body>
 <div class="portal-shell">
 <header class="header">
-  <a class="brand" href="#board"><i class="mark"></i><strong>LLLD Works Hub</strong><span>社内ポータル</span></a>
-  <a class="market" href="marketplace.html" target="_blank" rel="noopener">LLLD Works Market β</a>
+  <a class="brand" href="portal.html"><i class="mark"></i><strong>LLLD Works Portal</strong></a>
   <div class="search"><span>🔍</span><input placeholder="コンテンツ名・カテゴリ・タグで検索"></div>
+  <nav class="portal-nav" aria-label="共通導線">
+    <button class="market-notice-button" type="button" data-market-notice-link aria-label="お知らせ" title="お知らせ">
+      <span class="market-notice-dot" aria-hidden="true"></span>
+      <span class="market-notice-count" aria-hidden="true">3</span>
+    </button>
+    <a class="hbtn" href="portal.html">社内ポータル</a>
+    <a class="hbtn" href="marketplace.html">マーケット</a>
+    <a class="hbtn" href="my-apps.html">マイアプリ</a>
+  </nav>
   <div class="header-spacer"></div>
-  <nav class="h-actions"><a class="hbtn auth-login" href="login.html" target="_blank" rel="noopener">ログイン</a><a class="hbtn auth-account" href="account.html" target="_blank" rel="noopener">アカウント</a></nav>
-  <span class="portal-save-status" id="portalSaveStatus">保存確認中</span>
+  <details class="portal-account-menu" aria-label="マイページ">
+    <summary>マイページ</summary>
+    <div class="portal-account-menu-list">
+      <span class="portal-account-info" data-account-badge>確認中</span>
+      <a href="account.html">マイページ</a>
+      <a href="support.html">サポート</a>
+      <a href="request.html">開発相談</a>
+      <a href="login.html">ログイン</a>
+      <button type="button" data-account-logout>ログアウト</button>
+    </div>
+  </details>
+  <span class="portal-save-status" id="portalSaveStatus" aria-live="polite" aria-label="保存確認中" title="保存確認中">
+    <span class="portal-save-dot" aria-hidden="true"></span>
+    <span class="portal-save-text">保存確認中</span>
+  </span>
 </header>
 <div class="portal-cloud-notice is-info" id="portalCloudNotice" hidden>
   <p id="portalCloudNoticeText">ポータル保存状態を確認しています。</p>
@@ -1971,12 +2072,14 @@ body.tree-dragging{
 <script src="./assets/js/siteConfigService.js"></script>
 <script src="./assets/js/supabaseClientService.js"></script>
 <script src="./assets/js/authService.js"></script>
+<script src="./assets/js/accountHeader.js"></script>
 <script src="./assets/js/portalStateService.js"></script>
 <script>
 (() => {
   const toast=document.getElementById("toast");let timer;
   const show=m=>{toast.textContent=m;toast.classList.add("show");clearTimeout(timer);timer=setTimeout(()=>toast.classList.remove("show"),2400)};
   const portalSaveStatus=document.getElementById("portalSaveStatus");
+  const portalSaveStatusText=portalSaveStatus?.querySelector(".portal-save-text");
   const portalCloudNotice=document.getElementById("portalCloudNotice");
   const portalCloudNoticeText=document.getElementById("portalCloudNoticeText");
   const portalCloudNoticeActions=document.getElementById("portalCloudNoticeActions");
@@ -1988,7 +2091,10 @@ body.tree-dragging{
   const portalLoginUrl=()=>`login.html?redirect=${encodeURIComponent("portal.html")}`;
   function setPortalSaveStatus(message,type=""){
     if(!portalSaveStatus)return;
-    portalSaveStatus.textContent=message;
+    if(portalSaveStatusText)portalSaveStatusText.textContent=message;
+    else portalSaveStatus.textContent=message;
+    portalSaveStatus.setAttribute("aria-label",message);
+    portalSaveStatus.title=message;
     portalSaveStatus.classList.remove("is-saving","is-saved","is-error");
     if(type)portalSaveStatus.classList.add("is-"+type);
   }

@@ -7,15 +7,30 @@
   <meta name="description" content="LLLD Works Market βへのコンテンツ投稿募集">
   <link rel="stylesheet" href="./assets/css/style.css">
 </head>
-<body>
+<body data-market-page="request" data-submit-page="submit">
   <main class="market-page submit-page">
     <header class="market-header">
-      <a class="market-brand" href="./index.html">LLLD Works Hub</a>
-      <nav aria-label="投稿募集導線">
-        <a href="./index.html">社内Hub</a>
-        <a href="./marketplace.html">Market β</a>
-        <a href="./submit.html">投稿募集</a>
+      <a class="market-brand" href="./marketplace.html">LLLD Works Market</a>
+      <nav aria-label="共通導線">
+        <button class="market-notice-button" type="button" data-market-notice-link aria-label="お知らせ" title="お知らせ">
+          <span class="market-notice-dot" aria-hidden="true"></span>
+          <span class="market-notice-count" aria-hidden="true">3</span>
+        </button>
+        <a href="./portal.html">社内ポータル</a>
+        <a href="./marketplace.html">マーケット</a>
+        <a href="./my-apps.html">マイアプリ</a>
       </nav>
+      <details class="account-session-menu" aria-label="マイページ">
+        <summary>マイページ</summary>
+        <div class="account-session-menu-list">
+          <span class="account-session-info" data-account-badge>確認中</span>
+          <a href="./account.html">マイページ</a>
+          <a href="./support.html">サポート</a>
+          <a href="./request.html">開発相談</a>
+          <a href="./login.html">ログイン</a>
+          <button type="button" data-account-logout>ログアウト</button>
+        </div>
+      </details>
     </header>
 
     <section class="market-hero">
@@ -98,5 +113,10 @@
       <a class="btn primary" href="./marketplace.html">マーケットへ戻る</a>
     </section>
   </main>
+  <script src="./assets/js/siteConfigService.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./assets/js/supabaseClientService.js"></script>
+  <script src="./assets/js/authService.js"></script>
+  <script src="./assets/js/accountHeader.js"></script>
 </body>
 </html>

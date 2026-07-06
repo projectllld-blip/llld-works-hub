@@ -3,28 +3,40 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>アカウント準備中 | LLLD Works Hub</title>
+  <title>企業ページ | LLLD 企業ページ</title>
   <meta name="description" content="LLLD Works Hub / Works Marketの企業アカウント画面モック">
   <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 <body data-market-page="account" data-account-page="account">
   <main class="market-page account-page">
     <header class="market-header">
-      <a class="market-brand" href="./index.html">LLLD Works Hub</a>
-      <nav aria-label="アカウント導線">
-        <a href="./index.html">社内Hub</a>
-        <a href="./marketplace.html">Market β</a>
-        <a href="./login.html">ログイン準備中</a>
-        <a href="./account.html">アカウント</a>
+      <a class="market-brand" href="./account.html">LLLD 企業ページ</a>
+      <nav aria-label="共通導線">
+        <button class="market-notice-button" type="button" data-market-notice-link aria-label="お知らせ" title="お知らせ">
+          <span class="market-notice-dot" aria-hidden="true"></span>
+          <span class="market-notice-count" aria-hidden="true">3</span>
+        </button>
+        <a href="./portal.html">社内ポータル</a>
+        <a href="./marketplace.html">マーケット</a>
+        <a href="./my-apps.html">マイアプリ</a>
       </nav>
-      <span class="account-session-pill" data-account-badge>確認中</span>
+      <details class="account-session-menu" aria-label="マイページ">
+        <summary>マイページ</summary>
+        <div class="account-session-menu-list">
+          <span class="account-session-info" data-account-badge>確認中</span>
+          <a href="./account.html">マイページ</a>
+          <a href="./support.html">サポート</a>
+          <a href="./request.html">開発相談</a>
+          <a href="./login.html">ログイン</a>
+          <button type="button" data-account-logout>ログアウト</button>
+        </div>
+      </details>
     </header>
 
     <section class="market-hero account-hero">
       <div>
         <span class="market-kicker">企業アカウント</span>
         <h1>企業アカウントのマイページ確認画面です。</h1>
-        <p>Supabase設定済みの場合はログイン中の企業アカウント情報と利用中アプリ一覧を表示します。アプリ内データ保存はSeatFlowレイアウトのみ検証中です。</p>
       </div>
       <div class="account-mode-card">
         <span>現在の認証状態</span>
@@ -98,7 +110,7 @@
 
       <article class="detail-panel">
         <h2>利用中アプリ</h2>
-        <p class="account-note" id="accountAppsStatus">利用アプリ一覧を確認しています。</p>
+        <p class="account-note" id="accountAppsStatus" aria-live="polite"></p>
         <ul class="account-list" id="accountApps"></ul>
       </article>
 
