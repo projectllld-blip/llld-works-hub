@@ -261,6 +261,14 @@ DECISION_LOGは重要な判断の記録に使う。単なる作業ログでは�
 - 関連Phase: v1.4、v1.5、v1.6、v1.7、v1.8、v1.9。
 - 取り消し条件: 人間判断により、先に価格、購入ページ、決済、または `data/contents.json` の商品データ変更へ進む方針に変更する場合。
 
+## 2026-07-07 v1.6b商品・料金・CTA設定は短期的に既存contentsへ寄せる
+
+- 決定内容: v1.6bでは、商品名、説明、価格、料金形態、販売状態、CTA、カテゴリ、サムネイル、サポート対象、初期設定対象、表示状態、おすすめ表示、購入後に利用可能にする `app_key` を商品・料金・CTA設定として整理する。短期的には既存 `data/contents.json` を正本候補として扱い、JS側のコード直書きを将来減らす方針にする。新規 `data/products.json`、`data/marketplace-products.json`、商品 / 料金DBはまだ作らない。
+- 理由: `data/contents.json` にはすでに `priceType`、`price`、`saleStatus`、`deliveryType`、CTA系項目、サムネイル、詳細URLなどがあり、現行のマーケット / 詳細 / 購入確認ページが参照しているため。新規JSONやDBを急ぐと二重管理、紐づけミス、RLS / 管理者権限設計不足のリスクが出る。
+- 影響範囲: `docs/04_フェーズ記録/phase1-6b-product-pricing-cta-settings.md`、`docs/00_PROJECT_STATUS.md`、`docs/06_TASK_QUEUE.md`、v1.6c、v1.7、v2.x本物管理者画面。
+- 関連Phase: v1.6、v1.6b、v1.6c、v1.7、v2.x。
+- 取り消し条件: 人間判断により、商品設定を既存 `contents.json` から分離する必要が明確になり、`id` / `slug` / `app_key` の紐づけルール、管理者権限、RLS、変更履歴、公開前確認を含む設計が整った場合。
+
 ## 2026-07-02 portal.htmlを社内ポータル本体に統一する
 
 - 決定内容: GitHub Pagesの `/llld-works-hub/` で旧社内ツールポータルを表示せず、`index.html` は `portal.html` への入口にする。今後の社内ポータル本体は `portal.html` とし、画面上の呼称は「社内ポータル」に統一する。
