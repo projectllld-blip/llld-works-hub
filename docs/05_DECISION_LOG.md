@@ -284,3 +284,11 @@ DECISION_LOGは重要な判断の記録に使う。単なる作業ログでは�
 - 影響範囲: `purchase-confirm.html`、`assets/js/purchaseConfirmPage.js`、`assets/js/marketPages.js`、`portal.html`、`assets/css/style.css`、`docs/04_フェーズ記録/phase1-6-purchase-page.md`。
 - 関連Phase: v1.6、v1.7、v1.8、v1.9。
 - 取り消し条件: 人間判断により、v1.6内で正式な購入履歴、決済、または `app_instances` 反映まで進める方針へ変更する場合。
+
+## 2026-07-07 商品・料金・CTA管理は決済前に別フェーズで整理する
+
+- 決定内容: 商品名、料金形態、価格、CTA、掲載状態、任意サポートは、将来的に本物管理者画面 / 商品マスタ / 料金マスタで管理する。ただし、v1.6では管理者画面、DB、RLS、migration、料金編集機能は実装しない。決済・購入履歴へ進む前に、`v1.8a 商品・料金管理 方針整理`、`v1.8b 商品マスタ / 料金マスタ DB設計`、`v1.8c 管理者画面 商品・料金mock` を候補として挟む。
+- 理由: 決済実装前に価格とCTAの正本を決めないと、静的JSON、画面JS、購入ページ、購入履歴、決済側の金額がズレるリスクがあるため。管理者権限や企業横断管理にも関わるため、購入ページと同時に実装しない。
+- 影響範囲: `docs/04_フェーズ記録/phase1-6-purchase-page.md`、`docs/00_PROJECT_STATUS.md`、`docs/06_TASK_QUEUE.md`、`docs/03_構想/roadmap-after-portal-uiux-change.md`。
+- 関連Phase: v1.6、v1.7、v1.8a、v1.8b、v1.8c、v1.9。
+- 取り消し条件: 人間判断により、商品・料金・CTAを静的JSON運用のまま決済へ進める方針に変更する場合。
