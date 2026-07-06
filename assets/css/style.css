@@ -1731,6 +1731,105 @@ body[data-market-page="marketplace"] .market-footer a{
   }
 }
 
+body[data-market-page="marketplace"] .market-grid,
+body[data-market-page="marketplace"] .market-grid.compact{
+  --market-card-min: min(220px, calc((100vw - 40px) / 2));
+  grid-template-columns:repeat(auto-fit,minmax(var(--market-card-min),1fr));
+}
+
+.my-apps-panel{
+  grid-column:1/-1;
+}
+.my-apps-panel-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:var(--sp-2);
+  margin-bottom:var(--sp-2);
+}
+.my-apps-panel-head h2{
+  margin:0 0 var(--sp-1);
+}
+.my-apps-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));
+  gap:var(--sp-2);
+}
+.support-hero{
+  grid-template-columns:minmax(0,1fr) minmax(280px,420px);
+}
+.support-chat{
+  display:grid;
+  gap:var(--sp-2);
+  border:1px solid var(--border);
+  border-radius:var(--radius-card);
+  background:#f8fbff;
+  padding:var(--sp-2);
+}
+.support-message{
+  display:grid;
+  gap:6px;
+  max-width:320px;
+  border-radius:18px;
+  padding:12px 14px;
+}
+.support-message span{
+  color:var(--text-sub);
+  font-size:12px;
+  font-weight:800;
+}
+.support-message p{
+  margin:0;
+}
+.support-message-bot{
+  background:#fff;
+  box-shadow:0 8px 24px rgba(15,35,58,.08);
+}
+.support-choice-grid{
+  display:grid;
+  gap:8px;
+}
+.support-choice-grid a{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  min-height:42px;
+  border:1px solid var(--border);
+  border-radius:var(--radius-btn);
+  background:#fff;
+  color:var(--text);
+  padding:0 12px;
+  font-weight:850;
+}
+.support-choice-grid a:after{
+  content:"→";
+  color:var(--primary);
+}
+.support-plan-card{
+  display:flex;
+  flex-direction:column;
+  gap:var(--sp-1);
+}
+.support-plan-card h2{
+  margin:0;
+}
+.support-plan-card p{
+  margin:0;
+  color:var(--text-sub);
+}
+.support-next-panel{
+  margin-top:var(--sp-3);
+}
+
+@media(max-width:767px){
+  .my-apps-panel-head{
+    display:grid;
+  }
+  .support-hero{
+    grid-template-columns:1fr;
+  }
+}
+
 /* Sales-ready market pages */
 body[data-market-page="detail"],
 body[data-market-page="request"],
@@ -1813,14 +1912,21 @@ body[data-market-page="account"] .market-header nav a{
 body[data-market-page="detail"] .market-header nav a[href="./marketplace.html"],
 body[data-market-page="purchase"] .market-header nav a[href="./marketplace.html"],
 body[data-market-page="request"] .market-header nav a[href="./request.html"],
+body[data-support-page="support"] .market-header nav a[href="./support.html"],
 body[data-market-page="thanks"] .market-header nav a[href="./request.html"],
 body[data-market-page="admin"] .market-header nav a[href="./admin.html"],
+body[data-account-page="my-apps"] .market-header nav a[href="./my-apps.html"],
 body[data-account-page="login"] .market-header nav a[href="./login.html"],
 body[data-account-page="signup"] .market-header nav a[href="./login.html"],
 body[data-account-page="account"] .market-header nav a[href="./account.html"]{
   border-color:var(--primary);
   background:var(--primary);
   color:var(--bg-card);
+}
+body[data-support-page="support"] .market-header nav a[href="./request.html"]{
+  border-color:var(--border);
+  background:transparent;
+  color:var(--text-onDark);
 }
 body[data-market-page="detail"] .detail-panel,
 body[data-market-page="request"] .detail-panel,
