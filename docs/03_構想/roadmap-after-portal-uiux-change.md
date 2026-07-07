@@ -221,12 +221,18 @@ v1.0は販売開始ではなく、アカウント別クラウド基盤MVPの完�
   - 無料 / β版は将来的な正式反映候補、有料 / サブスクは決済完了または運営側の明示的な利用開始処理後まで正式反映しない。
   - 現行RLSだけでは無料 / β版だけを安全にinsert許可し、有料 / サブスクを拒否する制御が不足するため、実装前にDB / RLS要否を整理する。
 - v1.7b app_instances status / 利用解除DB設計。
-  - `active` / `trial` / `paused` / `disabled` の意味、利用解除、再利用開始、履歴、`app_data` の扱い、RLS / migration要否を整理する。
-- v1.7c 無料 / β版 app_instances反映設計。
-  - 無料 / β版だけを正式反映し、有料 / サブスクを混入させない制御を設計する。
+  - 状態: 完了。現行 `app_instances.status` の `active` / `trial` / `paused` / `disabled` を使うMVP方針を整理済み。
+  - 利用解除は物理削除ではなく `paused`、運営側停止は `disabled`、再利用開始は `active` / `trial` に戻す。
+  - `app_data` は削除しない。`inactive` / `pending` を正式statusにする場合はmigrationが必要。
+- v1.7c app_instances status / RLS / migration案。
+  - 既存statusを使うか、`inactive` / `pending` を追加するか、無料 / β版だけを安全に正式反映するDB / RLS案を整理する。
 - v1.7d 無料 / β版 app_instances反映MVP。
   - v1.7b / v1.7cで安全条件が整った場合のみ実装候補にする。
-- v1.7e 有料 / サブスク反映は決済後へPARKED。
+- v1.7e account / portal / my-apps 表示整合。
+  - `active` / `trial` を通常利用中として表示し、`paused` / `disabled` を通常一覧から除外または停止済み表示に分離する。
+- v1.7f 利用解除UI / paused化。
+  - 無料 / β版の利用解除UI、誤操作防止、再利用開始導線を整理する。
+- v1.7g 有料 / サブスク反映は決済後へPARKED。
   - 決済完了または運営側の明示的な利用開始処理ができるまで正式反映しない。
 - v1.7.5 UI再調整・導線磨き込み。
   - DB側・購入後反映側がある程度進んだ後、Portal / Marketplace / Account / My Apps周りの細かなUIを再調整する。
@@ -247,7 +253,7 @@ v1.0は販売開始ではなく、アカウント別クラウド基盤MVPの完�
 
 ## 現時点の推奨
 
-v0.14.12、v0.15、v0.16、v0.17a、v0.18、v1.0、v1.1b、v1.2、v1.2b、v1.3、v1.3f、v1.4、v1.5、v1.6、v1.6b、v1.6c、v1.7方針整理は完了扱い。v0.17b以降のバックアップ実装、SeatFlow完全クラウド同期、購入者向け `app_add_requests` 利用申請はPARKEDに戻したまま、次は v1.7b app_instances status / 利用解除DB設計へ進む。
+v0.14.12、v0.15、v0.16、v0.17a、v0.18、v1.0、v1.1b、v1.2、v1.2b、v1.3、v1.3f、v1.4、v1.5、v1.6、v1.6b、v1.6c、v1.7方針整理、v1.7bは完了扱い。v0.17b以降のバックアップ実装、SeatFlow完全クラウド同期、購入者向け `app_add_requests` 利用申請はPARKEDに戻したまま、次は v1.7c app_instances status / RLS / migration案へ進む。
 
 決済・購入履歴は、実アプリの商品化方針、販売用UI/UX、購入ページ、商品・料金・CTA設定、管理者mock確認、購入後の利用開始・利用中アプリ反映、UI再調整、販売前QAが固まった後の v1.9 で扱う。独自ドメイン公開準備、レンタルサーバー移行はロードマップに追加しない。
 
