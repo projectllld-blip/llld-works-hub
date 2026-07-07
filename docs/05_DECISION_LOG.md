@@ -356,3 +356,11 @@ DECISION_LOGは重要な判断の記録に使う。単なる作業ログでは�
 - 影響範囲: `docs/04_フェーズ記録/phase1-7d-pre-free-beta-allowlist-check.md`、`docs/00_PROJECT_STATUS.md`、`docs/06_TASK_QUEUE.md`、`docs/03_構想/roadmap-after-portal-uiux-change.md`、v1.7d実装判断。
 - 関連Phase: v1.7d、v1.7e、v1.7f。
 - 取り消し条件: 人間判断により、`dakokun` / `seatflow` を無料β版として正式分類し直す場合、または `data/contents.json` に明示的な `app_key` を追加して商品分類を再整理する場合。
+
+## 2026-07-08 v1.7d無料 / β版反映MVPはallowlistだけを正式反映する
+
+- 決定内容: v1.7dでは、`pdf-tool -> pdf_tool -> active`、`quiz-maker -> quiz_maker -> trial` の2件だけを固定allowlistとして `app_instances` に正式反映する。Supabase modeでは `app_instances` を正本にし、mock modeでは既存 `sessionStorage` 一時追加を維持する。有料 / サブスク / 準備中 / 開発相談 / 社内限定は `app_instances` にも `sessionStorage` にも追加しない。`disabled` はユーザー操作で復活させない。
+- 理由: 人間がSupabase Dashboardで `apps`、`app_instances` のunique index、status許可値、RLS policy、delete policyなし、`app_data` cascade deleteを確認済みだが、現行RLSだけでは無料 / β版のみinsert許可や有料 / サブスク拒否をDB側で完全保証できないため。MVPとしては、フロント側allowlistを最小化して誤反映リスクを抑える。
+- 影響範囲: `purchase-confirm.html`、`assets/js/purchaseConfirmPage.js`、`assets/js/appInstanceService.js`、`docs/04_フェーズ記録/phase1-7d-free-beta-app-instance-reflection-mvp.md`、`docs/00_PROJECT_STATUS.md`、`docs/06_TASK_QUEUE.md`、v1.7e以降。
+- 関連Phase: v1.7d、v1.7e、v1.7f、v1.9。
+- 取り消し条件: 商品 / 料金 / CTAのDB正本、RPC / Edge Function、または管理者側反映など、無料 / β版のみ許可し有料 / サブスクを拒否できるDB側または管理された反映処理が整った場合。

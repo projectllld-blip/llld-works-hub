@@ -31,7 +31,7 @@
   async function init() {
     if (!root || !window.ContentService) return;
     try {
-      const key = params.get('item') || params.get('slug') || params.get('id') || '';
+      const key = getContentKey();
       const contents = await window.ContentService.getContents();
       const content = contents.find(item => item.slug === key || item.id === key);
       if (!content) {
@@ -42,6 +42,15 @@
     } catch {
       root.innerHTML = notFoundHtml('読み込みに失敗しました。', 'マーケット一覧から開き直してください。');
     }
+  }
+
+  function getContentKey() {
+    const keys = ['slug', 'item', 'id', 'app', 'product', 'content', 'contentId'];
+    for (const key of keys) {
+      const value = params.get(key);
+      if (value) return value.trim();
+    }
+    return '';
   }
 
   function render(content) {
@@ -118,7 +127,7 @@
     document.getElementById('confirmPurchaseButton')?.addEventListener('click', () => confirm(content));
   }
 
-  function confirm(content) {
+  async function confirm(content) {
     const flow = getPurchaseFlow(content);
     const supportRequests = Array.from(document.querySelectorAll('.purchase-support-options input:checked'))
       .map(input => input.value);
@@ -129,6 +138,25 @@
           ? ` <a href="${escapeAttr(supportUrl(content, supportRequests))}">サポート相談へ進む</a>`
           : '';
         status.innerHTML = `${escapeHtml(flow.doneMessage)}${supportLink}`;
+      }
+      return;
+    }
+
+    const button = document.getElementById('confirmPurchaseButton');
+    if (button) {
+      button.disabled = true;
+      button.textContent = '確認中';
+    }
+    if (status) status.textContent = '利用開始を確認しています。';
+
+    const reflection = await reflectAppInstance(content);
+    if (reflection.handled && !reflection.fallbackToSession) {
+      if (status) {
+        status.innerHTML = resultMessageHtml(content, flow, supportRequests, reflection);
+      }
+      if (button) {
+        button.disabled = false;
+        button.textContent = flow.buttonLabel;
       }
       return;
     }
@@ -157,17 +185,77 @@
       if (status) {
         status.textContent = 'このブラウザでは一時追加を保存できませんでした。ブラウザ設定を確認してください。';
       }
+      if (button) {
+        button.disabled = false;
+        button.textContent = flow.buttonLabel;
+      }
       return;
     }
     if (status) {
-      const supportLink = supportRequests.length
-        ? ` <a href="${escapeAttr(supportUrl(content, supportRequests))}">サポート相談へ進む</a>`
-        : '';
-      const openLink = nextItem.url
-        ? ` <a href="${escapeAttr(nextItem.url)}" target="_blank" rel="noopener">別タブで開く</a>`
-        : '';
-      status.innerHTML = `${escapeHtml(flow.doneMessage)} <a href="./portal.html">ポータルで確認する</a>${openLink}${supportLink}`;
+      status.innerHTML = sessionMessageHtml(content, flow, supportRequests, nextItem);
     }
+    if (button) {
+      button.disabled = false;
+      button.textContent = flow.buttonLabel;
+    }
+  }
+
+  async function reflectAppInstance(content) {
+    if (!window.AppInstanceService?.reflectFreeBetaAppInstance) {
+      return { handled: false, fallbackToSession: true };
+    }
+
+    try {
+      const result = await window.AppInstanceService.reflectFreeBetaAppInstance({
+        slug: content.slug || content.id || '',
+        priceType: content.priceType || ''
+      });
+
+      if (result?.reason === 'mock_mode') {
+        return { handled: true, fallbackToSession: true, result };
+      }
+
+      return { handled: true, fallbackToSession: false, result };
+    } catch {
+      return {
+        handled: true,
+        fallbackToSession: false,
+        result: {
+          ok: false,
+          reason: 'reflection_exception',
+          message: '利用開始の保存に失敗しました。時間をおいてもう一度お試しください。'
+        }
+      };
+    }
+  }
+
+  function resultMessageHtml(content, flow, supportRequests, reflection) {
+    const result = reflection?.result || {};
+    const supportLink = supportRequests.length
+      ? ` <a href="${escapeAttr(supportUrl(content, supportRequests))}">サポート相談へ進む</a>`
+      : '';
+
+    if (!result.ok) {
+      return `${escapeHtml(result.message || '利用開始を保存できませんでした。')}${supportLink}`;
+    }
+
+    const openUrl = content.url || content.contentUrl || content.detailUrl || '';
+    const openLink = openUrl
+      ? ` <a href="${escapeAttr(openUrl)}" target="_blank" rel="noopener">別タブで開く</a>`
+      : '';
+    const portalLink = ' <a href="./portal.html">ポータルで確認する</a>';
+    const message = result.message || flow.doneMessage;
+    return `${escapeHtml(message)}${portalLink}${openLink}${supportLink}`;
+  }
+
+  function sessionMessageHtml(content, flow, supportRequests, nextItem) {
+    const supportLink = supportRequests.length
+      ? ` <a href="${escapeAttr(supportUrl(content, supportRequests))}">サポート相談へ進む</a>`
+      : '';
+    const openLink = nextItem.url
+      ? ` <a href="${escapeAttr(nextItem.url)}" target="_blank" rel="noopener">別タブで開く</a>`
+      : '';
+    return `${escapeHtml(flow.doneMessage)} <a href="./portal.html">ポータルで確認する</a>${openLink}${supportLink}`;
   }
 
   function readAdditions() {

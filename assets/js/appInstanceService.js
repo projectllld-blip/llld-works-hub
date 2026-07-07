@@ -21,6 +21,20 @@
   };
 
   const DEMO_APP_KEYS = ['seatflow', 'pdf_tool', 'quiz_maker', 'attendance', 'meeting_support'];
+  const FREE_BETA_ALLOWLIST = {
+    'pdf-tool': {
+      appKey: 'pdf_tool',
+      status: 'active',
+      priceType: 'free',
+      label: 'PDF編集ツール'
+    },
+    'quiz-maker': {
+      appKey: 'quiz_maker',
+      status: 'trial',
+      priceType: 'free-beta',
+      label: '小テスト作成ツール'
+    }
+  };
 
   const MOCK_APPS = [
     {
@@ -355,6 +369,224 @@
     }
   }
 
+  async function reflectFreeBetaAppInstance(input = {}) {
+    const slug = String(input.slug || input.id || '').trim();
+    const priceType = String(input.priceType || '').trim();
+    const allow = FREE_BETA_ALLOWLIST[slug];
+
+    if (!allow || allow.priceType !== priceType) {
+      return {
+        ok: false,
+        skipped: true,
+        reason: 'not_allowlisted',
+        message: 'このコンテンツは無料 / β版の正式反映対象ではありません。'
+      };
+    }
+
+    const status = await window.AuthService?.getAuthStatus?.();
+    if (!status || status.mode !== 'supabase') {
+      return {
+        ok: false,
+        skipped: true,
+        mode: status?.mode || 'mock',
+        reason: 'mock_mode',
+        message: 'mock modeのため、利用開始はこのブラウザ内の一時表示で確認します。'
+      };
+    }
+
+    const accountResult = await window.AuthService?.getSupabaseCurrentAccount?.();
+    if (!accountResult?.ok || !accountResult.account?.id) {
+      return {
+        ok: false,
+        mode: status.mode,
+        reason: 'account_missing',
+        message: accountResult?.message || '企業アカウント情報を確認できないため、利用開始を保存できません。'
+      };
+    }
+
+    const client = await window.SupabaseClientService?.getSupabaseClient?.();
+    if (!client?.from) {
+      return {
+        ok: false,
+        mode: status.mode,
+        reason: 'client_unavailable',
+        message: 'Supabase clientを確認できません。接続設定を確認してください。'
+      };
+    }
+
+    const companyAccountId = accountResult.account.id;
+    try {
+      const existingResult = await fetchExistingAppInstance(client, companyAccountId, allow.appKey);
+      if (!existingResult.ok) return existingResult;
+
+      if (existingResult.instance) {
+        return handleExistingAllowlistedInstance(client, existingResult.instance, allow);
+      }
+
+      const appResult = await fetchCatalogApp(client, allow.appKey);
+      if (!appResult.ok) return appResult;
+
+      const insertResult = await insertAllowlistedInstance(client, companyAccountId, appResult.app, allow);
+      if (insertResult.ok) return insertResult;
+
+      if (insertResult.duplicate) {
+        const retryResult = await fetchExistingAppInstance(client, companyAccountId, allow.appKey);
+        if (retryResult.ok && retryResult.instance) {
+          return handleExistingAllowlistedInstance(client, retryResult.instance, allow);
+        }
+      }
+
+      return insertResult;
+    } catch {
+      return {
+        ok: false,
+        mode: status.mode,
+        reason: 'reflection_failed',
+        message: '利用開始の保存に失敗しました。時間をおいてもう一度お試しください。'
+      };
+    }
+  }
+
+  async function fetchExistingAppInstance(client, companyAccountId, appKey) {
+    const { data, error } = await client
+      .from('app_instances')
+      .select('id,company_account_id,app_key,display_name,status,settings_json,created_at,updated_at')
+      .eq('company_account_id', companyAccountId)
+      .eq('app_key', appKey)
+      .maybeSingle();
+
+    if (error) {
+      return {
+        ok: false,
+        reason: 'existing_lookup_failed',
+        message: '既存の利用アプリ確認に失敗しました。RLS設定とapp_instancesを確認してください。'
+      };
+    }
+
+    return { ok: true, instance: data || null };
+  }
+
+  async function fetchCatalogApp(client, appKey) {
+    const { data, error } = await client
+      .from('apps')
+      .select('app_key,name,description,status')
+      .eq('app_key', appKey)
+      .maybeSingle();
+
+    if (error || !data) {
+      return {
+        ok: false,
+        reason: 'catalog_missing',
+        message: 'アプリカタログに対象アプリが見つかりません。appsの設定を確認してください。'
+      };
+    }
+
+    return { ok: true, app: data };
+  }
+
+  async function handleExistingAllowlistedInstance(client, instance, allow) {
+    if (instance.status === 'disabled') {
+      return {
+        ok: false,
+        reason: 'disabled',
+        appKey: allow.appKey,
+        status: instance.status,
+        message: 'このアプリは運営側で停止されています。再開が必要な場合はお問い合わせください。'
+      };
+    }
+
+    if (instance.status === 'active' || instance.status === 'trial') {
+      return {
+        ok: true,
+        reason: 'already_available',
+        appKey: allow.appKey,
+        status: instance.status,
+        instance: normalizeAppInstance(instance),
+        message: instance.status === 'trial'
+          ? `${allow.label} はすでにβ版として利用中です。`
+          : `${allow.label} はすでに利用中です。`
+      };
+    }
+
+    if (instance.status !== 'paused') {
+      return {
+        ok: false,
+        reason: 'unsupported_status',
+        appKey: allow.appKey,
+        status: instance.status,
+        message: 'このアプリの利用状態を確認できません。運営へお問い合わせください。'
+      };
+    }
+
+    const { data, error } = await client
+      .from('app_instances')
+      .update({ status: allow.status })
+      .eq('id', instance.id)
+      .select('id,company_account_id,app_key,display_name,status,settings_json,created_at,updated_at')
+      .maybeSingle();
+
+    if (error || !data) {
+      return {
+        ok: false,
+        reason: 'paused_restore_failed',
+        appKey: allow.appKey,
+        message: '一時停止中アプリの再開に失敗しました。RLS設定とapp_instancesを確認してください。'
+      };
+    }
+
+    return {
+      ok: true,
+      reason: 'restored_from_paused',
+      appKey: allow.appKey,
+      status: data.status,
+      instance: normalizeAppInstance(data),
+      message: `${allow.label} の利用を再開しました。`
+    };
+  }
+
+  async function insertAllowlistedInstance(client, companyAccountId, app, allow) {
+    const { data, error } = await client
+      .from('app_instances')
+      .insert({
+        company_account_id: companyAccountId,
+        app_key: allow.appKey,
+        display_name: app.name || allow.label,
+        status: allow.status,
+        settings_json: {}
+      })
+      .select('id,company_account_id,app_key,display_name,status,settings_json,created_at,updated_at')
+      .maybeSingle();
+
+    if (error) {
+      const duplicate = /duplicate|unique|conflict/i.test(String(error.message || ''));
+      return {
+        ok: false,
+        duplicate,
+        reason: duplicate ? 'duplicate' : 'insert_failed',
+        appKey: allow.appKey,
+        message: duplicate
+          ? 'このアプリはすでに利用中アプリに登録されています。'
+          : '利用開始の保存に失敗しました。RLS設定とapp_instancesを確認してください。'
+      };
+    }
+
+    return {
+      ok: true,
+      reason: 'inserted',
+      appKey: allow.appKey,
+      status: data?.status || allow.status,
+      instance: normalizeAppInstance(data || {
+        company_account_id: companyAccountId,
+        app_key: allow.appKey,
+        display_name: app.name || allow.label,
+        status: allow.status
+      }, app),
+      message: allow.status === 'trial'
+        ? `${allow.label} をβ版として利用開始しました。`
+        : `${allow.label} を利用開始しました。`
+    };
+  }
+
   function normalizeAppInstance(row = {}, app = {}) {
     const appKey = row.app_key || app.app_key || '';
     const name = app.name || row.display_name || appKey || '未設定アプリ';
@@ -407,6 +639,7 @@
     getSupabaseAppInstances,
     getAvailableDemoApps,
     addDemoAppInstance,
+    reflectFreeBetaAppInstance,
     normalizeAppInstance,
     getAppStatusLabel,
     getAppLink
