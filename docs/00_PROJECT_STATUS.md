@@ -17,7 +17,7 @@ v1.7cでは、現行 `app_instances` schema / RLS / migration要否を整理し�
 
 v1.7d事前確認では、`data/contents.json` と既存 `APP_LINKS` を突き合わせ、無料 / β版の初期allowlist候補を `pdf_tool` と `quiz_maker` に限定した。ただし `data/contents.json` には明示的な `app_key` がないため、`pdf-tool -> pdf_tool`、`quiz-maker -> quiz_maker` の対応はv1.7d実装前に人間確認が必要。`dakokun` / `seatflow` は副CTAにβ版導線があるものの、正本分類が `consultation` / `inquiry-only` のため初期allowlist対象外にした。有料 / サブスク / 準備中 / 開発相談 / 社内限定はallowlist対象外。
 
-v1.7dでは、人間確認済みのallowlistとして `pdf-tool -> pdf_tool -> active`、`quiz-maker -> quiz_maker -> trial` だけを `app_instances` へ正式反映するMVPを実装した。Supabase modeでは `app_instances` を正本とし、mock modeでは既存 `sessionStorage` 一時追加を維持する。有料 / サブスク / 準備中 / 開発相談 / 社内限定は `app_instances` にも `sessionStorage` にも追加しない。既存 `active` / `trial` は重複insertせず、`paused` はallowlist対象のみ復帰、`disabled` はユーザー操作で復活させない。人間ブラウザ確認とSupabase Dashboard確認は未実施のため、完了扱いにはしない。
+v1.7dでは、人間確認済みのallowlistとして `pdf-tool -> pdf_tool -> active`、`quiz-maker -> quiz_maker -> trial` だけを `app_instances` へ正式反映するMVPを実装した。Supabase modeでは `app_instances` を正本とし、mock modeでは既存 `sessionStorage` 一時追加を維持する。有料 / サブスク / 準備中 / 開発相談 / 社内限定は `app_instances` にも `sessionStorage` にも追加しない。既存 `active` / `trial` は重複insertせず、`paused` はallowlist対象のみ復帰、`disabled` はユーザー操作で復活させない。導線修正として、マーケット / 詳細から `purchase-confirm.html?slug=...` へ遷移し、購入確認側が `slug` / `item` / `id` などを読めるようにした。人間ブラウザ確認とSupabase Dashboard確認は未実施のため、完了扱いにはしない。
 
 GitHub Pages公開版、認証・ポータル導線、PC / iPad / スマホ表示の大きな崩れがないことを人間確認済み。
 
@@ -96,7 +96,7 @@ LLLD Works Hub / Works Market は、社内ポータル・販売マーケット�
 - A0.9 自動マージセットアップ不足調査: docs整理は完了。GitHub Settings人間確認待ち。
 
 ## 進行中の本線
-- v1.7d 無料 / β版 app_instances反映MVP: 実装済み / 人間確認待ち。`pdf_tool` と `quiz_maker` の正式反映、重複防止、`paused` 復帰、`disabled` 復活禁止、有料 / サブスク対象外をSupabase Dashboardとブラウザで確認する必要がある。
+- v1.7d 無料 / β版 app_instances反映MVP: 実装済み / 人間確認待ち。マーケット / 詳細から `purchase-confirm.html` へ進めること、`pdf_tool` と `quiz_maker` の正式反映、重複防止、`paused` 復帰、`disabled` 復活禁止、有料 / サブスク対象外をSupabase Dashboardとブラウザで確認する必要がある。
 
 ## 今回の寄り道プロジェクト
 - A0.1 Codex半自動運用基盤: 完了

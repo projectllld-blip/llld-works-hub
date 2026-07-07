@@ -26,6 +26,25 @@ v1.6までの `sessionStorage` 一時追加から一歩進め、無料 / β版�
 - mock modeでは既存の `sessionStorage` 一時追加挙動を残した。
 - 有料 / サブスクは既存どおり購入確認のみで、`app_instances` にも `sessionStorage` にも追加しない。
 
+## 導線バグ修正
+
+人間ブラウザ確認で、マーケットページの「利用開始」「β版を利用」ボタンから購入確認画面へ進めない、または `purchase-confirm.html` で対象が見つからない問題が出た。
+
+修正内容:
+
+- `marketPages.js` の購入確認URLを `purchase-confirm.html?slug=...` に統一した。
+- 購入確認リンクに `data-purchase-confirm` を付け、クリック時に明示的に `purchase-confirm.html` へ遷移する delegated handler を追加した。
+- `purchaseConfirmPage.js` は `slug` / `item` / `id` に加えて、`app` / `product` / `content` / `contentId` も読めるようにした。
+
+これにより、以下のURLで対象表示できる状態にした。
+
+- `purchase-confirm.html?slug=pdf-tool`
+- `purchase-confirm.html?slug=quiz-maker`
+- 互換として `purchase-confirm.html?item=pdf-tool`
+- 互換として `purchase-confirm.html?item=quiz-maker`
+
+slugなし、存在しないslugは従来どおり「対象が見つかりません。」でよい。
+
 ## allowlist対象app_key
 
 | slug | app_key | priceType | app_instances.status | 扱い |
@@ -121,6 +140,13 @@ v1.6までの `sessionStorage` 一時追加から一歩進め、無料 / β版�
 
 ## ブラウザで人間が確認すべきこと
 
+- `marketplace.html` からPDF編集ツールの利用開始ボタンを押す。
+- `purchase-confirm.html` にPDF編集ツールが表示される。
+- `marketplace.html` から小テスト作成ツールのβ版利用開始ボタンを押す。
+- `purchase-confirm.html` に小テスト作成ツールが表示される。
+- `purchase-confirm.html?slug=pdf-tool` でPDF編集ツールが表示される。
+- `purchase-confirm.html?slug=quiz-maker` で小テスト作成ツールが表示される。
+- `purchase-confirm.html` をslugなしで開いた場合は対象なし表示になる。
 - ログイン状態で `purchase-confirm.html` の無料 / β版利用開始を確認する。
 - `pdf_tool` の利用開始で完了表示になる。
 - `quiz_maker` のβ版利用開始で完了表示になる。

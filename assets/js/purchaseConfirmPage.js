@@ -31,7 +31,7 @@
   async function init() {
     if (!root || !window.ContentService) return;
     try {
-      const key = params.get('item') || params.get('slug') || params.get('id') || '';
+      const key = getContentKey();
       const contents = await window.ContentService.getContents();
       const content = contents.find(item => item.slug === key || item.id === key);
       if (!content) {
@@ -42,6 +42,15 @@
     } catch {
       root.innerHTML = notFoundHtml('読み込みに失敗しました。', 'マーケット一覧から開き直してください。');
     }
+  }
+
+  function getContentKey() {
+    const keys = ['slug', 'item', 'id', 'app', 'product', 'content', 'contentId'];
+    for (const key of keys) {
+      const value = params.get(key);
+      if (value) return value.trim();
+    }
+    return '';
   }
 
   function render(content) {

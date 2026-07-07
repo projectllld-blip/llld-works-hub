@@ -98,6 +98,7 @@
       if (page === 'marketplace') renderMarketplace();
       if (page === 'detail') renderDetail();
       if (page === 'author') renderAuthor();
+      bindPurchaseConfirmLinks();
     } catch (error) {
       renderError('データを読み込めませんでした。ローカルサーバーで開いているか確認してください。');
     }
@@ -438,7 +439,8 @@
     if (usesPurchaseConfirmation(content)) {
       return {
         label: confirmationLabel(content),
-        href: confirmationUrl(content)
+        href: confirmationUrl(content),
+        confirmSlug: content.slug || content.id || ''
       };
     }
 
@@ -493,7 +495,7 @@
   }
 
   function confirmationUrl(content) {
-    return `./purchase-confirm.html?item=${encodeURIComponent(content.slug || content.id || '')}`;
+    return `./purchase-confirm.html?slug=${encodeURIComponent(content.slug || content.id || '')}`;
   }
 
   function confirmationLabel(content) {
@@ -505,7 +507,10 @@
   }
 
   function actionAttrs(action) {
-    return action.external ? ' target="_blank" rel="noopener"' : '';
+    const attrs = [];
+    if (action.external) attrs.push('target="_blank" rel="noopener"');
+    if (action.confirmSlug) attrs.push(`data-purchase-confirm="${escapeAttr(action.confirmSlug)}"`);
+    return attrs.length ? ` ${attrs.join(' ')}` : '';
   }
 
   function isExternalOpen(type, url) {
@@ -525,6 +530,19 @@
       });
       if (value) params.set('message', value);
       window.location.href = `./request.html?${params.toString()}`;
+    });
+  }
+
+  function bindPurchaseConfirmLinks() {
+    if (document.body.dataset.purchaseConfirmBound === 'true') return;
+    document.body.dataset.purchaseConfirmBound = 'true';
+    document.addEventListener('click', event => {
+      const link = event.target.closest('[data-purchase-confirm]');
+      if (!link) return;
+      const href = link.getAttribute('href') || confirmationUrl({ slug: link.dataset.purchaseConfirm || '' });
+      if (!href) return;
+      event.preventDefault();
+      window.location.href = href;
     });
   }
 
