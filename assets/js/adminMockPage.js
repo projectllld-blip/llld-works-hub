@@ -100,6 +100,121 @@
     }
   ];
 
+  const mockProducts = [
+    {
+      id: 'pdf-tool',
+      name: 'PDF編集ツール',
+      category: 'PDF・資料編集',
+      priceType: '無料',
+      priceLabel: '無料',
+      displayStatus: '表示中',
+      ctaType: '利用開始',
+      supportTarget: true,
+      initialSetupSupport: false,
+      appKey: 'pdf_tool',
+      hasThumbnail: true,
+      hasDescription: true,
+      description: 'PDFの結合、分割、整理をブラウザで行う実務ツール。',
+      issues: []
+    },
+    {
+      id: 'quiz-maker',
+      name: '小テスト作成ツール',
+      category: '教育・塾運営',
+      priceType: 'β版',
+      priceLabel: '無料β',
+      displayStatus: '表示中',
+      ctaType: 'β版を利用する',
+      supportTarget: true,
+      initialSetupSupport: true,
+      appKey: 'quiz_maker',
+      hasThumbnail: true,
+      hasDescription: true,
+      description: '教材データから小テストを作成し、印刷までつなげるβ版ツール。',
+      issues: []
+    },
+    {
+      id: 'meeting-support',
+      name: '面談ヒアリングシート',
+      category: '面談・営業支援',
+      priceType: '買い切り',
+      priceLabel: '3,300円',
+      displayStatus: '表示中',
+      ctaType: '購入確認',
+      supportTarget: true,
+      initialSetupSupport: true,
+      appKey: 'meeting_support',
+      hasThumbnail: true,
+      hasDescription: true,
+      description: '面談前の聞き取り項目を整理するテンプレート。',
+      issues: []
+    },
+    {
+      id: 'attendance-pro',
+      name: '勤怠管理 月次レポート',
+      category: '勤怠・人事',
+      priceType: 'サブスク',
+      priceLabel: '月額1,980円',
+      displayStatus: '表示中',
+      ctaType: '購入確認',
+      supportTarget: true,
+      initialSetupSupport: false,
+      appKey: 'dakokun_reports',
+      hasThumbnail: true,
+      hasDescription: true,
+      description: '出退勤の集計と月次確認を効率化する有料予定コンテンツ。',
+      issues: []
+    },
+    {
+      id: 'seatflow-custom',
+      name: 'SeatFlow 教室用カスタマイズ',
+      category: '教育・塾運営',
+      priceType: '開発相談',
+      priceLabel: '個別見積',
+      displayStatus: '表示中',
+      ctaType: '開発相談',
+      supportTarget: true,
+      initialSetupSupport: true,
+      appKey: 'seatflow',
+      hasThumbnail: true,
+      hasDescription: true,
+      description: '教室レイアウトや運用ルールに合わせた座席管理の相談商品。',
+      issues: []
+    },
+    {
+      id: 'sales-talk-support',
+      name: '営業トーク支援ツール',
+      category: '面談・営業支援',
+      priceType: '開発中',
+      priceLabel: '未設定',
+      displayStatus: '非表示',
+      ctaType: '開発中',
+      supportTarget: true,
+      initialSetupSupport: true,
+      appKey: '',
+      hasThumbnail: false,
+      hasDescription: true,
+      description: '商談時の会話整理を支援する予定ツール。',
+      issues: ['価格未設定', 'app_keyなし', 'サムネイルなし']
+    },
+    {
+      id: 'monthly-checklist',
+      name: '月末業務チェックリスト',
+      category: '業務効率化',
+      priceType: '買い切り',
+      priceLabel: '1,980円',
+      displayStatus: '表示中',
+      ctaType: '',
+      supportTarget: false,
+      initialSetupSupport: false,
+      appKey: 'monthly_checklist',
+      hasThumbnail: true,
+      hasDescription: false,
+      description: '',
+      issues: ['CTA未設定', '商品説明なし']
+    }
+  ];
+
   const state = {
     selectedCompanyId: mockCompanies[0].id
   };
@@ -110,6 +225,9 @@
 
   function init() {
     renderSummary();
+    renderProductSummary();
+    renderProductList();
+    renderProductIssueList();
     renderCompanyList();
     renderCompanyDetail();
     renderIssueList();
@@ -131,6 +249,64 @@
     setText('#adminDataCount', mockCompanies.reduce((total, company) => total + company.appDataCount, 0));
     setText('#adminIssueCount', mockCompanies.reduce((total, company) => total + company.issues.length, 0));
     setText('#adminUpdatedAt', latestUpdatedAt());
+  }
+
+  function renderProductSummary() {
+    setText('#adminProductCount', mockProducts.length);
+    setText('#adminVisibleProductCount', mockProducts.filter(product => product.displayStatus === '表示中').length);
+    setText('#adminPaidProductCount', mockProducts.filter(product => (
+      product.priceType === '買い切り' || product.priceType === 'サブスク'
+    )).length);
+    setText('#adminProductIssueCount', productIssues().length);
+  }
+
+  function renderProductList() {
+    const root = $('#adminProductList');
+    if (!root) return;
+
+    root.innerHTML = mockProducts.map(product => {
+      const issueClass = product.issues.length ? ' has-issues' : '';
+      return `
+        <article class="admin-product-card${issueClass}">
+          <div>
+            <div class="admin-product-title">
+              <h3>${escapeHtml(product.name)}</h3>
+              <span class="admin-status-pill${product.displayStatus === '表示中' ? ' check' : ' warn'}">${escapeHtml(product.displayStatus)}</span>
+            </div>
+            <p class="admin-product-description">${escapeHtml(product.description || '商品説明なし')}</p>
+            <div class="admin-product-flags" aria-label="${escapeAttr(product.name)}の設定状態">
+              ${statusPill(`料金: ${product.priceType}`, product.priceLabel === '未設定')}
+              ${statusPill(`CTA: ${product.ctaType || '未設定'}`, !product.ctaType)}
+              ${statusPill(`app_key: ${product.appKey || 'なし'}`, !product.appKey)}
+              ${statusPill(`サムネイル: ${yesNo(product.hasThumbnail)}`, !product.hasThumbnail)}
+            </div>
+          </div>
+          <div class="admin-product-grid">
+            ${productField('価格', product.priceLabel)}
+            ${productField('カテゴリ', product.category)}
+            ${productField('サポート対象', yesNo(product.supportTarget))}
+            ${productField('初期設定サポート', yesNo(product.initialSetupSupport))}
+            ${productField('購入後の反映先app_key', product.appKey || '未設定')}
+            ${productField('異常状態', product.issues.length ? product.issues.join(' / ') : 'なし')}
+          </div>
+        </article>
+      `;
+    }).join('');
+  }
+
+  function renderProductIssueList() {
+    const root = $('#adminProductIssueList');
+    if (!root) return;
+
+    const issues = productIssues();
+    root.innerHTML = issues.length
+      ? issues.map(item => `
+        <li>
+          <span>${escapeHtml(item.product)}: ${escapeHtml(item.issue)}</span>
+          <strong class="admin-status-pill warn">mock</strong>
+        </li>
+      `).join('')
+      : '<li><span>商品設定の異常状態はありません</span><strong class="admin-status-pill check">mock</strong></li>';
   }
 
   function renderCompanyList() {
@@ -221,6 +397,12 @@
     return value ? 'あり' : 'なし';
   }
 
+  function productIssues() {
+    return mockProducts.flatMap(product => (
+      product.issues.map(issue => ({ product: product.name, issue }))
+    ));
+  }
+
   function detailItem(label, value) {
     return `
       <div class="admin-detail-item">
@@ -228,6 +410,19 @@
         <strong>${escapeHtml(value)}</strong>
       </div>
     `;
+  }
+
+  function productField(label, value) {
+    return `
+      <div class="admin-product-field">
+        <span>${escapeHtml(label)}</span>
+        <strong>${escapeHtml(value)}</strong>
+      </div>
+    `;
+  }
+
+  function statusPill(label, isWarning) {
+    return `<span class="admin-status-pill${isWarning ? ' warn' : ' check'}">${escapeHtml(label)}</span>`;
   }
 
   function setText(selector, value) {
