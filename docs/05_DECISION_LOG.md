@@ -340,3 +340,11 @@ DECISION_LOGは重要な判断の記録に使う。単なる作業ログでは�
 - 影響範囲: `docs/04_フェーズ記録/phase1-7b-app-instances-status-design.md`、`docs/00_PROJECT_STATUS.md`、`docs/06_TASK_QUEUE.md`、`docs/03_構想/roadmap-after-portal-uiux-change.md`。
 - 関連Phase: v1.7b、v1.7c、v1.7d、v1.7e、v1.7f。
 - 取り消し条件: 人間判断により、利用解除を `inactive` などの新statusで統一する、または完全削除 / データ削除ポリシーを別途設計して採用する場合。
+
+## 2026-07-08 現行RLSだけでは無料 / β版のみの正式反映を完全保証しない
+
+- 決定内容: v1.7cでは、現行 `app_instances` schemaとRLSを確認したうえで、既存statusだけを使うならstatus追加migrationは不要とする。ただし、現行RLSは自社 `company_account_id` 分離には効くが、無料 / β版だけをinsert許可し、有料 / サブスクをDB側で拒否する料金形態判定はできない。また、実装次第では `disabled` を利用者が `active` / `trial` へ戻せてしまう可能性がある。v1.7dへ進む場合は、無料 / β版の少数 `app_key` allowlist、対象商品の `priceType`、有料 / サブスク対象外、`disabled` 復活禁止を人間が確認する。
+- 理由: 料金形態やCTAは主に `data/contents.json` / JS側にあり、`apps` には `free` / `paid` / `subscription` のDB正本がないため。RLSから料金形態を参照できない状態で汎用的な `app_instances` insertを許可すると、有料 / サブスク混入リスクが残る。
+- 影響範囲: `docs/04_フェーズ記録/phase1-7c-app-instances-rls-migration-plan.md`、`docs/00_PROJECT_STATUS.md`、`docs/06_TASK_QUEUE.md`、`docs/03_構想/roadmap-after-portal-uiux-change.md`、v1.7d以降。
+- 関連Phase: v1.7c、v1.7d、v1.7e、v1.7f、v1.9。
+- 取り消し条件: 商品 / 料金 / CTAのDB正本、RPC / Edge Function、または管理者側反映など、無料 / β版のみ許可し有料 / サブスクを拒否できるDB側または管理された反映処理が整った場合。
