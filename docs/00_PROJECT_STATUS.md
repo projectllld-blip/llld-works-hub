@@ -7,7 +7,7 @@ v1.6では、決済実装には入らず、`purchase-confirm.html` で購入 / �
 
 v1.6bでは、商品名、説明、価格、料金形態、販売状態、CTA、カテゴリ、サムネイル、サポート対象、初期設定対象、表示 / 非表示、おすすめ表示、購入後に利用可能にする `app_key` を整理対象として定義した。短期的には既存 `data/contents.json` を商品・料金・CTA設定の正本候補として扱い、JS側のコード直書きを将来減らす方針にした。ただし、v1.6bでは `data/contents.json`、新規JSON、DB、RLS、migration、本体UI / JS / CSSは変更していない。
 
-v1.6cでは、`admin.html` に実DB接続なしの固定mockとして「商品・料金・CTA確認 mock」を追加した。商品一覧、価格、無料 / β版 / 買い切り / サブスク / 開発相談 / 開発中、表示状態、CTA種別、サポート設定、初期設定サポート有無、購入後の反映先 `app_key`、価格未設定 / CTA未設定 / `app_key` なし / サムネイルなし / 商品説明なしの異常状態を確認できる。Supabase、Auth、DB、RLS、migration、`data/contents.json`、商品・料金の本物編集機能は変更していない。
+v1.6cでは、`admin.html` に実DB接続なしの固定mockとして「商品・料金・CTA確認 mock」を追加した。商品一覧、価格、無料 / β版 / 買い切り / サブスク / 開発相談 / 開発中、表示状態、CTA種別、サポート設定、初期設定サポート有無、購入後の反映先 `app_key`、価格未設定 / CTA未設定 / `app_key` なし / サムネイルなし / 商品説明なしの異常状態を確認できる。人間ブラウザ確認で、既存の企業一覧mock / 企業詳細mock、mock明示、実DB / Supabase / Auth / 保存処理なし、`data/contents.json` 未変更、Supabase migration / RLS / site-config / workflow 未変更、スマホ表示に大きな崩れなしを確認済み。
 
 GitHub Pages公開版、認証・ポータル導線、PC / iPad / スマホ表示の大きな崩れがないことを人間確認済み。
 
@@ -55,7 +55,7 @@ LLLD Works Hub / Works Market は、社内ポータル・販売マーケット�
 - v1.5 Marketplace UIUX / Purchase Flow Consolidation: マーケット表示、共通ヘッダー、カード導線、確認画面入口、サポート / 開発相談 / マイページ周りを整理。無料 / β版 / 有料は直接追加せず確認画面へ通す方針にした。
 - v1.6 購入ページ: `purchase-confirm.html` で無料 / β版 / 買い切り / サブスクの確認画面を整理。無料 / β版は `sessionStorage` 仮追加、有料 / サブスクは購入確認のみで利用可能状態にしないことを人間確認済み。決済、購入履歴、正式な `app_instances` 反映は未実装。
 - v1.6b 商品・料金・CTA設定の整理: 商品・料金・CTA設定の対象項目、既存 `data/contents.json` へ寄せる短期方針、新規JSON案、将来DB案、v1.6c管理者mockへの引き継ぎ、本物管理者画面をv2.x以降へ分離する方針を整理。docs-onlyで、本体UI / JS / CSS、`data/contents.json`、Supabase、RLS、migrationは変更していない。
-- v1.6c 管理者mock画面：商品/料金/表示状態確認: `admin.html` / `assets/js/adminMockPage.js` に固定mockの商品確認UIを追加。実DB接続なしで、商品一覧、価格、表示状態、CTA、サポート設定、購入後の反映先 `app_key`、異常状態を確認する。本物管理者画面、商品DB、料金編集、Supabase / RLS / migration変更は含めない。
+- v1.6c 管理者mock画面：商品/料金/表示状態確認: `admin.html` / `assets/js/adminMockPage.js` に固定mockの商品確認UIを追加。実DB接続なしで、商品一覧、価格、表示状態、CTA、サポート設定、購入後の反映先 `app_key`、異常状態を確認する。本物管理者画面、商品DB、料金編集、Supabase / RLS / migration変更は含めない。人間ブラウザ確認済み。
 - v1.3c適用前 Supabase本番/検証分離方針整理: GitHub Pages公開版が現在のSupabase projectを参照しているため、現在のprojectを運用上本番相当DBとして扱う方針を整理。v1.3c migrationは環境方針確定まで実DB適用停止。
 - A0.1 Codex半自動運用基盤
 - A0.2 GitHub Issue運用化
