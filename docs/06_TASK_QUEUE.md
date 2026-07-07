@@ -28,13 +28,17 @@
 - v1.6 購入ページ
 - v1.6b 商品・料金・CTA設定の整理
 - v1.6c 管理者mock画面：商品/料金/表示状態確認: 人間ブラウザ確認済み
+- v1.7 購入後の利用開始反映 方針整理
 
 ## IN_PROGRESS
 - A0.9 自動マージセットアップ不足調査: docs整理は完了。GitHub Settingsで `Allow auto-merge` / branch protection / required checks / workflow permissions の人間確認待ち。
 
 ## NEXT
 - 検証用Supabase project新規作成
-- v1.7 購入後の利用開始・利用中アプリ反映
+- v1.7b app_instances status / 利用解除DB設計
+- v1.7c 無料 / β版 app_instances反映設計
+- v1.7d 無料 / β版 app_instances反映MVP
+- v1.7e 有料 / サブスク反映は決済後へPARKED
 - v1.7.5 UI再調整・導線磨き込み
 - v1.8 販売前QA・導入テスト
 - v1.9 決済・購入履歴
@@ -103,6 +107,7 @@
 - v1.6 購入ページでは、決済なしの購入 / 利用開始確認ページを整える。商品・料金・CTAは当面 `data/contents.json` と画面JSに残るが、v1.6bで静的JSONまたは既存データ構造へ寄せ、コード直書きを減らす方針を整理する。
 - v1.6b 商品・料金・CTA設定の整理では、短期的に既存 `data/contents.json` を商品・料金・CTA設定の正本候補として扱い、JS側のコード直書きを将来減らす方針を整理した。新規JSON、DB、RLS、migration、本体UI / JS / CSSは変更していない。
 - v1.6c 管理者mock画面では、実DB接続なしの固定mockで、商品一覧、価格、無料 / β版 / 買い切り / サブスク / 開発相談 / 開発中、表示状態、CTA種別、サポート設定、初期設定サポート有無、購入後の反映先 `app_key`、異常状態を確認するUIを追加した。人間ブラウザ確認済み。本物DB編集、商品DB、料金DB、Supabase / RLS / migration変更は含めない。
+- v1.7 購入後の利用開始反映 方針整理では、`sessionStorage` は一時表示、`app_instances` は正式な利用中アプリの正本として切り分けた。無料 / β版は正式反映候補、有料 / サブスクは決済完了または運営側の明示的な利用開始処理後まで反映対象外。現行RLSだけでは無料 / β版だけを安全にinsert許可し、有料 / サブスクを拒否する制御が不足するため、実装前にv1.7b / v1.7cへ分割する。
 - 本物管理者画面からの料金・掲載・購入状態編集、商品マスタ / 料金マスタDB、管理者ロール、管理者RLSは v2.x 以降に分離する。
 - 本線へ戻るにはPROJECT_STATUSで再開条件を確認する。
 

@@ -324,3 +324,11 @@ DECISION_LOGは重要な判断の記録に使う。単なる作業ログでは�
 - 影響範囲: `purchase-confirm.html`、`assets/js/purchaseConfirmPage.js`、`portal.html`、`docs/04_フェーズ記録/phase1-6-purchase-page.md`、`docs/00_PROJECT_STATUS.md`、`docs/06_TASK_QUEUE.md`。
 - 関連Phase: v1.6、v1.6b、v1.6c、v1.7。
 - 取り消し条件: 有料 / サブスクが決済なしで利用可能になる、または `portal.html` に購入済み・利用可能として表示される不具合が見つかった場合。
+
+## 2026-07-08 v1.7購入後反映はapp_instancesを正本にするが実装前にDB/RLS設計を挟む
+
+- 決定内容: 購入後 / 利用開始後の正式な利用中アプリ正本は `app_instances` とする。`sessionStorage` はv1.6の一時表示に限定する。無料 / β版は将来的な正式反映候補、有料 / サブスクは決済完了または運営側の明示的な利用開始処理後まで正式反映しない。現行RLSだけでは無料 / β版だけを安全にinsert許可し、有料 / サブスクを拒否する制御が不足するため、v1.7を分割し、先に `v1.7b app_instances status / 利用解除DB設計` と `v1.7c 無料 / β版 app_instances反映設計` を行う。
+- 理由: 既存 `app_instances` には `status = active / trial / paused / disabled` と `company_account_id + app_key` の一意制約があり、正式利用中アプリの土台はある。一方で、料金形態や商品状態は主に `data/contents.json` / JS側にあり、RLSから直接判定できないため、購入確認ページから汎用insertを行うと有料 / サブスク混入リスクがある。
+- 影響範囲: `docs/04_フェーズ記録/phase1-7-post-purchase-app-instance-reflection.md`、`docs/00_PROJECT_STATUS.md`、`docs/06_TASK_QUEUE.md`、v1.7b / v1.7c / v1.7d。
+- 関連Phase: v1.6、v1.6b、v1.6c、v1.7、v1.7b、v1.7c、v1.9。
+- 取り消し条件: DB側の商品 / 料金 / 公開状態の正本、RLS、管理された反映処理、または決済完了後反映の安全設計が整い、人間判断で正式反映実装へ進む場合。
