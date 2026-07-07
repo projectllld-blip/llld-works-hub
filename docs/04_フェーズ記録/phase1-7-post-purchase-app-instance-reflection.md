@@ -194,14 +194,16 @@ v1.7の正式DB反映実装へ進む前に、少なくとも以下のどちら�
 - 利用解除、再開、履歴、`app_data` の扱いを整理する。
 - RLS / migrationが必要か判断する。
 
-### v1.7c 無料 / β版 app_instances反映設計
+### v1.7c app_instances status / RLS / migration案
 
 目的:
 
+- 現行 `app_instances` schemaとRLSを整理する。
+- 既存statusだけで足りるか、追加migrationが必要かを整理する。
 - 無料 / β版だけを正式反映できる条件を設計する。
-- 有料 / サブスクが混入しない制御を設計する。
-- DB側の商品状態正本が必要か確認する。
-- 必要ならmigration / RLS案を作る。
+- 有料 / サブスクが混入しない制御を整理する。
+- `disabled` を利用者が復活できないようにする条件を整理する。
+- DB側の商品状態正本、RPC / Edge Function、運営側手動反映の要否を整理する。
 
 ### v1.7d 無料 / β版 app_instances反映MVP
 
@@ -237,14 +239,13 @@ v1.7の正式DB反映実装へ進む前に、少なくとも以下のどちら�
 
 ## 次フェーズ推奨
 
-次は `v1.7b app_instances status / 利用解除DB設計` を推奨する。
+v1.7b / v1.7cのdocs整理後は、条件付きで `v1.7d 無料 / β版 app_instances反映MVP` が次候補。
 
 理由:
 
-- 既存 `app_instances.status` には状態管理の土台がある。
-- ただし、利用解除、再利用開始、履歴、`app_data` の扱いが未確定。
-- 無料 / β版反映を実装する前に、状態設計を固める必要がある。
-- 有料 / サブスク混入を防ぐため、RLS / 商品状態DB / 管理された反映処理の要否を人間判断する必要がある。
+- v1.7bで既存 `app_instances.status` の使い方は整理済み。
+- v1.7cで、現行RLSだけでは無料 / β版のみinsert許可、有料 / サブスク拒否、`disabled` 復活禁止をDB側で完全保証できないことを整理する。
+- v1.7dへ進むには、無料 / β版の少数 `app_key` allowlist、対象商品の `priceType`、有料 / サブスク対象外、`disabled` 復活禁止を人間が確認する必要がある。
 
 ## HUMAN_REQUIRED
 
