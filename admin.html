@@ -210,6 +210,129 @@
       color: #111827;
     }
 
+    .admin-product-section {
+      margin-bottom: 22px;
+    }
+
+    .admin-product-summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin: 14px 0 16px;
+    }
+
+    .admin-product-metric {
+      border: 1px solid rgba(17, 24, 39, 0.1);
+      border-radius: 8px;
+      padding: 12px;
+      background: #f9fafb;
+    }
+
+    .admin-product-metric span {
+      display: block;
+      color: #6b7280;
+      font-size: 0.82rem;
+    }
+
+    .admin-product-metric strong {
+      display: block;
+      margin-top: 4px;
+      color: #111827;
+      font-size: 1.35rem;
+      line-height: 1.1;
+    }
+
+    .admin-product-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .admin-product-card {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.9fr);
+      gap: 14px;
+      border: 1px solid rgba(17, 24, 39, 0.1);
+      border-radius: 8px;
+      padding: 14px;
+      background: #fff;
+    }
+
+    .admin-product-card.has-issues {
+      border-color: rgba(217, 119, 6, 0.35);
+      background: #fffbeb;
+    }
+
+    .admin-product-title {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .admin-product-title h3 {
+      margin: 0;
+    }
+
+    .admin-product-description {
+      margin: 0;
+      color: #4b5563;
+      line-height: 1.65;
+    }
+
+    .admin-product-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .admin-product-field {
+      border: 1px solid rgba(17, 24, 39, 0.08);
+      border-radius: 8px;
+      padding: 9px 10px;
+      background: rgba(255, 255, 255, 0.72);
+      min-width: 0;
+    }
+
+    .admin-product-field span {
+      display: block;
+      color: #6b7280;
+      font-size: 0.78rem;
+    }
+
+    .admin-product-field strong {
+      display: block;
+      margin-top: 3px;
+      color: #111827;
+      overflow-wrap: anywhere;
+    }
+
+    .admin-product-flags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .admin-product-issue-summary {
+      display: grid;
+      gap: 8px;
+      margin: 12px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .admin-product-issue-summary li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border: 1px solid rgba(217, 119, 6, 0.22);
+      border-radius: 8px;
+      padding: 10px 12px;
+      background: #fff7ed;
+    }
+
     .admin-app-list,
     .admin-issue-list,
     .admin-stop-list {
@@ -247,6 +370,14 @@
       .admin-summary-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
+
+      .admin-product-card {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-product-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
 
     @media (max-width: 560px) {
@@ -265,7 +396,9 @@
       }
 
       .admin-summary-grid,
-      .admin-detail-grid {
+      .admin-detail-grid,
+      .admin-product-grid,
+      .admin-product-summary {
         grid-template-columns: 1fr;
       }
     }
@@ -330,6 +463,40 @@
         <span>最終更新日時</span>
         <strong id="adminUpdatedAt">-</strong>
       </article>
+    </section>
+
+    <section class="admin-mock-panel admin-product-section" aria-labelledby="adminProductMockTitle">
+      <span class="admin-mock-kicker">v1.6c mock</span>
+      <h2 id="adminProductMockTitle">商品・料金・CTA確認 mock</h2>
+      <p class="admin-mock-note">購入ページ、マーケットカード、将来の管理者画面で確認したい商品設定を固定mockデータで表示します。実DB、Supabase、Auth、RLS、`data/contents.json` には接続していません。保存ボタンもありません。</p>
+
+      <div class="admin-product-summary" aria-label="商品設定mock概要">
+        <div class="admin-product-metric">
+          <span>商品数</span>
+          <strong id="adminProductCount">-</strong>
+        </div>
+        <div class="admin-product-metric">
+          <span>表示中</span>
+          <strong id="adminVisibleProductCount">-</strong>
+        </div>
+        <div class="admin-product-metric">
+          <span>有料 / サブスク</span>
+          <strong id="adminPaidProductCount">-</strong>
+        </div>
+        <div class="admin-product-metric">
+          <span>設定異常</span>
+          <strong id="adminProductIssueCount">-</strong>
+        </div>
+      </div>
+
+      <div id="adminProductList" class="admin-product-list">
+        <p class="admin-mock-note">商品・料金・CTA mockを読み込み中です。</p>
+      </div>
+
+      <h3>商品設定の異常状態 mock</h3>
+      <ul id="adminProductIssueList" class="admin-product-issue-summary">
+        <li><span>商品設定の異常状態を読み込み中です</span><strong class="admin-status-pill warn">mock</strong></li>
+      </ul>
     </section>
 
     <section class="admin-mock-layout">

@@ -218,6 +218,14 @@ DECISION_LOGは重要な判断の記録に使う。単なる作業ログでは�
 - 決定内容: GitHub Pages公開版が `data/site-config.json` を参照し、現在のSupabase projectへ接続しているため、docs上は検証用として始まったprojectであっても、運用上は本番相当DBとして扱う。新しく作るSupabase projectを検証用DBとする。現行Supabase projectへのmigration / RLS / schema変更 / `app_data` / `app_instances` / Auth関連変更は本番相当DBへの変更として扱い、SQL適用は必ず `HUMAN_REQUIRED: YES` とする。
 - 理由: production / staging / test 用の別configがrepo内になく、GitHub Pages公開版とローカル検証が同じSupabase設定を見ている可能性があるため。検証作業のつもりでSQLを適用すると、公開環境が参照するDB schemaへ反映されるリスクがある。
 - 影響範囲: `docs/16_ENVIRONMENT_SEPARATION_POLICY.md`、`docs/04_フェーズ記録/phase1-3c-environment-separation-policy.md`、`docs/04_フェーズ記録/phase1-3c-app-add-requests-migration-rls.md`、`docs/00_PROJECT_STATUS.md`、`docs/06_TASK_QUEUE.md`、v1.3c / v1.3d。
+
+## 2026-07-07 v1.6c管理者mockは商品・料金確認の固定mockに限定する
+
+- 決定内容: v1.6c 管理者mock画面では、商品一覧、価格、無料 / β版 / 買い切り / サブスク / 開発相談 / 開発中、表示状態、CTA種別、サポート設定、初期設定サポート有無、購入後の反映先 `app_key`、異常状態を固定mockで確認する。本物DB編集、商品DB、料金DB、管理者ロール、管理者RLSは実装しない。
+- 理由: v1.6bで商品・料金・CTA設定の整理はできたが、いきなり本物管理者画面や料金DB編集へ進むと、管理者権限、RLS、変更履歴、誤操作防止、本番 / 検証分離が未整備のまま本番相当DBへ影響するため。
+- 影響範囲: `admin.html`、`assets/js/adminMockPage.js`、`docs/04_フェーズ記録/phase1-6c-admin-product-pricing-mock.md`、v1.7以降の購入後反映設計、v2.x本物管理者画面。
+- 関連Phase: v1.6b、v1.6c、v1.7、v2.x。
+- 取り消し条件: 管理者権限、管理者RLS、商品 / 料金DB、変更履歴、公開前確認、誤操作防止、本番 / 検証分離が整い、人間判断で本物管理者画面のDB編集へ進む場合。
 - 関連Phase: v1.3c、v1.3d、Supabase本番/検証分離方針整理。
 - 取り消し条件: 人間判断により別の本番Supabase projectを作成し、GitHub Pages公開版をそちらへ切り替え、現在のprojectを検証用として扱う方針に変更した場合。
 
