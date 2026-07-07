@@ -27,7 +27,7 @@
 - v1.5 Marketplace UIUX / Purchase Flow Consolidation
 - v1.6 購入ページ
 - v1.6b 商品・料金・CTA設定の整理
-- v1.6c 管理者mock画面：商品/料金/表示状態確認
+- v1.6c 管理者mock画面：商品/料金/表示状態確認: 人間ブラウザ確認済み
 
 ## IN_PROGRESS
 - A0.9 自動マージセットアップ不足調査: docs整理は完了。GitHub Settingsで `Allow auto-merge` / branch protection / required checks / workflow permissions の人間確認待ち。
@@ -102,7 +102,7 @@
 - v1.5 Marketplace UIUX / Purchase Flow Consolidationでは、マーケットカードをPC / iPad 4列、スマホ2列に整理し、無料 / β版 / 有料を直接追加せず確認画面へ通す。ポータル追加は無料 / β版だけの `sessionStorage` 一時表示MVPであり、有料 / サブスクは決済未実装中は利用可能にしない。正式な購入履歴、決済、`app_instances` 反映は後続フェーズで扱う。
 - v1.6 購入ページでは、決済なしの購入 / 利用開始確認ページを整える。商品・料金・CTAは当面 `data/contents.json` と画面JSに残るが、v1.6bで静的JSONまたは既存データ構造へ寄せ、コード直書きを減らす方針を整理する。
 - v1.6b 商品・料金・CTA設定の整理では、短期的に既存 `data/contents.json` を商品・料金・CTA設定の正本候補として扱い、JS側のコード直書きを将来減らす方針を整理した。新規JSON、DB、RLS、migration、本体UI / JS / CSSは変更していない。
-- v1.6c 管理者mock画面では、実DB接続なしの固定mockで、商品一覧、価格、無料 / β版 / 買い切り / サブスク / 開発相談 / 開発中、表示状態、CTA種別、サポート設定、初期設定サポート有無、購入後の反映先 `app_key`、異常状態を確認するUIを追加した。本物DB編集、商品DB、料金DB、Supabase / RLS / migration変更は含めない。
+- v1.6c 管理者mock画面では、実DB接続なしの固定mockで、商品一覧、価格、無料 / β版 / 買い切り / サブスク / 開発相談 / 開発中、表示状態、CTA種別、サポート設定、初期設定サポート有無、購入後の反映先 `app_key`、異常状態を確認するUIを追加した。人間ブラウザ確認済み。本物DB編集、商品DB、料金DB、Supabase / RLS / migration変更は含めない。
 - 本物管理者画面からの料金・掲載・購入状態編集、商品マスタ / 料金マスタDB、管理者ロール、管理者RLSは v2.x 以降に分離する。
 - 本線へ戻るにはPROJECT_STATUSで再開条件を確認する。
 
