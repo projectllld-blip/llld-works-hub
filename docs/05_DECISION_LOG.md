@@ -327,8 +327,16 @@ DECISION_LOGは重要な判断の記録に使う。単なる作業ログでは�
 
 ## 2026-07-08 v1.7購入後反映はapp_instancesを正本にするが実装前にDB/RLS設計を挟む
 
-- 決定内容: 購入後 / 利用開始後の正式な利用中アプリ正本は `app_instances` とする。`sessionStorage` はv1.6の一時表示に限定する。無料 / β版は将来的な正式反映候補、有料 / サブスクは決済完了または運営側の明示的な利用開始処理後まで正式反映しない。現行RLSだけでは無料 / β版だけを安全にinsert許可し、有料 / サブスクを拒否する制御が不足するため、v1.7を分割し、先に `v1.7b app_instances status / 利用解除DB設計` と `v1.7c 無料 / β版 app_instances反映設計` を行う。
+- 決定内容: 購入後 / 利用開始後の正式な利用中アプリ正本は `app_instances` とする。`sessionStorage` はv1.6の一時表示に限定する。無料 / β版は将来的な正式反映候補、有料 / サブスクは決済完了または運営側の明示的な利用開始処理後まで正式反映しない。現行RLSだけでは無料 / β版だけを安全にinsert許可し、有料 / サブスクを拒否する制御が不足するため、v1.7を分割し、先に `v1.7b app_instances status / 利用解除DB設計` と `v1.7c app_instances status / RLS / migration案` を行う。
 - 理由: 既存 `app_instances` には `status = active / trial / paused / disabled` と `company_account_id + app_key` の一意制約があり、正式利用中アプリの土台はある。一方で、料金形態や商品状態は主に `data/contents.json` / JS側にあり、RLSから直接判定できないため、購入確認ページから汎用insertを行うと有料 / サブスク混入リスクがある。
 - 影響範囲: `docs/04_フェーズ記録/phase1-7-post-purchase-app-instance-reflection.md`、`docs/00_PROJECT_STATUS.md`、`docs/06_TASK_QUEUE.md`、v1.7b / v1.7c / v1.7d。
 - 関連Phase: v1.6、v1.6b、v1.6c、v1.7、v1.7b、v1.7c、v1.9。
 - 取り消し条件: DB側の商品 / 料金 / 公開状態の正本、RLS、管理された反映処理、または決済完了後反映の安全設計が整い、人間判断で正式反映実装へ進む場合。
+
+## 2026-07-08 利用解除はapp_instancesを削除せず既存statusで管理する
+
+- 決定内容: v1.7bでは、既存 `app_instances.status` の `active` / `trial` / `paused` / `disabled` を使うMVP方針にする。無料アプリの利用中は `active`、β版 / トライアルは `trial`、利用者側の利用解除は `paused`、運営側停止は `disabled` とする。利用解除では `app_instances` を物理削除せず、`app_data` は原則残す。`inactive` / `pending` / `cancelled` をDB上の正式statusにする場合はmigrationが必要なため、v1.7c以降で扱う。
+- 理由: 現行schemaには既にstatus列とcheck制約があり、既存値だけでMVPの状態管理を表現できる。一方で、`app_data.app_instance_id` は `app_instances.id` に `on delete cascade` で紐づくため、物理削除はアプリ内データの喪失につながる可能性がある。
+- 影響範囲: `docs/04_フェーズ記録/phase1-7b-app-instances-status-design.md`、`docs/00_PROJECT_STATUS.md`、`docs/06_TASK_QUEUE.md`、`docs/03_構想/roadmap-after-portal-uiux-change.md`。
+- 関連Phase: v1.7b、v1.7c、v1.7d、v1.7e、v1.7f。
+- 取り消し条件: 人間判断により、利用解除を `inactive` などの新statusで統一する、または完全削除 / データ削除ポリシーを別途設計して採用する場合。

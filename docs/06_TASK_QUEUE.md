@@ -29,16 +29,18 @@
 - v1.6b 商品・料金・CTA設定の整理
 - v1.6c 管理者mock画面：商品/料金/表示状態確認: 人間ブラウザ確認済み
 - v1.7 購入後の利用開始反映 方針整理
+- v1.7b app_instances status / 利用解除DB設計
 
 ## IN_PROGRESS
 - A0.9 自動マージセットアップ不足調査: docs整理は完了。GitHub Settingsで `Allow auto-merge` / branch protection / required checks / workflow permissions の人間確認待ち。
 
 ## NEXT
 - 検証用Supabase project新規作成
-- v1.7b app_instances status / 利用解除DB設計
-- v1.7c 無料 / β版 app_instances反映設計
+- v1.7c app_instances status / RLS / migration案
 - v1.7d 無料 / β版 app_instances反映MVP
-- v1.7e 有料 / サブスク反映は決済後へPARKED
+- v1.7e account / portal / my-apps 表示整合
+- v1.7f 利用解除UI / paused化
+- v1.7g 有料 / サブスク反映は決済後へPARKED
 - v1.7.5 UI再調整・導線磨き込み
 - v1.8 販売前QA・導入テスト
 - v1.9 決済・購入履歴
@@ -98,7 +100,7 @@
 - 無料アプリは「利用開始」、有料アプリは「購入する」、β版アプリは「β版を試す」、準備中アプリは「準備中」、利用中アプリは「開く」とする。
 - 相談型アプリは通常の商品カードから分離し、問い合わせ、導入相談、カスタマイズ相談、開発相談の導線で扱う。
 - 決済未実装中の有料予定アプリは「有料化予定」または「購入確認」と表示しつつ、決済完了前には利用可能にしない。有料化前に無料で使わせたいものは、無料 / β版 / 無料トライアルとして分類する。
-- 利用解除は `app_instances` の物理削除ではなく、`inactive` / `disabled` のような利用停止状態にする。
+- 利用解除は `app_instances` の物理削除ではなく、MVPでは `paused` / `disabled` のような利用停止状態にする。`inactive` をDB上の正式statusにする場合はmigrationが必要。
 - v1系ロードマップは、v1.3で購入前後の利用開始フロー整理、v1.4で実アプリの商品化方針整理、v1.5で販売用UI/UX強化、v1.6で購入ページ、v1.6bで商品・料金・CTA設定整理、v1.6cで管理者mockの商品 / 料金 / 表示状態確認、v1.7で購入後の利用開始・利用中アプリ反映、v1.7.5でUI再調整・導線磨き込み、v1.8で販売前QAを行い、v1.9で初めて決済・購入履歴へ進む。
 - v1.4では、商品状態を「無料」「有料化予定」「β版」「準備中」「相談導線」「PARKED」に分類する。`data/contents.json` や本体UIは変更せず、v1.5販売用UI/UX強化へ渡す方針をdocsで整理する。
 - v1.4では、PDF編集ツールは無料、小テスト作成ツールはβ版、SeatFlowとだこくんはβ版 + 相談導線、有料テンプレート類は有料化予定、営業トーク支援ツールは準備中、カスタマイズ商品は相談導線へ分離する案を正本候補にする。
@@ -108,6 +110,7 @@
 - v1.6b 商品・料金・CTA設定の整理では、短期的に既存 `data/contents.json` を商品・料金・CTA設定の正本候補として扱い、JS側のコード直書きを将来減らす方針を整理した。新規JSON、DB、RLS、migration、本体UI / JS / CSSは変更していない。
 - v1.6c 管理者mock画面では、実DB接続なしの固定mockで、商品一覧、価格、無料 / β版 / 買い切り / サブスク / 開発相談 / 開発中、表示状態、CTA種別、サポート設定、初期設定サポート有無、購入後の反映先 `app_key`、異常状態を確認するUIを追加した。人間ブラウザ確認済み。本物DB編集、商品DB、料金DB、Supabase / RLS / migration変更は含めない。
 - v1.7 購入後の利用開始反映 方針整理では、`sessionStorage` は一時表示、`app_instances` は正式な利用中アプリの正本として切り分けた。無料 / β版は正式反映候補、有料 / サブスクは決済完了または運営側の明示的な利用開始処理後まで反映対象外。現行RLSだけでは無料 / β版だけを安全にinsert許可し、有料 / サブスクを拒否する制御が不足するため、実装前にv1.7b / v1.7cへ分割する。
+- v1.7b app_instances status / 利用解除DB設計では、現行 `app_instances.status` の `active` / `trial` / `paused` / `disabled` を使うMVP方針を整理した。利用解除は物理削除ではなく `paused`、運営停止は `disabled`、再利用開始は `active` / `trial` に戻す。`app_data` は削除しない。`inactive` / `pending` を正式statusにする場合や無料 / β版だけを安全に反映する場合は、v1.7cでRLS / migration案を整理する。
 - 本物管理者画面からの料金・掲載・購入状態編集、商品マスタ / 料金マスタDB、管理者ロール、管理者RLSは v2.x 以降に分離する。
 - 本線へ戻るにはPROJECT_STATUSで再開条件を確認する。
 

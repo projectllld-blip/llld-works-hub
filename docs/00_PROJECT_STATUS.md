@@ -1,7 +1,7 @@
 # 00 PROJECT STATUS
 
 ## 現在の最新フェーズ
-v1.7 購入後の利用開始反映 方針整理まで完了扱い。
+v1.7b app_instances status / 利用解除DB設計まで完了扱い。
 
 v1.6では、決済実装には入らず、`purchase-confirm.html` で購入 / 利用開始確認、任意サポート選択、無料 / β版だけのポータル一時追加導線を整理した。有料 / サブスクは購入確認のみで、決済未実装中はポータルや利用中アプリへ追加しないことを人間ブラウザ確認済み。あわせて、購入ページ直後の `v1.6b 商品・料金・CTA設定の整理`、`v1.6c 管理者mock画面：商品/料金/表示状態確認` をロードマップに追加し、本物管理者画面での料金・掲載・購入状態編集は v2.x 以降へ分離した。
 
@@ -10,6 +10,8 @@ v1.6bでは、商品名、説明、価格、料金形態、販売状態、CTA、
 v1.6cでは、`admin.html` に実DB接続なしの固定mockとして「商品・料金・CTA確認 mock」を追加した。商品一覧、価格、無料 / β版 / 買い切り / サブスク / 開発相談 / 開発中、表示状態、CTA種別、サポート設定、初期設定サポート有無、購入後の反映先 `app_key`、価格未設定 / CTA未設定 / `app_key` なし / サムネイルなし / 商品説明なしの異常状態を確認できる。人間ブラウザ確認で、既存の企業一覧mock / 企業詳細mock、mock明示、実DB / Supabase / Auth / 保存処理なし、`data/contents.json` 未変更、Supabase migration / RLS / site-config / workflow 未変更、スマホ表示に大きな崩れなしを確認済み。
 
 v1.7方針整理では、`sessionStorage` は一時表示、`app_instances` は正式な利用中アプリの正本として切り分けた。無料 / β版は将来的に `app_instances` 反映対象候補、有料 / サブスクは決済完了または運営側の明示的な利用開始処理後まで正式反映対象外とする。既存 `app_instances` には `company_account_id`、`app_key`、`display_name`、`status`、`settings_json` があり、`status = active / trial / paused / disabled` と一意制約 `company_account_id + app_key` があるため土台はある。ただし、現行RLSだけでは無料 / β版だけをinsert許可し、有料 / サブスクをDB側で拒否する制御が不足しているため、実装前に `v1.7b app_instances status / 利用解除DB設計` へ分割する。
+
+v1.7bでは、`app_instances.status` は既に存在し、現行check制約は `active / trial / paused / disabled` であることを確認した。MVPでは、無料アプリは `active`、β版 / トライアルは `trial`、利用者側の利用解除は `paused`、運営側停止は `disabled` として扱う方針にする。利用解除では `app_instances` を物理削除せず、`app_data` は原則残す。`inactive` / `pending` / `cancelled` をDB上の正式statusにする場合はmigrationが必要。現行RLSは自社 `company_account_id` 分離はできるが、無料 / β版だけをinsert許可し、有料 / サブスクを拒否する商品状態判定はできないため、次は `v1.7c app_instances status / RLS / migration案` で安全な反映制御を整理する。
 
 GitHub Pages公開版、認証・ポータル導線、PC / iPad / スマホ表示の大きな崩れがないことを人間確認済み。
 
@@ -59,6 +61,7 @@ LLLD Works Hub / Works Market は、社内ポータル・販売マーケット�
 - v1.6b 商品・料金・CTA設定の整理: 商品・料金・CTA設定の対象項目、既存 `data/contents.json` へ寄せる短期方針、新規JSON案、将来DB案、v1.6c管理者mockへの引き継ぎ、本物管理者画面をv2.x以降へ分離する方針を整理。docs-onlyで、本体UI / JS / CSS、`data/contents.json`、Supabase、RLS、migrationは変更していない。
 - v1.6c 管理者mock画面：商品/料金/表示状態確認: `admin.html` / `assets/js/adminMockPage.js` に固定mockの商品確認UIを追加。実DB接続なしで、商品一覧、価格、表示状態、CTA、サポート設定、購入後の反映先 `app_key`、異常状態を確認する。本物管理者画面、商品DB、料金編集、Supabase / RLS / migration変更は含めない。人間ブラウザ確認済み。
 - v1.7 購入後の利用開始反映 方針整理: `sessionStorage` 仮追加と `app_instances` 正式反映を切り分け、無料 / β版、有料 / サブスク、利用解除、RLS、分割案を整理。現行RLSだけでは無料 / β版だけの安全なinsert制御が不足するため、実装前にDB / RLS要否の人間判断が必要。
+- v1.7b app_instances status / 利用解除DB設計: 既存 `status = active / trial / paused / disabled` を活用し、利用解除は物理削除ではなく `paused`、運営停止は `disabled`、再利用開始は `active` / `trial` へ戻す方針を整理。`app_data` は削除しない。`inactive` / `pending` を使う場合や無料 / β版だけを安全に反映する場合は、v1.7cでmigration / RLS案を整理する。
 - v1.3c適用前 Supabase本番/検証分離方針整理: GitHub Pages公開版が現在のSupabase projectを参照しているため、現在のprojectを運用上本番相当DBとして扱う方針を整理。v1.3c migrationは環境方針確定まで実DB適用停止。
 - A0.1 Codex半自動運用基盤
 - A0.2 GitHub Issue運用化
@@ -85,7 +88,7 @@ LLLD Works Hub / Works Market は、社内ポータル・販売マーケット�
 - A0.9 自動マージセットアップ不足調査: docs整理は完了。GitHub Settings人間確認待ち。
 
 ## 進行中の本線
-- なし。次の本線候補は `v1.7b app_instances status / 利用解除DB設計`。
+- なし。次の本線候補は `v1.7c app_instances status / RLS / migration案`。
 
 ## 今回の寄り道プロジェクト
 - A0.1 Codex半自動運用基盤: 完了
@@ -133,10 +136,11 @@ LLLD Works Hub / Works Market は、社内ポータル・販売マーケット�
 
 ## 次の本線候補
 - 検証用Supabase project新規作成
-- v1.7b app_instances status / 利用解除DB設計: `active` / `trial` / `paused` / `disabled` の意味、利用解除、再利用開始、履歴、`app_data` の扱い、RLS / migration要否を整理する。
-- v1.7c 無料 / β版 app_instances反映設計: 無料 / β版だけを正式反映し、有料 / サブスクを混入させない制御を設計する。
+- v1.7c app_instances status / RLS / migration案: 既存statusを使うか、`inactive` / `pending` を追加するか、無料 / β版だけを安全に正式反映するDB / RLS案を整理する。
 - v1.7d 無料 / β版 app_instances反映MVP
-- v1.7e 有料 / サブスク反映は決済後へPARKED
+- v1.7e account / portal / my-apps 表示整合
+- v1.7f 利用解除UI / paused化
+- v1.7g 有料 / サブスク反映は決済後へPARKED
 - v1.7.5 UI再調整・導線磨き込み
 - v1.8 販売前QA・導入テスト
 - v1.9 決済・購入履歴
