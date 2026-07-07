@@ -1,7 +1,7 @@
 # 00 PROJECT STATUS
 
 ## 現在の最新フェーズ
-v1.7c app_instances status / RLS / migration案まで完了扱い。
+v1.7d事前確認 無料 / β版 allowlist対象app_key確認まで完了扱い。
 
 v1.6では、決済実装には入らず、`purchase-confirm.html` で購入 / 利用開始確認、任意サポート選択、無料 / β版だけのポータル一時追加導線を整理した。有料 / サブスクは購入確認のみで、決済未実装中はポータルや利用中アプリへ追加しないことを人間ブラウザ確認済み。あわせて、購入ページ直後の `v1.6b 商品・料金・CTA設定の整理`、`v1.6c 管理者mock画面：商品/料金/表示状態確認` をロードマップに追加し、本物管理者画面での料金・掲載・購入状態編集は v2.x 以降へ分離した。
 
@@ -14,6 +14,8 @@ v1.7方針整理では、`sessionStorage` は一時表示、`app_instances` は�
 v1.7bでは、`app_instances.status` は既に存在し、現行check制約は `active / trial / paused / disabled` であることを確認した。MVPでは、無料アプリは `active`、β版 / トライアルは `trial`、利用者側の利用解除は `paused`、運営側停止は `disabled` として扱う方針にする。利用解除では `app_instances` を物理削除せず、`app_data` は原則残す。`inactive` / `pending` / `cancelled` をDB上の正式statusにする場合はmigrationが必要。現行RLSは自社 `company_account_id` 分離はできるが、無料 / β版だけをinsert許可し、有料 / サブスクを拒否する商品状態判定はできないため、次は `v1.7c app_instances status / RLS / migration案` で安全な反映制御を整理する。
 
 v1.7cでは、現行 `app_instances` schema / RLS / migration要否を整理した。status列、`active / trial / paused / disabled` のcheck制約、`company_account_id + app_key` のunique index、`updated_at` trigger、`app_data.app_instance_id on delete cascade` は既に存在するため、既存statusだけを使うならstatus追加migrationは不要。ただし、現行RLSは自社 `company_account_id` 分離には効くが、無料 / β版だけをinsert許可し、有料 / サブスクをDB側で拒否する料金形態判定はできない。さらに、update policy上は実装次第で `disabled` を利用者が `active` / `trial` へ戻せてしまうリスクがある。v1.7dへ進む場合は、無料 / β版の少数 `app_key` allowlistを人間が確認し、有料 / サブスクを対象外にし、`disabled` は利用者操作で復活させない方針を明示する必要がある。より厳密な安全制御は、RPC / Edge Function、商品・料金正本のDB化、または運営側手動反映へ送る。
+
+v1.7d事前確認では、`data/contents.json` と既存 `APP_LINKS` を突き合わせ、無料 / β版の初期allowlist候補を `pdf_tool` と `quiz_maker` に限定した。ただし `data/contents.json` には明示的な `app_key` がないため、`pdf-tool -> pdf_tool`、`quiz-maker -> quiz_maker` の対応はv1.7d実装前に人間確認が必要。`dakokun` / `seatflow` は副CTAにβ版導線があるものの、正本分類が `consultation` / `inquiry-only` のため初期allowlist対象外にした。有料 / サブスク / 準備中 / 開発相談 / 社内限定はallowlist対象外。
 
 GitHub Pages公開版、認証・ポータル導線、PC / iPad / スマホ表示の大きな崩れがないことを人間確認済み。
 
@@ -65,6 +67,7 @@ LLLD Works Hub / Works Market は、社内ポータル・販売マーケット�
 - v1.7 購入後の利用開始反映 方針整理: `sessionStorage` 仮追加と `app_instances` 正式反映を切り分け、無料 / β版、有料 / サブスク、利用解除、RLS、分割案を整理。現行RLSだけでは無料 / β版だけの安全なinsert制御が不足するため、実装前にDB / RLS要否の人間判断が必要。
 - v1.7b app_instances status / 利用解除DB設計: 既存 `status = active / trial / paused / disabled` を活用し、利用解除は物理削除ではなく `paused`、運営停止は `disabled`、再利用開始は `active` / `trial` へ戻す方針を整理。`app_data` は削除しない。`inactive` / `pending` を使う場合や無料 / β版だけを安全に反映する場合は、v1.7cでmigration / RLS案を整理する。
 - v1.7c app_instances status / RLS / migration案: 現行schema、status制約、unique index、RLS policy、`app_data` cascade deleteリスクを整理。既存statusだけを使うならstatus追加migrationは不要。ただし現行RLSだけでは無料 / β版のみinsert許可、有料 / サブスク拒否、`disabled` 復活禁止をDB側で完全保証できないため、v1.7d実装前に人間判断が必要。
+- v1.7d事前確認 無料 / β版 allowlist対象app_key確認: `data/contents.json` 上の無料 / β版候補を確認し、初期allowlist候補を `pdf_tool` と `quiz_maker` に限定。`dakokun` / `seatflow` は正本分類が相談導線のため、人間判断待ちとして初期allowlist対象外にした。
 - v1.3c適用前 Supabase本番/検証分離方針整理: GitHub Pages公開版が現在のSupabase projectを参照しているため、現在のprojectを運用上本番相当DBとして扱う方針を整理。v1.3c migrationは環境方針確定まで実DB適用停止。
 - A0.1 Codex半自動運用基盤
 - A0.2 GitHub Issue運用化
@@ -91,7 +94,7 @@ LLLD Works Hub / Works Market は、社内ポータル・販売マーケット�
 - A0.9 自動マージセットアップ不足調査: docs整理は完了。GitHub Settings人間確認待ち。
 
 ## 進行中の本線
-- なし。次の本線候補は `v1.7d 無料 / β版 app_instances反映MVP`。ただし、フロントallowlist方式で進めるか、対象 `app_key`、無料 / β版分類、`disabled` 復活禁止方針について人間判断が必要。
+- なし。次の本線候補は `v1.7d 無料 / β版 app_instances反映MVP`。ただし、`pdf_tool` / `quiz_maker` を正式allowlist対象にしてよいか、`dakokun` / `seatflow` を相談導線のまま対象外にするか、実DBのunique index / policy / delete policyなし / cascade delete有無について人間判断とSupabase Dashboard確認が必要。
 
 ## 今回の寄り道プロジェクト
 - A0.1 Codex半自動運用基盤: 完了
@@ -139,7 +142,7 @@ LLLD Works Hub / Works Market は、社内ポータル・販売マーケット�
 
 ## 次の本線候補
 - 検証用Supabase project新規作成
-- v1.7d 無料 / β版 app_instances反映MVP: 進む場合は、無料 / β版の少数 `app_key` allowlistを人間が確認し、有料 / サブスクを対象外にし、`disabled` を利用者操作で復活させない。
+- v1.7d 無料 / β版 app_instances反映MVP: 進む場合は、初期allowlist候補 `pdf_tool` / `quiz_maker` を人間が確定し、有料 / サブスク / 準備中 / 開発相談を対象外にし、`disabled` を利用者操作で復活させない。
 - v1.7e account / portal / my-apps 表示整合
 - v1.7f 利用解除UI / paused化
 - v1.7g 有料 / サブスク反映は決済後へPARKED
