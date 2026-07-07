@@ -31,13 +31,14 @@
 - v1.7 購入後の利用開始反映 方針整理
 - v1.7b app_instances status / 利用解除DB設計
 - v1.7c app_instances status / RLS / migration案
+- v1.7d事前確認 無料 / β版 allowlist対象app_key確認
 
 ## IN_PROGRESS
 - A0.9 自動マージセットアップ不足調査: docs整理は完了。GitHub Settingsで `Allow auto-merge` / branch protection / required checks / workflow permissions の人間確認待ち。
 
 ## NEXT
 - 検証用Supabase project新規作成
-- v1.7d 無料 / β版 app_instances反映MVP: フロントallowlist方式を許容するか、対象 `app_key`、無料 / β版分類、有料 / サブスク対象外、`disabled` 復活禁止方針を人間確認してから進める。
+- v1.7d 無料 / β版 app_instances反映MVP: 初期allowlist候補 `pdf_tool` / `quiz_maker` を人間確定し、`dakokun` / `seatflow` を相談導線のまま対象外にするか確認し、実DBのunique index / policy / delete policyなし / cascade delete有無をSupabase Dashboardで確認してから進める。
 - v1.7e account / portal / my-apps 表示整合
 - v1.7f 利用解除UI / paused化
 - v1.7g 有料 / サブスク反映は決済後へPARKED
@@ -112,6 +113,7 @@
 - v1.7 購入後の利用開始反映 方針整理では、`sessionStorage` は一時表示、`app_instances` は正式な利用中アプリの正本として切り分けた。無料 / β版は正式反映候補、有料 / サブスクは決済完了または運営側の明示的な利用開始処理後まで反映対象外。現行RLSだけでは無料 / β版だけを安全にinsert許可し、有料 / サブスクを拒否する制御が不足するため、実装前にv1.7b / v1.7cへ分割する。
 - v1.7b app_instances status / 利用解除DB設計では、現行 `app_instances.status` の `active` / `trial` / `paused` / `disabled` を使うMVP方針を整理した。利用解除は物理削除ではなく `paused`、運営停止は `disabled`、再利用開始は `active` / `trial` に戻す。`app_data` は削除しない。`inactive` / `pending` を正式statusにする場合や無料 / β版だけを安全に反映する場合は、v1.7cでRLS / migration案を整理する。
 - v1.7c app_instances status / RLS / migration案では、現行schemaとpolicyを確認した。既存statusだけを使うならstatus追加migrationは不要。`company_account_id + app_key` のunique index、`updated_at` trigger、`app_data.app_instance_id on delete cascade` は存在する。現行RLSは自社分離には効くが、無料 / β版だけをinsert許可し、有料 / サブスクをDB側で拒否する制御、`disabled` 復活禁止のstatus遷移制御は不足する。v1.7dは人間が対象 `app_key` とリスク許容を明示した場合だけ進める。
+- v1.7d事前確認では、`data/contents.json` と既存 `APP_LINKS` を突き合わせ、初期allowlist候補を `pdf_tool`（無料）と `quiz_maker`（β版 / trial）に限定した。`dakokun` / `seatflow` は副CTAにβ版があるが、正本分類が `consultation` / `inquiry-only` のため初期allowlist対象外。`data/contents.json` に明示的な `app_key` はないため、実装前に人間が `slug -> app_key` を確認する。
 - 本物管理者画面からの料金・掲載・購入状態編集、商品マスタ / 料金マスタDB、管理者ロール、管理者RLSは v2.x 以降に分離する。
 - 本線へ戻るにはPROJECT_STATUSで再開条件を確認する。
 

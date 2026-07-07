@@ -231,7 +231,11 @@ v1.0は販売開始ではなく、アカウント別クラウド基盤MVPの完�
   - `disabled` を利用者が `active` / `trial` へ戻せないようにするstatus遷移制御も不足する。
   - v1.7dへ進む場合は、無料 / β版の少数 `app_key` allowlist、対象商品の `priceType`、有料 / サブスク対象外、`disabled` 復活禁止を人間が確認する。
 - v1.7d 無料 / β版 app_instances反映MVP。
-  - v1.7cの人間判断条件が満たされた場合のみ実装候補にする。
+  - 状態: 事前確認完了。
+  - 初期allowlist候補は `pdf_tool`（無料）と `quiz_maker`（β版 / trial）に限定する。
+  - `data/contents.json` に明示的な `app_key` がないため、実装前に `pdf-tool -> pdf_tool`、`quiz-maker -> quiz_maker` の対応を人間確認する。
+  - `dakokun` / `seatflow` は副CTAにβ版があるが、正本分類が `consultation` / `inquiry-only` のため初期allowlist対象外。無料β版として反映したい場合は先に商品分類を再整理する。
+  - v1.7cのDB / RLS人間確認条件が満たされた場合のみ実装候補にする。
 - v1.7e account / portal / my-apps 表示整合。
   - `active` / `trial` を通常利用中として表示し、`paused` / `disabled` を通常一覧から除外または停止済み表示に分離する。
 - v1.7f 利用解除UI / paused化。
@@ -257,7 +261,7 @@ v1.0は販売開始ではなく、アカウント別クラウド基盤MVPの完�
 
 ## 現時点の推奨
 
-v0.14.12、v0.15、v0.16、v0.17a、v0.18、v1.0、v1.1b、v1.2、v1.2b、v1.3、v1.3f、v1.4、v1.5、v1.6、v1.6b、v1.6c、v1.7方針整理、v1.7b、v1.7cは完了扱い。v0.17b以降のバックアップ実装、SeatFlow完全クラウド同期、購入者向け `app_add_requests` 利用申請はPARKEDに戻したまま、次は条件付きで v1.7d 無料 / β版 app_instances反映MVPへ進む。
+v0.14.12、v0.15、v0.16、v0.17a、v0.18、v1.0、v1.1b、v1.2、v1.2b、v1.3、v1.3f、v1.4、v1.5、v1.6、v1.6b、v1.6c、v1.7方針整理、v1.7b、v1.7c、v1.7d事前確認は完了扱い。v0.17b以降のバックアップ実装、SeatFlow完全クラウド同期、購入者向け `app_add_requests` 利用申請はPARKEDに戻したまま、次は人間確認後に v1.7d 無料 / β版 app_instances反映MVPへ進む。
 
 決済・購入履歴は、実アプリの商品化方針、販売用UI/UX、購入ページ、商品・料金・CTA設定、管理者mock確認、購入後の利用開始・利用中アプリ反映、UI再調整、販売前QAが固まった後の v1.9 で扱う。独自ドメイン公開準備、レンタルサーバー移行はロードマップに追加しない。
 

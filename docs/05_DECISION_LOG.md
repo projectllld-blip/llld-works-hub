@@ -348,3 +348,11 @@ DECISION_LOGは重要な判断の記録に使う。単なる作業ログでは�
 - 影響範囲: `docs/04_フェーズ記録/phase1-7c-app-instances-rls-migration-plan.md`、`docs/00_PROJECT_STATUS.md`、`docs/06_TASK_QUEUE.md`、`docs/03_構想/roadmap-after-portal-uiux-change.md`、v1.7d以降。
 - 関連Phase: v1.7c、v1.7d、v1.7e、v1.7f、v1.9。
 - 取り消し条件: 商品 / 料金 / CTAのDB正本、RPC / Edge Function、または管理者側反映など、無料 / β版のみ許可し有料 / サブスクを拒否できるDB側または管理された反映処理が整った場合。
+
+## 2026-07-08 v1.7d初期allowlist候補はpdf_tool / quiz_makerに限定する
+
+- 決定内容: v1.7d実装前の候補整理として、初期allowlist候補を `pdf_tool`（無料）と `quiz_maker`（β版 / trial）に限定する。`data/contents.json` に明示的な `app_key` はないため、`pdf-tool -> pdf_tool`、`quiz-maker -> quiz_maker` の対応は実装前に人間確認する。`dakokun` / `seatflow` は副CTAにβ版導線があるが、正本分類が `consultation` / `inquiry-only` のため初期allowlist対象外にする。
+- 理由: v1.7dは軽量MVPとして無料 / β版だけをフロントallowlistで正式反映する案だが、現行RLSでは有料 / サブスク混入をDB側で完全には防げないため。価格分類が明確な `free` / `free-beta` かつ `app-link` のものに絞る必要がある。
+- 影響範囲: `docs/04_フェーズ記録/phase1-7d-pre-free-beta-allowlist-check.md`、`docs/00_PROJECT_STATUS.md`、`docs/06_TASK_QUEUE.md`、`docs/03_構想/roadmap-after-portal-uiux-change.md`、v1.7d実装判断。
+- 関連Phase: v1.7d、v1.7e、v1.7f。
+- 取り消し条件: 人間判断により、`dakokun` / `seatflow` を無料β版として正式分類し直す場合、または `data/contents.json` に明示的な `app_key` を追加して商品分類を再整理する場合。
