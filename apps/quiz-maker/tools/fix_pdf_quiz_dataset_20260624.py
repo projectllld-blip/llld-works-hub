@@ -474,6 +474,9 @@ def main() -> None:
     for plan in plans:
         generated.extend(generate_plan(plan, title_lookup))
     kept.extend(generated)
+    # Keep the visually reviewed boundaries when rebuilding the older dataset.
+    from review_pdf_quiz_crops import apply_review
+    apply_review(DATA_DIR, RAW_DIR, kept)
     write_manifest(kept)
     sync_source_project()
     print(f"manifest records: {len(kept)}")
