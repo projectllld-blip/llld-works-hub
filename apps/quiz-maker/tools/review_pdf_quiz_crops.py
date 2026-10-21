@@ -88,9 +88,10 @@ def save_parts(parts, dest):
     dest.parent.mkdir(parents=True,exist_ok=True)
     with fitz.open() as doc:
         for im in parts:
-            # Preserve source print scale rather than using pixel counts as points.
+            # Match the existing image PDFs: the app renders at a fixed scale.
+            # Keeping pixel dimensions avoids reducing its print raster resolution.
             stream=io.BytesIO();im.save(stream,'JPEG',quality=95)
-            page=doc.new_page(width=im.width/ZOOM,height=im.height/ZOOM)
+            page=doc.new_page(width=im.width,height=im.height)
             page.insert_image(page.rect,stream=stream.getvalue())
         doc.save(dest,deflate=True)
 
